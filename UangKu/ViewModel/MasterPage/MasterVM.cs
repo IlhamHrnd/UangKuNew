@@ -55,6 +55,7 @@ namespace UangKu.ViewModel.MasterPage
 
         public async void BtnAppStandard_Reference()
         {
+            //Note
             //Belum bisa navigation
             await _navigation.PushAsync(new View.Index.SignUpPage());
         }
