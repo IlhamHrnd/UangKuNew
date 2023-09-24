@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="UangKu.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:index="clr-namespace:UangKu.View.Index"
+    Style="{StaticResource Shell}">
+    <FlyoutItem Title="Login"
+                Icon="dotnet_bot.svg">
+        <ShellContent ContentTemplate="{DataTemplate index:MainPage}"
+                      Route="MainPage"/>
+    </FlyoutItem>
+    <FlyoutItem Title="Forgot Password"
+                Icon="dotnet_bot.svg">
+        <ShellContent ContentTemplate="{DataTemplate index:ForgetPasswordPage}"
+                      Route="ForgetPasswordPage"/>
+    </FlyoutItem>
+    <FlyoutItem Title="Sign Up"
+                Icon="dotnet_bot.svg">
+        <ShellContent ContentTemplate="{DataTemplate index:SignUpPage}"
+                      Route="SignUpPage"/>
+    </FlyoutItem>
+</Shell>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<FlyoutPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:Model="clr-namespace:UangKu.Model.Master"
+            x:Class="UangKu.View.MasterPage.MasterAdmin"
+            Style="{StaticResource Page}"
+            Title="{Binding Title}">
+    <FlyoutPage.BindingContext>
+        <Model:Master/>
+    </FlyoutPage.BindingContext>
+    <FlyoutPage.Flyout>
+        <ContentPage Title="Menu">
+            <StackLayout Style="{StaticResource StackLayout2}"
+                         Spacing="10">
+                <Image Source="{Binding Image}"/>
+                <Button Style="{StaticResource Button}"
+                        Text="Profile" />
+                <Button Style="{StaticResource Button}"
+                        Text="Transaction History"/>
+                <Button Style="{StaticResource Button}"
+                        Text="New Transaction"/>
+                <Button Style="{StaticResource Button}"
+                        Text="App Standard Reference"
+                        x:Name="Btn_AppStandardReference"
+                        Clicked="Btn_AppStandardReference_Clicked"/>
+            </StackLayout>
+        </ContentPage>
+    </FlyoutPage.Flyout>
+    <FlyoutPage.Detail>
+        <NavigationPage>
+            <x:Arguments>
+                <ContentPage Title="Main Page">
+                    <StackLayout Style="{StaticResource StackLayout}">
+                        <Frame Style="{StaticResource Frame}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30*" />
+                                    <ColumnDefinition Width="70*" />
+                                </Grid.ColumnDefinitions>
+                                <Image Source="{Binding Image}"
+                                       Grid.Row="0"
+                                       Grid.Column="0"/>
+                                <Label Style="{StaticResource Label}"
+                                       Grid.Row="0"
+                                       Grid.Column="1"
+                                       Text="{Binding Name}"
+                                       HorizontalTextAlignment="Center"
+                                       VerticalTextAlignment="Center"
+                                       FontSize="Large"/>
+                            </Grid>
+                        </Frame>
+                    </StackLayout>
+                </ContentPage>
+            </x:Arguments>
+        </NavigationPage>
+    </FlyoutPage.Detail>
+</FlyoutPage>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="UangKu.View.Index.MainPage"
+             xmlns:Model="clr-namespace:UangKu.Model.Index"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <Model:MainPage/>
+    </ContentPage.BindingContext>
+    <ScrollView Style="{StaticResource ScrollView}">
+        <StackLayout Style="{StaticResource StackLayout}">
+            <Border Style="{StaticResource Border}" Grid.ColumnSpan="{OnIdiom Default=2, Desktop=1}"
+            Grid.RowSpan="{OnIdiom Default=1, Desktop=2}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="0,0,100,100"/>
+                </Border.StrokeShape>
+                <Image Source="main_page.svg" HorizontalOptions="Center"
+               Aspect="AspectFit" Margin="30"/>
+            </Border>
+            <ActivityIndicator Style="{StaticResource ActivityIndicator}"
+                               IsRunning="{Binding IsBusy}"/>
+            <StackLayout Margin="60,10">
+                <Label Text="Hello, Welcome Back"
+                       Style="{StaticResource Label}"
+                       HorizontalTextAlignment="Center"
+                       FontSize="Large"/>
+                <Entry Style="{StaticResource Entry}"
+                       MaxLength="15"
+                       Placeholder="Username"
+                       Keyboard="Text"
+                       ClearButtonVisibility="WhileEditing"
+                       IsSpellCheckEnabled="False"
+                       IsTextPredictionEnabled="False"
+                       x:Name="Ent_Username"/>
+                <Entry Style="{StaticResource Entry}"
+                       MaxLength="15"
+                       Placeholder="Password"
+                       Keyboard="Text"
+                       ClearButtonVisibility="WhileEditing"
+                       IsSpellCheckEnabled="False"
+                       IsTextPredictionEnabled="False"
+                       IsPassword="True"
+                       x:Name="Ent_Password"/>
+                <Button Style="{StaticResource Button}"
+                        Text="Login"
+                        Margin="35,5"
+                        x:Name="Btn_Login"
+                        Clicked="Btn_Login_Clicked"/>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

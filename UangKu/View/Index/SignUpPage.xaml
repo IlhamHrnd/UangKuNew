@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Model="clr-namespace:UangKu.Model.Index"
+             x:Class="UangKu.View.Index.SignUpPage"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <Model:SignUp/>
+    </ContentPage.BindingContext>
+    <ScrollView Style="{StaticResource ScrollView}">
+        <StackLayout Style="{StaticResource StackLayout}">
+            <Border Style="{StaticResource Border}" Grid.ColumnSpan="{OnIdiom Default=2, Desktop=1}"
+            Grid.RowSpan="{OnIdiom Default=1, Desktop=2}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="0,0,100,100"/>
+                </Border.StrokeShape>
+                <Image Source="main_page.svg" HorizontalOptions="Center"
+                Aspect="AspectFit" Margin="30"/>
+            </Border>
+            <ActivityIndicator Style="{StaticResource ActivityIndicator}"
+                   IsRunning="{Binding IsBusy}"/>
+            <Grid Margin="60,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50*" />
+                    <ColumnDefinition Width="50*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0"
+                       Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       Text="Hello, Fill The Data First"
+                       Style="{StaticResource Label}"
+                       HorizontalTextAlignment="Center"
+                       FontSize="Large"/>
+                <Entry Grid.Column="0"
+                       Grid.Row="1"
+                       Grid.ColumnSpan="2"
+                       Style="{StaticResource Entry}"
+                       MaxLength="15"
+                       Placeholder="Username"
+                       Keyboard="Text"
+                       ClearButtonVisibility="WhileEditing"
+                       IsSpellCheckEnabled="False"
+                       IsTextPredictionEnabled="False"
+                       x:Name="Ent_Username"/>
+                <Entry Grid.Column="0"
+                       Grid.Row="2"
+                       Style="{StaticResource Entry}"
+                       MaxLength="15"
+                       Placeholder="Password"
+                       Keyboard="Text"
+                       ClearButtonVisibility="WhileEditing"
+                       IsSpellCheckEnabled="False"
+                       IsTextPredictionEnabled="False"
+                       IsPassword="True"
+                       x:Name="Ent_Password"/>
+                <Entry Grid.Column="1"
+                       Grid.Row="2"
+                       Style="{StaticResource Entry}"
+                       MaxLength="15"
+                       Placeholder="Confirm Password"
+                       Keyboard="Text"
+                       ClearButtonVisibility="WhileEditing"
+                       IsSpellCheckEnabled="False"
+                       IsTextPredictionEnabled="False"
+                       IsPassword="True"
+                       x:Name="Ent_ConfirmPass"/>
+                <Picker Grid.Column="0"
+                        Grid.Row="3"
+                        Style="{StaticResource Picker}"
+                        ItemsSource="{Binding ListSex}"
+                        ItemDisplayBinding="{Binding itemName}"
+                        SelectedItem="{Binding SelectedSex}"
+                        x:Name="Pic_Sex"/>
+                <Entry Grid.Column="1"
+                       Grid.Row="3"
+                       Style="{StaticResource Entry}"
+                       MaxLength="50"
+                       Placeholder="Email"
+                       Keyboard="Email"
+                       ClearButtonVisibility="WhileEditing"
+                       IsSpellCheckEnabled="False"
+                       IsTextPredictionEnabled="False"
+                       x:Name="Ent_Email"/>
+            </Grid>
+            <Button Style="{StaticResource Button}"
+                    Margin="40,0"
+                    Text="Sign Up"
+                    x:Name="Ent_SignUp"
+                    Clicked="Ent_SignUp_Clicked"/>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
