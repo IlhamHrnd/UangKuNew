@@ -11,10 +11,10 @@ namespace UangKu.ViewModel.Index
         private NetworkModel network = NetworkModel.Instance;
         public SignUpVM()
         {
-            LoadData();
+            
         }
 
-        private async void LoadData()
+        public async void LoadData()
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;

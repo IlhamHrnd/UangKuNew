@@ -12,6 +12,10 @@ namespace UangKu.ViewModel.Index
         {
             
         }
+        public async void LoadData()
+        {
+
+        }
 
         public async void BtnLogin_User(Entry username, Entry password)
         {

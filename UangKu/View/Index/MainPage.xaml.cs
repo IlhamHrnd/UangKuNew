@@ -11,6 +11,10 @@ public partial class MainPage : ContentPage
 		_vm = new MainPageVM();
 		BindingContext = _vm;
 	}
+    protected override void OnAppearing()
+    {
+        _vm.LoadData();
+    }
 
     private void Btn_Login_Clicked(object sender, EventArgs e)
     {

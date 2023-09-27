@@ -11,6 +11,10 @@ public partial class SignUpPage : ContentPage
 		_vm = new SignUpVM();
 		BindingContext = _vm;
 	}
+    protected override void OnAppearing()
+    {
+		_vm.LoadData();
+    }
 
     private void Ent_SignUp_Clicked(object sender, EventArgs e)
     {
