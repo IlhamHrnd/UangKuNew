@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Model="clr-namespace:UangKu.Model.Menu"
+             x:Class="UangKu.View.Menu.HomePage"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <Model:Home/>
+    </ContentPage.BindingContext>
+    <ScrollView Style="{StaticResource ScrollView}">
+        <StackLayout Style="{StaticResource StackLayout}">
+            <Frame Style="{StaticResource Frame}"
+                   Margin="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30*" />
+                        <ColumnDefinition Width="70*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{Binding Image}"
+                           Grid.Row="0"
+                           Grid.Column="0"/>
+                    <Label Style="{StaticResource Label}"
+                           Grid.Row="0"
+                           Grid.Column="1"
+                           Text="{Binding Name}"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           FontSize="Large"/>
+                </Grid>
+            </Frame>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

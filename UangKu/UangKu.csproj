@@ -76,10 +76,10 @@
 	  <MauiXaml Update="View\MasterPage\MasterAdmin.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\MasterPage\MasterUser.xaml">
+	  <MauiXaml Update="View\Menu\AppStandardReference.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\Menu\AppStandardReference.xaml">
+	  <MauiXaml Update="View\Menu\HomePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

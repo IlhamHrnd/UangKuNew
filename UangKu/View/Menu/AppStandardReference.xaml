@@ -1,12 +1,112 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:Model="clr-namespace:UangKu.Model.Menu"
              x:Class="UangKu.View.Menu.AppStandardReference"
-             Title="AppStandardReference">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <Model:AppStandardReference/>
+    </ContentPage.BindingContext>
+    <ScrollView Style="{StaticResource ScrollView}">
+        <StackLayout Style="{StaticResource StackLayout}">
+            <ActivityIndicator Style="{StaticResource ActivityIndicator}"
+                               IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"/>
+            <CollectionView ItemsSource="{Binding ListASR}"
+                            Margin="0,10,0,0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <toolkit:DockLayout>
+                            <Frame Style="{StaticResource Frame}"
+                                   toolkit:DockLayout.DockPosition="Top">
+                                <Label Style="{StaticResource Label}"
+                                       HorizontalTextAlignment="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Total Records "/>
+                                            <Span Text="{Binding totalRecords}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Frame>
+                            <Frame Style="{StaticResource Frame}"
+                                   toolkit:DockLayout.DockPosition="Bottom">
+                                <Label Style="{StaticResource Label}"
+                                       HorizontalTextAlignment="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Total Pages "/>
+                                            <Span Text="{Binding totalPages}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Frame>
+                            <Button toolkit:DockLayout.DockPosition="Left" Text="Left" />
+                            <Button toolkit:DockLayout.DockPosition="Right" Text="Right" />
+                            <CollectionView ItemsSource="{Binding data}">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame Style="{StaticResource Frame}" WidthRequest="265">
+                                            <StackLayout>
+                                                <Label Style="{StaticResource Label}">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="ID : " />
+                                                            <Span Text="{Binding standardReferenceID}" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                                <Label Style="{StaticResource Label}">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="Name : " />
+                                                            <Span Text="{Binding standardReferenceName}" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                                <Label Style="{StaticResource Label}">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="Length : " />
+                                                            <Span Text="{Binding itemLength}" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                                <Label Style="{StaticResource Label}">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="Note : " />
+                                                            <Span Text="{Binding note}" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                                <HorizontalStackLayout>
+                                                    <CheckBox Style="{StaticResource CheckBox}"
+                                                              IsChecked="{Binding isUsedBySystem}"/>
+                                                    <Label Style="{StaticResource Label}"
+                                                           Text="Is Used By System"
+                                                           VerticalTextAlignment="Center"/>
+                                                </HorizontalStackLayout>
+                                                <HorizontalStackLayout>
+                                                    <CheckBox Style="{StaticResource CheckBox}"
+                                                              IsChecked="{Binding isActive}"/>
+                                                    <Label Style="{StaticResource Label}"
+                                                           Text="Is Active"
+                                                           VerticalTextAlignment="Center"/>
+                                                </HorizontalStackLayout>
+                                            </StackLayout>
+                                        </Frame>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </toolkit:DockLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

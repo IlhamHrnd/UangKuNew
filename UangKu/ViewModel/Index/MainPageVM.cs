@@ -72,10 +72,10 @@ namespace UangKu.ViewModel.Index
                                     App.Current.MainPage = masterAdmin;
                                     break;
 
-                                case "User":
-                                    var masterUser = new View.MasterPage.MasterUser();
-                                    App.Current.MainPage = masterUser;
-                                    break;
+                                //case "User":
+                                //    var masterUser = new View.MasterPage.MasterUser();
+                                //    App.Current.MainPage = masterUser;
+                                //    break;
 
                                 default:
                                     await MsgModel.MsgNotification($"User Access For {App.Session.username} Is {App.Session.accessName} Unknown");

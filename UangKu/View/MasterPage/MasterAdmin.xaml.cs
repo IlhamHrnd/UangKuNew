@@ -2,18 +2,13 @@ using UangKu.ViewModel.MasterPage;
 
 namespace UangKu.View.MasterPage;
 
-public partial class MasterAdmin : FlyoutPage
+public partial class MasterAdmin : Shell
 {
 	private readonly MasterVM _vm;
 	public MasterAdmin()
 	{
 		InitializeComponent();
-		_vm = new MasterVM(Navigation);
+		_vm = new MasterVM();
 		BindingContext = _vm;
 	}
-
-    private void Btn_AppStandardReference_Clicked(object sender, EventArgs e)
-    {
-		_vm.BtnAppStandard_Reference();
-    }
 }
