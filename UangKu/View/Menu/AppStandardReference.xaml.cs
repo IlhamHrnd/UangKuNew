@@ -1,3 +1,5 @@
+using Mopups.Interfaces;
+using Mopups.Services;
 using UangKu.ViewModel.Menu;
 
 namespace UangKu.View.Menu;
@@ -26,5 +28,10 @@ public partial class AppStandardReference : ContentPage
     private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
     {
         _vm.PreviousPage_Click(PageSize);
+    }
+
+    private async void Coll_AppStandardReference_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        await _vm.AppStandardReferenceItem_PopUp(e);
     }
 }

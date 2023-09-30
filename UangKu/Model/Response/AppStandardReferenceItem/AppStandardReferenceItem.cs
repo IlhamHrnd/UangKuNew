@@ -2,9 +2,9 @@
 
 namespace UangKu.Model.Response.AppStandardReferenceItem
 {
-    public class Sex
+    public class AppStandardReferenceItem
     {
-        public class SexRoot
+        public class AsriRoot
         {
             [JsonProperty("standardReferenceID")]
             public string standardReferenceID { get; set; }

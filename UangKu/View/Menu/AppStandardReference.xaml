@@ -33,14 +33,15 @@
                     <DataTemplate>
                         <CollectionView ItemsSource="{Binding data}"
                                         SelectionMode="Single"
+                                        SelectionChanged="Coll_AppStandardReference_SelectionChanged"
                                         x:Name="Coll_AppStandardReference">
                             <CollectionView.ItemsLayout>
                                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
                             </CollectionView.ItemsLayout>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <Frame Style="{StaticResource Frame}">
-                                        <Grid>
+                                    <Border Style="{StaticResource Border}">
+                                        <Grid Margin="10">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
@@ -98,7 +99,7 @@
                                                        VerticalTextAlignment="Center"/>
                                             </HorizontalStackLayout>
                                         </Grid>
-                                    </Frame>
+                                    </Border>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>

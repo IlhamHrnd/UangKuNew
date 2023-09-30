@@ -3,7 +3,9 @@
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:mopup="clr-namespace:Mopups.Pages;assembly=Mopups"
+    xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups">
 
     <Style TargetType="ActivityIndicator" x:Key="ActivityIndicator">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
@@ -431,6 +433,10 @@
     <Style TargetType="CarouselView" x:Key="CarouselView">
         <Setter Property="HorizontalScrollBarVisibility" Value="Never"/>
         <Setter Property="VerticalScrollBarVisibility" Value="Never"/>
+    </Style>
+
+    <Style TargetType="mopup:PopupPage" x:Key="PopupPage">
+        <Setter Property="CloseWhenBackgroundIsClicked" Value="True"/>
     </Style>
 
 </ResourceDictionary>

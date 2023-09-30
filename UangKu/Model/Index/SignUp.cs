@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using UangKu.Model.Base;
-using static UangKu.Model.Response.AppStandardReferenceItem.Sex;
+using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 
 namespace UangKu.Model.Index
 {
@@ -15,8 +15,8 @@ namespace UangKu.Model.Index
         public string Title { get => title; set => SetProperty(ref title, value); }
         private bool isbusy = false;
         public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
-        private SexRoot selectedsex { get; set; }
-        public SexRoot SelectedSex
+        private AsriRoot selectedsex { get; set; }
+        public AsriRoot SelectedSex
         {
             get { return selectedsex; }
             set
@@ -28,15 +28,15 @@ namespace UangKu.Model.Index
                 }
             }
         }
-        private IList<SexRoot> listsex { get; set; }
+        private IList<AsriRoot> listsex { get; set; }
 
-        public IList<SexRoot> ListSex
+        public IList<AsriRoot> ListSex
         {
             get
             {
                 if (listsex == null)
                 {
-                    listsex = new ObservableCollection<SexRoot>();
+                    listsex = new ObservableCollection<AsriRoot>();
                 }
                 return listsex;
             }

@@ -1,4 +1,5 @@
-﻿using UangKu.Model.Base;
+﻿using Mopups.Services;
+using UangKu.Model.Base;
 using UangKu.Model.Menu;
 
 namespace UangKu.ViewModel.Menu
@@ -104,12 +105,19 @@ namespace UangKu.ViewModel.Menu
                 IsBusy = false;
             }
         }
-        public async void CollAppStandard_Changed(SelectionChangedEventArgs args)
+        public async Task AppStandardReferenceItem_PopUp(SelectionChangedEventArgs args)
         {
-            var current = args.CurrentSelection;
-            if (current != null)
+            var standardID = args.CurrentSelection[0] as Model.Response.AppStandardReference.AppStandardReference.Datum;
+
+            if (standardID != null)
             {
-                await MsgModel.MsgNotification($"{current}");
+                var id = standardID.standardReferenceID;
+                var asri = new View.Menu.AppStandardReferenceItem(id);
+                await MopupService.Instance.PushAsync(asri);
+            }
+            else
+            {
+                await MsgModel.MsgNotification($"You Haven't Selected An Item Yet");
             }
         }
     }

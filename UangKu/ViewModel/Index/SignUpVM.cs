@@ -2,7 +2,7 @@
 using UangKu.Model.Index;
 using UangKu.ViewModel.RestAPI.AppStandardReferenceItem;
 using UangKu.ViewModel.RestAPI.User;
-using static UangKu.Model.Response.AppStandardReferenceItem.Sex;
+using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 
 namespace UangKu.ViewModel.Index
 {
@@ -24,7 +24,7 @@ namespace UangKu.ViewModel.Index
                 {
                     await MsgModel.MsgNotification("You're Offline");
                 }
-                var sex = await AppStandardReferenceItem.GetAsriAsync<SexRoot>("Sex", true, true);
+                var sex = await AppStandardReferenceItem.GetAsriAsync<AsriRoot>("Sex", true, true);
                 if (sex.Count > 0)
                 {
                     ListSex.Clear();
