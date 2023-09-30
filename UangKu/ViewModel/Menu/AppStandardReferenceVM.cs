@@ -10,7 +10,7 @@ namespace UangKu.ViewModel.Menu
         {
             
         }
-        public async void LoadData()
+        public async void LoadData(int pageNumber, int pageSize)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -20,11 +20,12 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification("You're Offline");
                 }
-                var asr = await RestAPI.AppStandardReferenceItem.AppStandardReference.GetAllASR(1, 25);
+                var asr = await RestAPI.AppStandardReferenceItem.AppStandardReference.GetAllASR(pageNumber, pageSize);
                 if (asr.data.Count > 0)
                 {
                     ListASR.Clear();
                     ListASR.Add(asr);
+                    Page = (int)asr.pageNumber;
                 }
             }
             catch (Exception e)
@@ -34,6 +35,81 @@ namespace UangKu.ViewModel.Menu
             finally
             {
                 IsBusy = false;
+            }
+        }
+        public async void NextPage_Clicked(int pageSize)
+        {
+            var maxPage = ListASR[0].totalPages;
+            bool isConnect = network.IsConnected;
+            try
+            {
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification("You're Offline");
+                }
+                if (Page >= maxPage)
+                {
+                    await MsgModel.MsgNotification("This Is The Latest Page");
+                }
+                else
+                {
+                    var asr = await RestAPI.AppStandardReferenceItem.AppStandardReference.GetAllASR(Page + 1, pageSize);
+                    if ((bool)asr.succeeded)
+                    {
+                        ListASR.Clear();
+                        ListASR.Add(asr);
+                        Page = (int)asr.pageNumber;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        public async void PreviousPage_Click(int pageSize)
+        {
+            bool isConnect = network.IsConnected;
+            try
+            {
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification("You're Offline");
+                }
+                if (Page <= 1)
+                {
+                    await MsgModel.MsgNotification("This Is The First Page");
+                }
+                else
+                {
+                    var asr = await RestAPI.AppStandardReferenceItem.AppStandardReference.GetAllASR(Page - 1, pageSize);
+                    if ((bool)asr.succeeded)
+                    {
+                        ListASR.Clear();
+                        ListASR.Add(asr);
+                        Page = (int)asr.pageNumber;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        public async void CollAppStandard_Changed(SelectionChangedEventArgs args)
+        {
+            var current = args.CurrentSelection;
+            if (current != null)
+            {
+                await MsgModel.MsgNotification($"{current}");
             }
         }
     }
