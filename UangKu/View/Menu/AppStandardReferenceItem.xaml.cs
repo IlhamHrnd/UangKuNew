@@ -9,4 +9,8 @@ public partial class AppStandardReferenceItem
 		_vm = new ViewModel.Menu.AppStandardReferenceItemVM(id);
 		BindingContext = _vm;
 	}
+    protected override void OnAppearing()
+    {
+        _vm.LoadData();
+    }
 }

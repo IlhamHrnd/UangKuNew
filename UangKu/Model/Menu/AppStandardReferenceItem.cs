@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using UangKu.Model.Base;
-using static UangKu.Model.Response.AppStandardReference.AppStandardReference;
+using static UangKu.Model.Response.AppStandardReference.AppStandardReferenceID;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 
 namespace UangKu.Model.Menu
@@ -29,15 +29,15 @@ namespace UangKu.Model.Menu
             }
             set { listasri = value; }
         }
-        private IList<AppStandardReferenceRoot> listasr { get; set; }
+        private IList<AppStandardReferenceIDRoot> listasr { get; set; }
 
-        public IList<AppStandardReferenceRoot> ListASR
+        public IList<AppStandardReferenceIDRoot> ListASR
         {
             get
             {
                 if (listasr == null)
                 {
-                    listasr = new ObservableCollection<AppStandardReferenceRoot>();
+                    listasr = new ObservableCollection<AppStandardReferenceIDRoot>();
                 }
                 return listasr;
             }
