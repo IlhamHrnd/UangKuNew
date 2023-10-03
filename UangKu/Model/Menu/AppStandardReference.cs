@@ -12,6 +12,8 @@ namespace UangKu.Model.Menu
         }
         private string title = "App Standard Reference";
         public string Title { get => title; set => SetProperty(ref title, value); }
+        private string id = string.Empty;
+        public string ID { get => id; set => SetProperty(ref id, value); }
         private bool isbusy = false;
         public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private int page = 0;

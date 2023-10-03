@@ -1,5 +1,5 @@
-using Mopups.Interfaces;
-using Mopups.Services;
+using CommunityToolkit.Maui.Views;
+using UangKu.Model.Base;
 using UangKu.ViewModel.Menu;
 
 namespace UangKu.View.Menu;
@@ -33,5 +33,17 @@ public partial class AppStandardReference : ContentPage
     private async void Coll_AppStandardReference_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         await _vm.AppStandardReferenceItem_PopUp(e);
+
+        if (!string.IsNullOrEmpty(_vm.ID))
+        {
+            var id = _vm.ID;
+            var asri = new View.Menu.AppStandardReferenceItem(id);
+
+            await this.ShowPopupAsync(asri);
+        }
+        else
+        {
+            await MsgModel.MsgNotification($"You Haven't Selected An Item Yet");
+        }
     }
 }

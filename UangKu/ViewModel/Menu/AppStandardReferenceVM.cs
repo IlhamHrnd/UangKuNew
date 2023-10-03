@@ -1,5 +1,4 @@
-﻿using Mopups.Services;
-using UangKu.Model.Base;
+﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
 
 namespace UangKu.ViewModel.Menu
@@ -111,9 +110,7 @@ namespace UangKu.ViewModel.Menu
 
             if (standardID != null)
             {
-                var id = standardID.standardReferenceID;
-                var asri = new View.Menu.AppStandardReferenceItem(id);
-                await MopupService.Instance.PushAsync(asri);
+                ID = standardID.standardReferenceID;
             }
             else
             {

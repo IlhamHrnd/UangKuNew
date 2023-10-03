@@ -1,16 +1,15 @@
+using CommunityToolkit.Maui.Views;
+using UangKu.ViewModel.Menu;
+
 namespace UangKu.View.Menu;
 
-public partial class AppStandardReferenceItem
+public partial class AppStandardReferenceItem : Popup
 {
-	private readonly ViewModel.Menu.AppStandardReferenceItemVM _vm;
+	private readonly AppStandardReferenceItemVM _vm;
 	public AppStandardReferenceItem(string id)
 	{
 		InitializeComponent();
-		_vm = new ViewModel.Menu.AppStandardReferenceItemVM(id);
+		_vm = new AppStandardReferenceItemVM(id);
 		BindingContext = _vm;
 	}
-    protected override void OnAppearing()
-    {
-        _vm.LoadData();
-    }
 }

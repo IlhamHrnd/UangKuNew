@@ -10,6 +10,9 @@ namespace UangKu.ViewModel.Menu
         public AppStandardReferenceItemVM(string id)
         {
             Id = id;
+            Title = $"App Standard Reference {id}";
+
+            LoadData();
         }
         public async void LoadData()
         {

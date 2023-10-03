@@ -59,7 +59,7 @@ namespace UangKu.ViewModel.Index
                         {
                             await MsgModel.MsgNotification($"Username {username.Text} Not Found");
                         }
-                        else if (App.Session.statusName != ParameterModel.Status)
+                        else if (App.Session.statusName != ParameterModel.Login.Status)
                         {
                             await MsgModel.MsgNotification($"Username {App.Session.username} Not Active, Please Contact Administrator");
                         }

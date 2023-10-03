@@ -1,50 +1,98 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<mopup:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                 xmlns:Model="clr-namespace:UangKu.Model.Menu"
-                 xmlns:mopup="clr-namespace:Mopups.Pages;assembly=Mopups"
-                 xmlns:mopupanim="clr-namespace:Mopups.Animations;assembly=Mopups"
-                 x:Class="UangKu.View.Menu.AppStandardReferenceItem"
-                 Title="{Binding Title}">
-    <mopup:PopupPage.BindingContext>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:Model="clr-namespace:UangKu.Model.Menu"
+               x:Class="UangKu.View.Menu.AppStandardReferenceItem">
+    <toolkit:Popup.BindingContext>
         <Model:AppStandardReferenceItem/>
-    </mopup:PopupPage.BindingContext>
-    <mopup:PopupPage.Animation>
-        <mopupanim:ScaleAnimation
-            DurationIn="500"
-            EasingIn="Fade"
-            PositionIn="Bottom"
-            PositionOut="Center"
-            ScaleIn="1"
-            ScaleOut="1" />
-    </mopup:PopupPage.Animation>
+    </toolkit:Popup.BindingContext>
     <ScrollView Style="{StaticResource ScrollView}">
         <Border Style="{StaticResource Border}"
-                WidthRequest="350" HeightRequest="450"
-                HorizontalOptions="Center">
+                HorizontalOptions="Center"
+                WidthRequest="360"
+                HeightRequest="700">
             <Border.StrokeShape>
-                <RoundRectangle CornerRadius="40,0,0,40"/>
+                <RoundRectangle CornerRadius="50,0,0,50"/>
             </Border.StrokeShape>
             <StackLayout Style="{StaticResource StackLayout2}">
-                <Entry
-                    x:Name="UsernameEntry"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    Placeholder="Username" />
-                <Entry
-                    x:Name="PasswordEntry"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    IsPassword="True"
-                    Placeholder="Password" />
-                <Button
-                    x:Name="LoginButton"
-                    Margin="10,5"
-                    HorizontalOptions="Fill"
-                    VerticalOptions="EndAndExpand"
-                    Text="Login">
-                </Button>
+                <ActivityIndicator Style="{StaticResource ActivityIndicator}"
+                                   IsRunning="{Binding IsBusy}"
+                                   IsVisible="{Binding IsBusy}"/>
+                <Label Style="{StaticResource Label}"
+                       Text="{Binding Title}"
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Center" />
+                <CollectionView ItemsSource="{Binding ListASR}">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Style="{StaticResource Frame}">
+                                <Grid Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50*" />
+                                        <ColumnDefinition Width="50*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0"
+                                           Grid.Row="0"
+                                           Grid.ColumnSpan="2"
+                                           Style="{StaticResource Label}"
+                                           HorizontalTextAlignment="Center"
+                                           Text="{Binding standardReferenceID}"/>
+                                    <Label Grid.Column="0"
+                                           Grid.Row="1"
+                                           Style="{StaticResource Label}"
+                                           Text="{Binding standardReferenceName}"/>
+                                    <Label Grid.Column="1"
+                                           Grid.Row="1"
+                                           Style="{StaticResource Label}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Item Length : "/>
+                                                <Span Text="{Binding itemLength}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Grid.Column="0"
+                                           Grid.Row="2"
+                                           Style="{StaticResource Label}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Note : "/>
+                                                <Span Text="{Binding note}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <HorizontalStackLayout Grid.Column="0"
+                                                           Grid.Row="3">
+                                        <CheckBox Style="{StaticResource CheckBox}"
+                                                  IsChecked="{Binding isUsedBySystem}"/>
+                                        <Label Style="{StaticResource Label}"
+                                               Text="Is Used By System"
+                                               VerticalTextAlignment="Center"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Grid.Column="1"
+                                                           Grid.Row="3">
+                                        <CheckBox Style="{StaticResource CheckBox}"
+                                                  IsChecked="{Binding isActive}"/>
+                                        <Label Style="{StaticResource Label}"
+                                               Text="Is Active"
+                                               VerticalTextAlignment="Center"/>
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </StackLayout>
         </Border>
     </ScrollView>
-</mopup:PopupPage>
+</toolkit:Popup>
