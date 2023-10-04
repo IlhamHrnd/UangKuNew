@@ -7,21 +7,8 @@ namespace UangKu.ViewModel.Menu
     {
         public HomeVM()
         {
-            SessionCheck();
             LoadData();
         }
-        private async void SessionCheck()
-        {
-            if (App.Session == null)
-            {
-                await MsgModel.MsgNotification("You're Session Is Expired");
-
-                var shell = new AppShell();
-
-                App.Current.MainPage = shell;
-            }
-        }
-
         private void LoadData()
         {
             string greeting;

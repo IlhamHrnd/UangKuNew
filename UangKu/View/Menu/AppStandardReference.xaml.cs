@@ -15,8 +15,10 @@ public partial class AppStandardReference : ContentPage
 		_vm = new AppStandardReferenceVM();
 		BindingContext = _vm;
 	}
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
+        await SessionModel.SessionCheck();
+
         _vm.LoadData(FirstPage, PageSize);
     }
 
