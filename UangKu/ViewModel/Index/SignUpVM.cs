@@ -22,7 +22,7 @@ namespace UangKu.ViewModel.Index
             {
                 if (!isConnect)
                 {
-                    await MsgModel.MsgNotification("You're Offline");
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
                 var sex = await AppStandardReferenceItem.GetAsriAsync<AsriRoot>("Sex", true, true);
                 if (sex.Count > 0)

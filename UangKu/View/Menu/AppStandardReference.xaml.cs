@@ -8,7 +8,6 @@ public partial class AppStandardReference : ContentPage
 {
 	private readonly AppStandardReferenceVM _vm;
 	private int FirstPage = 1;
-	private int PageSize = 25;
 	public AppStandardReference()
 	{
 		InitializeComponent();
@@ -19,17 +18,17 @@ public partial class AppStandardReference : ContentPage
     {
         await SessionModel.SessionCheck();
 
-        _vm.LoadData(FirstPage, PageSize);
+        _vm.LoadData(FirstPage, ParameterModel.ItemDefaultValue.Maxresult);
     }
 
     private void Btn_NextPage_Clicked(object sender, EventArgs e)
     {
-		_vm.NextPage_Clicked(PageSize);
+		_vm.NextPage_Clicked(ParameterModel.ItemDefaultValue.Maxresult);
     }
 
     private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
     {
-        _vm.PreviousPage_Click(PageSize);
+        _vm.PreviousPage_Click(ParameterModel.ItemDefaultValue.Maxresult);
     }
 
     private async void Coll_AppStandardReference_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -18,7 +18,7 @@ namespace UangKu.ViewModel.Menu
             {
                 if (!isConnect)
                 {
-                    await MsgModel.MsgNotification("You're Offline");
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
                 var asr = await RestAPI.AppStandardReferenceItem.AppStandardReference.GetAllASR(pageNumber, pageSize);
                 if (asr.data.Count > 0)
@@ -45,7 +45,7 @@ namespace UangKu.ViewModel.Menu
             {
                 if (!isConnect)
                 {
-                    await MsgModel.MsgNotification("You're Offline");
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
                 if (Page >= maxPage)
                 {
@@ -78,7 +78,7 @@ namespace UangKu.ViewModel.Menu
             {
                 if (!isConnect)
                 {
-                    await MsgModel.MsgNotification("You're Offline");
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
                 if (Page <= 1)
                 {

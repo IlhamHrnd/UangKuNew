@@ -6,7 +6,7 @@ namespace UangKu.ViewModel.Menu
     public class AppStandardReferenceItemVM : Model.Menu.AppStandardReferenceItem
     {
         private NetworkModel network = NetworkModel.Instance;
-        private string Id { get; }
+        private string Id { get; set; }
         public AppStandardReferenceItemVM()
         {
             Id = ParameterModel.AppStandardReference.ItemID;
@@ -22,7 +22,7 @@ namespace UangKu.ViewModel.Menu
             {
                 if (!isConnect)
                 {
-                    await MsgModel.MsgNotification("You're Offline");
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
                 var asrid = await RestAPI.AppStandardReferenceItem.GetAppStandardReferenceID.GetASRId(Id);
                 if (asrid != null)

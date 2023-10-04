@@ -20,7 +20,7 @@ namespace UangKu.ViewModel.Index
             {
                 if (!isConnect)
                 {
-                    await MsgModel.MsgNotification("You're Offline");
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
                 if (string.IsNullOrEmpty(username.Text) || string.IsNullOrEmpty(email.Text) || string.IsNullOrEmpty(password.Text) || string.IsNullOrEmpty(confirmpass.Text))
                 {
