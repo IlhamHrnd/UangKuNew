@@ -33,11 +33,11 @@ public partial class AppStandardReference : ContentPage
     private async void Coll_AppStandardReference_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         await _vm.AppStandardReferenceItem_PopUp(e);
+        var itemID = ParameterModel.AppStandardReference.ItemID;
 
-        if (!string.IsNullOrEmpty(_vm.ID))
+        if (!string.IsNullOrEmpty(itemID))
         {
-            var id = _vm.ID;
-            var asri = new View.Menu.AppStandardReferenceItem(id);
+            var asri = new View.Menu.AppStandardReferenceItem();
 
             await this.ShowPopupAsync(asri);
         }

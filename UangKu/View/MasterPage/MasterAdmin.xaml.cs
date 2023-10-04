@@ -11,4 +11,9 @@ public partial class MasterAdmin : Shell
 		_vm = new MasterVM();
 		BindingContext = _vm;
 	}
+
+    private void Btn_LogOut_Clicked(object sender, EventArgs e)
+    {
+		_vm.BtnLogOut_Clicked();
+    }
 }

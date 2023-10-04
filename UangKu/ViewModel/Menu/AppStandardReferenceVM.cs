@@ -110,7 +110,7 @@ namespace UangKu.ViewModel.Menu
 
             if (standardID != null)
             {
-                ID = standardID.standardReferenceID;
+                ParameterModel.AppStandardReference.ItemID = standardID.standardReferenceID;
             }
             else
             {

@@ -6,10 +6,10 @@ namespace UangKu.View.Menu;
 public partial class AppStandardReferenceItem : Popup
 {
 	private readonly AppStandardReferenceItemVM _vm;
-	public AppStandardReferenceItem(string id)
+	public AppStandardReferenceItem()
 	{
 		InitializeComponent();
-		_vm = new AppStandardReferenceItemVM(id);
+		_vm = new AppStandardReferenceItemVM();
 		BindingContext = _vm;
 	}
 }

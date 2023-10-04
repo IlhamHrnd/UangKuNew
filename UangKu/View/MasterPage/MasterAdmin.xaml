@@ -4,10 +4,30 @@
        xmlns:Menu="clr-namespace:UangKu.View.Menu"
        xmlns:Model="clr-namespace:UangKu.Model.Master"
        x:Class="UangKu.View.MasterPage.MasterAdmin"
+       xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
        Style="{StaticResource Shell}">
     <Shell.BindingContext>
         <Model:Master/>
     </Shell.BindingContext>
+    <Shell.FlyoutHeader>
+        <StackLayout HorizontalOptions="CenterAndExpand"
+                     VerticalOptions="CenterAndExpand"
+                     HeightRequest="100">
+            <Image Source="dotnet_bot.svg"
+                   HeightRequest="50"
+                   WidthRequest="50"/>
+            <Label Style="{StaticResource Label}"
+                   Text="{Binding Title}"
+                   FontSize="Header"
+                   VerticalTextAlignment="Center"/>
+        </StackLayout>
+    </Shell.FlyoutHeader>
+    <Shell.FlyoutFooter>
+        <Button Style="{StaticResource Button}"
+                Text="Log Out"
+                x:Name="Btn_LogOut"
+                Clicked="Btn_LogOut_Clicked"/>
+    </Shell.FlyoutFooter>
     <FlyoutItem Title="Home Page"
                 Icon="dotnet_bot.svg">
         <ShellContent ContentTemplate="{DataTemplate Menu:HomePage}"

@@ -7,10 +7,10 @@ namespace UangKu.ViewModel.Menu
     {
         private NetworkModel network = NetworkModel.Instance;
         private string Id { get; }
-        public AppStandardReferenceItemVM(string id)
+        public AppStandardReferenceItemVM()
         {
-            Id = id;
-            Title = $"App Standard Reference {id}";
+            Id = ParameterModel.AppStandardReference.ItemID;
+            Title = $"App Standard Reference {Id}";
 
             LoadData();
         }
@@ -29,7 +29,6 @@ namespace UangKu.ViewModel.Menu
                 {
                     ListASR.Clear();
                     ListASR.Add(asrid);
-                    Title = $"Item For {ListASR[0].standardReferenceID}";
                 }
                 var asri = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriRoot>(Id, true, true);
                 if (asri.Count > 0)
