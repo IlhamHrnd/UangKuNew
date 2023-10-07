@@ -13,6 +13,11 @@
             private static string itemid = string.Empty;
             public static string ItemID { get => itemid; set => itemid = value; }
         }
+        public class AppStandardReferenceItem
+        {
+            private static string itemid = string.Empty;
+            public static string ItemID { get => itemid; set => itemid = value; }
+        }
 
         public class ItemDefaultValue
         {
@@ -22,6 +27,8 @@
             public static string Online { get =>  online; set => online = value; }
             private static int maxresult = 25;
             public static int Maxresult { get => maxresult; set => maxresult = value; }
+            private static int timeout = 10000;
+            public static int Timeout { get => timeout; set => timeout = value; }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = 10000
+                Timeout = ParameterModel.ItemDefaultValue.Timeout
             };
             var response = await client.ExecuteGetAsync(request);
 

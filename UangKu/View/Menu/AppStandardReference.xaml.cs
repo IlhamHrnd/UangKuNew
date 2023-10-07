@@ -11,7 +11,7 @@ public partial class AppStandardReference : ContentPage
 	public AppStandardReference()
 	{
 		InitializeComponent();
-		_vm = new AppStandardReferenceVM();
+		_vm = new AppStandardReferenceVM(Navigation);
 		BindingContext = _vm;
 	}
     protected override async void OnAppearing()
@@ -34,17 +34,5 @@ public partial class AppStandardReference : ContentPage
     private async void Coll_AppStandardReference_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         await _vm.AppStandardReferenceItem_PopUp(e);
-        var itemID = ParameterModel.AppStandardReference.ItemID;
-
-        if (!string.IsNullOrEmpty(itemID))
-        {
-            var asri = new View.Menu.AppStandardReferenceItem();
-
-            await this.ShowPopupAsync(asri);
-        }
-        else
-        {
-            await MsgModel.MsgNotification($"You Haven't Selected An Item Yet");
-        }
     }
 }

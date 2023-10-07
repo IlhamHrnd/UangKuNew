@@ -25,6 +25,7 @@
 
     public static class SessionModel
     {
+        //Pengecekan Session Saat Sudah Login
         public static async Task<bool> SessionCheck()
         {
             if (App.Session == null)

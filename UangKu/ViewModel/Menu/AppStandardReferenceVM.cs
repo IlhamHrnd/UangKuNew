@@ -6,9 +6,10 @@ namespace UangKu.ViewModel.Menu
     public class AppStandardReferenceVM : AppStandardReference
     {
         private NetworkModel network = NetworkModel.Instance;
-        public AppStandardReferenceVM()
+        private readonly INavigation _navigation;
+        public AppStandardReferenceVM(INavigation navigation)
         {
-            
+            _navigation = navigation;
         }
         public async void LoadData(int pageNumber, int pageSize)
         {
@@ -107,10 +108,12 @@ namespace UangKu.ViewModel.Menu
         public async Task AppStandardReferenceItem_PopUp(SelectionChangedEventArgs args)
         {
             var standardID = args.CurrentSelection[0] as Model.Response.AppStandardReference.AppStandardReference.Datum;
+            var itemID = standardID?.standardReferenceID;
+            ParameterModel.AppStandardReference.ItemID = itemID;
 
-            if (standardID != null)
+            if (itemID != null)
             {
-                ParameterModel.AppStandardReference.ItemID = standardID.standardReferenceID;
+                await _navigation.PushAsync(new View.Menu.AppStandardReferenceItem());
             }
             else
             {

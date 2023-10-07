@@ -1,9 +1,8 @@
-using CommunityToolkit.Maui.Views;
+using UangKu.Model.Base;
 using UangKu.ViewModel.Menu;
 
 namespace UangKu.View.Menu;
-
-public partial class AppStandardReferenceItem : Popup
+public partial class AppStandardReferenceItem : ContentPage
 {
 	private readonly AppStandardReferenceItemVM _vm;
 	public AppStandardReferenceItem()
@@ -12,4 +11,9 @@ public partial class AppStandardReferenceItem : Popup
 		_vm = new AppStandardReferenceItemVM();
 		BindingContext = _vm;
 	}
+
+    private async void Btn_UpdateAppStandard_Clicked(object sender, EventArgs e)
+    {
+		await _vm.BtnUpdateAppStandard_Click();
+    }
 }

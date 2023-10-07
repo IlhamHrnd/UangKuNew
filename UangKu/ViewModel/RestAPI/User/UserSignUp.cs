@@ -19,7 +19,7 @@ namespace UangKu.ViewModel.RestAPI.User
             var request = new RestRequest
             {
                 Method = Method.Post,
-                Timeout = 10000
+                Timeout = ParameterModel.ItemDefaultValue.Timeout
             };
             var body = new SignUpBody
             {
