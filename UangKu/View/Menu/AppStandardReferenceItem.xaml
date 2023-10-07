@@ -87,64 +87,7 @@
                    FontSize="Header"
                    Text="Item"
                    HorizontalTextAlignment="Center"/>
-            <CarouselView ItemsSource="{Binding ListASRI}">
-                <CarouselView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10"/>
-                </CarouselView.ItemsLayout>
-                <CarouselView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Style="{StaticResource Frame}"
-           Margin="10">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50*" />
-                                    <ColumnDefinition Width="50*" />
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0"
-                   Grid.Row="0"
-                   Grid.ColumnSpan="2"
-                   Style="{StaticResource Label}"
-                   HorizontalTextAlignment="Center"
-                   Text="{Binding itemName}"/>
-                                <HorizontalStackLayout Grid.Column="0"
-                                   Grid.Row="1">
-                                    <Label Style="{StaticResource Label}"
-                       VerticalTextAlignment="Center"
-                       Text="Note : "/>
-                                    <Entry Style="{StaticResource Entry}"
-                       Text="{Binding note}"
-                       x:Name="Ent_ASRINote"/>
-                                </HorizontalStackLayout>
-                                <HorizontalStackLayout Grid.Column="0"
-                                   Grid.Row="2">
-                                    <CheckBox Style="{StaticResource CheckBox}"
-                          IsChecked="{Binding isUsedBySystem}"
-                          x:Name="CB_ASRIIsUsed"/>
-                                    <Label Style="{StaticResource Label}"
-                       Text="Is Used"
-                       VerticalTextAlignment="Center"/>
-                                </HorizontalStackLayout>
-                                <HorizontalStackLayout Grid.Column="1"
-                                   Grid.Row="2">
-                                    <CheckBox Style="{StaticResource CheckBox}"
-                          IsChecked="{Binding isActive}"
-                          x:Name="CB_ASRIIsActive"/>
-                                    <Label Style="{StaticResource Label}"
-                       Text="Is Active"
-                       VerticalTextAlignment="Center"/>
-                                </HorizontalStackLayout>
-                            </Grid>
-                        </Frame>
-                    </DataTemplate>
-                </CarouselView.ItemTemplate>
-            </CarouselView>
-            <!--<CollectionView ItemsSource="{Binding ListASRI}">
+            <CollectionView ItemsSource="{Binding ListASRI}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
                 </CollectionView.ItemsLayout>
@@ -200,7 +143,7 @@
                         </Frame>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-            </CollectionView>-->
+            </CollectionView>
             <Button Style="{StaticResource Button}"
                     WidthRequest="150"
                     Text="Update"
