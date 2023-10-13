@@ -63,11 +63,36 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                //Belum Dapat Ambil Data Control(Entry & CheckBox) Dari CollectionView
-                var updateASR = await UpdateAppStandardReference.PatchASR(referenceID, 15, true, true, userID, "TESSSSSSSSS");
-                if (updateASR != null)
+                for (int i = 0; i < ListASR.Count; i++)
                 {
-                    await MsgModel.MsgNotification(updateASR);
+                    var item = ListASR[i];
+                    var reference = item.standardReferenceID;
+                    var length = item.itemLength.HasValue ? (int)item.itemLength : 0; ;
+                    var active = item.isActive ?? false;
+                    var use = item.isUsedBySystem ?? false;
+                    var note = string.IsNullOrEmpty(item.note) ? "-" : item.note;
+
+                    var updateASR = await UpdateAppStandardReference.PatchASR(referenceID, length, active, use, userID, note);
+                    if (updateASR != null)
+                    {
+                        await MsgModel.MsgNotification(updateASR);
+                    }
+                }
+                for (int i = 0; i < ListASRI.Count; i++)
+                {
+                    var item = ListASRI[i];
+                    var reference = item.standardReferenceID;
+                    var itemid = item.itemID;
+                    var itemname = item.itemName;
+                    var note = string.IsNullOrEmpty(item.note) ? "-" : item.note;
+                    var active = item.isActive ?? false;
+                    var use = item.isUsedBySystem ?? false;
+                    
+                    var updateASRI = await UpdateAppStandardReferenceItem.PatchASRI(referenceID, itemid, itemname, note, active, use, userID);
+                    if (updateASRI != null )
+                    {
+                        await MsgModel.MsgNotification(updateASRI);
+                    }
                 }
             }
             catch (Exception e)
@@ -76,6 +101,7 @@ namespace UangKu.ViewModel.Menu
             }
             finally
             {
+                LoadData();
                 IsBusy = false;
             }
         }

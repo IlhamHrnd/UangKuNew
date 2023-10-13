@@ -12,7 +12,6 @@
             <ActivityIndicator Style="{StaticResource ActivityIndicator}"
                                IsRunning="{Binding IsBusy}"
                                IsVisible="{Binding IsBusy}"/>
-            <Entry x:Name="ESSS"/>
             <Frame Style="{StaticResource Frame}"
                    Margin="10">
                 <CollectionView ItemsSource="{Binding ListASR}"

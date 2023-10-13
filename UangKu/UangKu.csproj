@@ -49,6 +49,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\add.svg" />
 	  <None Remove="Resources\Images\afternoon.svg" />
 	  <None Remove="Resources\Images\evening.svg" />
 	  <None Remove="Resources\Images\main_page.svg" />
