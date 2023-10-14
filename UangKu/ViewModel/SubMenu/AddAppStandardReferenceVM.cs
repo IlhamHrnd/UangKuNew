@@ -23,10 +23,10 @@ namespace UangKu.ViewModel.SubMenu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                var asrid = await GetAppStandardReferenceID.GetASR(referenceID.Text);
-                if (asrid != null)
+                var asr = await GetAppStandardReferenceID.GetASRAsync(referenceID.Text);
+                if (asr != null)
                 {
-                    ListASR.Add(asrid);
+                    ListASR.Add(asr);
                 }
                 switch (ListASR.Count)
                 {

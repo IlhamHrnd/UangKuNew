@@ -9,7 +9,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
     {
         private const string AppStandardReferenceIDEndPoint = "https://uangkuapi.azurewebsites.net/AppStandardReference/GetReferenceID?ReferenceID={0}";
 
-        public static async Task<AppStandardReferenceIDRoot> GetASR(string standardid)
+        public static async Task<AppStandardReferenceIDRoot> GetASRAsync(string standardid)
         {
             AppStandardReferenceIDRoot root = new AppStandardReferenceIDRoot();
             string url = string.Format(AppStandardReferenceIDEndPoint, standardid);
