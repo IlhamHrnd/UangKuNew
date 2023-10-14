@@ -433,5 +433,6 @@
     <Style TargetType="CarouselView" x:Key="CarouselView">
         <Setter Property="HorizontalScrollBarVisibility" Value="Never"/>
         <Setter Property="VerticalScrollBarVisibility" Value="Never"/>
+        <Setter Property="EmptyView" Value="No Data To Display On This Item"/>
     </Style>
 </ResourceDictionary>

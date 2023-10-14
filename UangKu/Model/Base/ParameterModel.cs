@@ -29,6 +29,10 @@
             public static int Maxresult { get => maxresult; set => maxresult = value; }
             private static int timeout = 10000;
             public static int Timeout { get => timeout; set => timeout = value; }
+            private static string date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            public static string Date { get => date; set => date = value; }
+            private static DateTime datetime = DateTime.Now;
+            public static DateTime DateTime { get => datetime; set => datetime = value; }
         }
     }
 }

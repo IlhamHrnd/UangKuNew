@@ -11,8 +11,7 @@ namespace UangKu.ViewModel.RestAPI.User
 
         public static async Task<string> PostUserSignUp(string username, string password, string sexname, string email)
         {
-            DateTime dateTime = DateTime.Now;
-            string date = $"{dateTime: yyyy-MM-dd HH:mm:ss}";
+            var dateTime = ParameterModel.ItemDefaultValue.DateTime;
 
             string url = string.Format(UserSignUpEndPoint, password, email);
             var client = new RestClient(url);
