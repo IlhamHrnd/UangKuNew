@@ -26,6 +26,10 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
                     var content = response.Content;
                     var patch = JsonConvert.DeserializeObject<string>(content);
                 }
+                else
+                {
+                    await MsgModel.MsgNotification(response.ErrorMessage);
+                }
             }
             catch (Exception e)
             {

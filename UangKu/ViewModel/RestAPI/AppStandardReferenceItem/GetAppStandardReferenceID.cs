@@ -30,6 +30,10 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
                     var get = JsonConvert.DeserializeObject<AppStandardReferenceIDRoot>(format);
                     root = get;
                 }
+                else
+                {
+                    await MsgModel.MsgNotification(response.ErrorMessage);
+                }
             }
             catch (Exception e)
             {

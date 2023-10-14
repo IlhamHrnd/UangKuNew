@@ -33,6 +33,10 @@
             public static string Date { get => date; set => date = value; }
             private static DateTime datetime = DateTime.Now;
             public static DateTime DateTime { get => datetime; set => datetime = value; }
+            private static bool isactive = true;
+            public static bool IsActive { get => isactive; set => isactive = value; }
+            private static bool isused = true;
+            public static bool IsUsed {  get => isused; set => isused = value; }
         }
     }
 }
