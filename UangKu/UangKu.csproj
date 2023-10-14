@@ -49,6 +49,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Fonts\fa-brands-400.ttf" />
+	  <None Remove="Resources\Fonts\fa-regular-400.ttf" />
 	  <None Remove="Resources\Images\add.svg" />
 	  <None Remove="Resources\Images\afternoon.svg" />
 	  <None Remove="Resources\Images\evening.svg" />
