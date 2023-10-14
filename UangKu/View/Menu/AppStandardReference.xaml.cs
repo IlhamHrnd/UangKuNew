@@ -35,4 +35,9 @@ public partial class AppStandardReference : ContentPage
     {
         await _vm.AppStandardReferenceItem_PopUp(e);
     }
+
+    private async void Bar_AddItem_Clicked(object sender, EventArgs e)
+    {
+        await _vm.AddASRItem_ToolBar();
+    }
 }

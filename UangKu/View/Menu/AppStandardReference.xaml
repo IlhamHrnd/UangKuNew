@@ -3,11 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Model="clr-namespace:UangKu.Model.Menu"
+             xmlns:Font="clr-namespace:UangKu.Model.Base"
              x:Class="UangKu.View.Menu.AppStandardReference"
              Title="{Binding Title}">
     <ContentPage.BindingContext>
         <Model:AppStandardReference/>
     </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="Bar_AddItem"
+                     Clicked="Bar_AddItem_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FARegular"
+                                 Glyph="{x:Static Font:FARegular.Plus}"
+                                 ToolTipProperties.Text="Click To Add New App Standard Reference"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ScrollView Style="{StaticResource ScrollView}">
         <StackLayout Style="{StaticResource StackLayout}">
             <ActivityIndicator Style="{StaticResource ActivityIndicator}"
@@ -74,6 +85,7 @@
                                             </Label>
                                             <Label Grid.Column="0"
                                                    Grid.Row="2"
+                                                   Grid.ColumnSpan="2"
                                                    Style="{StaticResource Label}">
                                                 <Label.FormattedText>
                                                     <FormattedString>

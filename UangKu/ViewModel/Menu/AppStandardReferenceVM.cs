@@ -1,5 +1,6 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
+using UangKu.View.SubMenu;
 
 namespace UangKu.ViewModel.Menu
 {
@@ -42,6 +43,7 @@ namespace UangKu.ViewModel.Menu
         {
             var maxPage = ListASR[0].totalPages;
             bool isConnect = network.IsConnected;
+            IsBusy = true;
             try
             {
                 if (!isConnect)
@@ -75,6 +77,7 @@ namespace UangKu.ViewModel.Menu
         public async void PreviousPage_Click(int pageSize)
         {
             bool isConnect = network.IsConnected;
+            IsBusy = true;
             try
             {
                 if (!isConnect)
@@ -119,6 +122,10 @@ namespace UangKu.ViewModel.Menu
             {
                 await MsgModel.MsgNotification($"You Haven't Selected An Item Yet");
             }
+        }
+        public async Task AddASRItem_ToolBar()
+        {
+            await _navigation.PushAsync(new AddAppStandardReference());
         }
     }
 }
