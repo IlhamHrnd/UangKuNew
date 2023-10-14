@@ -13,7 +13,7 @@ public partial class MainPage : ContentPage
 	}
     protected override void OnAppearing()
     {
-        _vm.LoadData();
+        _vm.LoadData(Ent_Username, Ent_Password, Btn_Login);
     }
 
     private void Btn_Login_Clicked(object sender, EventArgs e)

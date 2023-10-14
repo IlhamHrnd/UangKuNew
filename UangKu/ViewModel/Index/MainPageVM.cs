@@ -12,9 +12,21 @@ namespace UangKu.ViewModel.Index
         {
             
         }
-        public async void LoadData()
+        public void LoadData(Entry entUser, Entry entPass, Button btnLogin)
         {
-
+            bool isConnect = network.IsConnected;
+            if (!isConnect)
+            {
+                entUser.IsEnabled = false;
+                entPass.IsEnabled = false;
+                btnLogin.IsEnabled = false;
+            }
+            else
+            {
+                entUser.IsEnabled = true;
+                entPass.IsEnabled = true;
+                btnLogin.IsEnabled = true;
+            }
         }
 
         public async void BtnLogin_User(Entry username, Entry password)
@@ -50,7 +62,7 @@ namespace UangKu.ViewModel.Index
                         };
 
                         var updatelogin = await UserLastLogin.PatchUserLastLogin(username.Text);
-                        if (updatelogin == null)
+                        if (string.IsNullOrEmpty(updatelogin))
                         {
                             await MsgModel.MsgNotification(updatelogin);
                         }
