@@ -36,17 +36,11 @@
                        MaxLength="15"
                        Placeholder="Username"
                        Keyboard="Text"
-                       ClearButtonVisibility="WhileEditing"
-                       IsSpellCheckEnabled="False"
-                       IsTextPredictionEnabled="False"
                        x:Name="Ent_Username"/>
                 <Entry Style="{StaticResource Entry}"
                        MaxLength="15"
                        Placeholder="Password"
                        Keyboard="Text"
-                       ClearButtonVisibility="WhileEditing"
-                       IsSpellCheckEnabled="False"
-                       IsTextPredictionEnabled="False"
                        IsPassword="True"
                        x:Name="Ent_Password"/>
                 <Button Style="{StaticResource Button}"

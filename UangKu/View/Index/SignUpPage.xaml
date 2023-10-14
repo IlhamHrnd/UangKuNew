@@ -44,9 +44,6 @@
                        MaxLength="15"
                        Placeholder="Username"
                        Keyboard="Text"
-                       ClearButtonVisibility="WhileEditing"
-                       IsSpellCheckEnabled="False"
-                       IsTextPredictionEnabled="False"
                        x:Name="Ent_Username"/>
                 <Entry Grid.Column="0"
                        Grid.Row="2"
@@ -54,9 +51,6 @@
                        MaxLength="15"
                        Placeholder="Password"
                        Keyboard="Text"
-                       ClearButtonVisibility="WhileEditing"
-                       IsSpellCheckEnabled="False"
-                       IsTextPredictionEnabled="False"
                        IsPassword="True"
                        x:Name="Ent_Password"/>
                 <Entry Grid.Column="1"
@@ -65,9 +59,6 @@
                        MaxLength="15"
                        Placeholder="Confirm Password"
                        Keyboard="Text"
-                       ClearButtonVisibility="WhileEditing"
-                       IsSpellCheckEnabled="False"
-                       IsTextPredictionEnabled="False"
                        IsPassword="True"
                        x:Name="Ent_ConfirmPass"/>
                 <Picker Grid.Column="0"
@@ -83,9 +74,6 @@
                        MaxLength="50"
                        Placeholder="Email"
                        Keyboard="Email"
-                       ClearButtonVisibility="WhileEditing"
-                       IsSpellCheckEnabled="False"
-                       IsTextPredictionEnabled="False"
                        x:Name="Ent_Email"/>
             </Grid>
             <Button Style="{StaticResource Button}"

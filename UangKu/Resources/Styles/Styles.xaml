@@ -115,6 +115,8 @@
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14" />
         <Setter Property="IsTextPredictionEnabled" Value="False"/>
+        <Setter Property="IsSpellCheckEnabled" Value="False"/>
+        <Setter Property="ClearButtonVisibility" Value="WhileEditing"/>
         <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
