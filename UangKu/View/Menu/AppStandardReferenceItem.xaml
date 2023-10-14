@@ -12,6 +12,12 @@
             <ActivityIndicator Style="{StaticResource ActivityIndicator}"
                                IsRunning="{Binding IsBusy}"
                                IsVisible="{Binding IsBusy}"/>
+            <Button Style="{StaticResource Button}"
+                    WidthRequest="150"
+                    Text="Update"
+                    Margin="0,10"
+                    x:Name="Btn_UpdateAppStandard"
+                    Clicked="Btn_UpdateAppStandard_Clicked"/>
             <Frame Style="{StaticResource Frame}"
                    Margin="10">
                 <CollectionView ItemsSource="{Binding ListASR}"
@@ -143,11 +149,6 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Button Style="{StaticResource Button}"
-                    WidthRequest="150"
-                    Text="Update"
-                    x:Name="Btn_UpdateAppStandard"
-                    Clicked="Btn_UpdateAppStandard_Clicked"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>

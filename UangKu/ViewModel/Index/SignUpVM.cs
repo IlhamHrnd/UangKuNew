@@ -46,9 +46,14 @@ namespace UangKu.ViewModel.Index
 
         public async void SignUp_User(Entry username, Entry password, Entry confirmpass, Entry email, Picker sex)
         {
+            bool isConnect = network.IsConnected;
             IsBusy = true;
             try
             {
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                }
                 if (string.IsNullOrEmpty(username.Text) || string.IsNullOrEmpty(password.Text) ||
                     string.IsNullOrEmpty(confirmpass.Text) || string.IsNullOrEmpty(email.Text) || sex.SelectedItem == null)
                 {
