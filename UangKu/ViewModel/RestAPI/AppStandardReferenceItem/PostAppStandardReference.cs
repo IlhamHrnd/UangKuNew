@@ -11,8 +11,6 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
 
         public static async Task<string> PostASR(string referenceID, string referenceName, int itemLength, string note)
         {
-            var dateTime = ParameterModel.ItemDefaultValue.DateTime;
-
             string url = string.Format(PostASREndPoint);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -28,7 +26,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
                 isUsedBySystem = ParameterModel.ItemDefaultValue.IsUsed,
                 isActive = ParameterModel.ItemDefaultValue.IsActive,
                 note = note,
-                lastUpdateDateTime = dateTime,
+                lastUpdateDateTime = ParameterModel.ItemDefaultValue.DateTime,
                 lastUpdateByUserID = App.Session.username
             };
             request.AddJsonBody(body);

@@ -3,30 +3,31 @@ using RestSharp;
 using UangKu.Model.Base;
 using UangKu.Model.Index.Body;
 
-namespace UangKu.ViewModel.RestAPI.User
+namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
 {
-    public class UserSignUp
+    public class PostAppStandardReferenceItem
     {
-        private const string UserSignUpEndPoint = "https://uangkuapi.azurewebsites.net/User/CreateUsername?password={0}&email={1}";
+        private const string PostASRIEndPoint = "https://uangkuapi.azurewebsites.net/AppStandardReferenceItem/CreateAppStandardReferenceItem";
 
-        public static async Task<string> PostUserSignUp(string username, string password, string sexname, string email)
+        public static async Task<string> PostASRI(string referenceID, string itemID, string itemName, string note)
         {
-            string url = string.Format(UserSignUpEndPoint, password, email);
+            string url = string.Format(PostASRIEndPoint);
             var client = new RestClient(url);
             var request = new RestRequest
             {
                 Method = Method.Post,
                 Timeout = ParameterModel.ItemDefaultValue.Timeout
             };
-            var body = new SignUpBody
+            var body = new PostASRI
             {
-                username = username,
-                sexName = sexname,
-                activeDate = ParameterModel.ItemDefaultValue.DateTime,
-                lastLogin = ParameterModel.ItemDefaultValue.DateTime,
+                standardReferenceID = referenceID,
+                itemID = itemID,
+                itemName = itemName,
+                note = note,
+                isUsedBySystem = ParameterModel.ItemDefaultValue.IsUsed,
+                isActive = ParameterModel.ItemDefaultValue.IsActive,
                 lastUpdateDateTime = ParameterModel.ItemDefaultValue.DateTime,
-                lastUpdateByUser = username,
-                personID = username
+                lastUpdateByUserID = App.Session.username
             };
             request.AddJsonBody(body);
 
@@ -38,10 +39,6 @@ namespace UangKu.ViewModel.RestAPI.User
                 {
                     var content = response.Content;
                     var post = JsonConvert.DeserializeObject<string>(content);
-                }
-                else
-                {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
                 }
             }
             catch (Exception e)

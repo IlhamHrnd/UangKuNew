@@ -1,6 +1,7 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.SubMenu;
 using UangKu.ViewModel.RestAPI.AppStandardReferenceItem;
+using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 
 namespace UangKu.ViewModel.SubMenu
 {
@@ -19,6 +20,7 @@ namespace UangKu.ViewModel.SubMenu
             try
             {
                 ListASR.Clear();
+                ListASRI.Clear();
                 if (!isConnect)
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
@@ -31,17 +33,24 @@ namespace UangKu.ViewModel.SubMenu
                 switch (ListASR.Count)
                 {
                     case > 0:
-                        {
-                            var item = ListASR[0];
+                        var item = ListASR[0];
 
-                            referenceName.Text = item.standardReferenceName;
-                            referenceName.IsReadOnly = true;
-                            itemLength.Text = item.itemLength.ToString();
-                            itemLength.IsReadOnly = true;
-                            note.Text = item.note;
-                            note.IsReadOnly = true;
-                            break;
+                        referenceName.Text = item.standardReferenceName;
+                        referenceName.IsReadOnly = true;
+                        itemLength.Text = item.itemLength.ToString();
+                        itemLength.IsReadOnly = true;
+                        note.Text = item.note;
+                        note.IsReadOnly = true;
+
+                        var asri = await AppStandardReferenceItem.GetAsriAsync<AsriRoot>(item.standardReferenceID, false, false);
+                        if (asr != null)
+                        {
+                            for (int i = 0; i < asri.Count; i++)
+                            {
+                                ListASRI.Add(asri[i]);
+                            }
                         }
+                        break;
 
                     default:
                         referenceName.Text = string.Empty;
@@ -63,6 +72,23 @@ namespace UangKu.ViewModel.SubMenu
             }
         }
 
+        public void ReferenceID_TextChanged(TextChangedEventArgs args, Entry referenceID, Entry referenceName, Entry itemLength, Entry note)
+        {
+            if (string.IsNullOrEmpty(args.NewTextValue))
+            {
+                ListASR.Clear();
+                ListASRI.Clear();
+                referenceID.Text = string.Empty;
+                referenceName.Text = string.Empty;
+                itemLength.Text = string.Empty;
+                note.Text = string.Empty;
+                referenceID.IsReadOnly = false;
+                referenceName.IsReadOnly = false;
+                itemLength.IsReadOnly = false;
+                note.IsReadOnly = false;
+            }
+        }
+
         public async void AddNewASR(Entry referenceID, Entry referenceName, Entry itemLength, Entry note)
         {
             bool isConnect = network.IsConnected;
@@ -73,10 +99,40 @@ namespace UangKu.ViewModel.SubMenu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (string.IsNullOrEmpty(referenceID.Text) || string.IsNullOrEmpty(referenceName.Text) ||
+                else if (string.IsNullOrEmpty(referenceID.Text) || string.IsNullOrEmpty(referenceName.Text) || 
                     string.IsNullOrEmpty(itemLength.Text) || string.IsNullOrEmpty(note.Text))
                 {
-                    await MsgModel.MsgNotification($"All Data Are Required");
+                    var errorMessage = "The Following Data Is Required : \n";
+
+                    if (string.IsNullOrEmpty(referenceID.Text))
+                    {
+                        errorMessage += "Reference ID\n";
+                        referenceID.Focus();
+                    }
+
+                    if (string.IsNullOrEmpty(referenceName.Text))
+                    {
+                        errorMessage += "Reference Name\n";
+                        referenceName.Focus();
+                    }
+
+                    if (string.IsNullOrEmpty(itemLength.Text))
+                    {
+                        errorMessage += "Item Length\n";
+                        itemLength.Focus();
+                    }
+
+                    if (string.IsNullOrEmpty(note.Text))
+                    {
+                        errorMessage += "Note";
+                        note.Focus();
+                    }
+
+                    await MsgModel.MsgNotification(errorMessage);
+                }
+                else if (ListASRI.Count < 0 || ListASRI.Count == 0)
+                {
+                    await MsgModel.MsgNotification($"Please, Add Item First For Reference ID {referenceID.Text}");
                 }
                 else
                 {
@@ -84,6 +140,18 @@ namespace UangKu.ViewModel.SubMenu
                     if (!string.IsNullOrEmpty(addASR))
                     {
                         await MsgModel.MsgNotification($"{addASR}");
+                    }
+
+                    if (ListASRI.Count > 0)
+                    {
+                        for (int i = 0; i < ListASRI.Count; i++)
+                        {
+                            var addASRI = await PostAppStandardReferenceItem.PostASRI(ListASRI[i].standardReferenceID, ListASRI[i].itemID, ListASRI[i].itemName, ListASRI[i].note);
+                            if (!string.IsNullOrEmpty(addASRI))
+                            {
+                                await MsgModel.MsgNotification($"{addASRI}");
+                            }
+                        }
                     }
                 }
             }
@@ -94,6 +162,55 @@ namespace UangKu.ViewModel.SubMenu
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        public async Task AddASRIItem_ToolBar(Entry StandardID, Entry itemID)
+        {
+            var asriCount = ListASRI.Count;
+
+            if (string.IsNullOrEmpty(StandardID.Text))
+            {
+                await MsgModel.MsgNotification("Standard ID Cannot Null");
+            }
+            else
+            {
+                IsEdit = true;
+                itemID.Text = $"{StandardID.Text}-00{asriCount + 1}";
+            }
+        }
+
+        public async Task AddItem_Click(Entry StandardID, Entry itemID, Entry itemName, Entry note)
+        {
+            int oldASRI = ListASRI.Count;
+            int newASRI = 0;
+            if (string.IsNullOrEmpty(StandardID.Text))
+            {
+                await MsgModel.MsgNotification("Standard ID Cannot Null");
+            }
+            else
+            {
+                AsriRoot root = new AsriRoot
+                {
+                    standardReferenceID = StandardID.Text,
+                    itemID = itemID.Text,
+                    itemName = itemName.Text,
+                    note = note.Text,
+                    isUsedBySystem = ParameterModel.ItemDefaultValue.IsUsed,
+                    isActive = ParameterModel.ItemDefaultValue.IsActive,
+                    lastUpdateDateTime = ParameterModel.ItemDefaultValue.DateTime,
+                    lastUpdateByUserID = App.Session.username
+                };
+                ListASRI.Add(root);
+                newASRI = ListASRI.Count;
+            }
+
+            if (newASRI > oldASRI)
+            {
+                await MsgModel.MsgNotification($"Successfully Add {itemID.Text} To Item");
+                IsEdit = false;
+                itemID.Text = string.Empty;
+                itemName.Text = string.Empty;
             }
         }
     }

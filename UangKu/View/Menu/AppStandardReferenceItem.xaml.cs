@@ -1,4 +1,3 @@
-using UangKu.Model.Base;
 using UangKu.ViewModel.Menu;
 
 namespace UangKu.View.Menu;
