@@ -159,6 +159,35 @@
                        Placeholder="Street Name"
                        Style="{StaticResource Entry}"
                        x:Name="Ent_StreetName"/>
+                <Label Grid.Column="0"
+                       Grid.Row="2"
+                       Style="{StaticResource Label}"
+                       VerticalTextAlignment="Center">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Provinces "/>
+                            <Span FontFamily="FARegular" Text="{x:Static Font:FARegular.AddressCard}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Picker Grid.Column="1"
+                        Grid.Row="2"
+                        Style="{StaticResource Picker}"
+                        Title="Select Provinces"
+                        ItemsSource="{Binding ListProvinces}"
+                        ItemDisplayBinding="{Binding provName}"
+                        x:Name="Pic_Provinces"/>
+                <Label Grid.Column="0"
+                       Grid.Row="3"
+                       Style="{StaticResource Label}"
+                       VerticalTextAlignment="Center">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="City "/>
+                            <Span FontFamily="FARegular" Text="{x:Static Font:FARegular.AddressCard}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
             </Grid>
         </Frame>
     </StackLayout>
