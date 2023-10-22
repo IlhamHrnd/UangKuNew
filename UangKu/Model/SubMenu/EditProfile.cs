@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using UangKu.Model.Base;
+using static UangKu.Model.Response.Location.Provinces;
 using static UangKu.Model.Response.Profile.Profile;
 
 namespace UangKu.Model.SubMenu
@@ -10,18 +11,19 @@ namespace UangKu.Model.SubMenu
         public string Title { get => title; set => SetProperty(ref title, value); }
         private bool isbusy = false;
         public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
-        private IList<ProfileRoot> listperson { get; set; }
-        public IList<ProfileRoot> ListPerson
+        private IList<ProvincesRoot> listprovinces { get; set; }
+
+        public IList<ProvincesRoot> ListProvinces
         {
             get
             {
-                if (listperson == null)
+                if (listprovinces == null)
                 {
-                    listperson = new ObservableCollection<ProfileRoot>();
+                    listprovinces = new ObservableCollection<ProvincesRoot>();
                 }
-                return listperson;
+                return listprovinces;
             }
-            set { listperson = value; }
+            set { listprovinces = value; }
         }
     }
 }

@@ -16,7 +16,7 @@ public partial class EditProfile : ContentPage
     protected async override void OnAppearing()
     {
         await SessionModel.SessionCheck();
-        _vm.LoadData(Avt_Profile);
+        _vm.LoadData(Avt_Profile, Ent_FirstName, Ent_MiddleName, Ent_LastName, Pic_PlaceOfBirth);
     }
 
     private void Btn_UploadPhoto_Clicked(object sender, EventArgs e)

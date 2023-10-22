@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Views;
 using UangKu.Model.Base;
 using UangKu.Model.SubMenu;
+using UangKu.ViewModel.RestAPI.Location;
 using UangKu.ViewModel.RestAPI.Profile;
 using static UangKu.Model.Base.ParameterModel.PermissionManager;
 
@@ -14,7 +15,7 @@ namespace UangKu.ViewModel.SubMenu
             Title = $"Edit Profile {App.Session.personID}";
         }
 
-        public async void LoadData(AvatarView avatar)
+        public async void LoadData(AvatarView avatar, Entry EntFirstName, Entry EntMiddleName, Entry EntLastName, Picker PicPlaceOfBirth)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -27,16 +28,26 @@ namespace UangKu.ViewModel.SubMenu
                 if (!string.IsNullOrEmpty(App.Session.personID))
                 {
                     var person = await GetProfile.GetProfileID(App.Session.personID);
-                    if (person != null)
+                    if (!string.IsNullOrEmpty(person.personID))
                     {
-                        ListPerson.Clear();
-                        ListPerson.Add(person);
+                        EntFirstName.Text = person.firstName;
+                        EntMiddleName.Text = person.middleName;
+                        EntLastName.Text = person.lastName;
+                        PicPlaceOfBirth.SelectedItem = person.placeOfBirth;
                     }
-
-                    if (!string.IsNullOrEmpty(ListPerson[0].photo))
+                    var provinces = await GetProvince.GetProvinces();
+                    if (provinces.Count > 0)
                     {
-                        avatar.ImageSource = ImageConvert.ImgSrcAsync(ListPerson[0].photo);
-                        avatar.Text = ListPerson[0].personID;
+                        ListProvinces.Clear();
+                        for (int i = 0; i < provinces.Count; i++)
+                        {
+                            ListProvinces.Add(provinces[i]);
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(person.photo))
+                    {
+                        avatar.ImageSource = ImageConvert.ImgSrcAsync(person.photo);
+                        avatar.Text = person.personID;
                     }
                     else
                     {

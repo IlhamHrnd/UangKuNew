@@ -67,6 +67,7 @@
                         ItemsSource="{Binding ListSex}"
                         ItemDisplayBinding="{Binding itemName}"
                         SelectedItem="{Binding SelectedSex}"
+                        Title="Selec Gender"
                         x:Name="Pic_Sex"/>
                 <Entry Grid.Column="1"
                        Grid.Row="3"
