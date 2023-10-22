@@ -17,6 +17,13 @@ namespace UangKu.Model.Response.Profile
 
             [JsonProperty("lastName")]
             public string lastName { get; set; }
+            public string fullName
+            {
+                get
+                {
+                    return $"{firstName} {middleName} {lastName}";
+                }
+            }
 
             [JsonProperty("birthDate")]
             public DateTime? birthDate { get; set; }

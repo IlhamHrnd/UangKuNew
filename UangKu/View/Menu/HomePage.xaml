@@ -9,6 +9,9 @@
     </ContentPage.BindingContext>
     <ScrollView Style="{StaticResource ScrollView}">
         <StackLayout Style="{StaticResource StackLayout}">
+            <ActivityIndicator Style="{StaticResource ActivityIndicator}"
+                               IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"/>
             <Frame Style="{StaticResource Frame}"
                    Margin="10">
                 <Grid>

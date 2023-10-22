@@ -38,4 +38,22 @@
             return true;
         }
     }
+
+    public static class ImageConvert
+    {
+        public static ImageSource ImgSrcAsync(string baseString)
+        {
+            try
+            {
+                byte[] imgBytes = Convert.FromBase64String(baseString);
+                ImageSource source = ImageSource.FromStream(() => new MemoryStream(imgBytes));
+                return source;
+            }
+            catch (Exception e)
+            {
+                _ = MsgModel.MsgNotification($"{e.Message}");
+                return null;
+            }
+        }
+    }
 }

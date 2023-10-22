@@ -435,4 +435,11 @@
         <Setter Property="VerticalScrollBarVisibility" Value="Never"/>
         <Setter Property="EmptyView" Value="No Data To Display On This Item"/>
     </Style>
+
+    <Style TargetType="toolkit:AvatarView" x:Key="Avatar">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}" />
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+        <Setter Property="CornerRadius" Value="10, 25, 10, 25" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
+    </Style>
 </ResourceDictionary>

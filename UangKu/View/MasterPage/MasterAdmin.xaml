@@ -33,6 +33,11 @@
         <ShellContent ContentTemplate="{DataTemplate Menu:HomePage}"
                       Route="HomePage"/>
     </FlyoutItem>
+    <FlyoutItem Title="Profile"
+            Icon="dotnet_bot.svg">
+        <ShellContent ContentTemplate="{DataTemplate Menu:Profile}"
+                  Route="Profile"/>
+    </FlyoutItem>
     <FlyoutItem Title="App Standard Reference"
                 Icon="dotnet_bot.svg">
         <ShellContent ContentTemplate="{DataTemplate Menu:AppStandardReference}"

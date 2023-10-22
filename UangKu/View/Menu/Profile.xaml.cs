@@ -3,18 +3,19 @@ using UangKu.ViewModel.Menu;
 
 namespace UangKu.View.Menu;
 
-public partial class HomePage : ContentPage
+public partial class Profile : ContentPage
 {
-	private readonly HomeVM _vm;
-	public HomePage()
+	private readonly ProfileVM _vm;
+	public Profile()
 	{
 		InitializeComponent();
-		_vm = new HomeVM(Navigation);
+		_vm = new ProfileVM();
 		BindingContext = _vm;
 	}
+
     protected async override void OnAppearing()
     {
-		await SessionModel.SessionCheck();
-		_vm.LoadDataPerson();
+        await SessionModel.SessionCheck();
+		await _vm.LoadData(Avt_Profile);
     }
 }

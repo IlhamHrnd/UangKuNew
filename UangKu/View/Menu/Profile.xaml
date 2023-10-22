@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Model="clr-namespace:UangKu.Model.Menu"
+             xmlns:Font="clr-namespace:UangKu.Model.Base"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="UangKu.View.Menu.Profile"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <Model:Profile/>
+    </ContentPage.BindingContext>
+    <ScrollView Style="{StaticResource ScrollView}">
+        <StackLayout Style="{StaticResource StackLayout}">
+            <ActivityIndicator Style="{StaticResource ActivityIndicator}"
+                               IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"/>
+            <toolkit:AvatarView Style="{StaticResource Avatar}"
+                                WidthRequest="120"
+                                HeightRequest="100"
+                                x:Name="Avt_Profile"/>
+            <CollectionView ItemsSource="{Binding Profiles}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Spacing="10">
+                            <Frame Style="{StaticResource Frame}">
+                                <Label Style="{StaticResource Label}"
+                                       Text="{Binding fullName}"
+                                       FontSize="Large"
+                                       HorizontalTextAlignment="Center"/>
+                            </Frame>
+                            <Frame Style="{StaticResource Frame}">
+                                <Grid RowSpacing="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50*" />
+                                        <ColumnDefinition Width="50*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0"
+                                           Grid.Row="0"
+                                           Grid.ColumnSpan="2"
+                                           Style="{StaticResource Label}"
+                                           Text="Personal Identity"
+                                           HorizontalTextAlignment="Center"/>
+                                    <Label Grid.Column="0"
+                                           Grid.Row="1"
+                                           Style="{StaticResource Label}"
+                                           Text="Place Of Birth "/>
+                                    <Label Grid.Column="1"
+                                           Grid.Row="1"
+                                           Style="{StaticResource Label}"
+                                           Text="{Binding placeOfBirth}"/>
+                                    <Label Grid.Column="0"
+                                           Grid.Row="2"
+                                           Style="{StaticResource Label}"
+                                           Text="Date Of Birth "/>
+                                    <Label Grid.Column="1"
+                                           Grid.Row="2"
+                                           Style="{StaticResource Label}"
+                                           Text="{Binding birthDate}"/>
+                                </Grid>
+                            </Frame>
+                            <Frame Style="{StaticResource Frame}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50*" />
+                                        <ColumnDefinition Width="50*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0"
+                                           Grid.Row="0"
+                                           Grid.ColumnSpan="2"
+                                           Style="{StaticResource Label}"
+                                           Text="Address"
+                                           HorizontalTextAlignment="Center"/>
+                                    <Label Grid.Column="0"
+                                           Grid.Row="1"
+                                           Style="{StaticResource Label}"
+                                           Text="Street Name "/>
+                                    <Label Grid.Column="1"
+                                           Grid.Row="1"
+                                           Style="{StaticResource Label}"
+                                           Text="{Binding address}"/>
+                                    <Label Grid.Column="0"
+                                           Grid.Row="2"
+                                           Style="{StaticResource Label}"
+                                           Text="Province "/>
+                                    <Label Grid.Column="1"
+                                           Grid.Row="2"
+                                           Style="{StaticResource Label}"
+                                           Text="{Binding province}"/>
+                                    <Label Grid.Column="0"
+                                           Grid.Row="3"
+                                           Style="{StaticResource Label}"
+                                           Text="City "/>
+                                    <Label Grid.Column="1"
+                                           Grid.Row="3"
+                                           Style="{StaticResource Label}"
+                                           Text="{Binding city}"/>
+                                    <Label Grid.Column="0"
+                                           Grid.Row="4"
+                                           Style="{StaticResource Label}"
+                                           Text="District "/>
+                                    <Label Grid.Column="1"
+                                           Grid.Row="4"
+                                           Style="{StaticResource Label}"
+                                           Text="{Binding district}"/>
+                                    <Label Grid.Column="0"
+                                           Grid.Row="5"
+                                           Style="{StaticResource Label}"
+                                           Text="Subdistrict "/>
+                                    <Label Grid.Column="1"
+                                           Grid.Row="5"
+                                           Style="{StaticResource Label}"
+                                           Text="{Binding subdistrict}"/>
+                                    <Label Grid.Column="0"
+                                           Grid.Row="6"
+                                           Style="{StaticResource Label}"
+                                           Text="Postal Code "/>
+                                    <Label Grid.Column="1"
+                                           Grid.Row="6"
+                                           Style="{StaticResource Label}"
+                                           Text="{Binding postalCode}"/>
+                                </Grid>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Style="{StaticResource Button}"
+                    Text="Edit"
+                    Margin="20"
+                    x:Name="Btn_Edit"/>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

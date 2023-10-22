@@ -1,13 +1,19 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
+using UangKu.View.SubMenu;
+using UangKu.ViewModel.RestAPI.Profile;
 
 namespace UangKu.ViewModel.Menu
 {
     public class HomeVM : Home
     {
-        public HomeVM()
+        private NetworkModel network = NetworkModel.Instance;
+        private readonly INavigation _navigation;
+
+        public HomeVM(INavigation navigation)
         {
             LoadData();
+            _navigation = navigation;
         }
         private void LoadData()
         {
@@ -36,6 +42,52 @@ namespace UangKu.ViewModel.Menu
             }
 
             Name = $"Hello, {App.Session.username} {greeting}";
+        }
+
+        public async void LoadDataPerson()
+        {
+            bool isConnect = network.IsConnected;
+            IsBusy = true;
+            try
+            {
+                string userID;
+
+                if (!string.IsNullOrEmpty(App.Session.personID))
+                {
+                    userID = App.Session.personID;
+                }
+                else if (string.IsNullOrEmpty(App.Session.personID) && !string.IsNullOrEmpty(App.Session.username))
+                {
+                    userID = App.Session.username;
+                }
+                else
+                {
+                    userID = string.Empty;
+                }
+
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                }
+
+                if (!string.IsNullOrEmpty(userID))
+                {
+                    var person = await GetProfile.GetProfileID(userID);
+                    if (string.IsNullOrEmpty(person.personID))
+                    {
+                        await MsgModel.MsgNotification($"Please, Fill Profile For {userID} First");
+                        await _navigation.PushAsync(new EditProfile());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }
