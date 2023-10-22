@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Maui.Views;
-using System.Data;
 using UangKu.Model.Base;
 using UangKu.Model.Menu;
+using UangKu.View.SubMenu;
 using UangKu.ViewModel.RestAPI.Profile;
 
 namespace UangKu.ViewModel.Menu
@@ -9,9 +9,12 @@ namespace UangKu.ViewModel.Menu
     public class ProfileVM : Profile
     {
         private NetworkModel network = NetworkModel.Instance;
-        public ProfileVM()
+        private readonly INavigation _navigation;
+
+        public ProfileVM(INavigation navigation)
         {
             Title = $"Profile {App.Session.username}";
+            _navigation = navigation;
         }
 
         public async Task LoadData(AvatarView avatar)
@@ -49,6 +52,11 @@ namespace UangKu.ViewModel.Menu
             {
                 IsBusy = false;
             }
+        }
+
+        public async Task EditProfile_Click()
+        {
+            await _navigation.PushAsync(new EditProfile());
         }
     }
 }

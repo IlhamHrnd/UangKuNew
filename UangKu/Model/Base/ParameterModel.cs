@@ -38,5 +38,13 @@
             private static bool isused = true;
             public static bool IsUsed {  get => isused; set => isused = value; }
         }
+
+        public class PermissionManager
+        {
+            public enum PermissionType
+            {
+                StorageRead
+            }
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using UangKu.Model.Session;
+﻿using UangKu.Model.Base;
+using UangKu.Model.Session;
+using static UangKu.Model.Base.ParameterModel.PermissionManager;
 
 namespace UangKu
 {
@@ -11,6 +13,12 @@ namespace UangKu
 
             MainPage = new AppShell();
 
+        }
+
+        protected override async void OnStart()
+        {
+            PermissionType type = PermissionType.StorageRead;
+            await PermissionRequest.RequestPermission(type);
         }
     }
 }

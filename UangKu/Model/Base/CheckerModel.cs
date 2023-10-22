@@ -1,4 +1,6 @@
-﻿namespace UangKu.Model.Base
+﻿using static UangKu.Model.Base.ParameterModel.PermissionManager;
+
+namespace UangKu.Model.Base
 {
     public class NetworkModel
     {
@@ -41,6 +43,7 @@
 
     public static class ImageConvert
     {
+        //Class Untuk Proses Byte[] Ke Gambar
         public static ImageSource ImgSrcAsync(string baseString)
         {
             try
@@ -54,6 +57,52 @@
                 _ = MsgModel.MsgNotification($"{e.Message}");
                 return null;
             }
+        }
+
+        //Proses Upload Gambar
+        public static async Task<ImageSource> PickImageAsync()
+        {
+            var result = await FilePicker.PickAsync(new PickOptions
+            {
+                PickerTitle = "Pick Image Please",
+                FileTypes = FilePickerFileType.Images
+            });
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            var stream = await result.OpenReadAsync();
+            return ImageSource.FromStream(() =>  stream);
+        }
+    }
+
+    public static class PermissionRequest
+    {
+        //Class Untuk Request Permission
+        public static async Task RequestPermission(PermissionType permissionType)
+        {
+            PermissionStatus status = PermissionStatus.Unknown;
+
+            switch (permissionType)
+            {
+                case PermissionType.StorageRead:
+                    status = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
+                    break;
+            }
+
+            if (status != PermissionStatus.Granted)
+            {
+                switch (permissionType)
+                {
+                    case PermissionType.StorageRead:
+                        status = await Permissions.RequestAsync<Permissions.StorageRead>();
+                        break;
+                }
+            }
+
+            await MsgModel.MsgNotification($"{permissionType} Is {status}");
         }
     }
 }
