@@ -37,6 +37,8 @@
             public static bool IsActive { get => isactive; set => isactive = value; }
             private static bool isused = true;
             public static bool IsUsed {  get => isused; set => isused = value; }
+            private static long maxfilesize = 5 * 1024 * 1024; //Maximum File Size Is 5MB
+            public static long MaxFileSize {  get => maxfilesize; set => maxfilesize = value; }
         }
 
         public class PermissionManager

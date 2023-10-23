@@ -74,6 +74,15 @@ namespace UangKu.Model.Base
             }
 
             var stream = await result.OpenReadAsync();
+
+            long filesize = stream.Length;
+
+            if (filesize > ParameterModel.ItemDefaultValue.MaxFileSize)
+            {
+                await MsgModel.MsgNotification($"{result.FileName} Is More Than Limit");
+                return null;
+            }
+
             return ImageSource.FromStream(() =>  stream);
         }
     }
