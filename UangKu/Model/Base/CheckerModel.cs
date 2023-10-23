@@ -44,7 +44,7 @@ namespace UangKu.Model.Base
     public static class ImageConvert
     {
         //Class Untuk Proses Byte[] Ke Gambar
-        public static ImageSource ImgSrcAsync(string baseString)
+        public static ImageSource ByteSrcAsync(string baseString)
         {
             try
             {

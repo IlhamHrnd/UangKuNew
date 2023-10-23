@@ -40,7 +40,7 @@ namespace UangKu.ViewModel.Menu
                 {
                     if (!string.IsNullOrEmpty(Profiles[i].photo))
                     {
-                        avatar.ImageSource = ImageConvert.ImgSrcAsync(Profiles[i].photo);
+                        avatar.ImageSource = ImageConvert.ByteSrcAsync(Profiles[i].photo);
                     }
                 }
             }
