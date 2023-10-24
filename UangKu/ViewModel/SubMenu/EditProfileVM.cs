@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui.Views;
+using Microsoft.Maui.Controls;
 using UangKu.Model.Base;
 using UangKu.Model.SubMenu;
 using UangKu.ViewModel.RestAPI.Location;
@@ -51,11 +52,11 @@ namespace UangKu.ViewModel.SubMenu
                             ListProvinces.Add(provinces[i]);
                         }
                     }
-                    if (!string.IsNullOrEmpty(person.photo))
+                    if (person.photo != null)
                     {
-                        avatar.ImageSource = ImageConvert.ByteSrcAsync(person.photo);
+                        ParameterModel.ImageManager.ImageByte = person.photo;
+                        avatar.ImageSource = ImageConvert.ImgByte(person.photo);
                         avatar.Text = person.personID;
-                        
                     }
                     else
                     {
@@ -73,9 +74,52 @@ namespace UangKu.ViewModel.SubMenu
             }
         }
 
-        public async Task SaveProfile_Clicked()
+        public async Task SaveProfile_Clicked(Entry EntFirstName, Entry EntMiddleName, Entry EntLastName,
+            Entry StreetName, DatePicker BirthDate, Entry PostalCode)
         {
-            //Proses Save Belum Bisa Di Save Photo
+            bool isConnect = network.IsConnected;
+            IsBusy = true;
+            try
+            {
+                string userID;
+                bool isValid = await ValidateNullChecker.ValidateFields(
+                    (EntFirstName.Text, "First Name"),
+                    (EntLastName.Text, "Last Name"),
+                    (StreetName.Text, "Street Name")
+                );
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                }
+                if (!string.IsNullOrEmpty(App.Session.personID))
+                {
+                    userID = App.Session.personID;
+                }
+                else if (string.IsNullOrEmpty(App.Session.personID) && !string.IsNullOrEmpty(App.Session.username))
+                {
+                    userID = App.Session.username;
+                }
+                else
+                {
+                    userID = string.Empty;
+                }
+                if (ParameterModel.ImageManager.ImageByte == null)
+                {
+                    await MsgModel.MsgNotification($"Image Data Is Null");
+                }
+                if (!string.IsNullOrEmpty(userID))
+                {
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         #region Method Proses Picker Changed

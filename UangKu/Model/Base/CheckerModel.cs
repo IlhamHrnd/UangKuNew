@@ -43,14 +43,43 @@ namespace UangKu.Model.Base
 
     public static class ImageConvert
     {
-        //Class Untuk Proses Byte[] Ke Gambar
-        public static ImageSource ByteSrcAsync(string baseString)
+        //Class Untuk Mengambil Gambar Byte[] Dari Response WebService
+        public static ImageSource ImgByte(byte[] imgPath)
         {
             try
             {
-                byte[] imgBytes = Convert.FromBase64String(baseString);
-                ImageSource source = ImageSource.FromStream(() => new MemoryStream(imgBytes));
+                ImageSource source = ImageSource.FromStream(() => new MemoryStream(imgPath));
                 return source;
+            }
+            catch (Exception e)
+            {
+                _ = MsgModel.MsgNotification($"{e.Message}");
+                return null;
+            }
+        }
+
+        //Class Untuk Convert Byte[] Ke Base64String
+        public static string ByteToStringImg(byte[] imgPath)
+        {
+            try
+            {
+                string imgString = Convert.ToBase64String(imgPath);
+                return imgString;
+            }
+            catch (Exception e)
+            {
+                _ = MsgModel.MsgNotification($"{e.Message}");
+                return null;
+            }
+        }
+
+        //Class Untuk Convert Base64String Ke Byte[]
+        public static byte[] StringToByteImg(string imgPath)
+        {
+            try
+            {
+                byte[] imgByte = Convert.FromBase64String(imgPath);
+                return imgByte;
             }
             catch (Exception e)
             {
@@ -75,16 +104,25 @@ namespace UangKu.Model.Base
 
             var stream = await result.OpenReadAsync();
 
-            long filesize = stream.Length;
+            long fileSize = stream.Length;
 
-            if (filesize > ParameterModel.ItemDefaultValue.MaxFileSize)
+            if (fileSize > ParameterModel.ItemDefaultValue.MaxFileSize)
             {
                 await MsgModel.MsgNotification($"{result.FileName} Is More Than Limit");
                 return null;
             }
 
-            return ImageSource.FromStream(() =>  stream);
+            byte[] imgBytes;
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                await stream.CopyToAsync(memoryStream);
+                imgBytes = memoryStream.ToArray();
+                ParameterModel.ImageManager.ImageByte = memoryStream.ToArray();
+            }
+
+            return ImageSource.FromStream(() => new MemoryStream(imgBytes));
         }
+
     }
 
     public static class PermissionRequest
@@ -112,6 +150,32 @@ namespace UangKu.Model.Base
             }
 
             await MsgModel.MsgNotification($"{permissionType} Is {status}");
+        }
+    }
+
+    public static class ValidateNullChecker
+    {
+        public static async Task<bool> ValidateFields(params (string FieldValue, string FieldName)[] fields)
+        {
+            var errorMessages = new List<string>();
+
+            foreach (var (value, name) in fields)
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    errorMessages.Add(name);
+                }
+            }
+
+            if (errorMessages.Count > 0)
+            {
+                var errorMessage = "The Following Data Are Required:\n";
+                errorMessage += string.Join("\n", errorMessages);
+                await MsgModel.MsgNotification(errorMessage);
+                return false;
+            }
+
+            return true;
         }
     }
 }

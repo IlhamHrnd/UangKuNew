@@ -37,7 +37,7 @@
             public static bool IsActive { get => isactive; set => isactive = value; }
             private static bool isused = true;
             public static bool IsUsed {  get => isused; set => isused = value; }
-            private static long maxfilesize = 5 * 1024 * 1024; //Maximum File Size Is 5MB
+            private static long maxfilesize = 2 * 1024 * 1024; //Maximum File Size Is 2MB
             public static long MaxFileSize {  get => maxfilesize; set => maxfilesize = value; }
         }
 
@@ -48,5 +48,13 @@
                 StorageRead
             }
         }
+
+        public class ImageManager
+        {
+            private static string imagestring = string.Empty;
+            public static string ImageString { get => imagestring; set => imagestring = value; }
+            private static byte[] imagebyte = null;
+            public static byte[] ImageByte { get => imagebyte; set => imagebyte = value; }
+        } 
     }
 }

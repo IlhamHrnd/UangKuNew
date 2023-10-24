@@ -117,7 +117,8 @@
                     </Label>
                     <DatePicker Grid.Column="1"
                                 Grid.Row="3"
-                                Style="{StaticResource DatePicker}"/>
+                                Style="{StaticResource DatePicker}"
+                                x:Name="BirthOfDate"/>
                 </Grid>
             </Frame>
             <Frame Style="{StaticResource Frame}"

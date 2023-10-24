@@ -36,12 +36,10 @@ namespace UangKu.ViewModel.Menu
                         Profiles.Add(profile);
                     }
                 }
-                for (int i = 0; i < Profiles.Count; i++)
+                if (Profiles.Count > 0)
                 {
-                    if (!string.IsNullOrEmpty(Profiles[i].photo))
-                    {
-                        avatar.ImageSource = ImageConvert.ByteSrcAsync(Profiles[i].photo);
-                    }
+                    var profile = Profiles[0];
+                    avatar.ImageSource = ImageConvert.ImgByte(profile.photo);
                 }
             }
             catch (Exception e)

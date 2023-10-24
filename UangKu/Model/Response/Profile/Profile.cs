@@ -32,7 +32,7 @@ namespace UangKu.Model.Response.Profile
             public string placeOfBirth { get; set; }
 
             [JsonProperty("photo")]
-            public string photo { get; set; }
+            public byte[] photo { get; set; }
 
             [JsonProperty("address")]
             public string address { get; set; }
