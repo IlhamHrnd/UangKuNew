@@ -113,16 +113,13 @@ namespace UangKu.Model.Base
             }
 
             byte[] imgBytes;
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                await stream.CopyToAsync(memoryStream);
-                imgBytes = memoryStream.ToArray();
-                ParameterModel.ImageManager.ImageByte = memoryStream.ToArray();
-            }
+            MemoryStream memorystream = new MemoryStream();
+            await stream.CopyToAsync(memorystream);
+            imgBytes = memorystream.ToArray();
+            ParameterModel.ImageManager.ImageByte = memorystream.ToArray();
 
             return ImageSource.FromStream(() => new MemoryStream(imgBytes));
         }
-
     }
 
     public static class PermissionRequest

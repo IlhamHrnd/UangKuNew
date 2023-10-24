@@ -109,7 +109,34 @@ namespace UangKu.ViewModel.SubMenu
                 }
                 if (!string.IsNullOrEmpty(userID))
                 {
-                    
+                    var user = await GetProfile.GetProfileID(userID);
+                    if (string.IsNullOrEmpty(user.personID))
+                    {
+                        var body = new Model.Index.Body.PostProfile
+                        {
+                            personID = userID,
+                            firstName = EntFirstName.Text,
+                            middleName = EntMiddleName.Text,
+                            lastName = EntLastName.Text,
+                            birthDate = BirthDate.Date,
+                            placeOfBirth = SelectedPlaceBirth.provName,
+                            photo = ParameterModel.ImageManager.ImageByte,
+                            address = StreetName.Text,
+                            province = SelectedProvinces.provName,
+                            city = SelectedCity.cityName,
+                            district = SelectedDistrict.disName,
+                            subdistrict = SelectedSubdistrict.subdisName,
+                            postalCode = int.Parse(PostalCode.Text),
+                            lastUpdateDateTime = DateTime.Now,
+                            lastUpdateByUser = userID
+                        };
+
+                        var profile = await PostProfile.PostProfileID(body);
+                        if (!string.IsNullOrEmpty(profile))
+                        {
+                            await MsgModel.MsgNotification($"{profile}");
+                        }
+                    }
                 }
             }
             catch (Exception e)
