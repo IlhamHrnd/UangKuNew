@@ -39,7 +39,12 @@ namespace UangKu.ViewModel.Menu
                 if (Profiles.Count > 0)
                 {
                     var profile = Profiles[0];
-                    avatar.ImageSource = ImageConvert.ImgByte(profile.photo);
+                    string decodeImg = ImageConvert.DecodeBase64ToString(profile.photo);
+                    byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                    ParameterModel.ImageManager.ImageByte = byteImg;
+                    ParameterModel.ImageManager.ImageString = decodeImg;
+                    avatar.ImageSource = ImageConvert.ImgByte(byteImg);
+                    avatar.Text = profile.personID;
                 }
             }
             catch (Exception e)

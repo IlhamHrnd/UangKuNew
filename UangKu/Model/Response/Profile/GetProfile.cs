@@ -2,9 +2,9 @@
 
 namespace UangKu.Model.Response.Profile
 {
-    public class Profile
+    public class GetProfile
     {
-        public class ProfileRoot
+        public class GetProfileRoot
         {
             [JsonProperty("personID")]
             public string personID { get; set; }
@@ -17,6 +17,7 @@ namespace UangKu.Model.Response.Profile
 
             [JsonProperty("lastName")]
             public string lastName { get; set; }
+
             public string fullName
             {
                 get
@@ -32,7 +33,7 @@ namespace UangKu.Model.Response.Profile
             public string placeOfBirth { get; set; }
 
             [JsonProperty("photo")]
-            public byte[] photo { get; set; }
+            public string photo { get; set; }
 
             [JsonProperty("address")]
             public string address { get; set; }

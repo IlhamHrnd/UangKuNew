@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using UangKu.Model.Base;
-using static UangKu.Model.Response.Profile.Profile;
+using static UangKu.Model.Response.Profile.GetProfile;
 
 namespace UangKu.ViewModel.RestAPI.Profile
 {
@@ -9,9 +9,9 @@ namespace UangKu.ViewModel.RestAPI.Profile
     {
         private const string ProfileEndPoint = "https://uangkuapi.azurewebsites.net/Profile/GetPersonID?PersonID={0}";
 
-        public static async Task<ProfileRoot> GetProfileID(string personID)
+        public static async Task<GetProfileRoot> GetProfileID(string personID)
         {
-            ProfileRoot root = new ProfileRoot();
+            GetProfileRoot root = new GetProfileRoot();
             string url = string.Format(ProfileEndPoint, personID);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -27,7 +27,7 @@ namespace UangKu.ViewModel.RestAPI.Profile
                 {
                     var content = response.Content;
                     var format = content.Substring(1, content.Length - 2);
-                    var get = JsonConvert.DeserializeObject<ProfileRoot>(format);
+                    var get = JsonConvert.DeserializeObject<GetProfileRoot>(format);
                     root = get;
                 }
                 else

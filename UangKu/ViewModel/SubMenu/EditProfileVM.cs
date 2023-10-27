@@ -54,8 +54,11 @@ namespace UangKu.ViewModel.SubMenu
                     }
                     if (person.photo != null)
                     {
-                        ParameterModel.ImageManager.ImageByte = person.photo;
-                        avatar.ImageSource = ImageConvert.ImgByte(person.photo);
+                        string decodeImg = ImageConvert.DecodeBase64ToString(person.photo);
+                        byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                        ParameterModel.ImageManager.ImageByte = byteImg;
+                        ParameterModel.ImageManager.ImageString = decodeImg;
+                        avatar.ImageSource = ImageConvert.ImgByte(byteImg);
                         avatar.Text = person.personID;
                     }
                     else
@@ -109,34 +112,34 @@ namespace UangKu.ViewModel.SubMenu
                 }
                 if (!string.IsNullOrEmpty(userID))
                 {
-                    var user = await GetProfile.GetProfileID(userID);
-                    if (string.IsNullOrEmpty(user.personID))
-                    {
-                        var body = new Model.Index.Body.PostProfile
-                        {
-                            personID = userID,
-                            firstName = EntFirstName.Text,
-                            middleName = EntMiddleName.Text,
-                            lastName = EntLastName.Text,
-                            birthDate = BirthDate.Date,
-                            placeOfBirth = SelectedPlaceBirth.provName,
-                            photo = ParameterModel.ImageManager.ImageByte,
-                            address = StreetName.Text,
-                            province = SelectedProvinces.provName,
-                            city = SelectedCity.cityName,
-                            district = SelectedDistrict.disName,
-                            subdistrict = SelectedSubdistrict.subdisName,
-                            postalCode = int.Parse(PostalCode.Text),
-                            lastUpdateDateTime = DateTime.Now,
-                            lastUpdateByUser = userID
-                        };
+                    //var user = await GetProfile.GetProfileID(userID);
+                    //if (string.IsNullOrEmpty(user.personID))
+                    //{
+                    //    var body = new Model.Index.Body.PostProfile
+                    //    {
+                    //        personID = userID,
+                    //        firstName = EntFirstName.Text,
+                    //        middleName = EntMiddleName.Text,
+                    //        lastName = EntLastName.Text,
+                    //        birthDate = BirthDate.Date,
+                    //        placeOfBirth = SelectedPlaceBirth.provName,
+                    //        photo = ParameterModel.ImageManager.ImageByte,
+                    //        address = StreetName.Text,
+                    //        province = SelectedProvinces.provName,
+                    //        city = SelectedCity.cityName,
+                    //        district = SelectedDistrict.disName,
+                    //        subdistrict = SelectedSubdistrict.subdisName,
+                    //        postalCode = int.Parse(PostalCode.Text),
+                    //        lastUpdateDateTime = DateTime.Now,
+                    //        lastUpdateByUser = userID
+                    //    };
 
-                        var profile = await PostProfile.PostProfileID(body);
-                        if (!string.IsNullOrEmpty(profile))
-                        {
-                            await MsgModel.MsgNotification($"{profile}");
-                        }
-                    }
+                    //    var profile = await PostProfile.PostProfileID(body);
+                    //    if (!string.IsNullOrEmpty(profile))
+                    //    {
+                    //        await MsgModel.MsgNotification($"{profile}");
+                    //    }
+                    //}
                 }
             }
             catch (Exception e)

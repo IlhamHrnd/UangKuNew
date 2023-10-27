@@ -1,4 +1,5 @@
-﻿using static UangKu.Model.Base.ParameterModel.PermissionManager;
+﻿using System.Text;
+using static UangKu.Model.Base.ParameterModel.PermissionManager;
 
 namespace UangKu.Model.Base
 {
@@ -80,6 +81,37 @@ namespace UangKu.Model.Base
             {
                 byte[] imgByte = Convert.FromBase64String(imgPath);
                 return imgByte;
+            }
+            catch (Exception e)
+            {
+                _ = MsgModel.MsgNotification($"{e.Message}");
+                return null;
+            }
+        }
+
+        //Class Untuk Decode Base64 Ke Byte[]
+        public static byte[] DecodeBase64ToBytes(string base64String)
+        {
+            try
+            {
+                byte[] data = Convert.FromBase64String(base64String);
+                return data;
+            }
+            catch (Exception e)
+            {
+                _ = MsgModel.MsgNotification($"{e.Message}");
+                return null;
+            }
+        }
+
+        //Class Untuk Decode Base64 Ke String
+        public static string DecodeBase64ToString(string base64String)
+        {
+            try
+            {
+                byte[] data = Convert.FromBase64String(base64String);
+                string decodedString = Encoding.UTF8.GetString(data);
+                return decodedString;
             }
             catch (Exception e)
             {
