@@ -39,9 +39,9 @@
             public static bool IsUsed {  get => isused; set => isused = value; }
             private static long maxfilesize = 2 * 1024 * 1024; //Maximum File Size Is 2MB
             public static long MaxFileSize {  get => maxfilesize; set => maxfilesize = value; }
-            public static string newfile = "New";
+            private static string newfile = "New";
             public static string NewFile { get => newfile; set => newfile = value; }
-            public static string editfile = "Edit";
+            private static string editfile = "Edit";
             public static string EditFile { get =>  editfile; set => editfile = value; }
         }
 
