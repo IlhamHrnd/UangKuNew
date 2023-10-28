@@ -47,6 +47,7 @@ public partial class EditProfile : ContentPage
 
     private async void Btn_UpdateProfile_Clicked(object sender, EventArgs e)
     {
-        await _vm.SaveProfile_Clicked(Ent_FirstName, Ent_MiddleName, Ent_LastName, Ent_StreetName, BirthOfDate, Ent_PostalCode);
+        await _vm.SaveProfile_Clicked(Ent_FirstName, Ent_MiddleName, Ent_LastName, Ent_StreetName, BirthOfDate, Ent_PostalCode,
+            Pic_PlaceOfBirth, Pic_Provinces, Pic_Cities, Pic_Districts, Pic_Subdistricts);
     }
 }

@@ -18,19 +18,22 @@ namespace UangKu.ViewModel.Index
             IsBusy = true;
             try
             {
+                bool isValidEntry = await ValidateNullChecker.EntryValidateFields(
+                    (username.Text, "Username"),
+                    (password.Text, "Password"),
+                    (confirmpass.Text, "Confirm Password"),
+                    (email.Text, "Email")
+                );
+
                 if (!isConnect)
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (string.IsNullOrEmpty(username.Text) || string.IsNullOrEmpty(email.Text) || string.IsNullOrEmpty(password.Text) || string.IsNullOrEmpty(confirmpass.Text))
-                {
-                    await MsgModel.MsgNotification($"Username Or Email Is Required");
-                }
-                else if (!Equals(password.Text, confirmpass.Text))
+                if (!Equals(password.Text, confirmpass.Text))
                 {
                     await MsgModel.MsgNotification($"Password And Confirm Password Are Not The Same");
                 }
-                else
+                if (isValidEntry)
                 {
                     var updatepassword = await UserForgotPassword.PatchUserForgotPassword(username.Text, email.Text, password.Text);
                     if (updatepassword != null)

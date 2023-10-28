@@ -50,20 +50,26 @@ namespace UangKu.ViewModel.Index
             IsBusy = true;
             try
             {
+                bool isValidEntry = await ValidateNullChecker.EntryValidateFields(
+                    (username.Text, "Username"),
+                    (password.Text, "Password"),
+                    (confirmpass.Text, "Confirm Password"),
+                    (email.Text, "Email")
+                );
+
+                bool isValidPicker = await ValidateNullChecker.PickerValidateFields(
+                    (sex, "Gender")
+                );
+
                 if (!isConnect)
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (string.IsNullOrEmpty(username.Text) || string.IsNullOrEmpty(password.Text) ||
-                    string.IsNullOrEmpty(confirmpass.Text) || string.IsNullOrEmpty(email.Text) || sex.SelectedItem == null)
-                {
-                    await MsgModel.MsgNotification($"All Data Are Required");
-                }
-                else if (!Equals(password.Text, confirmpass.Text))
+                if (!Equals(password.Text, confirmpass.Text))
                 {
                     await MsgModel.MsgNotification($"{password.Text} And {confirmpass.Text} Are Not The Same");
                 }
-                else
+                if (isValidEntry && isValidPicker)
                 {
                     var signup = await UserSignUp.PostUserSignUp(username.Text, password.Text, SelectedSex.itemID, email.Text);
                     if (signup != null)

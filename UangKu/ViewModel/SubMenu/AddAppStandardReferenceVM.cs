@@ -95,46 +95,21 @@ namespace UangKu.ViewModel.SubMenu
             IsBusy = true;
             try
             {
+                bool isValidEntry = await ValidateNullChecker.EntryValidateFields(
+                    (referenceID.Text, "ReferenceID"),
+                    (referenceName.Text, "Reference Name"),
+                    (itemLength.Text, "Item Length")
+                );
+
                 if (!isConnect)
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                else if (string.IsNullOrEmpty(referenceID.Text) || string.IsNullOrEmpty(referenceName.Text) || 
-                    string.IsNullOrEmpty(itemLength.Text) || string.IsNullOrEmpty(note.Text))
-                {
-                    var errorMessage = "The Following Data Is Required : \n";
-
-                    if (string.IsNullOrEmpty(referenceID.Text))
-                    {
-                        errorMessage += "Reference ID\n";
-                        referenceID.Focus();
-                    }
-
-                    if (string.IsNullOrEmpty(referenceName.Text))
-                    {
-                        errorMessage += "Reference Name\n";
-                        referenceName.Focus();
-                    }
-
-                    if (string.IsNullOrEmpty(itemLength.Text))
-                    {
-                        errorMessage += "Item Length\n";
-                        itemLength.Focus();
-                    }
-
-                    if (string.IsNullOrEmpty(note.Text))
-                    {
-                        errorMessage += "Note";
-                        note.Focus();
-                    }
-
-                    await MsgModel.MsgNotification(errorMessage);
-                }
-                else if (ListASRI.Count < 0 || ListASRI.Count == 0)
+                if (ListASRI.Count < 0 || ListASRI.Count == 0)
                 {
                     await MsgModel.MsgNotification($"Please, Add Item First For Reference ID {referenceID.Text}");
                 }
-                else
+                if (isValidEntry)
                 {
                     var addASR = await PostAppStandardReference.PostASR(referenceID.Text, referenceName.Text, int.Parse(itemLength.Text), note.Text);
                     if (!string.IsNullOrEmpty(addASR))

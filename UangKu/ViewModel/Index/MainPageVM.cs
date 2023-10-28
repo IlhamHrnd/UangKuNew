@@ -35,15 +35,15 @@ namespace UangKu.ViewModel.Index
             IsBusy = true;
             try
             {
+                bool isValidEntry = await ValidateNullChecker.EntryValidateFields(
+                    (username.Text, "Username"),
+                    (password.Text, "Password")
+                );
                 if (!isConnect)
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (string.IsNullOrEmpty(username.Text) || string.IsNullOrEmpty(password.Text))
-                {
-                    await MsgModel.MsgNotification($"Username Or Password Is Required");
-                }
-                else
+                if (isValidEntry)
                 {
                     var user = await UserLogin.GetUsernameLogin(username.Text, password.Text);
                     if (user != null)

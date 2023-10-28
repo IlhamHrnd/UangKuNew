@@ -196,6 +196,7 @@ namespace UangKu.Model.Base
 
     public static class ValidateNullChecker
     {
+        //Class Untuk Pengecekan Entry Yang Null Karna Data Harus Di Isi Semua
         public static async Task<bool> EntryValidateFields(params (string FieldValue, string FieldName)[] fields)
         {
             var errorMessages = new List<string>();
@@ -219,6 +220,7 @@ namespace UangKu.Model.Base
             return true;
         }
 
+        //Class Untuk Pengecekan Picker Yang Null Karna Data Harus Di Isi Semua
         public static async Task<bool> PickerValidateFields(params (Picker Picker, string FieldName)[] pickers)
         {
             var errorMessages = new List<string>();

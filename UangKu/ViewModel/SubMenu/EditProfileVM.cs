@@ -96,7 +96,8 @@ namespace UangKu.ViewModel.SubMenu
         }
 
         public async Task SaveProfile_Clicked(Entry EntFirstName, Entry EntMiddleName, Entry EntLastName,
-            Entry StreetName, DatePicker BirthDate, Entry PostalCode)
+            Entry StreetName, DatePicker BirthDate, Entry PostalCode, Picker PicBirthPlace, Picker PicProv,
+            Picker PicCity, Picker PicDistrict, Picker PicSubdis)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -109,6 +110,15 @@ namespace UangKu.ViewModel.SubMenu
                     (StreetName.Text, "Street Name"),
                     (PostalCode.Text, "Postal Code")
                 );
+
+                bool isValidPicker = await ValidateNullChecker.PickerValidateFields(
+                    (PicBirthPlace, "Birth Of Place"),
+                    (PicProv, "Provinces"),
+                    (PicCity, "City"),
+                    (PicDistrict, "District"),
+                    (PicSubdis, "Subdistrict")
+                );
+
                 if (!isConnect)
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
@@ -129,59 +139,62 @@ namespace UangKu.ViewModel.SubMenu
                 {
                     await MsgModel.MsgNotification($"Image Data Is Null");
                 }
-                if (Mode == ParameterModel.ItemDefaultValue.NewFile)
+                if (isValidEntry && isValidPicker)
                 {
-
-                    var bodyPost = new Model.Index.Body.PostProfile
+                    if (Mode == ParameterModel.ItemDefaultValue.NewFile)
                     {
-                        personID = userID,
-                        firstName = EntFirstName.Text,
-                        middleName = EntMiddleName.Text,
-                        lastName = EntLastName.Text,
-                        birthDate = BirthDate.Date,
-                        placeOfBirth = SelectedPlaceBirth.provName,
-                        address = StreetName.Text,
-                        photo = ParameterModel.ImageManager.ImageString,
-                        province = SelectedProvinces.provName,
-                        city = SelectedCity.cityName,
-                        district = SelectedDistrict.disName,
-                        subdistrict = SelectedSubdistrict.subdisName,
-                        postalCode = int.Parse(PostalCode.Text),
-                        lastUpdateDateTime = DateTime.Now,
-                        lastUpdateByUser = userID
-                    };
 
-                    var profile = await PostProfile.PostProfileID(bodyPost);
-                    if (!string.IsNullOrEmpty(profile))
-                    {
-                        await MsgModel.MsgNotification($"{profile}");
+                        var bodyPost = new Model.Index.Body.PostProfile
+                        {
+                            personID = userID,
+                            firstName = EntFirstName.Text,
+                            middleName = EntMiddleName.Text,
+                            lastName = EntLastName.Text,
+                            birthDate = BirthDate.Date,
+                            placeOfBirth = SelectedPlaceBirth.provName,
+                            address = StreetName.Text,
+                            photo = ParameterModel.ImageManager.ImageString,
+                            province = SelectedProvinces.provName,
+                            city = SelectedCity.cityName,
+                            district = SelectedDistrict.disName,
+                            subdistrict = SelectedSubdistrict.subdisName,
+                            postalCode = int.Parse(PostalCode.Text),
+                            lastUpdateDateTime = DateTime.Now,
+                            lastUpdateByUser = userID
+                        };
+
+                        var profile = await PostProfile.PostProfileID(bodyPost);
+                        if (!string.IsNullOrEmpty(profile))
+                        {
+                            await MsgModel.MsgNotification($"{profile}");
+                        }
                     }
-                }
-                else
-                {
-                    var bodyPatch = new Model.Index.Body.PatchProfile
+                    else
                     {
-                        personID = userID,
-                        firstName = EntFirstName.Text,
-                        middleName = EntMiddleName.Text,
-                        lastName = EntLastName.Text,
-                        birthDate = BirthDate.Date,
-                        placeOfBirth = SelectedPlaceBirth.provName,
-                        address = StreetName.Text,
-                        photo = ParameterModel.ImageManager.ImageString,
-                        province = SelectedProvinces.provName,
-                        city = SelectedCity.cityName,
-                        district = SelectedDistrict.disName,
-                        subdistrict = SelectedSubdistrict.subdisName,
-                        postalCode = int.Parse(PostalCode.Text),
-                        lastUpdateDateTime = DateTime.Now,
-                        lastUpdateByUser = userID
-                    };
+                        var bodyPatch = new Model.Index.Body.PatchProfile
+                        {
+                            personID = userID,
+                            firstName = EntFirstName.Text,
+                            middleName = EntMiddleName.Text,
+                            lastName = EntLastName.Text,
+                            birthDate = BirthDate.Date,
+                            placeOfBirth = SelectedPlaceBirth.provName,
+                            address = StreetName.Text,
+                            photo = ParameterModel.ImageManager.ImageString,
+                            province = SelectedProvinces.provName,
+                            city = SelectedCity.cityName,
+                            district = SelectedDistrict.disName,
+                            subdistrict = SelectedSubdistrict.subdisName,
+                            postalCode = int.Parse(PostalCode.Text),
+                            lastUpdateDateTime = DateTime.Now,
+                            lastUpdateByUser = userID
+                        };
 
-                    var profile = await PatchProfile.PatchProfileID(bodyPatch);
-                    if (!string.IsNullOrEmpty(profile))
-                    {
-                        await MsgModel.MsgNotification($"{profile}");
+                        var profile = await PatchProfile.PatchProfileID(bodyPatch);
+                        if (!string.IsNullOrEmpty(profile))
+                        {
+                            await MsgModel.MsgNotification($"{profile}");
+                        }
                     }
                 }
             }
