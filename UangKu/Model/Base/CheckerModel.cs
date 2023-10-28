@@ -1,8 +1,19 @@
-﻿using System.Text;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using System.Text;
 using static UangKu.Model.Base.ParameterModel.PermissionManager;
 
 namespace UangKu.Model.Base
 {
+    public static class MsgModel
+    {
+        public static async Task MsgNotification(string message)
+        {
+            var toast = Toast.Make(message, ToastDuration.Long);
+            await toast.Show();
+        }
+    }
+
     public class NetworkModel
     {
         private static readonly NetworkModel network = new NetworkModel();
