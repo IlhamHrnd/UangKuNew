@@ -76,7 +76,7 @@ namespace UangKu.ViewModel.Menu
                     if (string.IsNullOrEmpty(person.personID))
                     {
                         await MsgModel.MsgNotification($"Please, Fill Profile For {userID} First");
-                        await _navigation.PushAsync(new EditProfile());
+                        await _navigation.PushAsync(new EditProfile(ParameterModel.ItemDefaultValue.NewFile));
                     }
                 }
             }

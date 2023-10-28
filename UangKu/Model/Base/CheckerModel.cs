@@ -196,7 +196,7 @@ namespace UangKu.Model.Base
 
     public static class ValidateNullChecker
     {
-        public static async Task<bool> ValidateFields(params (string FieldValue, string FieldName)[] fields)
+        public static async Task<bool> EntryValidateFields(params (string FieldValue, string FieldName)[] fields)
         {
             var errorMessages = new List<string>();
 
@@ -211,6 +211,29 @@ namespace UangKu.Model.Base
             if (errorMessages.Count > 0)
             {
                 var errorMessage = "The Following Data Are Required:\n";
+                errorMessage += string.Join("\n", errorMessages);
+                await MsgModel.MsgNotification(errorMessage);
+                return false;
+            }
+
+            return true;
+        }
+
+        public static async Task<bool> PickerValidateFields(params (Picker Picker, string FieldName)[] pickers)
+        {
+            var errorMessages = new List<string>();
+
+            foreach (var (picker, fieldName) in pickers)
+            {
+                if (picker.SelectedItem == null)
+                {
+                    errorMessages.Add(fieldName);
+                }
+            }
+
+            if (errorMessages.Count > 0)
+            {
+                var errorMessage = "The Following Fields Are Required:\n";
                 errorMessage += string.Join("\n", errorMessages);
                 await MsgModel.MsgNotification(errorMessage);
                 return false;

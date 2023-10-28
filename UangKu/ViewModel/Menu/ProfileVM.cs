@@ -59,7 +59,7 @@ namespace UangKu.ViewModel.Menu
 
         public async Task EditProfile_Click()
         {
-            await _navigation.PushAsync(new EditProfile());
+            await _navigation.PushAsync(new EditProfile(ParameterModel.ItemDefaultValue.EditFile));
         }
     }
 }

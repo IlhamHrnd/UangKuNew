@@ -6,10 +6,10 @@ namespace UangKu.View.SubMenu;
 public partial class EditProfile : ContentPage
 {
     private readonly EditProfileVM _vm;
-	public EditProfile()
+	public EditProfile(string mode)
 	{
 		InitializeComponent();
-        _vm = new EditProfileVM();
+        _vm = new EditProfileVM(mode);
         BindingContext = _vm;
 	}
 

@@ -25,6 +25,7 @@ namespace UangKu.ViewModel.RestAPI.Profile
                 lastName = profile.lastName,
                 birthDate = profile.birthDate,
                 placeOfBirth = profile.placeOfBirth,
+                address = profile.address,
                 photo = profile.photo,
                 province = profile.province,
                 city = profile.city,

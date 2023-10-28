@@ -10,9 +10,13 @@ namespace UangKu.ViewModel.SubMenu
     public class EditProfileVM : EditProfile
     {
         private NetworkModel network = NetworkModel.Instance;
-        public EditProfileVM()
+
+        public string Mode { get; set; }
+
+        public EditProfileVM(string mode)
         {
             Title = $"Edit Profile {App.Session.personID}";
+            Mode = mode;
         }
 
         public async void LoadData(AvatarView avatar, Entry EntFirstName, Entry EntMiddleName, Entry EntLastName, Picker PicPlaceOfBirth,
@@ -22,26 +26,54 @@ namespace UangKu.ViewModel.SubMenu
             IsBusy = true;
             try
             {
-                if (!isConnect)
+                if (Mode == ParameterModel.ItemDefaultValue.EditFile)
                 {
-                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
-                }
-                if (!string.IsNullOrEmpty(App.Session.personID))
-                {
-                    var person = await GetProfile.GetProfileID(App.Session.personID);
-                    if (!string.IsNullOrEmpty(person.personID))
+                    if (!isConnect)
                     {
-                        EntFirstName.Text = person.firstName;
-                        EntMiddleName.Text = person.middleName;
-                        EntLastName.Text = person.lastName;
-                        PicPlaceOfBirth.SelectedItem = person.placeOfBirth;
-                        StreetName.Text = person.address;
-                        Provinces.SelectedItem = person.province;
-                        City.SelectedItem = person.city;
-                        District.SelectedItem = person.district;
-                        SubDistrict.SelectedItem = person.subdistrict;
-                        PostalCode.Text = person.postalCode.ToString();
+                        await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                     }
+                    if (!string.IsNullOrEmpty(App.Session.personID))
+                    {
+                        var person = await GetProfile.GetProfileID(App.Session.personID);
+                        if (!string.IsNullOrEmpty(person.personID))
+                        {
+                            EntFirstName.Text = person.firstName;
+                            EntMiddleName.Text = person.middleName;
+                            EntLastName.Text = person.lastName;
+                            PicPlaceOfBirth.SelectedItem = person.placeOfBirth;
+                            StreetName.Text = person.address;
+                            Provinces.SelectedItem = person.province;
+                            City.SelectedItem = person.city;
+                            District.SelectedItem = person.district;
+                            SubDistrict.SelectedItem = person.subdistrict;
+                            PostalCode.Text = person.postalCode.ToString();
+                        }
+                        var provinces = await GetProvince.GetProvinces();
+                        if (provinces.Count > 0)
+                        {
+                            ListProvinces.Clear();
+                            for (int i = 0; i < provinces.Count; i++)
+                            {
+                                ListProvinces.Add(provinces[i]);
+                            }
+                        }
+                        if (person.photo != null)
+                        {
+                            string decodeImg = ImageConvert.DecodeBase64ToString(person.photo);
+                            byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                            ParameterModel.ImageManager.ImageByte = byteImg;
+                            ParameterModel.ImageManager.ImageString = decodeImg;
+                            avatar.ImageSource = ImageConvert.ImgByte(byteImg);
+                            avatar.Text = person.personID;
+                        }
+                        else
+                        {
+                            avatar.Text = App.Session.personID;
+                        }
+                    }
+                }
+                else
+                {
                     var provinces = await GetProvince.GetProvinces();
                     if (provinces.Count > 0)
                     {
@@ -50,19 +82,6 @@ namespace UangKu.ViewModel.SubMenu
                         {
                             ListProvinces.Add(provinces[i]);
                         }
-                    }
-                    if (person.photo != null)
-                    {
-                        string decodeImg = ImageConvert.DecodeBase64ToString(person.photo);
-                        byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
-                        ParameterModel.ImageManager.ImageByte = byteImg;
-                        ParameterModel.ImageManager.ImageString = decodeImg;
-                        avatar.ImageSource = ImageConvert.ImgByte(byteImg);
-                        avatar.Text = person.personID;
-                    }
-                    else
-                    {
-                        avatar.Text = App.Session.personID;
                     }
                 }
             }
@@ -84,10 +103,11 @@ namespace UangKu.ViewModel.SubMenu
             try
             {
                 string userID;
-                bool isValid = await ValidateNullChecker.ValidateFields(
+                bool isValidEntry = await ValidateNullChecker.EntryValidateFields(
                     (EntFirstName.Text, "First Name"),
                     (EntLastName.Text, "Last Name"),
-                    (StreetName.Text, "Street Name")
+                    (StreetName.Text, "Street Name"),
+                    (PostalCode.Text, "Postal Code")
                 );
                 if (!isConnect)
                 {
@@ -109,60 +129,59 @@ namespace UangKu.ViewModel.SubMenu
                 {
                     await MsgModel.MsgNotification($"Image Data Is Null");
                 }
-                if (!string.IsNullOrEmpty(userID))
+                if (Mode == ParameterModel.ItemDefaultValue.NewFile)
                 {
-                    var user = await GetProfile.GetProfileID(userID);
-                    if (string.IsNullOrEmpty(user.personID))
-                    {
-                        var body = new Model.Index.Body.PostProfile
-                        {
-                            personID = userID,
-                            firstName = EntFirstName.Text,
-                            middleName = EntMiddleName.Text,
-                            lastName = EntLastName.Text,
-                            birthDate = BirthDate.Date,
-                            placeOfBirth = SelectedPlaceBirth.provName,
-                            photo = ParameterModel.ImageManager.ImageString,
-                            province = SelectedProvinces.provName,
-                            city = SelectedCity.cityName,
-                            district = SelectedDistrict.disName,
-                            subdistrict = SelectedSubdistrict.subdisName,
-                            postalCode = int.Parse(PostalCode.Text),
-                            lastUpdateDateTime = DateTime.Now,
-                            lastUpdateByUser = userID
-                        };
 
-                        var profile = await PostProfile.PostProfileID(body);
-                        if (!string.IsNullOrEmpty(profile))
-                        {
-                            await MsgModel.MsgNotification($"{profile}");
-                        }
+                    var bodyPost = new Model.Index.Body.PostProfile
+                    {
+                        personID = userID,
+                        firstName = EntFirstName.Text,
+                        middleName = EntMiddleName.Text,
+                        lastName = EntLastName.Text,
+                        birthDate = BirthDate.Date,
+                        placeOfBirth = SelectedPlaceBirth.provName,
+                        address = StreetName.Text,
+                        photo = ParameterModel.ImageManager.ImageString,
+                        province = SelectedProvinces.provName,
+                        city = SelectedCity.cityName,
+                        district = SelectedDistrict.disName,
+                        subdistrict = SelectedSubdistrict.subdisName,
+                        postalCode = int.Parse(PostalCode.Text),
+                        lastUpdateDateTime = DateTime.Now,
+                        lastUpdateByUser = userID
+                    };
+
+                    var profile = await PostProfile.PostProfileID(bodyPost);
+                    if (!string.IsNullOrEmpty(profile))
+                    {
+                        await MsgModel.MsgNotification($"{profile}");
                     }
-                    else
+                }
+                else
+                {
+                    var bodyPatch = new Model.Index.Body.PatchProfile
                     {
-                        var body = new Model.Index.Body.PatchProfile
-                        {
-                            personID = userID,
-                            firstName = EntFirstName.Text,
-                            middleName = EntMiddleName.Text,
-                            lastName = EntLastName.Text,
-                            birthDate = BirthDate.Date,
-                            placeOfBirth = SelectedPlaceBirth.provName,
-                            photo = ParameterModel.ImageManager.ImageString,
-                            province = SelectedProvinces.provName,
-                            city = SelectedCity.cityName,
-                            district = SelectedDistrict.disName,
-                            subdistrict = SelectedSubdistrict.subdisName,
-                            postalCode = int.Parse(PostalCode.Text),
-                            lastUpdateDateTime = DateTime.Now,
-                            lastUpdateByUser = userID
-                        };
+                        personID = userID,
+                        firstName = EntFirstName.Text,
+                        middleName = EntMiddleName.Text,
+                        lastName = EntLastName.Text,
+                        birthDate = BirthDate.Date,
+                        placeOfBirth = SelectedPlaceBirth.provName,
+                        address = StreetName.Text,
+                        photo = ParameterModel.ImageManager.ImageString,
+                        province = SelectedProvinces.provName,
+                        city = SelectedCity.cityName,
+                        district = SelectedDistrict.disName,
+                        subdistrict = SelectedSubdistrict.subdisName,
+                        postalCode = int.Parse(PostalCode.Text),
+                        lastUpdateDateTime = DateTime.Now,
+                        lastUpdateByUser = userID
+                    };
 
-                        var profile = await PatchProfile.PatchProfileID(body);
-                        if (!string.IsNullOrEmpty(profile))
-                        {
-                            await MsgModel.MsgNotification($"{profile}");
-                        }
+                    var profile = await PatchProfile.PatchProfileID(bodyPatch);
+                    if (!string.IsNullOrEmpty(profile))
+                    {
+                        await MsgModel.MsgNotification($"{profile}");
                     }
                 }
             }
