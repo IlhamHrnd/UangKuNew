@@ -2,9 +2,9 @@
 
 namespace UangKu.Model.Response.Profile
 {
-    public class GetProfile
+    public class Profile
     {
-        public class GetProfileRoot
+        public class ProfileRoot
         {
             [JsonProperty("personID")]
             public string personID { get; set; }

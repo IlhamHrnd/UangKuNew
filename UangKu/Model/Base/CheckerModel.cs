@@ -149,6 +149,7 @@ namespace UangKu.Model.Base
             await stream.CopyToAsync(memorystream);
             imgBytes = memorystream.ToArray();
             ParameterModel.ImageManager.ImageByte = memorystream.ToArray();
+            ParameterModel.ImageManager.ImageString = ByteToStringImg(imgBytes);
 
             return ImageSource.FromStream(() => new MemoryStream(imgBytes));
         }

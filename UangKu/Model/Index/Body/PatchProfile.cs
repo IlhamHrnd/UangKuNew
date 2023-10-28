@@ -2,7 +2,7 @@
 
 namespace UangKu.Model.Index.Body
 {
-    public class PostProfile
+    public class PatchProfile
     {
         [JsonProperty("personID")]
         public string personID { get; set; }

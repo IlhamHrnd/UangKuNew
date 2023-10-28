@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Maui.Views;
-using Microsoft.Maui.Controls;
 using UangKu.Model.Base;
 using UangKu.Model.SubMenu;
 using UangKu.ViewModel.RestAPI.Location;
@@ -106,40 +105,65 @@ namespace UangKu.ViewModel.SubMenu
                 {
                     userID = string.Empty;
                 }
-                if (ParameterModel.ImageManager.ImageByte == null)
+                if (ParameterModel.ImageManager.ImageByte == null && string.IsNullOrEmpty(ParameterModel.ImageManager.ImageString))
                 {
                     await MsgModel.MsgNotification($"Image Data Is Null");
                 }
                 if (!string.IsNullOrEmpty(userID))
                 {
-                    //var user = await GetProfile.GetProfileID(userID);
-                    //if (string.IsNullOrEmpty(user.personID))
-                    //{
-                    //    var body = new Model.Index.Body.PostProfile
-                    //    {
-                    //        personID = userID,
-                    //        firstName = EntFirstName.Text,
-                    //        middleName = EntMiddleName.Text,
-                    //        lastName = EntLastName.Text,
-                    //        birthDate = BirthDate.Date,
-                    //        placeOfBirth = SelectedPlaceBirth.provName,
-                    //        photo = ParameterModel.ImageManager.ImageByte,
-                    //        address = StreetName.Text,
-                    //        province = SelectedProvinces.provName,
-                    //        city = SelectedCity.cityName,
-                    //        district = SelectedDistrict.disName,
-                    //        subdistrict = SelectedSubdistrict.subdisName,
-                    //        postalCode = int.Parse(PostalCode.Text),
-                    //        lastUpdateDateTime = DateTime.Now,
-                    //        lastUpdateByUser = userID
-                    //    };
+                    var user = await GetProfile.GetProfileID(userID);
+                    if (string.IsNullOrEmpty(user.personID))
+                    {
+                        var body = new Model.Index.Body.PostProfile
+                        {
+                            personID = userID,
+                            firstName = EntFirstName.Text,
+                            middleName = EntMiddleName.Text,
+                            lastName = EntLastName.Text,
+                            birthDate = BirthDate.Date,
+                            placeOfBirth = SelectedPlaceBirth.provName,
+                            photo = ParameterModel.ImageManager.ImageString,
+                            province = SelectedProvinces.provName,
+                            city = SelectedCity.cityName,
+                            district = SelectedDistrict.disName,
+                            subdistrict = SelectedSubdistrict.subdisName,
+                            postalCode = int.Parse(PostalCode.Text),
+                            lastUpdateDateTime = DateTime.Now,
+                            lastUpdateByUser = userID
+                        };
 
-                    //    var profile = await PostProfile.PostProfileID(body);
-                    //    if (!string.IsNullOrEmpty(profile))
-                    //    {
-                    //        await MsgModel.MsgNotification($"{profile}");
-                    //    }
-                    //}
+                        var profile = await PostProfile.PostProfileID(body);
+                        if (!string.IsNullOrEmpty(profile))
+                        {
+                            await MsgModel.MsgNotification($"{profile}");
+                        }
+                    }
+                    else
+                    {
+                        var body = new Model.Index.Body.PatchProfile
+                        {
+                            personID = userID,
+                            firstName = EntFirstName.Text,
+                            middleName = EntMiddleName.Text,
+                            lastName = EntLastName.Text,
+                            birthDate = BirthDate.Date,
+                            placeOfBirth = SelectedPlaceBirth.provName,
+                            photo = ParameterModel.ImageManager.ImageString,
+                            province = SelectedProvinces.provName,
+                            city = SelectedCity.cityName,
+                            district = SelectedDistrict.disName,
+                            subdistrict = SelectedSubdistrict.subdisName,
+                            postalCode = int.Parse(PostalCode.Text),
+                            lastUpdateDateTime = DateTime.Now,
+                            lastUpdateByUser = userID
+                        };
+
+                        var profile = await PatchProfile.PatchProfileID(body);
+                        if (!string.IsNullOrEmpty(profile))
+                        {
+                            await MsgModel.MsgNotification($"{profile}");
+                        }
+                    }
                 }
             }
             catch (Exception e)
