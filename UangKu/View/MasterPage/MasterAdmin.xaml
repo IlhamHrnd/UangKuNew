@@ -43,4 +43,9 @@
         <ShellContent ContentTemplate="{DataTemplate Menu:AppStandardReference}"
                       Route="AppStandardReference"/>
     </FlyoutItem>
+    <FlyoutItem Title="Transaction"
+                Icon="dotnet_bot.svg">
+        <ShellContent ContentTemplate="{DataTemplate Menu:TransactionLog}"
+                      Route="TransactionLog"/>
+    </FlyoutItem>
 </Shell>

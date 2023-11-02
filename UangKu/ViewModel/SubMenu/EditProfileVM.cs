@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.SubMenu
 
         public EditProfileVM(string mode)
         {
-            Title = $"Edit Profile {App.Session.personID}";
+            Title = $"{Mode} Profile {App.Session.personID}";
             Mode = mode;
         }
 

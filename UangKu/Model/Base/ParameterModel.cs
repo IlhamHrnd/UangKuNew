@@ -43,6 +43,10 @@
             public static string NewFile { get => newfile; set => newfile = value; }
             private static string editfile = "Edit";
             public static string EditFile { get =>  editfile; set => editfile = value; }
+            private static string incometrans = "IN";
+            public static string IncomeTrans { get => incometrans; set => incometrans = value; }
+            private static string outcometrans = "OU";
+            public static string OutcomeTrans { get => outcometrans; set => outcometrans = value; }
         }
 
         public class PermissionManager
