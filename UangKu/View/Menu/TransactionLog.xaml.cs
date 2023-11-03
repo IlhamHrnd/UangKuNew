@@ -6,7 +6,8 @@ namespace UangKu.View.Menu;
 public partial class TransactionLog : ContentPage
 {
 	private readonly TransactionLogVM _vm;
-	public TransactionLog()
+    private int FirstPage = 1;
+    public TransactionLog()
 	{
 		InitializeComponent();
 		_vm = new TransactionLogVM();
@@ -15,6 +16,6 @@ public partial class TransactionLog : ContentPage
     protected async override void OnAppearing()
     {
         await SessionModel.SessionCheck();
-		_vm.LoadData();
+		_vm.LoadData(FirstPage, ParameterModel.ItemDefaultValue.Maxresult);
     }
 }

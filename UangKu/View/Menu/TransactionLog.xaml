@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="UangKu.View.Menu.TransactionLog"
              xmlns:Model="clr-namespace:UangKu.Model.Menu"
              xmlns:Font="clr-namespace:UangKu.Model.Base"
@@ -60,6 +61,28 @@
             <IndicatorView Style="{StaticResource IndicatorView}"
                            x:Name="Indicator_SumTrans"
                            HorizontalOptions="CenterAndExpand"/>
+            <CollectionView ItemsSource="{Binding ListAllTrans[0].data}"
+                            Margin="0,10">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" 
+                                       ItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.Header>
+                    <Frame Style="{StaticResource Frame}">
+                        <Label Style="{StaticResource Label}"
+                               Text="Transaction History"
+                               Margin="0,10"
+                               HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Style="{StaticResource Frame}">
+                            <toolkit:AvatarView ImageSource="{Binding source}"/>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
     </ScrollView>
 </ContentPage>

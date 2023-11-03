@@ -1,19 +1,18 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using UangKu.Model.Base;
-using UangKu.Model.Response.Transaction;
-using static UangKu.Model.Response.Transaction.SumTransaction;
+using static UangKu.Model.Response.Transaction.AllTransaction;
 
 namespace UangKu.ViewModel.RestAPI.Transaction
 {
-    public class GetSumTransaction
+    public class AllTransaction
     {
-        private const string SumTransactionEndPoint = "https://uangkuapi.azurewebsites.net/Transaction/GetSumTransaction?personID={0}";
+        private const string AllTransactionEndPoint = "https://uangkuapi.azurewebsites.net/Transaction/GetAllTransaction?PageNumber={0}&PageSize={1}&PersonID={2}";
 
-        public static async Task<List<SumTransactionRoot>> GetSumTransactionID(string personID)
+        public static async Task<AllTransactionRoot> GetAllTransaction(int pageNumber, int pageSize, string personID)
         {
-            List<SumTransactionRoot> root = new List<SumTransactionRoot>();
-            string url = string.Format(SumTransactionEndPoint, personID);
+            AllTransactionRoot root = new AllTransactionRoot();
+            string url = string.Format(AllTransactionEndPoint, pageNumber, pageSize, personID);
             var client = new RestClient(url);
             var request = new RestRequest
             {
@@ -27,7 +26,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
                 if (response.IsSuccessStatusCode)
                 {
                     var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<List<SumTransactionRoot>>(content);
+                    var get = JsonConvert.DeserializeObject<AllTransactionRoot>(content);
                     root = get;
                 }
                 else

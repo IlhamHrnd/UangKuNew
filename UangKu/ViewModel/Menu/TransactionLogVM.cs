@@ -1,4 +1,5 @@
-﻿using UangKu.Model.Base;
+﻿using Android.Test.Suitebuilder.Annotation;
+using UangKu.Model.Base;
 using UangKu.Model.Menu;
 
 namespace UangKu.ViewModel.Menu
@@ -10,7 +11,7 @@ namespace UangKu.ViewModel.Menu
         {
             Title = $"Transaction Log For {App.Session.username}";
         }
-        public async void LoadData()
+        public async void LoadData(int pageNumber, int pageSize)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -21,14 +22,44 @@ namespace UangKu.ViewModel.Menu
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
                 var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(App.Session.username);
-                foreach (var item in sumtrans)
+                if (sumtrans.Count > 0)
                 {
-                    if (item.amount != null)
+                    ListSumTrans.Clear();
+                    for (int i = 0; i < sumtrans.Count; i++)
                     {
-                        item.amountFormat = FormatCurrency.Currency((decimal)item.amount, "id-ID");
-                    }
+                        var item = sumtrans[i];
+                        if (item.amount != null)
+                        {
+                            item.amountFormat = FormatCurrency.Currency((decimal)item.amount, ParameterModel.ItemDefaultValue.Currency);
+                        }
 
-                    ListSumTrans.Add(item);
+                        ListSumTrans.Add(item);
+                    }
+                }
+                var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(pageNumber, pageSize, App.Session.username);
+                if ((bool)alltrans.succeeded)
+                {
+                    ListAllTrans.Clear();
+                    for (int i = 0; i < alltrans.data.Count; i++)
+                    {
+                        var item = alltrans;
+
+                        if (item.data[i].amount != null)
+                        {
+                            item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, ParameterModel.ItemDefaultValue.Currency);
+                        }
+
+                        if (!string.IsNullOrEmpty(item.data[i].photo))
+                        {
+                            string decodeImg = ImageConvert.DecodeBase64ToString(item.data[i].photo);
+                            byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                            ParameterModel.ImageManager.ImageByte = byteImg;
+                            ParameterModel.ImageManager.ImageString = decodeImg;
+                            item.data[i].source = ImageConvert.ImgByte(byteImg);
+                        }
+
+                        ListAllTrans.Add(item);
+                    }
                 }
             }
             catch (Exception e)
