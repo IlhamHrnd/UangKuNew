@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using System.Globalization;
 using System.Text;
 using static UangKu.Model.Base.ParameterModel.PermissionManager;
 
@@ -34,6 +35,15 @@ namespace UangKu.Model.Base
             {
                 await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Online);
             }
+        }
+    }
+
+    public static class FormatCurrency
+    {
+        public static string Currency(decimal amount, string culture)
+        {
+            CultureInfo info = new CultureInfo(culture);
+            return amount.ToString("C", info);
         }
     }
 

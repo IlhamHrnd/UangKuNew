@@ -102,8 +102,4 @@
 	  </MauiXaml>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="ViewModel\RestAPI\Transaction\" />
-	</ItemGroup>
-
 </Project>
