@@ -172,9 +172,9 @@ namespace UangKu.ViewModel.Menu
                 IsBusy = false;
             }
         }
-        public async Task NewTransaction_ToolBar()
+        public async Task NewTransaction_ToolBar(string mode)
         {
-            await _navigation.PushAsync(new View.SubMenu.NewTransaction());
+            await _navigation.PushAsync(new View.SubMenu.NewTransaction(mode));
         }
     }
 }

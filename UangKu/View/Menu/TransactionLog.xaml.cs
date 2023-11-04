@@ -31,6 +31,6 @@ public partial class TransactionLog : ContentPage
 
     private async void Bar_AddItem_Clicked(object sender, EventArgs e)
     {
-        await _vm.NewTransaction_ToolBar();
+        await _vm.NewTransaction_ToolBar(ParameterModel.ItemDefaultValue.NewFile);
     }
 }
