@@ -1,5 +1,4 @@
-﻿using Android.Test.Suitebuilder.Annotation;
-using UangKu.Model.Base;
+﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
 
 namespace UangKu.ViewModel.Menu
@@ -37,13 +36,12 @@ namespace UangKu.ViewModel.Menu
                     }
                 }
                 var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(pageNumber, pageSize, App.Session.username);
-                if ((bool)alltrans.succeeded)
+                if (alltrans.data.Count > 0)
                 {
                     ListAllTrans.Clear();
-                    for (int i = 0; i < alltrans.data.Count; i++)
+                    var item = alltrans;
+                    for (int i = 0; i < item.data.Count; i++)
                     {
-                        var item = alltrans;
-
                         if (item.data[i].amount != null)
                         {
                             item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, ParameterModel.ItemDefaultValue.Currency);
@@ -57,9 +55,8 @@ namespace UangKu.ViewModel.Menu
                             ParameterModel.ImageManager.ImageString = decodeImg;
                             item.data[i].source = ImageConvert.ImgByte(byteImg);
                         }
-
-                        ListAllTrans.Add(item);
                     }
+                    ListAllTrans.Add(item);
                 }
             }
             catch (Exception e)
