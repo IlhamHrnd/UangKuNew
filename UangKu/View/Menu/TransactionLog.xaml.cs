@@ -29,8 +29,8 @@ public partial class TransactionLog : ContentPage
         _vm.PreviousPage_Click(ParameterModel.ItemDefaultValue.Maxresult);
     }
 
-    private void Bar_AddItem_Clicked(object sender, EventArgs e)
+    private async void Bar_AddItem_Clicked(object sender, EventArgs e)
     {
-        _vm.NewTransaction_ToolBar();
+        await _vm.NewTransaction_ToolBar();
     }
 }
