@@ -56,7 +56,109 @@ namespace UangKu.ViewModel.Menu
                             item.data[i].source = ImageConvert.ImgByte(byteImg);
                         }
                     }
+                    Page = (int)alltrans.pageNumber;
                     ListAllTrans.Add(item);
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        public async void NextPage_Clicked(int pageSize)
+        {
+            var maxPage = ListAllTrans[0].totalPages;
+            bool isConnect = network.IsConnected;
+            IsBusy = true;
+            try
+            {
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                }
+                if (Page >= maxPage)
+                {
+                    await MsgModel.MsgNotification("This Is The Latest Page");
+                }
+                else
+                {
+                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page + 1, pageSize, App.Session.username);
+                    if (alltrans.data.Count > 0)
+                    {
+                        ListAllTrans.Clear();
+                        var item = alltrans;
+                        for (int i = 0; i < item.data.Count; i++)
+                        {
+                            if (item.data[i].amount != null)
+                            {
+                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, ParameterModel.ItemDefaultValue.Currency);
+                            }
+
+                            if (!string.IsNullOrEmpty(item.data[i].photo))
+                            {
+                                string decodeImg = ImageConvert.DecodeBase64ToString(item.data[i].photo);
+                                byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                                ParameterModel.ImageManager.ImageByte = byteImg;
+                                ParameterModel.ImageManager.ImageString = decodeImg;
+                                item.data[i].source = ImageConvert.ImgByte(byteImg);
+                            }
+                        }
+                        ListAllTrans.Add(item);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        public async void PreviousPage_Click(int pageSize)
+        {
+            bool isConnect = network.IsConnected;
+            IsBusy = true;
+            try
+            {
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                }
+                if (Page <= 1)
+                {
+                    await MsgModel.MsgNotification("This Is The First Page");
+                }
+                else
+                {
+                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page - 1, pageSize, App.Session.username);
+                    if (alltrans.data.Count > 0)
+                    {
+                        ListAllTrans.Clear();
+                        var item = alltrans;
+                        for (int i = 0; i < item.data.Count; i++)
+                        {
+                            if (item.data[i].amount != null)
+                            {
+                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, ParameterModel.ItemDefaultValue.Currency);
+                            }
+
+                            if (!string.IsNullOrEmpty(item.data[i].photo))
+                            {
+                                string decodeImg = ImageConvert.DecodeBase64ToString(item.data[i].photo);
+                                byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                                ParameterModel.ImageManager.ImageByte = byteImg;
+                                ParameterModel.ImageManager.ImageString = decodeImg;
+                                item.data[i].source = ImageConvert.ImgByte(byteImg);
+                            }
+                        }
+                        ListAllTrans.Add(item);
+                    }
                 }
             }
             catch (Exception e)
