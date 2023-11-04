@@ -26,7 +26,7 @@ namespace UangKu.ViewModel.SubMenu
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
                 var asr = await GetAppStandardReferenceID.GetASRAsync(referenceID.Text);
-                if (asr != null)
+                if (!string.IsNullOrEmpty(asr.standardReferenceID))
                 {
                     ListASR.Add(asr);
                 }
