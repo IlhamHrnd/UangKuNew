@@ -171,6 +171,7 @@ namespace UangKu.Model.Base
             imgBytes = memorystream.ToArray();
             ParameterModel.ImageManager.ImageByte = memorystream.ToArray();
             ParameterModel.ImageManager.ImageString = ByteToStringImg(imgBytes);
+            ParameterModel.ImageManager.ImageName = result.FileName;
 
             return ImageSource.FromStream(() => new MemoryStream(imgBytes));
         }

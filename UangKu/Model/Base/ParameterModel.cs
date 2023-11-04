@@ -65,6 +65,8 @@
             public static string ImageString { get => imagestring; set => imagestring = value; }
             private static byte[] imagebyte = null;
             public static byte[] ImageByte { get => imagebyte; set => imagebyte = value; }
+            private static string imagename = string.Empty;
+            public static string ImageName { get => imagename; set => imagename = value; }
         } 
     }
 }

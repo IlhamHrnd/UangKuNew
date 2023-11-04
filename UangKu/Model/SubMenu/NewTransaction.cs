@@ -24,6 +24,20 @@ namespace UangKu.Model.SubMenu
             }
             set { listtransaction = value; }
         }
+        private IList<AsriTwoRoot> listtransitem { get; set; }
+
+        public IList<AsriTwoRoot> ListTransItem
+        {
+            get
+            {
+                if (listtransitem == null)
+                {
+                    listtransitem = new ObservableCollection<AsriTwoRoot>();
+                }
+                return listtransitem;
+            }
+            set { listtransitem = value; }
+        }
         private AsriRoot selectedtranstype { get; set; }
         public AsriRoot SelectedTransType
         {
@@ -34,6 +48,19 @@ namespace UangKu.Model.SubMenu
                 {
                     selectedtranstype = value;
                     OnPropertyChanged(nameof(SelectedTransType));
+                }
+            }
+        }
+        private AsriTwoRoot selectedtransitem { get; set; }
+        public AsriTwoRoot SelectedTransItem
+        {
+            get { return selectedtransitem; }
+            set
+            {
+                if (selectedtransitem != value)
+                {
+                    selectedtransitem = value;
+                    OnPropertyChanged(nameof(SelectedTransItem));
                 }
             }
         }

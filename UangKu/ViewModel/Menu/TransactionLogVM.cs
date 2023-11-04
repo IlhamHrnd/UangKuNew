@@ -53,8 +53,6 @@ namespace UangKu.ViewModel.Menu
                         {
                             string decodeImg = ImageConvert.DecodeBase64ToString(item.data[i].photo);
                             byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
-                            ParameterModel.ImageManager.ImageByte = byteImg;
-                            ParameterModel.ImageManager.ImageString = decodeImg;
                             item.data[i].source = ImageConvert.ImgByte(byteImg);
                         }
                     }
@@ -104,8 +102,6 @@ namespace UangKu.ViewModel.Menu
                             {
                                 string decodeImg = ImageConvert.DecodeBase64ToString(item.data[i].photo);
                                 byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
-                                ParameterModel.ImageManager.ImageByte = byteImg;
-                                ParameterModel.ImageManager.ImageString = decodeImg;
                                 item.data[i].source = ImageConvert.ImgByte(byteImg);
                             }
                         }
@@ -154,8 +150,6 @@ namespace UangKu.ViewModel.Menu
                             {
                                 string decodeImg = ImageConvert.DecodeBase64ToString(item.data[i].photo);
                                 byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
-                                ParameterModel.ImageManager.ImageByte = byteImg;
-                                ParameterModel.ImageManager.ImageString = decodeImg;
                                 item.data[i].source = ImageConvert.ImgByte(byteImg);
                             }
                         }

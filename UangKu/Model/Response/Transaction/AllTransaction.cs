@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Maui.Views;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace UangKu.Model.Response.Transaction
 {

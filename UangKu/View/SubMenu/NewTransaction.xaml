@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Model="clr-namespace:UangKu.Model.SubMenu"
              x:Class="UangKu.View.SubMenu.NewTransaction"
              Title="{Binding Title}">
@@ -16,6 +17,9 @@
                    Margin="0,10">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -46,8 +50,69 @@
                             SelectedIndexChanged="Pic_TransType_SelectedIndexChanged"
                             SelectedItem="{Binding SelectedTransType}"
                             x:Name="Pic_TransType"/>
+                    <Label Grid.Column="0"
+                           Grid.Row="2"
+                           Style="{StaticResource Label}"
+                           Text="Trans Type"/>
+                    <Picker Grid.Column="1"
+                            Grid.Row="2"
+                            Style="{StaticResource Picker}"
+                            ItemsSource="{Binding ListTransItem}"
+                            ItemDisplayBinding="{Binding itemName}"
+                            SelectedItem="{Binding SelectedTransItem}"
+                            x:Name="Pic_TransItem"/>
+                    <Label Grid.Column="0"
+                           Grid.Row="3"
+                           Style="{StaticResource Label}"
+                           Text="Amount"/>
+                    <Entry Grid.Column="1"
+                           Grid.Row="3"
+                           Style="{StaticResource Entry}"
+                           MaxLength="10"
+                           Placeholder="Amount"
+                           Keyboard="Numeric"
+                           x:Name="Ent_Amount"/>
+                    <Label Grid.Column="0"
+                           Grid.Row="4"
+                           Style="{StaticResource Label}"
+                           Text="Description"/>
+                    <Entry Grid.Column="1"
+                           Grid.Row="4"
+                           Style="{StaticResource Entry}"
+                           MaxLength="200"
+                           Placeholder="Description"
+                           Keyboard="Text"
+                           x:Name="Ent_Description"/>
+                    <Label Grid.Column="0"
+                           Grid.Row="5"
+                           Style="{StaticResource Label}">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Photo"/>
+                                <Span Text=" (Optional)" FontSize="Micro"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Button Grid.Column="1"
+                            Grid.Row="5"
+                            Style="{StaticResource Button}"
+                            Text="Upload"
+                            x:Name="Btn_Upload"
+                            Clicked="Btn_Upload_Clicked"/>
+                    <toolkit:AvatarView Grid.Column="0"
+                                        Grid.Row="6"
+                                        Grid.ColumnSpan="2"
+                                        HeightRequest="200"
+                                        WidthRequest="200"
+                                        Style="{StaticResource Avatar}"
+                                        x:Name="Avt_Transaction"/>
                 </Grid>
             </Frame>
+            <Button Style="{StaticResource Button}"
+                    Text="Save Transaction"
+                    Margin="10"
+                    x:Name="Btn_SaveTransaction"
+                    Clicked="Btn_SaveTransaction_Clicked"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>

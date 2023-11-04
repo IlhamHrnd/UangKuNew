@@ -1,7 +1,9 @@
-﻿using UangKu.Model.Base;
+﻿using CommunityToolkit.Maui.Views;
+using UangKu.Model.Base;
 using UangKu.Model.SubMenu;
 using UangKu.ViewModel.RestAPI.AppStandardReferenceItem;
 using UangKu.ViewModel.RestAPI.Transaction;
+using static UangKu.Model.Base.ParameterModel.PermissionManager;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 
 namespace UangKu.ViewModel.SubMenu
@@ -67,6 +69,7 @@ namespace UangKu.ViewModel.SubMenu
                 try
                 {
                     var select = SelectedTransType.itemID.ToString();
+                    var itemName = SelectedTransType.itemName.ToString();
                     if (!isConnect)
                     {
                         await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
@@ -92,6 +95,18 @@ namespace UangKu.ViewModel.SubMenu
                             EntryTransNo.Text = transno;
                         }
                     }
+                    if (!string.IsNullOrEmpty(itemName))
+                    {
+                        var transitem = await AppStandardReferenceItem.GetAsriAsync<AsriTwoRoot>(itemName, true, true);
+                        if (transitem.Count > 0)
+                        {
+                            ListTransItem.Clear();
+                            foreach (var item in transitem)
+                            {
+                                ListTransItem.Add(item);
+                            }
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
@@ -101,6 +116,55 @@ namespace UangKu.ViewModel.SubMenu
                 {
                     IsBusy = false;
                 }
+            }
+        }
+        public async Task UploadPhoto_Click(AvatarView avatar)
+        {
+            PermissionType type = PermissionType.StorageRead;
+            await PermissionRequest.RequestPermission(type);
+
+            ImageSource source = await ImageConvert.PickImageAsync();
+
+            if (source != null)
+            {
+                avatar.ImageSource = source;
+                avatar.Text = ParameterModel.ImageManager.ImageName;
+            }
+        }
+        public async Task SaveTransaction_Click(Entry EntTransNo, Entry EntAmount, Entry EntDescription,
+            Picker PicTrans, Picker PicTransItem)
+        {
+            bool isConnect = network.IsConnected;
+            IsBusy = true;
+            try
+            {
+                bool isValidEntry = await ValidateNullChecker.EntryValidateFields(
+                    (EntTransNo.Text, "Transaction No"),
+                    (EntAmount.Text, "Amount"),
+                    (EntDescription.Text, "Description")
+                );
+
+                bool isValidPicker = await ValidateNullChecker.PickerValidateFields(
+                    (PicTrans, "Transaction"),
+                    (PicTransItem, "Transaction Item")
+                );
+
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                }
+                if (ParameterModel.ImageManager.ImageByte == null && string.IsNullOrEmpty(ParameterModel.ImageManager.ImageString))
+                {
+                    await MsgModel.MsgNotification($"Image Data Is Null");
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
     }
