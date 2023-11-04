@@ -10,7 +10,8 @@
         <Model:TransactionLog/>
     </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="Bar_AddItem">
+        <ToolbarItem x:Name="Bar_AddItem"
+                     Clicked="Bar_AddItem_Clicked">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="FARegular"
                                  Glyph="{x:Static Font:FARegular.Plus}"
@@ -71,7 +72,8 @@
                            x:Name="Indicator_SumTrans"
                            HorizontalOptions="CenterAndExpand"/>
             <CollectionView ItemsSource="{Binding ListAllTrans}"
-                            Margin="0,10">
+                            Margin="0,10"
+                            EmptyView="No Data Transaction To Display">
                 <CollectionView.Header>
                     <Frame Style="{StaticResource Frame}">
                         <Label Style="{StaticResource Label}"

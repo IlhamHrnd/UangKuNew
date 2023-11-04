@@ -6,9 +6,11 @@ namespace UangKu.ViewModel.Menu
     public class TransactionLogVM : TransactionLog
     {
         private NetworkModel network = NetworkModel.Instance;
-        public TransactionLogVM()
+        private readonly INavigation _navigation;
+        public TransactionLogVM(INavigation navigation)
         {
             Title = $"Transaction Log For {App.Session.username}";
+            _navigation = navigation;
         }
         public async void LoadData(int pageNumber, int pageSize)
         {
@@ -169,6 +171,10 @@ namespace UangKu.ViewModel.Menu
             {
                 IsBusy = false;
             }
+        }
+        public async Task NewTransaction_ToolBar()
+        {
+            await _navigation.PushAsync(new View.SubMenu.NewTransaction());
         }
     }
 }

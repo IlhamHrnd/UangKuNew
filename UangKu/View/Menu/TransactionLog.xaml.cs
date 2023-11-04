@@ -10,7 +10,7 @@ public partial class TransactionLog : ContentPage
     public TransactionLog()
 	{
         InitializeComponent();
-		_vm = new TransactionLogVM();
+		_vm = new TransactionLogVM(Navigation);
 		BindingContext = _vm;
 	}
     protected async override void OnAppearing()
@@ -27,5 +27,10 @@ public partial class TransactionLog : ContentPage
     private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
     {
         _vm.PreviousPage_Click(ParameterModel.ItemDefaultValue.Maxresult);
+    }
+
+    private void Bar_AddItem_Clicked(object sender, EventArgs e)
+    {
+        _vm.NewTransaction_ToolBar();
     }
 }
