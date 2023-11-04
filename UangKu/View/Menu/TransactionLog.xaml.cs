@@ -26,6 +26,6 @@ public partial class TransactionLog : ContentPage
 
     private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
     {
-        
+        _vm.PreviousPage_Click(ParameterModel.ItemDefaultValue.Maxresult);
     }
 }
