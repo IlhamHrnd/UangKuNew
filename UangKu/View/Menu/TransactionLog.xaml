@@ -98,6 +98,12 @@
                                                            Invoked="SwipeTrans_Invoked"/>
                                             </SwipeItems>
                                         </SwipeView.LeftItems>
+                                        <SwipeView.RightItems>
+                                            <SwipeItems>
+                                                <SwipeItem Text="Edit"
+                                                           Invoked="SwipeTrans_Invoked"/>
+                                            </SwipeItems>
+                                        </SwipeView.RightItems>
                                         <Frame Style="{StaticResource Frame}">
                                             <Grid>
                                                 <Grid.RowDefinitions>
