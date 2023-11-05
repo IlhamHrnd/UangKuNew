@@ -11,12 +11,31 @@ namespace UangKu.ViewModel.SubMenu
     public class NewTransactionVM : NewTransaction
     {
         private NetworkModel network = NetworkModel.Instance;
-        public string Mode { get; set; }
-        public string TransTypes { get; set; }
-        public NewTransactionVM(string mode)
+        private string Mode { get; set; }
+        private string TransTypes { get; set; }
+        private string TransNo { get; set; }
+        public NewTransactionVM(string mode, string transNo)
         {
             Mode = mode;
-            Title = $"{Mode} Transaction For {App.Session.username}";
+            TransNo = transNo;
+
+            LoadTitle();
+        }
+        private async void LoadTitle()
+        {
+            if (Mode == ParameterModel.ItemDefaultValue.NewFile)
+            {
+                Title = $"{Mode} Transaction For {App.Session.username}";
+            }
+            else if (Mode == ParameterModel.ItemDefaultValue.EditFile)
+            {
+                Title = $"{Mode} For TransNo {TransNo}";
+            }
+            else
+            {
+                Title = string.Empty;
+                await MsgModel.MsgNotification($"Mode For {Mode} Is Unknow");
+            }
         }
         public async void LoadData()
         {
@@ -85,6 +104,7 @@ namespace UangKu.ViewModel.SubMenu
                             break;
 
                         default:
+                            await MsgModel.MsgNotification($"TransType For {TransTypes} Is Unknow");
                             break;
                     }
                     if (!string.IsNullOrEmpty(TransTypes) && Mode == ParameterModel.ItemDefaultValue.NewFile)
@@ -135,6 +155,7 @@ namespace UangKu.ViewModel.SubMenu
             Picker PicTrans, Picker PicTransItem)
         {
             bool isConnect = network.IsConnected;
+            string dateOnly = ParameterModel.ItemDefaultValue.DateTime.ToString("yyyy-MM-dd");
             IsBusy = true;
             try
             {
@@ -153,9 +174,42 @@ namespace UangKu.ViewModel.SubMenu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (ParameterModel.ImageManager.ImageByte == null && string.IsNullOrEmpty(ParameterModel.ImageManager.ImageString))
+                if (Mode == ParameterModel.ItemDefaultValue.NewFile)
                 {
-                    await MsgModel.MsgNotification($"Image Data Is Null");
+                    if (!string.IsNullOrEmpty(TransTypes))
+                    {
+                        var bodyPost = new Model.Index.Body.PostTransaction
+                        {
+                            transNo = EntTransNo.Text,
+                            srTransaction = SelectedTransType.itemID,
+                            srTransItem = SelectedTransItem.itemID,
+                            amount = int.Parse(EntAmount.Text),
+                            description = EntDescription.Text,
+                            photo = ParameterModel.ImageManager.ImageString,
+                            createdDateTime = DateTime.Now,
+                            createdByUserID = App.Session.username,
+                            lastUpdateDateTime = DateTime.Now,
+                            lastUpdateByUserID = App.Session.username,
+                            transType = TransTypes,
+                            transDate = dateOnly,
+                            personID = App.Session.username
+                        };
+
+                        var transaction = await PostTransaction.PostTransactionTransNo(bodyPost);
+                        if (!string.IsNullOrEmpty(transaction))
+                        {
+                            await MsgModel.MsgNotification($"{transaction}");
+                        }
+                    }
+                }
+                else if (Mode == ParameterModel.ItemDefaultValue.EditFile)
+                {
+                    //LANJUT BESOK DISINI
+                    //PROSES SAVE TRANSACTION
+                }
+                else
+                {
+                    await MsgModel.MsgNotification($"Mode For {Mode} Is Unknow");
                 }
             }
             catch (Exception e)

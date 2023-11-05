@@ -33,4 +33,9 @@ public partial class TransactionLog : ContentPage
     {
         await _vm.NewTransaction_ToolBar(ParameterModel.ItemDefaultValue.NewFile);
     }
+
+    private async void SwipeTrans_Invoked(object sender, EventArgs e)
+    {
+        await _vm.SwipeItem_Invoked(sender, ParameterModel.ItemDefaultValue.EditFile);
+    }
 }

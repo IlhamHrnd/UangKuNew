@@ -1,5 +1,6 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
+using static UangKu.Model.Response.Transaction.AllTransaction;
 
 namespace UangKu.ViewModel.Menu
 {
@@ -166,9 +167,25 @@ namespace UangKu.ViewModel.Menu
                 IsBusy = false;
             }
         }
+        public async Task SwipeItem_Invoked(object sender, string mode)
+        {
+            var item = sender as SwipeItem;
+            if (item == null)
+            {
+                return;
+            }
+
+            var transNo = item.BindingContext as Datum;
+            if (transNo == null)
+            {
+                return;
+            }
+
+            await _navigation.PushAsync(new View.SubMenu.NewTransaction(mode, transNo.transNo));
+        }
         public async Task NewTransaction_ToolBar(string mode)
         {
-            await _navigation.PushAsync(new View.SubMenu.NewTransaction(mode));
+            await _navigation.PushAsync(new View.SubMenu.NewTransaction(mode, string.Empty));
         }
     }
 }

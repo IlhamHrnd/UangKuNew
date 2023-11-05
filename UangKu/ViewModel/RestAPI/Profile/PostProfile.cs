@@ -46,6 +46,10 @@ namespace UangKu.ViewModel.RestAPI.Profile
                     var content = response.Content;
                     var post = JsonConvert.DeserializeObject<string>(content);
                 }
+                else
+                {
+                    await MsgModel.MsgNotification(response.ErrorMessage);
+                }
             }
             catch (Exception e)
             {

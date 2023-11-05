@@ -91,54 +91,62 @@
                             </CollectionView.ItemsLayout>
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <Frame Style="{StaticResource Frame}">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="150" />
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="50*" />
-                                                <ColumnDefinition Width="50*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Row="0"
-                                                   Grid.Column="0"
-                                                   Grid.ColumnSpan="2"
-                                                   HorizontalTextAlignment="Center"
-                                                   Style="{StaticResource Label}"
-                                                   Text="{Binding transNo}"/>
-                                            <Label Grid.Row="1"
-                                                   Grid.Column="0"
-                                                   HorizontalTextAlignment="Center"
-                                                   Style="{StaticResource Label}"
-                                                   Text="{Binding srTransaction}"/>
-                                            <Label Grid.Row="1"
-                                                   Grid.Column="1"
-                                                   HorizontalTextAlignment="Center"
-                                                   Style="{StaticResource Label}"
-                                                   Text="{Binding srTransItem}"/>
-                                            <Label Grid.Row="2"
-                                                   Grid.Column="0"
-                                                   HorizontalTextAlignment="Center"
-                                                   Style="{StaticResource Label}"
-                                                   Text="{Binding amountFormat}"/>
-                                            <Label Grid.Row="2"
-                                                   Grid.Column="1"
-                                                   HorizontalTextAlignment="Center"
-                                                   Style="{StaticResource Label}"
-                                                   Text="{Binding description}"/>
-                                            <toolkit:AvatarView Grid.Row="3"
-                                                                Grid.Column="0"
-                                                                Grid.ColumnSpan="2"
-                                                                HeightRequest="150"
-                                                                WidthRequest="200"
-                                                                Text="{Binding srTransItem}"
-                                                                Style="{StaticResource Avatar}"
-                                                                ImageSource="{Binding source}"/>
-                                        </Grid>
-                                    </Frame>
+                                    <SwipeView Style="{StaticResource SwipeView}">
+                                        <SwipeView.LeftItems>
+                                            <SwipeItems>
+                                                <SwipeItem Text="Edit"
+                                                           Invoked="SwipeTrans_Invoked"/>
+                                            </SwipeItems>
+                                        </SwipeView.LeftItems>
+                                        <Frame Style="{StaticResource Frame}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="150" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="50*" />
+                                                    <ColumnDefinition Width="50*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Grid.Row="0"
+                                                       Grid.Column="0"
+                                                       Grid.ColumnSpan="2"
+                                                       HorizontalTextAlignment="Center"
+                                                       Style="{StaticResource Label}"
+                                                       Text="{Binding transNo}"/>
+                                                <Label Grid.Row="1"
+                                                       Grid.Column="0"
+                                                       HorizontalTextAlignment="Center"
+                                                       Style="{StaticResource Label}"
+                                                       Text="{Binding srTransaction}"/>
+                                                <Label Grid.Row="1"
+                                                       Grid.Column="1"
+                                                       HorizontalTextAlignment="Center"
+                                                       Style="{StaticResource Label}"
+                                                       Text="{Binding srTransItem}"/>
+                                                <Label Grid.Row="2"
+                                                       Grid.Column="0"
+                                                       HorizontalTextAlignment="Center"
+                                                       Style="{StaticResource Label}"
+                                                       Text="{Binding amountFormat}"/>
+                                                <Label Grid.Row="2"
+                                                       Grid.Column="1"
+                                                       HorizontalTextAlignment="Center"
+                                                       Style="{StaticResource Label}"
+                                                       Text="{Binding description}"/>
+                                                <toolkit:AvatarView Grid.Row="3"
+                                                                    Grid.Column="0"
+                                                                    Grid.ColumnSpan="2"
+                                                                    HeightRequest="150"
+                                                                    WidthRequest="200"
+                                                                    Text="{Binding srTransItem}"
+                                                                    Style="{StaticResource Avatar}"
+                                                                    ImageSource="{Binding source}"/>
+                                            </Grid>
+                                        </Frame>
+                                    </SwipeView>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>

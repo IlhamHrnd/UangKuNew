@@ -6,10 +6,10 @@ namespace UangKu.View.SubMenu;
 public partial class NewTransaction : ContentPage
 {
 	private readonly NewTransactionVM _vm;
-	public NewTransaction(string mode)
+	public NewTransaction(string mode, string transNo)
 	{
 		InitializeComponent();
-		_vm = new NewTransactionVM(mode);
+		_vm = new NewTransactionVM(mode, transNo);
 		BindingContext = _vm;
 	}
     protected async override void OnAppearing()
