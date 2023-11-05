@@ -37,7 +37,8 @@ namespace UangKu.ViewModel.SubMenu
                 await MsgModel.MsgNotification($"Mode For {Mode} Is Unknow");
             }
         }
-        public async void LoadData()
+        public async void LoadData(Entry EntTransNo, Entry EntAmount, Entry EntDescription,
+            Picker PicTrans, Picker PicTransItem, AvatarView Avatar)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -53,7 +54,27 @@ namespace UangKu.ViewModel.SubMenu
                 }
                 else if (Mode == ParameterModel.ItemDefaultValue.EditFile)
                 {
-
+                    if (!string.IsNullOrEmpty(TransNo))
+                    {
+                        var transno = await GetTransNo.GetTransactionNo(TransNo);
+                        if (!string.IsNullOrEmpty(transno.transNo))
+                        {
+                            EntTransNo.Text = transno.transNo;
+                            PicTrans.SelectedItem = transno.transType;
+                            PicTransItem.SelectedItem = transno.srTransItem;
+                            EntAmount.Text = transno.amount.ToString();
+                            EntDescription.Text = transno.description;
+                            Avatar.Text = transno.srTransItem;
+                        }
+                        if (transno.photo != null)
+                        {
+                            string decodeImg = ImageConvert.DecodeBase64ToString(transno.photo);
+                            byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                            ParameterModel.ImageManager.ImageByte = byteImg;
+                            ParameterModel.ImageManager.ImageString = decodeImg;
+                            Avatar.ImageSource = ImageConvert.ImgByte(byteImg);
+                        }
+                    }
                 }
                 else
                 {
