@@ -314,8 +314,17 @@
         </Setter>
     </Style>
 
-    <Style TargetType="SwipeItem" x:Key="SwipeItem">
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
+    <Style TargetType="SwipeView" x:Key="SwipeView">
+        <Setter Property="LeftItems">
+            <SwipeItems>
+                <SwipeItem BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"/>
+            </SwipeItems>
+        </Setter>
+        <Setter Property="RightItems">
+            <SwipeItems>
+                <SwipeItem BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}"/>
+            </SwipeItems>
+        </Setter>
     </Style>
 
     <Style TargetType="Switch" x:Key="Switch">
