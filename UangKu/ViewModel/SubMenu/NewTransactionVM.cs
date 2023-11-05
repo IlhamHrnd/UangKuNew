@@ -62,9 +62,13 @@ namespace UangKu.ViewModel.SubMenu
                             EntTransNo.Text = transno.transNo;
                             PicTrans.SelectedItem = transno.transType;
                             PicTransItem.SelectedItem = transno.srTransItem;
-                            EntAmount.Text = transno.amount.ToString();
                             EntDescription.Text = transno.description;
                             Avatar.Text = transno.srTransItem;
+                        }
+                        if (transno.amount != 0)
+                        {
+                            var value = FormatCurrency.DecimalToInt((decimal)transno.amount);
+                            EntAmount.Text = value.ToString();
                         }
                         if (transno.photo != null)
                         {
@@ -225,8 +229,25 @@ namespace UangKu.ViewModel.SubMenu
                 }
                 else if (Mode == ParameterModel.ItemDefaultValue.EditFile)
                 {
-                    //LANJUT BESOK DISINI
-                    //PROSES SAVE TRANSACTION
+                    var bodyPatch = new Model.Index.Body.PatchTransaction
+                    {
+                        transNo = EntTransNo.Text,
+                        srTransaction = SelectedTransType.itemID,
+                        srTransItem = SelectedTransItem.itemID,
+                        amount = int.Parse(EntAmount.Text),
+                        description = EntDescription.Text,
+                        photo = ParameterModel.ImageManager.ImageString,
+                        lastUpdateDateTime = DateTime.Now,
+                        lastUpdateByUserID = App.Session.username,
+                        transType = TransTypes,
+                        transDate = dateOnly
+                    };
+
+                    var transaction = await PatchTransaction.PatchTransactionTransNo(bodyPatch);
+                    if (!string.IsNullOrEmpty(transaction))
+                    {
+                        await MsgModel.MsgNotification($"{transaction}");
+                    }
                 }
                 else
                 {

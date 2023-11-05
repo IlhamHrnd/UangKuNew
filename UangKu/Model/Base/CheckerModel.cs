@@ -45,6 +45,12 @@ namespace UangKu.Model.Base
             CultureInfo info = new CultureInfo(culture);
             return amount.ToString("C", info);
         }
+
+        public static int DecimalToInt(decimal value)
+        {
+            var values = (int)value;
+            return values;
+        }
     }
 
     public static class SessionModel
