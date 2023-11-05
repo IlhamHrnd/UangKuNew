@@ -79,6 +79,9 @@
 	  <MauiXaml Update="View\MasterPage\MasterAdmin.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\MasterPage\MasterUser.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\Menu\AppStandardReference.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

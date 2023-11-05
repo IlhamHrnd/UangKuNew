@@ -60,13 +60,14 @@ namespace UangKu.ViewModel.Index
                             lastUpdateByUser = user.lastUpdateByUser,
                             personID = user.personID
                         };
-
-                        var updatelogin = await UserLastLogin.PatchUserLastLogin(username.Text);
-                        if (string.IsNullOrEmpty(updatelogin))
+                        if (!string.IsNullOrEmpty(App.Session.username) && App.Session.statusName == ParameterModel.Login.Status)
                         {
-                            await MsgModel.MsgNotification(updatelogin);
+                            var updatelogin = await UserLastLogin.PatchUserLastLogin(username.Text);
+                            if (string.IsNullOrEmpty(updatelogin))
+                            {
+                                await MsgModel.MsgNotification(updatelogin);
+                            }
                         }
-
                         if (string.IsNullOrEmpty(App.Session.username))
                         {
                             await MsgModel.MsgNotification($"Username {username.Text} Not Found");
@@ -84,11 +85,11 @@ namespace UangKu.ViewModel.Index
                                     App.Current.MainPage = masterAdmin;
                                     break;
 
-                                //case "User":
-                                //    var masterUser = new View.MasterPage.MasterUser();
-                                //    App.Current.MainPage = masterUser;
-                                //    break;
-
+                                case "User":
+                                    var masterUser = new View.MasterPage.MasterUser();
+                                    App.Current.MainPage = masterUser;
+                                    break;
+                                
                                 default:
                                     await MsgModel.MsgNotification($"User Access For {App.Session.username} Is {App.Session.accessName} Unknown");
                                     break;
