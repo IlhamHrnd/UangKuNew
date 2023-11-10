@@ -78,6 +78,22 @@ namespace UangKu.ViewModel.Menu
                         await MsgModel.MsgNotification($"Please, Fill Profile For {userID} First");
                         await _navigation.PushAsync(new EditProfile(ParameterModel.ItemDefaultValue.NewFile));
                     }
+
+                    var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID);
+                    if (sumtrans.Count > 0)
+                    {
+                        ListSumTrans.Clear();
+                        for (int i = 0; i < sumtrans.Count; i++)
+                        {
+                            var item = sumtrans[i];
+                            if (item.amount != null)
+                            {
+                                item.amountFormat = FormatCurrency.Currency((decimal)item.amount, ParameterModel.ItemDefaultValue.Currency);
+                            }
+
+                            ListSumTrans.Add(item);
+                        }
+                    }
                 }
             }
             catch (Exception e)

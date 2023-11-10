@@ -182,6 +182,30 @@ namespace UangKu.Model.Base
             return ImageSource.FromStream(() => new MemoryStream(imgBytes));
         }
     }
+    
+    public static class RandomColorGenerator
+    {
+        private static readonly Random random = new Random();
+
+        public static Color RGBGenerateRandomColor()
+        {
+            byte red = (byte)random.Next(256);
+            byte green = (byte)random.Next(256);
+            byte blue = (byte)random.Next(256);
+
+            return Color.FromRgb(red, green, blue);
+        }
+
+        public static string HexGenerateRandomColor()
+        {
+            byte[] colorBytes = new byte[3];
+
+            random.NextBytes(colorBytes);
+            string hexColor = $"#{colorBytes[0]:X2}{colorBytes[1]:X2}{colorBytes[2]:X2}";
+
+            return hexColor;
+        }
+    }
 
     public static class PermissionRequest
     {
