@@ -8,11 +8,22 @@
             public static string Status { get => status; set => status = value; }
         }
 
+        public class DateFormat
+        {
+            private static string format = "dd/MM/yyyy";
+            public static string Format { get => format; set => format = value; }
+            private static string date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            public static string Date { get => date; set => date = value; }
+            private static DateTime datetime = DateTime.Now;
+            public static DateTime DateTime { get => datetime; set => datetime = value; }
+        }
+
         public class AppStandardReference
         {
             private static string itemid = string.Empty;
             public static string ItemID { get => itemid; set => itemid = value; }
         }
+
         public class AppStandardReferenceItem
         {
             private static string itemid = string.Empty;
@@ -31,10 +42,6 @@
             public static int Maxresult { get => maxresult; set => maxresult = value; }
             private static int timeout = 10000;
             public static int Timeout { get => timeout; set => timeout = value; }
-            private static string date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            public static string Date { get => date; set => date = value; }
-            private static DateTime datetime = DateTime.Now;
-            public static DateTime DateTime { get => datetime; set => datetime = value; }
             private static bool isactive = true;
             public static bool IsActive { get => isactive; set => isactive = value; }
             private static bool isused = true;

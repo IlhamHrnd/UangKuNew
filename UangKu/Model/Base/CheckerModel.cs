@@ -69,6 +69,17 @@ namespace UangKu.Model.Base
         }
     }
 
+    public static class DateFormat
+    {
+        //Date Formating Sesuai Format Di Indonesia dd/MM/yyyy
+        public static string FormattingDate(DateTime date)
+        {
+            string formattedDate = date.ToString(ParameterModel.DateFormat.Format);
+
+            return formattedDate;
+        }
+    }
+
     public static class ImageConvert
     {
         //Class Untuk Mengambil Gambar Byte[] Dari Response WebService

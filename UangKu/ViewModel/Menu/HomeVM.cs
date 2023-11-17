@@ -18,7 +18,7 @@ namespace UangKu.ViewModel.Menu
         private void LoadData()
         {
             string greeting;
-            switch (DateTime.Hour)
+            switch (ParameterModel.DateFormat.DateTime.Hour)
             {
                 case int h when h >= 0 && h <= 10:
                     greeting = "Good Morning";

@@ -32,6 +32,9 @@ namespace UangKu.Model.Response.User
 
             [JsonProperty("personID")]
             public string personID { get; set; }
+            public bool? isActive { get; set; }
+            public string dateActive { get; set; }
+            public string dateLogin { get; set; } 
         }
 
         public class AllUserRoot

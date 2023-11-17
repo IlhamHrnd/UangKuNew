@@ -26,7 +26,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
                 isUsedBySystem = ParameterModel.ItemDefaultValue.IsUsed,
                 isActive = ParameterModel.ItemDefaultValue.IsActive,
                 note = note,
-                lastUpdateDateTime = ParameterModel.ItemDefaultValue.DateTime,
+                lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
                 lastUpdateByUserID = App.Session.username
             };
             request.AddJsonBody(body);

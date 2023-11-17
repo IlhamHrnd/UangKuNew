@@ -180,7 +180,7 @@ namespace UangKu.ViewModel.SubMenu
             Picker PicTrans, Picker PicTransItem)
         {
             bool isConnect = network.IsConnected;
-            string dateOnly = ParameterModel.ItemDefaultValue.DateTime.ToString("yyyy-MM-dd");
+            string dateOnly = ParameterModel.DateFormat.DateTime.ToString("yyyy-MM-dd");
             IsBusy = true;
             try
             {

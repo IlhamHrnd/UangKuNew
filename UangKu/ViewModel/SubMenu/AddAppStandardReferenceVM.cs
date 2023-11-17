@@ -173,7 +173,7 @@ namespace UangKu.ViewModel.SubMenu
                     note = note.Text,
                     isUsedBySystem = ParameterModel.ItemDefaultValue.IsUsed,
                     isActive = ParameterModel.ItemDefaultValue.IsActive,
-                    lastUpdateDateTime = ParameterModel.ItemDefaultValue.DateTime,
+                    lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
                     lastUpdateByUserID = App.Session.username
                 };
                 ListASRI.Add(root);

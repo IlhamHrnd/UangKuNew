@@ -1,16 +1,129 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Model="clr-namespace:UangKu.Model.Menu"
+             xmlns:Font="clr-namespace:UangKu.Model.Base"
              x:Class="UangKu.View.Menu.AllUser"
              Title="{Binding Title}">
     <ContentPage.BindingContext>
         <Model:AllUser/>
     </ContentPage.BindingContext>
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView Style="{StaticResource ScrollView}">
+        <StackLayout Style="{StaticResource StackLayout}">
+            <SearchBar Style="{StaticResource SearchBar}"/>
+            <ActivityIndicator Style="{StaticResource ActivityIndicator}"
+                               IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"/>
+            <CollectionView ItemsSource="{Binding ListAllUser}"
+                            Margin="0, 10, 0, 0">
+                <CollectionView.Header>
+                    <Frame Style="{StaticResource Frame}">
+                        <Label Style="{StaticResource Label}"
+                               FontSize="Header"
+                               HorizontalTextAlignment="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Title}"/>
+                                    <Span FontFamily="FARegular" Text="{x:Static Font:FARegular.User}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Frame>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <CollectionView ItemsSource="{Binding data}"
+                                        SelectionMode="Single"
+                                        x:Name="Coll_User">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource Border}">
+                                        <Grid Margin="5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="50*" />
+                                                <ColumnDefinition Width="50*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0"
+                                                   Grid.Row="0"
+                                                   Grid.ColumnSpan="2"
+                                                   Style="{StaticResource Label}"
+                                                   HorizontalTextAlignment="Center"
+                                                   Text="{Binding username}"/>
+                                            <Label Grid.Column="0"
+                                                   Grid.Row="1"
+                                                   Style="{StaticResource Label}"
+                                                   HorizontalTextAlignment="Center">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="Access : "/>
+                                                        <Span Text="{Binding accessName}"/>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                            <HorizontalStackLayout Grid.Column="1"
+                                                           Grid.Row="1">
+                                                <CheckBox Style="{StaticResource CheckBox}"
+                                                          IsChecked="{Binding isActive}"
+                                                          IsEnabled="False"/>
+                                                <Label Style="{StaticResource Label}"
+                                                       Text="Is Active"
+                                                       VerticalTextAlignment="Center"/>
+                                            </HorizontalStackLayout>
+                                            <Label Grid.Column="0"
+                                                   Grid.Row="2"
+                                                   Style="{StaticResource Label}"
+                                                   HorizontalTextAlignment="Center">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="Active Date : "/>
+                                                        <Span Text="{Binding dateActive}"/>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                            <Label Grid.Column="1"
+                                                   Grid.Row="2"
+                                                   Style="{StaticResource Label}"
+                                                   HorizontalTextAlignment="Center">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="Last Login : "/>
+                                                        <Span Text="{Binding dateLogin}"/>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <VerticalStackLayout>
+                        <HorizontalStackLayout HorizontalOptions="CenterAndExpand"
+                                               Spacing="20">
+                            <Button Style="{StaticResource Button}"
+                                    Text="Previous Page"
+                                    x:Name="Btn_PreviousPage"
+                                    Clicked="Btn_PreviousPage_Clicked"/>
+                            <Button Style="{StaticResource Button}"
+                                    Text="Next Page"
+                                    x:Name="Btn_NextPage"
+                                    Clicked="Btn_NextPage_Clicked"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </CollectionView.Footer>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

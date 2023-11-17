@@ -22,9 +22,9 @@ namespace UangKu.ViewModel.RestAPI.User
             {
                 username = username,
                 sexName = sexname,
-                activeDate = ParameterModel.ItemDefaultValue.DateTime,
-                lastLogin = ParameterModel.ItemDefaultValue.DateTime,
-                lastUpdateDateTime = ParameterModel.ItemDefaultValue.DateTime,
+                activeDate = ParameterModel.DateFormat.DateTime,
+                lastLogin = ParameterModel.DateFormat.DateTime,
+                lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
                 lastUpdateByUser = username,
                 personID = username
             };
