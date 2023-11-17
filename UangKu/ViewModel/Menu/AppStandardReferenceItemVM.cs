@@ -67,7 +67,7 @@ namespace UangKu.ViewModel.Menu
                 {
                     var item = ListASR[i];
                     var reference = item.standardReferenceID;
-                    var length = item.itemLength.HasValue ? (int)item.itemLength : 0; ;
+                    var length = item.itemLength.HasValue ? (int)item.itemLength : 0;
                     var active = item.isActive ?? false;
                     var use = item.isUsedBySystem ?? false;
                     var note = string.IsNullOrEmpty(item.note) ? "-" : item.note;
