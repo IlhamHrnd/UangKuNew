@@ -7,7 +7,6 @@ namespace UangKu.View.Menu;
 public partial class AppStandardReference : ContentPage
 {
 	private readonly AppStandardReferenceVM _vm;
-	private int FirstPage = 1;
 	public AppStandardReference()
 	{
 		InitializeComponent();
@@ -18,7 +17,7 @@ public partial class AppStandardReference : ContentPage
     {
         await SessionModel.SessionCheck();
 
-        _vm.LoadData(FirstPage, ParameterModel.ItemDefaultValue.Maxresult);
+        _vm.LoadData(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.Maxresult);
     }
 
     private void Btn_NextPage_Clicked(object sender, EventArgs e)

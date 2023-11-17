@@ -193,7 +193,9 @@ namespace UangKu.Model.Base
             byte green = (byte)random.Next(256);
             byte blue = (byte)random.Next(256);
 
-            return Color.FromRgb(red, green, blue);
+            var color = Color.FromRgb(red, green, blue);
+
+            return color;
         }
 
         public static string HexGenerateRandomColor()
@@ -205,6 +207,17 @@ namespace UangKu.Model.Base
 
             return hexColor;
         }
+
+        //Dikomen Dulu Karna SKIA Sharp Di Hapus Dulu
+        //public static SKColor SKGenerateRandomColor()
+        //{
+        //    byte[] colorBytes = new byte[3];
+        //    random.NextBytes(colorBytes);
+
+        //    var skcolor = new SKColor(colorBytes[0], colorBytes[1], colorBytes[2]);
+
+        //    return skcolor;
+        //}
     }
 
     public static class PermissionRequest

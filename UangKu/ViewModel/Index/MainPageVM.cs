@@ -63,7 +63,7 @@ namespace UangKu.ViewModel.Index
                         if (!string.IsNullOrEmpty(App.Session.username) && App.Session.statusName == ParameterModel.Login.Status)
                         {
                             var updatelogin = await UserLastLogin.PatchUserLastLogin(username.Text);
-                            if (string.IsNullOrEmpty(updatelogin))
+                            if (!string.IsNullOrEmpty(updatelogin))
                             {
                                 await MsgModel.MsgNotification(updatelogin);
                             }

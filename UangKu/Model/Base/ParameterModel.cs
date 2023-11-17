@@ -24,7 +24,9 @@
             private static string offline = "You're Offline";
             public static string Offline { get => offline; set => offline = value; }
             private static string online = "Back Online";
-            public static string Online { get =>  online; set => online = value; }
+            public static string Online { get => online; set => online = value; }
+            private static int firstpage = 1;
+            public static int FirstPage { get => firstpage; set => firstpage = value; }
             private static int maxresult = 25;
             public static int Maxresult { get => maxresult; set => maxresult = value; }
             private static int timeout = 10000;
