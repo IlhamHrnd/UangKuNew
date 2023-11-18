@@ -114,7 +114,7 @@ namespace UangKu.ViewModel.Menu
             var itemID = standardID?.standardReferenceID;
             ParameterModel.AppStandardReference.ItemID = itemID;
 
-            if (itemID != null)
+            if (!string.IsNullOrEmpty(itemID))
             {
                 await _navigation.PushAsync(new View.Menu.AppStandardReferenceItem());
             }
