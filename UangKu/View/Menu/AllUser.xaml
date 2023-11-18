@@ -11,7 +11,6 @@
     </ContentPage.BindingContext>
     <ScrollView Style="{StaticResource ScrollView}">
         <StackLayout Style="{StaticResource StackLayout}">
-            <SearchBar Style="{StaticResource SearchBar}"/>
             <ActivityIndicator Style="{StaticResource ActivityIndicator}"
                                IsRunning="{Binding IsBusy}"
                                IsVisible="{Binding IsBusy}"/>
@@ -35,6 +34,7 @@
                     <DataTemplate>
                         <CollectionView ItemsSource="{Binding data}"
                                         SelectionMode="Single"
+                                        SelectionChanged="Coll_User_SelectionChanged"
                                         x:Name="Coll_User">
                             <CollectionView.ItemsLayout>
                                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>

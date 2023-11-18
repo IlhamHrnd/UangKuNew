@@ -7,9 +7,13 @@ namespace UangKu.ViewModel.Menu
     public class AllUserVM : AllUser
     {
         private NetworkModel network = NetworkModel.Instance;
-        public AllUserVM()
+
+        private readonly INavigation _navigation;
+
+        public AllUserVM(INavigation navigation)
         {
             Title = $"List User";
+            _navigation = navigation;
         }
         public async void LoadData()
         {
@@ -159,6 +163,21 @@ namespace UangKu.ViewModel.Menu
             finally
             {
                 IsBusy = false;
+            }
+        }
+        public async Task AllUser_PopUp(SelectionChangedEventArgs args)
+        {
+            var userID = args.CurrentSelection[0] as Model.Response.User.AllUser.Datum;
+            var itemID = userID?.username;
+            ParameterModel.User.UserID = itemID;
+
+            if (!string.IsNullOrEmpty(itemID))
+            {
+                await _navigation.PushAsync(new View.SubMenu.EditUsername());
+            }
+            else
+            {
+                await MsgModel.MsgNotification($"You Haven't Selected An Item Yet");
             }
         }
     }

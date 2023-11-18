@@ -61,8 +61,10 @@
 	  <None Remove="Resources\Images\afternoon.svg" />
 	  <None Remove="Resources\Images\evening.svg" />
 	  <None Remove="Resources\Images\main_page.svg" />
+	  <None Remove="Resources\Images\man.svg" />
 	  <None Remove="Resources\Images\morning.svg" />
 	  <None Remove="Resources\Images\night.svg" />
+	  <None Remove="Resources\Images\woman.svg" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -110,6 +112,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\SubMenu\EditProfile.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\SubMenu\EditUsername.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\SubMenu\NewTransaction.xaml">
