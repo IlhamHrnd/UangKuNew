@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              xmlns:Model="clr-namespace:UangKu.Model.SubMenu"
              xmlns:Font="clr-namespace:UangKu.Model.Base"
              x:Class="UangKu.View.SubMenu.EditUsername"
@@ -32,6 +33,68 @@
                     </Label>
                 </HorizontalStackLayout>
             </Frame>
+            <Label Style="{StaticResource Label}"
+                   FontSize="Large"
+                   HorizontalTextAlignment="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Profile "/>
+                        <Span Text="{Binding Name}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Grid RowSpacing="10"
+                  Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="35*" />
+                    <ColumnDefinition Width="65*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0"
+                       Grid.Row="0"
+                       Style="{StaticResource Label}"
+                       Text="Gender"/>
+                <input:SelectionView Grid.Column="1"
+                                     Grid.Row="0"
+                                     Style="{StaticResource SelectionView}"
+                                     ColumnNumber="2"
+                                     SelectionType="SingleCheckBox"
+                                     ItemsSource="{Binding ListSex}"
+                                     ItemDisplayBinding="{Binding itemName}"
+                                     SelectedItem="{Binding SelectedSex}"/>
+                <Label Grid.Column="0"
+                       Grid.Row="1"
+                       Style="{StaticResource Label}"
+                       Text="Access"/>
+                <Picker Grid.Column="1"
+                        Grid.Row="1"
+                        Style="{StaticResource Picker}"
+                        Title="User Access"
+                        x:Name="Pic_Access"
+                        SelectedItem="{Binding SelectedAccess}"
+                        ItemsSource="{Binding ListAccess}"
+                        ItemDisplayBinding="{Binding itemName}"/>
+                <HorizontalStackLayout Grid.Column="0"
+                                       Grid.Row="2"
+                                       Grid.ColumnSpan="2"
+                                       HorizontalOptions="Center">
+                    <CheckBox Style="{StaticResource CheckBox}"
+                              x:Name="CB_IsActive"/>
+                    <Label Style="{StaticResource Label}"
+                           Text="Is Active"
+                           VerticalTextAlignment="Center"/>
+                </HorizontalStackLayout>
+            </Grid>
+            <Button Style="{StaticResource Button}"
+                    Text="Update"
+                    Margin="10"
+                    x:Name="Btn_Update"
+                    Clicked="Btn_Update_Clicked"/>
         </StackLayout>
     </ScrollView>
 </ContentPage>

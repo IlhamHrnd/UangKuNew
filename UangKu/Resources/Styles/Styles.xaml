@@ -461,4 +461,8 @@
         <Setter Property="CircleColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}" />
     </Style>
+
+    <Style TargetType="input:SelectionView" x:Key="SelectionView">
+        <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}" />
+    </Style>
 </ResourceDictionary>

@@ -40,5 +40,31 @@ namespace UangKu.Model.SubMenu
             }
             set { listaccess = value; }
         }
+        private AsriRoot selectedsex { get; set; }
+        public AsriRoot SelectedSex
+        {
+            get { return selectedsex; }
+            set
+            {
+                if (selectedsex != value)
+                {
+                    selectedsex = value;
+                    OnPropertyChanged(nameof(selectedsex));
+                }
+            }
+        }
+        private AsriTwoRoot selectedaccess { get; set; }
+        public AsriTwoRoot SelectedAccess
+        {
+            get { return selectedaccess; }
+            set
+            {
+                if (selectedaccess != value)
+                {
+                    selectedaccess = value;
+                    OnPropertyChanged(nameof(selectedaccess));
+                }
+            }
+        }
     }
 }

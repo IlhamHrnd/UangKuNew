@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.SubMenu
             Title = $"Edit Username {ParameterModel.User.UserID}";
             Name = ParameterModel.User.UserID;
         }
-        public async void LoadData(AvatarView avatar)
+        public async void LoadData(AvatarView avatar, CheckBox checkbox)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -61,6 +61,51 @@ namespace UangKu.ViewModel.SubMenu
                     if (!string.IsNullOrEmpty(user.imgavatar))
                     {
                         avatar.ImageSource = user.imgavatar;
+                    }
+                    if (!string.IsNullOrEmpty(user.statusName))
+                    {
+                        bool isActive = user.statusName == ParameterModel.Login.Status;
+                        checkbox.IsChecked = isActive;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        public async Task UpdateUsername_Click(Picker picker, CheckBox checkbox)
+        {
+            bool isConnect = network.IsConnected;
+            IsBusy = true;
+            try
+            {
+                bool isValidPicker = await ValidateNullChecker.PickerValidateFields(
+                    (picker, "Access")
+                );
+
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                }
+                if (isValidPicker)
+                {
+                    var body = new Model.Index.Body.PatchUsername
+                    {
+                        sex = SelectedSex.itemID,
+                        access = SelectedAccess.itemID,
+                        isActive = checkbox.IsChecked,
+                        lastUpdateUser = App.Session.username
+                    };
+
+                    var user = await UserUpdate.PatchUsername(body, Name);
+                    if (!string.IsNullOrEmpty(user))
+                    {
+                        await MsgModel.MsgNotification($"{user}");
                     }
                 }
             }
