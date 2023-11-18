@@ -30,6 +30,12 @@
             public static string ItemID { get => itemid; set => itemid = value; }
         }
 
+        public class User
+        {
+            private static string userid = string.Empty;
+            public static string UserID { get => userid; set => userid = value; }
+        }
+
         public class ItemDefaultValue
         {
             private static string offline = "You're Offline";
