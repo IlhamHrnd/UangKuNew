@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using InputKit.Handlers;
 using Microsoft.Extensions.Logging;
 
 namespace UangKu
@@ -11,6 +12,10 @@ namespace UangKu
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .ConfigureMauiHandlers(handlers =>
+                {
+                    handlers.AddInputKitHandlers();
+                })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
