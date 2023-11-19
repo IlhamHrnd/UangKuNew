@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Model="clr-namespace:UangKu.Model.Menu"
+             xmlns:Font="clr-namespace:UangKu.Model.Base"
              x:Class="UangKu.View.Menu.HomePage"
              Title="{Binding Title}">
     <ContentPage.BindingContext>
@@ -34,6 +36,73 @@
                            FontSize="Large"/>
                 </Grid>
             </Frame>
+            <CollectionView ItemsSource="{Binding ListUserPicture}">
+                <CollectionView.Header>
+                    <Label Style="{StaticResource Label}"
+                           HorizontalTextAlignment="Center"
+                           FontSize="Large">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Person}" />
+                                <Span Text=" Gallery " />
+                                <Span FontFamily="FARegular" Text="{x:Static Font:FARegular.Image}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <CarouselView Style="{StaticResource CarouselView}"
+                                          ItemsSource="{Binding data}"
+                                          IndicatorView="{x:Reference Indicator_Gallery}">
+                                <CarouselView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Horizontal"
+                                                       ItemSpacing="5"
+                                                       SnapPointsType="MandatorySingle"
+                                                       SnapPointsAlignment="Center" />
+                                </CarouselView.ItemsLayout>
+                                <CarouselView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame Style="{StaticResource Frame}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <toolkit:AvatarView Grid.Column="0"
+                                                                    Grid.Row="0"
+                                                                    HeightRequest="250"
+                                                                    WidthRequest="250"
+                                                                    Style="{StaticResource Avatar}"
+                                                                    ImageSource="{Binding source}"/>
+                                                <Label Grid.Column="0"
+                                                       Grid.Row="1"
+                                                       HorizontalTextAlignment="Center"
+                                                       Style="{StaticResource Label}">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding pictureName}" />
+                                                            <Span Text="." />
+                                                            <Span Text="{Binding pictureFormat}" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </Grid>
+                                        </Frame>
+                                    </DataTemplate>
+                                </CarouselView.ItemTemplate>
+                            </CarouselView>
+                            <IndicatorView Style="{StaticResource IndicatorView}"
+                                           x:Name="Indicator_Gallery"
+                                           HorizontalOptions="CenterAndExpand"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </StackLayout>
     </ScrollView>
 </ContentPage>

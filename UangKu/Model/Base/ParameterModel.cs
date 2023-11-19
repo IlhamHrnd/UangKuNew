@@ -52,6 +52,8 @@
             public static bool IsActive { get => isactive; set => isactive = value; }
             private static bool isused = true;
             public static bool IsUsed {  get => isused; set => isused = value; }
+            private static bool isdeleted = false;
+            public static bool IsDeleted { get => isdeleted; set => isdeleted = value; }
             private static long maxfilesize = 2 * 1024 * 1024; //Maximum File Size Is 2MB
             public static long MaxFileSize {  get => maxfilesize; set => maxfilesize = value; }
             private static string newfile = "New";

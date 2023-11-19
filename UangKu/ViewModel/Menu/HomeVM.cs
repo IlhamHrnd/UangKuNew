@@ -1,6 +1,7 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
 using UangKu.View.SubMenu;
+using UangKu.ViewModel.RestAPI.Picture;
 using UangKu.ViewModel.RestAPI.Profile;
 
 namespace UangKu.ViewModel.Menu
@@ -42,6 +43,7 @@ namespace UangKu.ViewModel.Menu
             }
 
             Name = $"Hello, {App.Session.username} {greeting}";
+            Person = $"{App.Session.username}";
         }
 
         public async void LoadDataPerson()
@@ -77,6 +79,23 @@ namespace UangKu.ViewModel.Menu
                     {
                         await MsgModel.MsgNotification($"Please, Fill Profile For {userID} First");
                         await _navigation.PushAsync(new EditProfile(ParameterModel.ItemDefaultValue.NewFile));
+                    }
+
+                    var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.Maxresult, 
+                        App.Session.personID, ParameterModel.ItemDefaultValue.IsDeleted);
+                    if ((bool)picture.succeeded && picture.data.Count > 0)
+                    {
+                        ListUserPicture.Clear();
+                        for (int i = 0; i < picture.data.Count; i++)
+                        {
+                            if (!string.IsNullOrEmpty(picture.data[i].picture))
+                            {
+                                string decodeImg = ImageConvert.DecodeBase64ToString(picture.data[i].picture);
+                                byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                                picture.data[i].source = ImageConvert.ImgByte(byteImg);
+                            }
+                        }
+                        ListUserPicture.Add(picture);
                     }
                 }
             }
