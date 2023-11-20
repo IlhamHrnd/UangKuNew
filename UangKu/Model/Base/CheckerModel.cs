@@ -2,6 +2,8 @@
 using CommunityToolkit.Maui.Core;
 using System.Globalization;
 using System.Text;
+using UangKu.ViewModel.RestAPI.Picture;
+using UangKu.ViewModel.RestAPI.Transaction;
 using static UangKu.Model.Base.ParameterModel.PermissionManager;
 
 namespace UangKu.Model.Base
@@ -189,11 +191,12 @@ namespace UangKu.Model.Base
             ParameterModel.ImageManager.ImageByte = memorystream.ToArray();
             ParameterModel.ImageManager.ImageString = ByteToStringImg(imgBytes);
             ParameterModel.ImageManager.ImageName = result.FileName;
+            ParameterModel.ImageManager.ImageFormat = result.ContentType;
 
             return ImageSource.FromStream(() => new MemoryStream(imgBytes));
         }
     }
-    
+
     public static class RandomColorGenerator
     {
         private static readonly Random random = new Random();
@@ -229,6 +232,41 @@ namespace UangKu.Model.Base
 
         //    return skcolor;
         //}
+    }
+
+    public static class GetNewAutoNumber
+    {
+        public static async Task<string> GetPictureID()
+        {
+            try
+            {
+                string pictureID = string.Empty;
+                var generateID = await NewPictureID.GetNewPictureID(ParameterModel.ItemDefaultValue.Upload);
+                pictureID = !string.IsNullOrEmpty(generateID) ? generateID : string.Empty;
+                return pictureID;
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification($"Error: {e.Message}");
+                return null;
+            }
+        }
+
+        public static async Task<string> GetTransactionNo(string transType)
+        {
+            try
+            {
+                string transNo = string.Empty;
+                var generateID = await NewTransNo.GetNewTransNo(transType);
+                transNo = !string.IsNullOrEmpty(generateID) ? generateID : string.Empty;
+                return transNo;
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification($"Error: {e.Message}");
+                return null;
+            }
+        }
     }
 
     public static class PermissionRequest

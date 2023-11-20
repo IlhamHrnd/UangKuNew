@@ -134,11 +134,7 @@ namespace UangKu.ViewModel.SubMenu
                     }
                     if (!string.IsNullOrEmpty(TransTypes) && Mode == ParameterModel.ItemDefaultValue.NewFile)
                     {
-                        var transno = await NewTransNo.GetNewTransNo(TransTypes);
-                        if (!string.IsNullOrEmpty(transno))
-                        {
-                            EntryTransNo.Text = transno;
-                        }
+                        EntryTransNo.Text = await GetNewAutoNumber.GetTransactionNo(TransTypes);
                     }
                     if (!string.IsNullOrEmpty(itemName))
                     {
