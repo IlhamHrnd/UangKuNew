@@ -36,6 +36,7 @@ namespace UangKu.Model.Response.Picture
             [JsonProperty("lastUpdateByUserID")]
             public string lastUpdateByUserID { get; set; }
             public ImageSource source { get; set; }
+            public string contenttype { get; set; }
         }
 
         public class UserPictureRoot

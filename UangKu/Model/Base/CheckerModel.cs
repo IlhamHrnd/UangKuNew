@@ -160,6 +160,27 @@ namespace UangKu.Model.Base
             }
         }
 
+        //Class Untuk Substring ContentType
+        public static string SubstringContentType(string content, char type)
+        {
+            try
+            {
+                string result = string.Empty;
+                int Index = content.LastIndexOf(type);
+
+                if (Index != -1 && Index < content.Length - 1)
+                {
+                    result = content.Substring(Index + 1);
+                }
+
+                return result;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         //Proses Upload Gambar
         public static async Task<ImageSource> PickImageAsync()
         {

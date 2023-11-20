@@ -94,6 +94,12 @@ namespace UangKu.ViewModel.Menu
                                 byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
                                 picture.data[i].source = ImageConvert.ImgByte(byteImg);
                             }
+
+                            if (!string.IsNullOrEmpty(picture.data[i].pictureFormat))
+                            {
+                                string result = ImageConvert.SubstringContentType(picture.data[0].pictureFormat, '/');
+                                picture.data[i].contenttype = result;
+                            }
                         }
                         ListUserPicture.Add(picture);
                     }

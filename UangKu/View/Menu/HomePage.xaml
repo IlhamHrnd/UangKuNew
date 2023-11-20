@@ -87,7 +87,7 @@
                                                         <FormattedString>
                                                             <Span Text="{Binding pictureName}" />
                                                             <Span Text="." />
-                                                            <Span Text="{Binding pictureFormat}" />
+                                                            <Span Text="{Binding contenttype}" />
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
