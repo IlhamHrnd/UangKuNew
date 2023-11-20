@@ -64,6 +64,8 @@
             public static string IncomeTrans { get => incometrans; set => incometrans = value; }
             private static string outcometrans = "OU";
             public static string OutcomeTrans { get => outcometrans; set => outcometrans = value; }
+            private static string upload = "UPL";
+            public static string Upload { get => upload; set => upload = value; }
             private static string currency = "id-ID";
             public static string Currency { get => currency; set => currency = value; }
         }
@@ -84,6 +86,8 @@
             public static byte[] ImageByte { get => imagebyte; set => imagebyte = value; }
             private static string imagename = string.Empty;
             public static string ImageName { get => imagename; set => imagename = value; }
+            private static string imageformat = string.Empty;
+            public static string ImageFormat { get => imageformat; set => imageformat = value; }
         } 
     }
 }
