@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Text;
 using UangKu.ViewModel.RestAPI.Picture;
 using UangKu.ViewModel.RestAPI.Transaction;
+using static UangKu.Model.Base.ParameterModel;
 using static UangKu.Model.Base.ParameterModel.PermissionManager;
 
 namespace UangKu.Model.Base
@@ -181,7 +182,7 @@ namespace UangKu.Model.Base
             }
         }
 
-        //Proses Upload Gambar
+        //Proses Upload Satu Gambar
         public static async Task<ImageSource> PickImageAsync()
         {
             var result = await FilePicker.PickAsync(new PickOptions
@@ -199,7 +200,7 @@ namespace UangKu.Model.Base
 
             long fileSize = stream.Length;
 
-            if (fileSize > ParameterModel.ItemDefaultValue.MaxFileSize)
+            if (fileSize > ItemDefaultValue.MaxFileSize)
             {
                 await MsgModel.MsgNotification($"{result.FileName} Is More Than Limit");
                 return null;
@@ -209,12 +210,60 @@ namespace UangKu.Model.Base
             MemoryStream memorystream = new MemoryStream();
             await stream.CopyToAsync(memorystream);
             imgBytes = memorystream.ToArray();
-            ParameterModel.ImageManager.ImageByte = memorystream.ToArray();
-            ParameterModel.ImageManager.ImageString = ByteToStringImg(imgBytes);
-            ParameterModel.ImageManager.ImageName = result.FileName;
-            ParameterModel.ImageManager.ImageFormat = result.ContentType;
+            ImageManager.ImageByte = memorystream.ToArray();
+            ImageManager.ImageString = ByteToStringImg(imgBytes);
+            ImageManager.ImageName = result.FileName;
+            ImageManager.ImageFormat = result.ContentType;
 
             return ImageSource.FromStream(() => new MemoryStream(imgBytes));
+        }
+
+        //Proses Upload Beberapa Gambar
+        public static async Task<List<ImageManagerList>> PickMultipleImageAsync()
+        {
+            var result = await FilePicker.PickMultipleAsync(new PickOptions
+            {
+                PickerTitle = "Pick Image Please",
+                FileTypes = FilePickerFileType.Images
+            });
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            var ImageItems = new List<ImageManagerList>();
+
+            foreach (var item in result)
+            {
+                var stream = await item.OpenReadAsync();
+
+                long fileSize = stream.Length;
+
+                if (fileSize > ItemDefaultValue.MaxFileSize)
+                {
+                    await MsgModel.MsgNotification($"{item.FileName} Is More Than Limit");
+                }
+                else
+                {
+                    byte[] imgBytes;
+                    MemoryStream memorystream = new MemoryStream();
+                    await stream.CopyToAsync(memorystream);
+                    imgBytes = memorystream.ToArray();
+
+                    var images = new ImageManagerList
+                    {
+                        ImageString = ByteToStringImg(imgBytes),
+                        ImageByte = memorystream.ToArray(),
+                        ImageName = item.FileName,
+                        ImageFormat = item.ContentType
+                    };
+
+                    ImageItems.Add(images);
+                }
+            }
+
+            return ImageItems;
         }
     }
 

@@ -78,6 +78,7 @@
             }
         }
 
+        //Untuk Gambar Yang Ter Pick Satu Item
         public class ImageManager
         {
             private static string imagestring = string.Empty;
@@ -88,6 +89,15 @@
             public static string ImageName { get => imagename; set => imagename = value; }
             private static string imageformat = string.Empty;
             public static string ImageFormat { get => imageformat; set => imageformat = value; }
-        } 
+        }
+
+        //Untuk Gambar Yang Ter Pick Beberapa Item
+        public class ImageManagerList
+        {
+            public string ImageString { get; set; }
+            public byte[] ImageByte { get; set; }
+            public string ImageName { get; set; }
+            public string ImageFormat { get; set; }
+        }
     }
 }
