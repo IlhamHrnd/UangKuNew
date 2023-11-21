@@ -32,11 +32,11 @@ namespace UangKu.Model.Base
         {
             if (!IsConnected)
             {
-                await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                await MsgModel.MsgNotification(ItemDefaultValue.Offline);
             }
             else
             {
-                await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Online);
+                await MsgModel.MsgNotification(ItemDefaultValue.Online);
             }
         }
     }
@@ -311,7 +311,7 @@ namespace UangKu.Model.Base
             try
             {
                 string pictureID = string.Empty;
-                var generateID = await NewPictureID.GetNewPictureID(ParameterModel.ItemDefaultValue.Upload);
+                var generateID = await NewPictureID.GetNewPictureID(ItemDefaultValue.Upload);
                 pictureID = !string.IsNullOrEmpty(generateID) ? generateID : string.Empty;
                 return pictureID;
             }
