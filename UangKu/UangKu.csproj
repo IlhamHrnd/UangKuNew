@@ -138,6 +138,9 @@
 	  <MauiXaml Update="View\Menu\TransactionLog.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\Menu\UserGallery.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\SubMenu\AddAppStandardReference.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

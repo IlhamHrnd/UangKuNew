@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:Model="clr-namespace:UangKu.Model.Menu"
+             xmlns:Font="clr-namespace:UangKu.Model.Base"
+             x:Class="UangKu.View.Menu.UserGallery"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <Model:UserGallery/>
+    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="Bar_AddItem"
+                 Clicked="Bar_AddItem_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FARegular"
+                             Glyph="{x:Static Font:FARegular.Plus}"
+                             ToolTipProperties.Text="Click To Add Picture"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ScrollView Style="{StaticResource ScrollView}">
+        <StackLayout Style="{StaticResource StackLayout}">
+            <ActivityIndicator Style="{StaticResource ActivityIndicator}"
+                               IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"/>
+            <CollectionView ItemsSource="{Binding ListUserPicture}">
+                <CollectionView.Header>
+                    <Frame Style="{StaticResource Frame}">
+                        <Label Style="{StaticResource Label}"
+                               HorizontalTextAlignment="Center"
+                               FontSize="Large">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Title}"/>
+                                    <Span Text=" "/>
+                                    <Span FontFamily="FARegular" Text="{x:Static Font:FARegular.Image}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Frame>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Margin="0, 10, 0, 0">
+                            <CollectionView ItemsSource="{Binding data}">
+                                <CollectionView.ItemsLayout>
+                                    <GridItemsLayout Orientation="Vertical"
+                                                     HorizontalItemSpacing="5"
+                                                     VerticalItemSpacing="10"
+                                                     Span="2" />
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame Style="{StaticResource Frame}">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <toolkit:AvatarView Grid.Column="0"
+                                                                    Grid.Row="0"
+                                                                    HeightRequest="250"
+                                                                    WidthRequest="250"
+                                                                    Style="{StaticResource Avatar}"
+                                                                    ImageSource="{Binding source}"/>
+                                                <Label Grid.Column="0"
+                                                       Grid.Row="1"
+                                                       HorizontalTextAlignment="Center"
+                                                       Style="{StaticResource Label}">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="{Binding pictureName}" />
+                                                            <Span Text="." />
+                                                            <Span Text="{Binding contenttype}" />
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                            </Grid>
+                                        </Frame>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
