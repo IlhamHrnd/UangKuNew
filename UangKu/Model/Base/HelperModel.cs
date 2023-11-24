@@ -256,7 +256,8 @@ namespace UangKu.Model.Base
                         ImageString = ByteToStringImg(imgBytes),
                         ImageByte = memorystream.ToArray(),
                         ImageName = item.FileName,
-                        ImageFormat = item.ContentType
+                        ImageFormat = item.ContentType,
+                        ImageSize = (int)fileSize
                     };
 
                     ImageItems.Add(images);

@@ -119,7 +119,8 @@ namespace UangKu.ViewModel.Menu
                             createdByUserID = userID,
                             createdDateTime = ParameterModel.DateFormat.DateTime,
                             lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
-                            lastUpdateByUserID = userID
+                            lastUpdateByUserID = userID,
+                            pictureSize = item.ImageSize
                         };
 
                         var picture = await PostUserPicture.PostNewUserPicture(body);
@@ -135,9 +136,9 @@ namespace UangKu.ViewModel.Menu
                     finally
                     {
                         IsBusy = false;
-                        await LoadData();
                     }
                 }
+                await LoadData();
             }
         }
     }

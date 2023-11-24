@@ -98,6 +98,7 @@
             public byte[] ImageByte { get; set; }
             public string ImageName { get; set; }
             public string ImageFormat { get; set; }
+            public int ImageSize { get; set; }
         }
     }
 }

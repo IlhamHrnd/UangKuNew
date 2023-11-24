@@ -33,5 +33,8 @@ namespace UangKu.Model.Index.Body
 
         [JsonProperty("lastUpdateByUserID")]
         public string lastUpdateByUserID { get; set; }
+
+        [JsonProperty("pictureSize")]
+        public int? pictureSize { get; set; }
     }
 }

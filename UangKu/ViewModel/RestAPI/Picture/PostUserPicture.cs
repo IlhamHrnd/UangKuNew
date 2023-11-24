@@ -29,7 +29,8 @@ namespace UangKu.ViewModel.RestAPI.Picture
                 createdByUserID = picture.createdByUserID,
                 createdDateTime = picture.createdDateTime,
                 lastUpdateDateTime = picture.lastUpdateDateTime,
-                lastUpdateByUserID = picture.lastUpdateByUserID
+                lastUpdateByUserID = picture.lastUpdateByUserID,
+                pictureSize = picture.pictureSize
             };
             request.AddJsonBody(body);
 
