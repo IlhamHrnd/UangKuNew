@@ -57,6 +57,7 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
                                                     <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
                                                 </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
@@ -74,11 +75,17 @@
                                                     <Label.FormattedText>
                                                         <FormattedString>
                                                             <Span Text="{Binding pictureName}" />
-                                                            <Span Text="." />
-                                                            <Span Text="{Binding contenttype}" />
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
+                                                <HorizontalStackLayout Grid.Column="0"
+                                                                       Grid.Row="2">
+                                                    <CheckBox Style="{StaticResource CheckBox}"
+                                                              IsChecked="{Binding isDeleted}"/>
+                                                    <Label Style="{StaticResource Label}"
+                                                           Text="Is Deleted"
+                                                           VerticalTextAlignment="Center"/>
+                                                </HorizontalStackLayout>
                                             </Grid>
                                         </Frame>
                                     </DataTemplate>
@@ -87,6 +94,21 @@
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <VerticalStackLayout>
+                        <HorizontalStackLayout HorizontalOptions="CenterAndExpand"
+                                               Spacing="20">
+                            <Button Style="{StaticResource Button}"
+                                    Text="Previous Page"
+                                    x:Name="Btn_PreviousPage"
+                                    Clicked="Btn_PreviousPage_Clicked"/>
+                            <Button Style="{StaticResource Button}"
+                                    Text="Next Page"
+                                    x:Name="Btn_NextPage"
+                                    Clicked="Btn_NextPage_Clicked"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </CollectionView.Footer>
             </CollectionView>
         </StackLayout>
     </ScrollView>

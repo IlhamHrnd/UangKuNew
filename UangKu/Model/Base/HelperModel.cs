@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Core;
 using System.Globalization;
 using System.Text;
+using UangKu.Model.Session;
 using UangKu.ViewModel.RestAPI.Picture;
 using UangKu.ViewModel.RestAPI.Transaction;
 using static UangKu.Model.Base.ParameterModel;
@@ -69,6 +70,22 @@ namespace UangKu.Model.Base
                 return false;
             }
             return true;
+        }
+
+        public static string GetUserID(AppSession session)
+        {
+            if (!string.IsNullOrEmpty(session.personID))
+            {
+                return session.personID;
+            }
+            else if (string.IsNullOrEmpty(session.personID) && !string.IsNullOrEmpty(session.username))
+            {
+                return session.username;
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
     }
 

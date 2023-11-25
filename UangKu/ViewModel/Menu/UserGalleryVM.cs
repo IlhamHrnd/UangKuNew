@@ -18,20 +18,8 @@ namespace UangKu.ViewModel.Menu
             IsBusy = true;
             try
             {
-                string userID;
-
-                if (!string.IsNullOrEmpty(App.Session.personID))
-                {
-                    userID = App.Session.personID;
-                }
-                else if (string.IsNullOrEmpty(App.Session.personID) && !string.IsNullOrEmpty(App.Session.username))
-                {
-                    userID = App.Session.username;
-                }
-                else
-                {
-                    userID = string.Empty;
-                }
+                var sessionID = App.Session;
+                string userID = SessionModel.GetUserID(sessionID);
 
                 if (!isConnect)
                 {
@@ -60,6 +48,114 @@ namespace UangKu.ViewModel.Menu
                                 picture.data[i].contenttype = result;
                             }
                         }
+                        Page = (int)picture.pageNumber;
+                        ListUserPicture.Add(picture);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        public async void NextPage_Clicked(int pageSize)
+        {
+            var maxPage = ListUserPicture[0].totalPages;
+            bool isConnect = network.IsConnected;
+            IsBusy = true;
+            try
+            {
+                var sessionID = App.Session;
+                string userID = SessionModel.GetUserID(sessionID);
+
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                }
+                if (Page >= maxPage)
+                {
+                    await MsgModel.MsgNotification("This Is The Latest Page");
+                }
+                else
+                {
+                    var picture = await GetUserPicture.GetAllUserPicture(Page + 1, pageSize,
+                        userID, ParameterModel.ItemDefaultValue.IsDeleted);
+                    if ((bool)picture.succeeded && picture.data.Count > 0)
+                    {
+                        ListUserPicture.Clear();
+                        for (int i = 0; i < picture.data.Count; i++)
+                        {
+                            if (!string.IsNullOrEmpty(picture.data[i].picture))
+                            {
+                                string decodeImg = ImageConvert.DecodeBase64ToString(picture.data[i].picture);
+                                byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                                picture.data[i].source = ImageConvert.ImgByte(byteImg);
+                            }
+
+                            if (!string.IsNullOrEmpty(picture.data[i].pictureFormat))
+                            {
+                                string result = ImageConvert.SubstringContentType(picture.data[0].pictureFormat, '/');
+                                picture.data[i].contenttype = result;
+                            }
+                        }
+                        Page = (int)picture.pageNumber;
+                        ListUserPicture.Add(picture);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        public async void PreviousPage_Clicked(int pageSize)
+        {
+            bool isConnect = network.IsConnected;
+            IsBusy = true;
+            try
+            {
+                var sessionID = App.Session;
+                string userID = SessionModel.GetUserID(sessionID);
+
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                }
+                if (Page <= 1)
+                {
+                    await MsgModel.MsgNotification("This Is The First Page");
+                }
+                else
+                {
+                    var picture = await GetUserPicture.GetAllUserPicture(Page - 1, pageSize,
+                        userID, ParameterModel.ItemDefaultValue.IsDeleted);
+                    if ((bool)picture.succeeded && picture.data.Count > 0)
+                    {
+                        ListUserPicture.Clear();
+                        for (int i = 0; i < picture.data.Count; i++)
+                        {
+                            if (!string.IsNullOrEmpty(picture.data[i].picture))
+                            {
+                                string decodeImg = ImageConvert.DecodeBase64ToString(picture.data[i].picture);
+                                byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                                picture.data[i].source = ImageConvert.ImgByte(byteImg);
+                            }
+
+                            if (!string.IsNullOrEmpty(picture.data[i].pictureFormat))
+                            {
+                                string result = ImageConvert.SubstringContentType(picture.data[0].pictureFormat, '/');
+                                picture.data[i].contenttype = result;
+                            }
+                        }
+                        Page = (int)picture.pageNumber;
                         ListUserPicture.Add(picture);
                     }
                 }

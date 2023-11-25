@@ -22,4 +22,14 @@ public partial class UserGallery : ContentPage
     {
         await _vm.UploadPicture_PopUp();
     }
+
+    private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
+    {
+        _vm.PreviousPage_Clicked(ParameterModel.ItemDefaultValue.Maxresult);
+    }
+
+    private void Btn_NextPage_Clicked(object sender, EventArgs e)
+    {
+        _vm.NextPage_Clicked(ParameterModel.ItemDefaultValue.Maxresult);
+    }
 }

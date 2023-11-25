@@ -10,6 +10,8 @@ namespace UangKu.Model.Menu
         public string Title { get => title; set => SetProperty(ref title, value); }
         private bool isbusy = false;
         public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
+        private int page = 0;
+        public int Page { get => page; set => page = value; }
         private IList<UserPictureRoot> listuserpicture { get; set; }
         public IList<UserPictureRoot> ListUserPicture
         {
