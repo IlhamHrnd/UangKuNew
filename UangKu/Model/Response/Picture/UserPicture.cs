@@ -72,4 +72,28 @@ namespace UangKu.Model.Response.Picture
             public object message { get; set; }
         }
     }
+
+    public class UserPictureTwo
+    {
+        //List Kedua Yang Di Copy Dari Class UserPicture
+        //Untuk Keperluan Compare Item List
+        public class Datum
+        {
+            [JsonProperty("pictureID")]
+            public string pictureID { get; set; }
+
+            [JsonProperty("isDeleted")]
+            public bool? isDeleted { get; set; }
+        }
+    }
+
+    public class DifferentUserPicture
+    {
+        //List Untuk Menampung Data Yang Berbeda Saat Proses Compare Pada UserGalleryVM
+        public class Datum
+        {
+            public string pictureID { get; set; }
+            public bool? isDeleted { get; set; }
+        }
+    }
 }

@@ -103,6 +103,10 @@
                                     x:Name="Btn_PreviousPage"
                                     Clicked="Btn_PreviousPage_Clicked"/>
                             <Button Style="{StaticResource Button}"
+                                    Text="Delete Picture"
+                                    x:Name="Btn_DeletePicture"
+                                    Clicked="Btn_DeletePicture_Clicked"/>
+                            <Button Style="{StaticResource Button}"
                                     Text="Next Page"
                                     x:Name="Btn_NextPage"
                                     Clicked="Btn_NextPage_Clicked"/>

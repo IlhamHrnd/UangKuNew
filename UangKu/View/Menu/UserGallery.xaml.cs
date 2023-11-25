@@ -32,4 +32,9 @@ public partial class UserGallery : ContentPage
     {
         _vm.NextPage_Clicked(ParameterModel.ItemDefaultValue.Maxresult);
     }
+
+    private async void Btn_DeletePicture_Clicked(object sender, EventArgs e)
+    {
+        await _vm.DeleteUserPicture_Clicked();
+    }
 }

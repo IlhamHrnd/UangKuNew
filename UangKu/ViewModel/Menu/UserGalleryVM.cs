@@ -1,5 +1,6 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
+using UangKu.Model.Response.Picture;
 using UangKu.ViewModel.RestAPI.Picture;
 using static UangKu.Model.Base.ParameterModel.PermissionManager;
 
@@ -50,6 +51,17 @@ namespace UangKu.ViewModel.Menu
                         }
                         Page = (int)picture.pageNumber;
                         ListUserPicture.Add(picture);
+
+                        foreach (var item in picture.data)
+                        {
+                            var datum = new UserPictureTwo.Datum
+                            {
+                                pictureID = item.pictureID,
+                                isDeleted = item.isDeleted
+                            };
+
+                            ListUserPictureTwo.Add(datum);
+                        }
                     }
                 }
             }
@@ -104,6 +116,17 @@ namespace UangKu.ViewModel.Menu
                         }
                         Page = (int)picture.pageNumber;
                         ListUserPicture.Add(picture);
+
+                        foreach (var item in picture.data)
+                        {
+                            var datum = new UserPictureTwo.Datum
+                            {
+                                pictureID = item.pictureID,
+                                isDeleted = item.isDeleted
+                            };
+
+                            ListUserPictureTwo.Add(datum);
+                        }
                     }
                 }
             }
@@ -157,6 +180,89 @@ namespace UangKu.ViewModel.Menu
                         }
                         Page = (int)picture.pageNumber;
                         ListUserPicture.Add(picture);
+
+                        foreach (var item in picture.data)
+                        {
+                            var datum = new UserPictureTwo.Datum
+                            {
+                                pictureID = item.pictureID,
+                                isDeleted = item.isDeleted
+                            };
+
+                            ListUserPictureTwo.Add(datum);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        public async Task DeleteUserPicture_Clicked()
+        {
+            bool isConnect = network.IsConnected;
+            IsBusy = true;
+            try
+            {
+                var sessionID = App.Session;
+                string userID = SessionModel.GetUserID(sessionID);
+
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                }
+                if (ListUserPicture[0].data.Count == 0)
+                {
+                    await MsgModel.MsgNotification($"No Images Have Been Uploaded For {userID} Yet");
+                }
+                if (ListUserPicture[0].data.Count != ListUserPictureTwo.Count)
+                {
+                    await MsgModel.MsgNotification($"Data List Is Different");
+                }
+                else
+                {
+                    for (int i = 0; i < ListUserPicture[0].data.Count; i++)
+                    {
+                        if (ListUserPicture[0].data[i].isDeleted != ListUserPictureTwo[i].isDeleted)
+                        {
+                            var different = new DifferentUserPicture.Datum
+                            {
+                                pictureID = ListUserPicture[0].data[i].pictureID,
+                                isDeleted = ListUserPicture[0].data[i].isDeleted
+                            };
+                            ListDifferentUserPicture.Add(different);
+                        }
+                    }
+                }
+                if (!string.IsNullOrEmpty(userID))
+                {
+                    if (ListDifferentUserPicture.Count == 0)
+                    {
+                        await MsgModel.MsgNotification($"No Picture Are Selected For Delete");
+                    }
+                    else
+                    {
+                        foreach (var item in ListDifferentUserPicture)
+                        {
+                            var body = new Model.Index.Body.DeleteUserPicture
+                            {
+                                lastUpdateUserID = userID,
+                                isDeleted = item.isDeleted
+                            };
+
+                            var delete = await DeleteUserPicture.DeleteUserPictureID(item.pictureID, body);
+
+                            if (!string.IsNullOrEmpty(delete))
+                            {
+                                await MsgModel.MsgNotification($"{delete}");
+                            }
+                        }
+                        await LoadData();
                     }
                 }
             }
