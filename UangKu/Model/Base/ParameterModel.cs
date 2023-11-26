@@ -16,6 +16,7 @@
             public static string Date { get => date; set => date = value; }
             private static DateTime datetime = DateTime.Now;
             public static DateTime DateTime { get => datetime; set => datetime = value; }
+            public static string MonthName { get => datetime.ToString("MMMM"); set => datetime.ToString("MMMM"); }
         }
 
         public class AppStandardReference

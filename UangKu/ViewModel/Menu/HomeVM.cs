@@ -3,6 +3,7 @@ using UangKu.Model.Menu;
 using UangKu.View.SubMenu;
 using UangKu.ViewModel.RestAPI.Picture;
 using UangKu.ViewModel.RestAPI.Profile;
+using UangKu.ViewModel.RestAPI.Transaction;
 
 namespace UangKu.ViewModel.Menu
 {
@@ -15,6 +16,7 @@ namespace UangKu.ViewModel.Menu
         {
             LoadData();
             _navigation = navigation;
+            Month = ParameterModel.DateFormat.MonthName;
         }
         private void LoadData()
         {
@@ -67,6 +69,44 @@ namespace UangKu.ViewModel.Menu
                     {
                         await MsgModel.MsgNotification($"Please, Fill Profile For {userID} First");
                         await _navigation.PushAsync(new EditProfile(ParameterModel.ItemDefaultValue.NewFile));
+                    }
+
+                    var sumtrans = await GetSumTransaction.GetSumTransactionID(userID);
+                    if (sumtrans.Count > 0)
+                    {
+                        ListSumTrans.Clear();
+                        for (int i = 0; i < sumtrans.Count; i++)
+                        {
+                            var item = sumtrans[i];
+                            if (item.amount != null)
+                            {
+                                item.amountFormat = FormatCurrency.Currency((decimal)item.amount, ParameterModel.ItemDefaultValue.Currency);
+                            }
+                            ListSumTrans.Add(item);
+                        }
+                    }
+
+                    var alltrans = await AllTransaction.GetAllTransaction(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.HomeMaxResult,
+                        userID);
+                    if (alltrans != null)
+                    {
+                        ListAllTrans.Clear();
+                        var item = alltrans;
+                        for (int i = 0; i < item.data.Count; i++)
+                        {
+                            if (item.data[i].amount != null)
+                            {
+                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, ParameterModel.ItemDefaultValue.Currency);
+                            }
+
+                            if (!string.IsNullOrEmpty(item.data[i].photo))
+                            {
+                                string decodeImg = ImageConvert.DecodeBase64ToString(item.data[i].photo);
+                                byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                                item.data[i].source = ImageConvert.ImgByte(byteImg);
+                            }
+                        }
+                        ListAllTrans.Add(item);
                     }
 
                     var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.HomeMaxResult, 
