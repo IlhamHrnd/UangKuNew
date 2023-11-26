@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.SubMenu
             Title = $"Edit Username {ParameterModel.User.UserID}";
             Name = ParameterModel.User.UserID;
         }
-        public async void LoadData(AvatarView avatar, CheckBox checkbox)
+        public async void LoadData(AvatarView avatar, CheckBox checkbox, InputKit.Shared.Controls.SelectionView selection)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -50,9 +50,11 @@ namespace UangKu.ViewModel.SubMenu
                     {
                         case "Laki - Laki":
                             user.imgavatar = "man.svg";
+                            selection.SelectedIndex = 0;
                             break;
                         case "Perempuan":
                             user.imgavatar = "woman.svg";
+                            selection.SelectedIndex = 1;
                             break;
                         default:
                             await MsgModel.MsgNotification($"Sexname For {user.sexName} Is Invalid");
