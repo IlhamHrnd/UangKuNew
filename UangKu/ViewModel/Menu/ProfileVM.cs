@@ -23,13 +23,16 @@ namespace UangKu.ViewModel.Menu
             IsBusy = true;
             try
             {
+                var sessionID = App.Session;
+                string userID = SessionModel.GetUserID(sessionID);
+
                 if (!isConnect)
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (!string.IsNullOrEmpty(App.Session.personID))
+                if (!string.IsNullOrEmpty(userID))
                 {
-                    var profile = await GetProfile.GetProfileID(App.Session.personID);
+                    var profile = await GetProfile.GetProfileID(userID);
                     if (!string.IsNullOrEmpty(profile.personID))
                     {
                         Profiles.Clear();

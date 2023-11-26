@@ -53,8 +53,9 @@ namespace UangKu.ViewModel.Menu
 
         public async Task BtnUpdateAppStandard_Click()
         {
+            var sessionID = App.Session;
+            string userID = SessionModel.GetUserID(sessionID);
             var referenceID = ParameterModel.AppStandardReference.ItemID;
-            var userID = App.Session.username;
             bool isConnect = network.IsConnected;
             IsBusy = true;
             try

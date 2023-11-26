@@ -52,6 +52,7 @@ namespace UangKu.ViewModel.Menu
                         Page = (int)picture.pageNumber;
                         ListUserPicture.Add(picture);
 
+                        ListUserPictureTwo.Clear();
                         foreach (var item in picture.data)
                         {
                             var datum = new UserPictureTwo.Datum
@@ -117,6 +118,7 @@ namespace UangKu.ViewModel.Menu
                         Page = (int)picture.pageNumber;
                         ListUserPicture.Add(picture);
 
+                        ListUserPictureTwo.Clear();
                         foreach (var item in picture.data)
                         {
                             var datum = new UserPictureTwo.Datum
@@ -181,6 +183,7 @@ namespace UangKu.ViewModel.Menu
                         Page = (int)picture.pageNumber;
                         ListUserPicture.Add(picture);
 
+                        ListUserPictureTwo.Clear();
                         foreach (var item in picture.data)
                         {
                             var datum = new UserPictureTwo.Datum
@@ -216,26 +219,29 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (ListUserPicture[0].data.Count == 0)
+                if (ListUserPicture.Count == 0)
                 {
                     await MsgModel.MsgNotification($"No Images Have Been Uploaded For {userID} Yet");
                 }
-                if (ListUserPicture[0].data.Count != ListUserPictureTwo.Count)
-                {
-                    await MsgModel.MsgNotification($"Data List Is Different");
-                }
                 else
                 {
-                    for (int i = 0; i < ListUserPicture[0].data.Count; i++)
+                    if (ListUserPicture[0].data.Count != ListUserPictureTwo.Count)
                     {
-                        if (ListUserPicture[0].data[i].isDeleted != ListUserPictureTwo[i].isDeleted)
+                        await MsgModel.MsgNotification($"Data List Is Different");
+                    }
+                    else
+                    {
+                        for (int i = 0; i < ListUserPicture[0].data.Count; i++)
                         {
-                            var different = new DifferentUserPicture.Datum
+                            if (ListUserPicture[0].data[i].isDeleted != ListUserPictureTwo[i].isDeleted)
                             {
-                                pictureID = ListUserPicture[0].data[i].pictureID,
-                                isDeleted = ListUserPicture[0].data[i].isDeleted
-                            };
-                            ListDifferentUserPicture.Add(different);
+                                var different = new DifferentUserPicture.Datum
+                                {
+                                    pictureID = ListUserPicture[0].data[i].pictureID,
+                                    isDeleted = ListUserPicture[0].data[i].isDeleted
+                                };
+                                ListDifferentUserPicture.Add(different);
+                            }
                         }
                     }
                 }
@@ -290,20 +296,8 @@ namespace UangKu.ViewModel.Menu
                     IsBusy = true;
                     try
                     {
-                        string userID;
-
-                        if (!string.IsNullOrEmpty(App.Session.personID))
-                        {
-                            userID = App.Session.personID;
-                        }
-                        else if (string.IsNullOrEmpty(App.Session.personID) && !string.IsNullOrEmpty(App.Session.username))
-                        {
-                            userID = App.Session.username;
-                        }
-                        else
-                        {
-                            userID = string.Empty;
-                        }
+                        var sessionID = App.Session;
+                        string userID = SessionModel.GetUserID(sessionID);
 
                         if (!isConnect)
                         {

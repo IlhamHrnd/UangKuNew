@@ -52,20 +52,8 @@ namespace UangKu.ViewModel.Menu
             IsBusy = true;
             try
             {
-                string userID;
-
-                if (!string.IsNullOrEmpty(App.Session.personID))
-                {
-                    userID = App.Session.personID;
-                }
-                else if (string.IsNullOrEmpty(App.Session.personID) && !string.IsNullOrEmpty(App.Session.username))
-                {
-                    userID = App.Session.username;
-                }
-                else
-                {
-                    userID = string.Empty;
-                }
+                var sessionID = App.Session;
+                string userID = SessionModel.GetUserID(sessionID);
 
                 if (!isConnect)
                 {
@@ -81,8 +69,8 @@ namespace UangKu.ViewModel.Menu
                         await _navigation.PushAsync(new EditProfile(ParameterModel.ItemDefaultValue.NewFile));
                     }
 
-                    var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.Maxresult, 
-                        App.Session.personID, ParameterModel.ItemDefaultValue.IsDeleted);
+                    var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.HomeMaxResult, 
+                        userID, ParameterModel.ItemDefaultValue.IsDeleted);
                     if ((bool)picture.succeeded && picture.data.Count > 0)
                     {
                         ListUserPicture.Clear();

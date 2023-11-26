@@ -46,6 +46,8 @@
             public static int FirstPage { get => firstpage; set => firstpage = value; }
             private static int maxresult = 25;
             public static int Maxresult { get => maxresult; set => maxresult = value; }
+            private static int homemaxresult = 5;
+            public static int HomeMaxResult { get => homemaxresult; set => homemaxresult = value; }
             private static int timeout = 10000;
             public static int Timeout { get => timeout; set => timeout = value; }
             private static bool isactive = true;

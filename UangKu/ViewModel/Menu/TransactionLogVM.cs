@@ -19,11 +19,14 @@ namespace UangKu.ViewModel.Menu
             IsBusy = true;
             try
             {
+                var sessionID = App.Session;
+                string userID = SessionModel.GetUserID(sessionID);
+
                 if (!isConnect)
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(App.Session.username);
+                var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID);
                 if (sumtrans.Count > 0)
                 {
                     ListSumTrans.Clear();
@@ -38,7 +41,7 @@ namespace UangKu.ViewModel.Menu
                         ListSumTrans.Add(item);
                     }
                 }
-                var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(pageNumber, pageSize, App.Session.username);
+                var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(pageNumber, pageSize, userID);
                 if (alltrans.data.Count > 0)
                 {
                     ListAllTrans.Clear();
@@ -77,6 +80,9 @@ namespace UangKu.ViewModel.Menu
             IsBusy = true;
             try
             {
+                var sessionID = App.Session;
+                string userID = SessionModel.GetUserID(sessionID);
+
                 if (!isConnect)
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
@@ -87,7 +93,7 @@ namespace UangKu.ViewModel.Menu
                 }
                 else
                 {
-                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page + 1, pageSize, App.Session.username);
+                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page + 1, pageSize, userID);
                     if (alltrans.data.Count > 0)
                     {
                         ListAllTrans.Clear();
@@ -125,6 +131,9 @@ namespace UangKu.ViewModel.Menu
             IsBusy = true;
             try
             {
+                var sessionID = App.Session;
+                string userID = SessionModel.GetUserID(sessionID);
+
                 if (!isConnect)
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
@@ -135,7 +144,7 @@ namespace UangKu.ViewModel.Menu
                 }
                 else
                 {
-                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page - 1, pageSize, App.Session.username);
+                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page - 1, pageSize, userID);
                     if (alltrans.data.Count > 0)
                     {
                         ListAllTrans.Clear();

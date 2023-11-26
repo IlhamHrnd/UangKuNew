@@ -28,13 +28,16 @@ namespace UangKu.ViewModel.SubMenu
             {
                 if (Mode == ParameterModel.ItemDefaultValue.EditFile)
                 {
+                    var sessionID = App.Session;
+                    string userID = SessionModel.GetUserID(sessionID);
+
                     if (!isConnect)
                     {
                         await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                     }
-                    if (!string.IsNullOrEmpty(App.Session.personID))
+                    if (!string.IsNullOrEmpty(userID))
                     {
-                        var person = await GetProfile.GetProfileID(App.Session.personID);
+                        var person = await GetProfile.GetProfileID(userID);
                         if (!string.IsNullOrEmpty(person.personID))
                         {
                             EntFirstName.Text = person.firstName;
@@ -68,7 +71,7 @@ namespace UangKu.ViewModel.SubMenu
                         }
                         else
                         {
-                            avatar.Text = App.Session.personID;
+                            avatar.Text = userID;
                         }
                     }
                 }
@@ -103,7 +106,9 @@ namespace UangKu.ViewModel.SubMenu
             IsBusy = true;
             try
             {
-                string userID;
+                var sessionID = App.Session;
+                string userID = SessionModel.GetUserID(sessionID);
+
                 bool isValidEntry = await ValidateNullChecker.EntryValidateFields(
                     (EntFirstName.Text, "First Name"),
                     (EntLastName.Text, "Last Name"),
@@ -122,18 +127,6 @@ namespace UangKu.ViewModel.SubMenu
                 if (!isConnect)
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
-                }
-                if (!string.IsNullOrEmpty(App.Session.personID))
-                {
-                    userID = App.Session.personID;
-                }
-                else if (string.IsNullOrEmpty(App.Session.personID) && !string.IsNullOrEmpty(App.Session.username))
-                {
-                    userID = App.Session.username;
-                }
-                else
-                {
-                    userID = string.Empty;
                 }
                 if (ParameterModel.ImageManager.ImageByte == null && string.IsNullOrEmpty(ParameterModel.ImageManager.ImageString))
                 {
