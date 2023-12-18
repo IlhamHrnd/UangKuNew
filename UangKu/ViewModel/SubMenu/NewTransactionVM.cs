@@ -176,7 +176,7 @@ namespace UangKu.ViewModel.SubMenu
             Picker PicTrans, Picker PicTransItem)
         {
             bool isConnect = network.IsConnected;
-            string dateOnly = ParameterModel.DateFormat.DateTime.ToString("yyyy-MM-dd");
+            string dateOnly = DateFormat.FormattingDate(ParameterModel.DateFormat.DateTime, ParameterModel.DateTimeFormat.Yearmonthdate);
             IsBusy = true;
             try
             {
@@ -207,9 +207,9 @@ namespace UangKu.ViewModel.SubMenu
                             amount = int.Parse(EntAmount.Text),
                             description = EntDescription.Text,
                             photo = ParameterModel.ImageManager.ImageString,
-                            createdDateTime = DateTime.Now,
+                            createdDateTime = ParameterModel.DateFormat.DateTime,
                             createdByUserID = App.Session.username,
-                            lastUpdateDateTime = DateTime.Now,
+                            lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
                             lastUpdateByUserID = App.Session.username,
                             transType = TransTypes,
                             transDate = dateOnly,
@@ -233,7 +233,7 @@ namespace UangKu.ViewModel.SubMenu
                         amount = int.Parse(EntAmount.Text),
                         description = EntDescription.Text,
                         photo = ParameterModel.ImageManager.ImageString,
-                        lastUpdateDateTime = DateTime.Now,
+                        lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
                         lastUpdateByUserID = App.Session.username,
                         transType = TransTypes,
                         transDate = dateOnly

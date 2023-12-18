@@ -152,7 +152,7 @@ namespace UangKu.ViewModel.SubMenu
                             district = SelectedDistrict.disName,
                             subdistrict = SelectedSubdistrict.subdisName,
                             postalCode = int.Parse(PostalCode.Text),
-                            lastUpdateDateTime = DateTime.Now,
+                            lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
                             lastUpdateByUser = userID
                         };
 
@@ -179,7 +179,7 @@ namespace UangKu.ViewModel.SubMenu
                             district = SelectedDistrict.disName,
                             subdistrict = SelectedSubdistrict.subdisName,
                             postalCode = int.Parse(PostalCode.Text),
-                            lastUpdateDateTime = DateTime.Now,
+                            lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
                             lastUpdateByUser = userID
                         };
 

@@ -113,10 +113,9 @@ namespace UangKu.Model.Base
 
     public static class DateFormat
     {
-        //Date Formating Sesuai Format Di Indonesia dd/MM/yyyy
-        public static string FormattingDate(DateTime date)
+        public static string FormattingDate(DateTime date, string format)
         {
-            string formattedDate = date.ToString(ParameterModel.DateFormat.Format);
+            string formattedDate = date.ToString(format);
 
             return formattedDate;
         }

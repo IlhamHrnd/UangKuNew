@@ -10,10 +10,6 @@
 
         public class DateFormat
         {
-            private static string format = "dd/MM/yyyy";
-            public static string Format { get => format; set => format = value; }
-            private static string date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            public static string Date { get => date; set => date = value; }
             private static DateTime datetime = DateTime.Now;
             public static DateTime DateTime { get => datetime; set => datetime = value; }
             public static string MonthName { get => datetime.ToString("MMMM"); set => datetime.ToString("MMMM"); }
@@ -35,6 +31,33 @@
         {
             private static int age = 21;
             public static int Age { get => age; set => age = value; }
+        }
+
+        public static class DateTimeFormat
+        {
+            private static string date = "dd/MM/yyyy";
+            private static string datetime = "dd/MM/yyyy HH:mm";
+            private static string datetimesecond = "dd/MM/yyyy HH:mm:ss";
+            private static string datelong = "dd MMM yyyy";
+            private static string dateshortmonth = "dd-MMM-yyyy";
+            private static string longdatepattern = "dd-MMM-yyyy HH:mm:ss";
+            private static string datehourminute = "dd/MM/yyyy HH:mm";
+            private static string dateshortmonthhourminute = "dd-MMM-yyyy HH:mm";
+            private static string hourmin = "HH:mm";
+            private static string month = "MMMM";
+            private static string yearmonthdate = "yyyy-MM-dd";
+
+            public static string Date { get => date; set => date = value; }
+            public static string Datetime { get => datetime; set => datetime = value; }
+            public static string Datetimesecond { get => datetimesecond; set => datetimesecond = value; }
+            public static string Datelong { get => datelong; set => datelong = value; }
+            public static string Dateshortmonth { get => dateshortmonth; set => dateshortmonth = value; }
+            public static string Longdatepattern { get => longdatepattern; set => longdatepattern = value; }
+            public static string Datehourminute { get => datehourminute; set => datehourminute = value; }
+            public static string Dateshortmonthhourminute { get => dateshortmonthhourminute; set => dateshortmonthhourminute = value; }
+            public static string Hourmin { get => hourmin; set => hourmin = value; }
+            public static string Month { get => month; set => month = value; }
+            public static string Yearmonthdate { get => yearmonthdate; set => yearmonthdate = value; }
         }
 
         public class User

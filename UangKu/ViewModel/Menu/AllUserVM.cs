@@ -39,12 +39,12 @@ namespace UangKu.ViewModel.Menu
 
                         if (data.activeDate != null)
                         {
-                            data.dateActive = DateFormat.FormattingDate((DateTime)data.activeDate);
+                            data.dateActive = DateFormat.FormattingDate((DateTime)data.activeDate, ParameterModel.DateTimeFormat.Date);
                         }
 
                         if (data.lastLogin != null)
                         {
-                            data.dateLogin = DateFormat.FormattingDate((DateTime)data.lastLogin);
+                            data.dateLogin = DateFormat.FormattingDate((DateTime)data.lastLogin, ParameterModel.DateTimeFormat.Date);
                         }
                     }
                     Page = (int)alluser.pageNumber;
@@ -91,12 +91,12 @@ namespace UangKu.ViewModel.Menu
 
                             if (data.activeDate != null)
                             {
-                                data.dateActive = DateFormat.FormattingDate((DateTime)data.activeDate);
+                                data.dateActive = DateFormat.FormattingDate((DateTime)data.activeDate, ParameterModel.DateTimeFormat.Date);
                             }
 
                             if (data.lastLogin != null)
                             {
-                                data.dateLogin = DateFormat.FormattingDate((DateTime)data.lastLogin);
+                                data.dateLogin = DateFormat.FormattingDate((DateTime)data.lastLogin, ParameterModel.DateTimeFormat.Date);
                             }
                         }
                         Page = (int)alluser.pageNumber;
@@ -143,12 +143,12 @@ namespace UangKu.ViewModel.Menu
 
                             if (data.activeDate != null)
                             {
-                                data.dateActive = DateFormat.FormattingDate((DateTime)data.activeDate);
+                                data.dateActive = DateFormat.FormattingDate((DateTime)data.activeDate, ParameterModel.DateTimeFormat.Date);
                             }
 
                             if (data.lastLogin != null)
                             {
-                                data.dateLogin = DateFormat.FormattingDate((DateTime)data.lastLogin);
+                                data.dateLogin = DateFormat.FormattingDate((DateTime)data.lastLogin, ParameterModel.DateTimeFormat.Date);
                             }
                         }
                         Page = (int)alluser.pageNumber;
