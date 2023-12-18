@@ -7,6 +7,7 @@ namespace UangKu
     public partial class App : Application
     {
         public static AppSession Session { get; set; }
+        public static AppAccess Access { get; set; }
         public App()
         {
             InitializeComponent();

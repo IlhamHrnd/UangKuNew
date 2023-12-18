@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Text;
 using UangKu.Model.Session;
 using UangKu.ViewModel.RestAPI.Picture;
+using UangKu.ViewModel.RestAPI.Report;
 using UangKu.ViewModel.RestAPI.Transaction;
 using static UangKu.Model.Base.ParameterModel;
 using static UangKu.Model.Base.ParameterModel.PermissionManager;
@@ -86,6 +87,27 @@ namespace UangKu.Model.Base
             {
                 return string.Empty;
             }
+        }
+
+        public static int GetUserAge(DateTime birthDate)
+        {
+            var now = DateTime.Now.Year;
+            var date = birthDate.Year;
+            var age = now - date;
+
+            return age;
+        }
+
+        public static bool IsAdmin(string access)
+        {
+            bool admin = !string.IsNullOrEmpty(access) && access == "Admin";
+            return admin;
+        }
+
+        public static bool IsAdult(int age)
+        {
+            bool adult = age >= AppParameter.Age;
+            return adult;
         }
     }
 
@@ -348,6 +370,22 @@ namespace UangKu.Model.Base
                 var generateID = await NewTransNo.GetNewTransNo(transType);
                 transNo = !string.IsNullOrEmpty(generateID) ? generateID : string.Empty;
                 return transNo;
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification($"Error: {e.Message}");
+                return null;
+            }
+        }
+
+        public static async Task<string> GetReportNo(string reportType)
+        {
+            try
+            {
+                string reportNo = string.Empty;
+                var generateID = await NewReportNo.GetNewReportNo(reportType);
+                reportNo = !string.IsNullOrEmpty(generateID) ? generateID : string.Empty;
+                return reportNo;
             }
             catch (Exception e)
             {

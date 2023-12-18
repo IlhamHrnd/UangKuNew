@@ -31,6 +31,12 @@
             public static string ItemID { get => itemid; set => itemid = value; }
         }
 
+        public class AppParameter
+        {
+            private static int age = 21;
+            public static int Age { get => age; set => age = value; }
+        }
+
         public class User
         {
             private static string userid = string.Empty;
@@ -71,6 +77,8 @@
             public static string Upload { get => upload; set => upload = value; }
             private static string currency = "id-ID";
             public static string Currency { get => currency; set => currency = value; }
+            private static string userreport = "UR"; //User Report
+            public static string UserReport { get => userreport; set => userreport = value; }
         }
 
         public class PermissionManager

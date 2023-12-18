@@ -13,6 +13,7 @@ namespace UangKu.ViewModel.MasterPage
         public async void BtnLogOut_Clicked()
         {
             App.Session = null;
+            App.Access = null;
 
             await SessionModel.SessionCheck();
         }

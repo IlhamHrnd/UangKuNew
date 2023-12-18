@@ -12,4 +12,10 @@
         public string lastUpdateByUser { get; set; }
         public string personID { get; set; }
     }
+
+    public class AppAccess
+    {
+        public bool IsAdmin { get; set; }
+        public bool IsAdult { get; set; }
+    }
 }

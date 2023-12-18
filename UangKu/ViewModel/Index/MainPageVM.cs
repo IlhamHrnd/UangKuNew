@@ -1,6 +1,7 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Index;
 using UangKu.Model.Session;
+using UangKu.ViewModel.RestAPI.Profile;
 using UangKu.ViewModel.RestAPI.User;
 
 namespace UangKu.ViewModel.Index
@@ -78,6 +79,15 @@ namespace UangKu.ViewModel.Index
                         }
                         else
                         {
+                            var profile = await GetProfile.GetProfileID(App.Session.personID);
+                            DateTime dateTime = profile.birthDate != null ? (DateTime)profile.birthDate : DateTime.Now;
+                            int AgeUser = SessionModel.GetUserAge(dateTime);
+                            App.Access = new AppAccess
+                            {
+                                IsAdmin = SessionModel.IsAdmin(App.Session.accessName),
+                                IsAdult = SessionModel.IsAdult(AgeUser)
+                            };
+                            
                             switch (App.Session.accessName)
                             {
                                 case "Admin":
