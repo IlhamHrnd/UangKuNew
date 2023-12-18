@@ -1,3 +1,4 @@
+using Microcharts;
 using UangKu.Model.Base;
 using UangKu.ViewModel.Menu;
 
@@ -15,6 +16,6 @@ public partial class HomePage : ContentPage
     protected async override void OnAppearing()
     {
 		await SessionModel.SessionCheck();
-		_vm.LoadDataPerson();
+		_vm.LoadDataPerson(Chart_Transaction);
     }
 }

@@ -1,4 +1,6 @@
-﻿using UangKu.Model.Base;
+﻿using Microcharts;
+using Microcharts.Maui;
+using UangKu.Model.Base;
 using UangKu.Model.Menu;
 using UangKu.View.SubMenu;
 using UangKu.ViewModel.RestAPI.Picture;
@@ -48,8 +50,9 @@ namespace UangKu.ViewModel.Menu
             Person = $"{App.Session.username}";
         }
 
-        public async void LoadDataPerson()
+        public async void LoadDataPerson(ChartView charts)
         {
+            List<ChartEntry> entries = new List<ChartEntry>();
             bool isConnect = network.IsConnected;
             IsBusy = true;
             try
@@ -83,7 +86,22 @@ namespace UangKu.ViewModel.Menu
                                 item.amountFormat = FormatCurrency.Currency((decimal)item.amount, ParameterModel.ItemDefaultValue.Currency);
                             }
                             ListSumTrans.Add(item);
+
+                            entries.Add(new ChartEntry((float?)item.amount)
+                            {
+                                Label = item.srTransaction,
+                                ValueLabel = item.amountFormat,
+                                Color = RandomColorGenerator.SKGenerateRandomColor()
+                            });
                         }
+                    }
+
+                    if (entries.Count > 0)
+                    {
+                        charts.Chart = new PieChart
+                        {
+                            Entries = entries
+                        };
                     }
 
                     var alltrans = await AllTransaction.GetAllTransaction(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.HomeMaxResult,

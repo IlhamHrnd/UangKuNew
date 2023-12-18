@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using SkiaSharp;
 using System.Globalization;
 using System.Text;
 using UangKu.Model.Session;
@@ -331,16 +332,15 @@ namespace UangKu.Model.Base
             return hexColor;
         }
 
-        //Dikomen Dulu Karna SKIA Sharp Di Hapus Dulu
-        //public static SKColor SKGenerateRandomColor()
-        //{
-        //    byte[] colorBytes = new byte[3];
-        //    random.NextBytes(colorBytes);
+        public static SKColor SKGenerateRandomColor()
+        {
+            byte[] colorBytes = new byte[3];
+            random.NextBytes(colorBytes);
 
-        //    var skcolor = new SKColor(colorBytes[0], colorBytes[1], colorBytes[2]);
+            var skcolor = new SKColor(colorBytes[0], colorBytes[1], colorBytes[2]);
 
-        //    return skcolor;
-        //}
+            return skcolor;
+        }
     }
 
     public static class GetNewAutoNumber

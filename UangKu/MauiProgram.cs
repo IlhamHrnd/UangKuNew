@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using InputKit.Handlers;
+using Microcharts.Maui;
 using Microsoft.Extensions.Logging;
 
 namespace UangKu
@@ -12,6 +13,7 @@ namespace UangKu
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseMicrocharts()
                 .ConfigureMauiHandlers(handlers =>
                 {
                     handlers.AddInputKitHandlers();

@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:chart="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
              xmlns:Model="clr-namespace:UangKu.Model.Menu"
              xmlns:Font="clr-namespace:UangKu.Model.Base"
              x:Class="UangKu.View.Menu.HomePage"
@@ -74,6 +75,10 @@
             <IndicatorView Style="{StaticResource IndicatorView}"
                            x:Name="Indicator_SumTrans"
                            HorizontalOptions="CenterAndExpand"/>
+            <StackLayout>
+                <chart:ChartView HeightRequest="300" WidthRequest="300"
+                                 x:Name="Chart_Transaction"/>
+            </StackLayout>
             <CollectionView ItemsSource="{Binding ListAllTrans}"
                             Margin="0, 10"
                             EmptyView="No Data Transaction To Display">
