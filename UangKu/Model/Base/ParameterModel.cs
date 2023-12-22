@@ -27,6 +27,12 @@
             public static string ItemID { get => itemid; set => itemid = value; }
         }
 
+        public class Report
+        {
+            private static string reportno = string.Empty;
+            public static string ReportNo { get => reportno; set => reportno = value; }
+        }
+
         public class AppParameter
         {
             private static int age = 21;
@@ -100,7 +106,7 @@
             public static string Upload { get => upload; set => upload = value; }
             private static string currency = "id-ID";
             public static string Currency { get => currency; set => currency = value; }
-            private static string userreport = "UR"; //User Report
+            private static string userreport = string.Empty; //Report No Diambil Dari User > PersonID Dan User > Access
             public static string UserReport { get => userreport; set => userreport = value; }
         }
 

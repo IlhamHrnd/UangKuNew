@@ -110,6 +110,17 @@ namespace UangKu.Model.Base
             bool adult = age >= AppParameter.Age;
             return adult;
         }
+
+        public static string GenerateUserReportNo(string firstString, string secondString)
+        {
+            string value = string.Empty;
+            if (!string.IsNullOrEmpty(firstString) && !string.IsNullOrEmpty(secondString))
+            {
+                value = $"{firstString}{secondString}";
+            }
+
+            return value;
+        }
     }
 
     public static class DateFormat

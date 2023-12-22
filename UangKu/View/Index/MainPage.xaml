@@ -36,12 +36,16 @@
                        MaxLength="15"
                        Placeholder="Username"
                        Keyboard="Text"
+                       toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference Ent_Password}"
+                       ReturnType="Next"
                        x:Name="Ent_Username"/>
                 <Entry Style="{StaticResource Entry}"
                        MaxLength="15"
                        Placeholder="Password"
                        Keyboard="Text"
                        IsPassword="True"
+                       toolkit:SetFocusOnEntryCompletedBehavior.NextElement="{x:Reference Btn_Login}"
+                       ReturnType="Done"
                        x:Name="Ent_Password"/>
                 <Button Style="{StaticResource Button}"
                         Text="Login"

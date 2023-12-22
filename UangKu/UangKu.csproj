@@ -93,6 +93,7 @@
 	  <None Remove="Resources\Images\man.svg" />
 	  <None Remove="Resources\Images\morning.svg" />
 	  <None Remove="Resources\Images\night.svg" />
+	  <None Remove="Resources\Images\report.svg" />
 	  <None Remove="Resources\Images\woman.svg" />
 	</ItemGroup>
 
@@ -143,6 +144,9 @@
 	  <MauiXaml Update="View\Menu\UserGallery.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\Menu\UserReport.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\SubMenu\AddAppStandardReference.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -153,6 +157,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\SubMenu\NewTransaction.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\SubMenu\ReportDetail.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
