@@ -14,6 +14,7 @@ namespace UangKu.ViewModel.MasterPage
         {
             App.Session = null;
             App.Access = null;
+            App.Param = null;
 
             await SessionModel.SessionCheck();
         }

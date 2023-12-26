@@ -4,7 +4,9 @@ using SkiaSharp;
 using System.Globalization;
 using System.Text;
 using UangKu.Model.Session;
+using UangKu.ViewModel.RestAPI.AppParameter;
 using UangKu.ViewModel.RestAPI.Picture;
+using UangKu.ViewModel.RestAPI.Profile;
 using UangKu.ViewModel.RestAPI.Report;
 using UangKu.ViewModel.RestAPI.Transaction;
 using static UangKu.Model.Base.ParameterModel;
@@ -107,7 +109,7 @@ namespace UangKu.Model.Base
 
         public static bool IsAdult(int age)
         {
-            bool adult = age >= AppParameter.Age;
+            bool adult = age >= Converter.StringToInt(AppParameter.AgeMinimum);
             return adult;
         }
 
@@ -120,6 +122,47 @@ namespace UangKu.Model.Base
             }
 
             return value;
+        }
+
+        public static async void LoadProfile()
+        {
+            var profile = await GetProfile.GetProfileID(App.Session.personID);
+            DateTime dateTime = profile.birthDate != null ? (DateTime)profile.birthDate : DateTime.Now;
+            int AgeUser = GetUserAge(dateTime);
+            App.Access = new AppAccess
+            {
+                IsAdmin = IsAdmin(App.Session.accessName),
+                IsAdult = IsAdult(AgeUser)
+            };
+        }
+
+        public static async void LoadAppParameter()
+        {
+            var allParameter = await AllParameterWithNoPageFilter.GetAllAppParameter();
+            if (allParameter.Count > 0)
+            {
+                for (int i = 0; i < allParameter.Count; i++)
+                {
+                    var data = allParameter[i];
+                    if (!string.IsNullOrEmpty(data.parameterID))
+                    {
+                        switch (data.parameterID)
+                        {
+                            case "MaxFileSize":
+                                AppParameter.MaxFileSize = data.parameterValue;
+                                break;
+
+                            case "MaxPicture":
+                                AppParameter.MaxPicture = data.parameterValue;
+                                break;
+
+                            case "AgeMinimum":
+                                AppParameter.AgeMinimum = data.parameterValue;
+                                break;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -249,8 +292,10 @@ namespace UangKu.Model.Base
             var stream = await result.OpenReadAsync();
 
             long fileSize = stream.Length;
+            var intResult = Converter.StringToInt(AppParameter.MaxFileSize);
+            var longResult = Converter.IntToLong(intResult);
 
-            if (fileSize > ItemDefaultValue.MaxFileSize)
+            if (fileSize > longResult)
             {
                 await MsgModel.MsgNotification($"{result.FileName} Is More Than Limit");
                 return null;
@@ -289,8 +334,10 @@ namespace UangKu.Model.Base
                 var stream = await item.OpenReadAsync();
 
                 long fileSize = stream.Length;
+                var intResult = Converter.StringToInt(AppParameter.MaxFileSize);
+                var longResult = Converter.IntToLong(intResult);
 
-                if (fileSize > ItemDefaultValue.MaxFileSize)
+                if (fileSize > longResult)
                 {
                     await MsgModel.MsgNotification($"{item.FileName} Is More Than Limit");
                 }
@@ -315,6 +362,23 @@ namespace UangKu.Model.Base
             }
 
             return ImageItems;
+        }
+    }
+
+    public static class Converter
+    {
+        public static int StringToInt(string data)
+        {
+            int result = int.Parse(data);
+
+            return result;
+        }
+
+        public static long IntToLong(int data)
+        {
+            long result = data * 1024 * 1024;
+
+            return result;
         }
     }
 

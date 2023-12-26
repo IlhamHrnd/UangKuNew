@@ -8,6 +8,7 @@ namespace UangKu
     {
         public static AppSession Session { get; set; }
         public static AppAccess Access { get; set; }
+        public static AppParameter Param { get; set; }
         public App()
         {
             InitializeComponent();

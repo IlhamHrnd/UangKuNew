@@ -18,4 +18,14 @@
         public bool IsAdmin { get; set; }
         public bool IsAdult { get; set; }
     }
+
+    public class AppParameter
+    {
+        private static string ageminimum = string.Empty;
+        public static string AgeMinimum { get => ageminimum; set => ageminimum = value; }
+        private static string maxfilesize = string.Empty;
+        public static string MaxFileSize { get => maxfilesize; set => maxfilesize = value; }
+        private static string maxpicture = string.Empty;
+        public static string MaxPicture { get => maxpicture; set => maxpicture = value; }
+    }
 }

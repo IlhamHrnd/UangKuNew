@@ -33,12 +33,6 @@
             public static string ReportNo { get => reportno; set => reportno = value; }
         }
 
-        public class AppParameter
-        {
-            private static int age = 21;
-            public static int Age { get => age; set => age = value; }
-        }
-
         public static class DateTimeFormat
         {
             private static string date = "dd/MM/yyyy";
@@ -92,8 +86,6 @@
             public static bool IsUsed {  get => isused; set => isused = value; }
             private static bool isdeleted = false;
             public static bool IsDeleted { get => isdeleted; set => isdeleted = value; }
-            private static long maxfilesize = 2 * 1024 * 1024; //Maximum File Size Is 2MB
-            public static long MaxFileSize {  get => maxfilesize; set => maxfilesize = value; }
             private static string newfile = "New";
             public static string NewFile { get => newfile; set => newfile = value; }
             private static string editfile = "Edit";
