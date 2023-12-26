@@ -144,22 +144,19 @@ namespace UangKu.Model.Base
                 for (int i = 0; i < allParameter.Count; i++)
                 {
                     var data = allParameter[i];
-                    if (!string.IsNullOrEmpty(data.parameterID))
+                    switch (data.parameterID)
                     {
-                        switch (data.parameterID)
-                        {
-                            case "MaxFileSize":
-                                AppParameter.MaxFileSize = data.parameterValue;
-                                break;
+                        case "MaxFileSize":
+                            AppParameter.MaxFileSize = data.parameterValue;
+                            break;
 
-                            case "MaxPicture":
-                                AppParameter.MaxPicture = data.parameterValue;
-                                break;
+                        case "MaxPicture":
+                            AppParameter.MaxPicture = data.parameterValue;
+                            break;
 
-                            case "AgeMinimum":
-                                AppParameter.AgeMinimum = data.parameterValue;
-                                break;
-                        }
+                        case "AgeMinimum":
+                            AppParameter.AgeMinimum = data.parameterValue;
+                            break;
                     }
                 }
             }

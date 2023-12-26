@@ -66,6 +66,15 @@
             public static string UserID { get => userid; set => userid = value; }
         }
 
+        public class Transaction
+        {
+            private static decimal income = 0;
+            private static decimal expenditure = 0;
+
+            public static decimal Income { get => income; set => income = value; }
+            public static decimal Expenditure { get => expenditure; set => expenditure = value; }
+        }
+
         public class ItemDefaultValue
         {
             private static string offline = "You're Offline";

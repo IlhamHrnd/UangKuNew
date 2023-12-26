@@ -6,6 +6,7 @@ using UangKu.View.SubMenu;
 using UangKu.ViewModel.RestAPI.Picture;
 using UangKu.ViewModel.RestAPI.Profile;
 using UangKu.ViewModel.RestAPI.Transaction;
+using static UangKu.Model.Response.Transaction.SumTransaction;
 
 namespace UangKu.ViewModel.Menu
 {
@@ -93,7 +94,34 @@ namespace UangKu.ViewModel.Menu
                                 ValueLabel = item.amountFormat,
                                 Color = RandomColorGenerator.SKGenerateRandomColor()
                             });
+
+                            switch (item.srTransaction)
+                            {
+                                case "Income":
+                                    ParameterModel.Transaction.Income = (decimal)item.amount;
+                                    break;
+
+                                case "Expenditure":
+                                    ParameterModel.Transaction.Expenditure = (decimal)item.amount;
+                                    break;
+                            }
                         }
+                    }
+
+                    if (ParameterModel.Transaction.Income != 0 && ParameterModel.Transaction.Expenditure != 0 && ListSumTrans.Count > 0)
+                    {
+                        decimal? amount = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
+                        string srTransaction = "Summary";
+                        string amountFormat = FormatCurrency.Currency((decimal)amount, ParameterModel.ItemDefaultValue.Currency);
+
+                        var item = new SumTransactionRoot
+                        {
+                            amount = amount,
+                            srTransaction = srTransaction,
+                            amountFormat = amountFormat
+                        };
+
+                        ListSumTrans.Add(item);
                     }
 
                     if (entries.Count > 0)
