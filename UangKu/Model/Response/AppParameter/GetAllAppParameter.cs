@@ -23,6 +23,7 @@ namespace UangKu.Model.Response.AppParameter
 
             [JsonProperty("isUsedBySystem")]
             public bool? isUsedBySystem { get; set; }
+            public string lastUpdateDateTimeString { get; set; }
         }
 
         public class GetAllAppParameterRoot

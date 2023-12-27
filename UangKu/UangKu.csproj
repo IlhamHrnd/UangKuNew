@@ -123,6 +123,9 @@
 	  <MauiXaml Update="View\MasterPage\MasterUser.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\Menu\AllParameter.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="View\Menu\AllUser.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

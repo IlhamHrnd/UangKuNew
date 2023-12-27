@@ -63,4 +63,9 @@
         <ShellContent ContentTemplate="{DataTemplate Menu:UserReport}"
                   Route="UserReport"/>
     </FlyoutItem>
+    <FlyoutItem Title="Parameter"
+            Icon="dotnet_bot.svg">
+        <ShellContent ContentTemplate="{DataTemplate Menu:AllParameter}"
+              Route="AllParameter"/>
+    </FlyoutItem>
 </Shell>
