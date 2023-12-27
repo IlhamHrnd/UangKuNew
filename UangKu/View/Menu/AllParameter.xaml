@@ -63,7 +63,7 @@
                                             </SwipeItems>
                                         </SwipeView.RightItems>
                                         <Frame Style="{StaticResource Frame}">
-                                            <Grid>
+                                            <Grid ColumnSpacing="5">
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
                                                     <RowDefinition Height="Auto" />
@@ -101,6 +101,30 @@
                                                            VerticalTextAlignment="Center"
                                                            Text="Is Used By System"/>
                                                 </HorizontalStackLayout>
+                                                <Label Grid.Row="2"
+                                                       Grid.Column="0"
+                                                       HorizontalTextAlignment="Center"
+                                                       VerticalTextAlignment="Center"
+                                                       Style="{StaticResource Label}">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="Last Update : "/>
+                                                            <Span Text="{Binding lastUpdateDateTimeString}"/>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
+                                                <Label Grid.Row="2"
+                                                       Grid.Column="1"
+                                                       HorizontalTextAlignment="Center"
+                                                       VerticalTextAlignment="Center"
+                                                       Style="{StaticResource Label}">
+                                                    <Label.FormattedText>
+                                                        <FormattedString>
+                                                            <Span Text="Note : "/>
+                                                            <Span Text="{Binding parameterName}"/>
+                                                        </FormattedString>
+                                                    </Label.FormattedText>
+                                                </Label>
                                             </Grid>
                                         </Frame>
                                     </SwipeView>
