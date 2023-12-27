@@ -1,6 +1,7 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
 using static UangKu.Model.Response.Transaction.AllTransaction;
+using static UangKu.Model.Response.Transaction.SumTransaction;
 
 namespace UangKu.ViewModel.Menu
 {
@@ -39,6 +40,17 @@ namespace UangKu.ViewModel.Menu
                         }
 
                         ListSumTrans.Add(item);
+
+                        switch (item.srTransaction)
+                        {
+                            case "Income":
+                                ParameterModel.Transaction.Income = (decimal)item.amount;
+                                break;
+
+                            case "Expenditure":
+                                ParameterModel.Transaction.Expenditure = (decimal)item.amount;
+                                break;
+                        }
                     }
                 }
                 var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(pageNumber, pageSize, userID);
@@ -62,6 +74,21 @@ namespace UangKu.ViewModel.Menu
                     }
                     Page = (int)alltrans.pageNumber;
                     ListAllTrans.Add(item);
+                }
+                if (ParameterModel.Transaction.Income != 0 && ParameterModel.Transaction.Expenditure != 0 && ListSumTrans.Count > 0)
+                {
+                    decimal? amount = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
+                    string srTransaction = "Summary";
+                    string amountFormat = FormatCurrency.Currency((decimal)amount, ParameterModel.ItemDefaultValue.Currency);
+
+                    var item = new SumTransactionRoot
+                    {
+                        amount = amount,
+                        srTransaction = srTransaction,
+                        amountFormat = amountFormat
+                    };
+
+                    ListSumTrans.Add(item);
                 }
             }
             catch (Exception e)

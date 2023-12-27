@@ -1,5 +1,6 @@
 ﻿using Microcharts;
 using Microcharts.Maui;
+using SkiaSharp;
 using UangKu.Model.Base;
 using UangKu.Model.Menu;
 using UangKu.View.SubMenu;
@@ -19,7 +20,6 @@ namespace UangKu.ViewModel.Menu
         {
             LoadData();
             _navigation = navigation;
-            Month = ParameterModel.DateFormat.MonthName;
         }
         private void LoadData()
         {
@@ -49,6 +49,7 @@ namespace UangKu.ViewModel.Menu
 
             Name = $"Hello, {App.Session.username} {greeting}";
             Person = $"{App.Session.username}";
+            Month = DateFormat.FormattingDate(ParameterModel.DateFormat.DateTime, ParameterModel.DateTimeFormat.Month);
         }
 
         public async void LoadDataPerson(ChartView charts)
@@ -128,7 +129,10 @@ namespace UangKu.ViewModel.Menu
                     {
                         charts.Chart = new PieChart
                         {
-                            Entries = entries
+                            Entries = entries,
+                            BackgroundColor = SKColors.Transparent,
+                            LabelTextSize = 25,
+                            LabelMode = LabelMode.RightOnly
                         };
                     }
 

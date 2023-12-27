@@ -12,7 +12,6 @@
         {
             private static DateTime datetime = DateTime.Now;
             public static DateTime DateTime { get => datetime; set => datetime = value; }
-            public static string MonthName { get => datetime.ToString("MMMM"); set => datetime.ToString("MMMM"); }
         }
 
         public class AppStandardReference
@@ -46,6 +45,7 @@
             private static string hourmin = "HH:mm";
             private static string month = "MMMM";
             private static string yearmonthdate = "yyyy-MM-dd";
+            private static string daydatemonthyear = "dddd, dd MMMM yyyy";
 
             public static string Date { get => date; set => date = value; }
             public static string Datetime { get => datetime; set => datetime = value; }
@@ -58,6 +58,7 @@
             public static string Hourmin { get => hourmin; set => hourmin = value; }
             public static string Month { get => month; set => month = value; }
             public static string Yearmonthdate { get => yearmonthdate; set => yearmonthdate = value; }
+            public static string Daydatemonthyear { get => daydatemonthyear; set => daydatemonthyear = value; }
         }
 
         public class User
