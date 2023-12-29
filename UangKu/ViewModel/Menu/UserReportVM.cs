@@ -92,7 +92,7 @@ namespace UangKu.ViewModel.Menu
                             string decodeImg = ImageConvert.DecodeBase64ToString(data.picture);
                             byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
                             data.source = ImageConvert.ImgByte(byteImg);
-                        }
+                        } 
                     }
                     Page = (int)report.pageNumber;
                     ListReport.Add(report);

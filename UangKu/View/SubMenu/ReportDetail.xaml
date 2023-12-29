@@ -1,12 +1,112 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+             xmlns:Model="clr-namespace:UangKu.Model.SubMenu"
+             xmlns:Font="clr-namespace:UangKu.Model.Base"
              x:Class="UangKu.View.SubMenu.ReportDetail"
-             Title="ReportDetail">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <Model:ReportDetail />
+    </ContentPage.BindingContext>
+    <ScrollView Style="{StaticResource ScrollView}">
+        <StackLayout Style="{StaticResource StackLayout}">
+            <ActivityIndicator Style="{StaticResource ActivityIndicator}"
+                               IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"/>
+            <Border Style="{StaticResource Border}" Grid.ColumnSpan="{OnIdiom Default=2, Desktop=1}"
+                    Grid.RowSpan="{OnIdiom Default=1, Desktop=2}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="0,0,50,50"/>
+                </Border.StrokeShape>
+                <Image Source="report.svg" HorizontalOptions="Center"
+                       Aspect="AspectFit" Margin="30"
+                       HeightRequest="100" WidthRequest="100"/>
+            </Border>
+            <Frame Style="{StaticResource Frame}" Margin="5,10,5,0">
+                <Grid Margin="5" RowSpacing="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*" />
+                        <ColumnDefinition Width="50*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0"
+                           Grid.Row="0"
+                           Style="{StaticResource Label}"
+                           VerticalTextAlignment="Center"
+                           Text="Date"/>
+                    <DatePicker Grid.Column="1"
+                                Grid.Row="0"
+                                Style="{StaticResource DatePicker}"
+                                x:Name="Dt_ErrorDate"/>
+                    <Label Grid.Column="0"
+                           Grid.Row="1"
+                           Style="{StaticResource Label}"
+                           VerticalTextAlignment="Center"
+                           Text="Location"/>
+                    <Picker Grid.Column="1"
+                            Grid.Row="1"
+                            Style="{StaticResource Picker}"
+                            ItemsSource="{Binding ListErrorLocation}"
+                            ItemDisplayBinding="{Binding itemName}"
+                            SelectedItem="{Binding SelectedErrorLocation}"
+                            Title="Select Error Location"
+                            x:Name="Pic_ErrorLocation"/>
+                    <Label Grid.Column="0"
+                           Grid.Row="2"
+                           Style="{StaticResource Label}"
+                           VerticalTextAlignment="Center"
+                           Text="Posibility"/>
+                    <Picker Grid.Column="1"
+                            Grid.Row="2"
+                            Style="{StaticResource Picker}"
+                            ItemsSource="{Binding ListErrorPosibility}"
+                            ItemDisplayBinding="{Binding itemName}"
+                            SelectedItem="{Binding SelectedErrorPosibility}"
+                            Title="Select Error Posibility"
+                            x:Name="Pic_ErrorPosibility"/>
+                    <Label Grid.Column="0"
+                           Grid.Row="3"
+                           Style="{StaticResource Label}"
+                           VerticalTextAlignment="Center"
+                           Text="Cronologic"/>
+                    <Editor Grid.Column="1"
+                            Grid.Row="3"
+                            Style="{StaticResource Editor}"
+                            Placeholder="Write Error Cronologic"
+                            x:Name="Edt_Cronologic"/>
+                    <Label Grid.Column="0"
+                           Grid.Row="4"
+                           Style="{StaticResource Label}"
+                           VerticalTextAlignment="Center"
+                           Text="Picture"/>
+                    <Button Grid.Column="1"
+                            Grid.Row="4"
+                            Style="{StaticResource Button}"
+                            Text="Upload"
+                            x:Name="Btn_Upload"
+                            Clicked="Btn_Upload_Clicked"/>
+                    <toolkit:AvatarView Grid.Column="0"
+                                        Grid.Row="5"
+                                        Grid.ColumnSpan="2"
+                                        Style="{StaticResource Avatar}"
+                                        HeightRequest="200"
+                                        WidthRequest="200"
+                                        x:Name="Avt_ReportPhoto"/>
+                </Grid>
+            </Frame>
+            <Button Style="{StaticResource Button}"
+                    Margin="5,10"
+                    Clicked="Btn_NewReport_Clicked"
+                    x:Name="Btn_NewReport"/>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>
