@@ -46,6 +46,7 @@
                     <DatePicker Grid.Column="1"
                                 Grid.Row="0"
                                 Style="{StaticResource DatePicker}"
+                                IsEnabled="{Binding IsEditAble}"
                                 x:Name="Dt_ErrorDate"/>
                     <Label Grid.Column="0"
                            Grid.Row="1"
@@ -59,6 +60,7 @@
                             ItemDisplayBinding="{Binding itemName}"
                             SelectedItem="{Binding SelectedErrorLocation}"
                             Title="Select Error Location"
+                            IsEnabled="{Binding IsEditAble}"
                             x:Name="Pic_ErrorLocation"/>
                     <Label Grid.Column="0"
                            Grid.Row="2"
@@ -72,6 +74,7 @@
                             ItemDisplayBinding="{Binding itemName}"
                             SelectedItem="{Binding SelectedErrorPosibility}"
                             Title="Select Error Posibility"
+                            IsEnabled="{Binding IsEditAble}"
                             x:Name="Pic_ErrorPosibility"/>
                     <Label Grid.Column="0"
                            Grid.Row="3"
@@ -82,6 +85,7 @@
                             Grid.Row="3"
                             Style="{StaticResource Editor}"
                             Placeholder="Write Error Cronologic"
+                            IsEnabled="{Binding IsEditAble}"
                             x:Name="Edt_Cronologic"/>
                     <Label Grid.Column="0"
                            Grid.Row="4"
@@ -92,6 +96,7 @@
                             Grid.Row="4"
                             Style="{StaticResource Button}"
                             Text="Upload"
+                            IsEnabled="{Binding IsEditAble}"
                             x:Name="Btn_Upload"
                             Clicked="Btn_Upload_Clicked"/>
                     <toolkit:AvatarView Grid.Column="0"
@@ -102,6 +107,42 @@
                                         WidthRequest="200"
                                         x:Name="Avt_ReportPhoto"/>
                 </Grid>
+            </Frame>
+            <Frame Style="{StaticResource Frame}" Margin="5,10,5,0"
+                   IsVisible="{Binding IsVisible}">
+                <StackLayout Spacing="10">
+                    <HorizontalStackLayout>
+                        <CheckBox Style="{StaticResource CheckBox}"
+                                  x:Name="Cb_Approve"/>
+                        <Label Style="{StaticResource Label}"
+                               VerticalTextAlignment="Center"
+                               Text="Approve"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="Report Status : "
+                               Style="{StaticResource Label}"/>
+                        <Label Style="{StaticResource Label}"
+                               x:Name="Lbl_ReportStatus"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="Created Date : "
+                               Style="{StaticResource Label}"/>
+                        <Label Style="{StaticResource Label}"
+                               x:Name="Lbl_CreatedDateTime"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="Last Update : "
+                               Style="{StaticResource Label}"/>
+                        <Label Style="{StaticResource Label}"
+                               x:Name="Lbl_LastUpdate"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="Reported By : "
+                               Style="{StaticResource Label}"/>
+                        <Label Style="{StaticResource Label}"
+                               x:Name="Lbl_PersonID"/>
+                    </HorizontalStackLayout>
+                </StackLayout>
             </Frame>
             <Button Style="{StaticResource Button}"
                     Margin="5,10"

@@ -20,9 +20,9 @@ public partial class UserReport : ContentPage
 		_vm.LoadData();
     }
 
-    private async void Coll_Report_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void SwipeReport_Invoked(object sender, EventArgs e)
     {
-        await _vm.UserReport_PopUp(e, ParameterModel.ItemDefaultValue.EditFile);
+        await _vm.SwipeItem_Invoked(sender, ParameterModel.ItemDefaultValue.EditFile);
     }
 
     private async void Bar_AddItem_Clicked(object sender, EventArgs e)

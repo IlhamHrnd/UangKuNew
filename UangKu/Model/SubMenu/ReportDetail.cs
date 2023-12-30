@@ -16,6 +16,8 @@ namespace UangKu.Model.SubMenu
         public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private bool isvisible = false;
         public bool IsVisible { get => isvisible; set => SetProperty(ref isvisible, value); }
+        private bool iseditable = false;
+        public bool IsEditAble { get => iseditable; set => SetProperty(ref iseditable, value); }
         private bool isenabled = false;
         public bool IsEnabled { get => isenabled; set => SetProperty(ref isenabled, value); }
         private IList<AsriRoot> listerrorlocation { get; set; }

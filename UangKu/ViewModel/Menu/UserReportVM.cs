@@ -108,19 +108,28 @@ namespace UangKu.ViewModel.Menu
             }
         }
 
-        public async Task UserReport_PopUp(SelectionChangedEventArgs args, string mode)
+        public async Task SwipeItem_Invoked(object sender, string mode)
         {
-            var standardID = args.CurrentSelection[0] as Model.Response.Report.Report.Datum;
-            var reportNo = standardID?.reportNo;
-            ParameterModel.Report.ReportNo = reportNo;
-
-            if (!string.IsNullOrEmpty(reportNo))
+            var item = sender as SwipeItem;
+            if (item == null)
             {
-                await _navigation.PushAsync(new ReportDetail(mode));
+                return;
+            }
+
+            var reportNo = item.BindingContext as Model.Response.Report.Report.Datum;
+            if (reportNo == null)
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(reportNo.reportNo))
+            {
+                await MsgModel.MsgNotification($"Report No Is Null");
             }
             else
             {
-                await MsgModel.MsgNotification($"You Haven't Selected An Item Yet");
+                ParameterModel.Report.ReportNo = reportNo.reportNo;
+                await _navigation.PushAsync(new ReportDetail(mode));
             }
         }
 

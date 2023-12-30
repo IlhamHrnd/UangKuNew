@@ -67,7 +67,7 @@ namespace UangKu.ViewModel.SubMenu
                         }
                         if (transno.amount != 0)
                         {
-                            var value = FormatCurrency.DecimalToInt((decimal)transno.amount);
+                            var value = Converter.DecimalToInt((decimal)transno.amount);
                             EntAmount.Text = value.ToString();
                         }
                         if (transno.photo != null)

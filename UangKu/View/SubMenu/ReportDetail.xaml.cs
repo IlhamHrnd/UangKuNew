@@ -17,7 +17,7 @@ public partial class ReportDetail : ContentPage
     {
         await SessionModel.SessionCheck();
         _vm.SetVisibility(Btn_NewReport);
-		_vm.LoadData();
+		_vm.LoadData(Dt_ErrorDate, Edt_Cronologic, Lbl_ReportStatus, Lbl_CreatedDateTime, Lbl_LastUpdate, Lbl_PersonID, Cb_Approve);
     }
 
     private async void Btn_Upload_Clicked(object sender, EventArgs e)

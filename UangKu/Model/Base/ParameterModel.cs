@@ -108,6 +108,10 @@
             public static int Maxresult { get => maxresult; set => maxresult = value; }
             private static int homemaxresult = 5;
             public static int HomeMaxResult { get => homemaxresult; set => homemaxresult = value; }
+            private static int age = 21;
+            public static int Age { get => age; set => age = value; }
+            private static int maxfilesize = 1; //Dalam MB
+            public static int MaxFileSize { get => maxfilesize; set => maxfilesize = value; }
             private static int timeout = 10000;
             public static int Timeout { get => timeout; set => timeout = value; }
             private static bool isactive = true;

@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Maui.Views;
+using System.Runtime.Serialization;
 using UangKu.Model.Base;
+using UangKu.Model.Session;
 using UangKu.Model.SubMenu;
 using static UangKu.Model.Base.ParameterModel.PermissionManager;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
@@ -37,7 +39,7 @@ namespace UangKu.ViewModel.SubMenu
             }
         }
 
-        public async void LoadData()
+        public async void LoadData(DatePicker errorDate, Editor cronologicEditor, Label reportstatusLabel, Label createdateLabel, Label lastupdateLabel, Label personidLabel, CheckBox isapproveCheckBox)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -53,7 +55,72 @@ namespace UangKu.ViewModel.SubMenu
                 }
                 else if (Mode == ParameterModel.ItemDefaultValue.EditFile)
                 {
+                    var reportNo = ParameterModel.Report.ReportNo;
+                    bool isAdmin = App.Access.IsAdmin;
+                    var userID = SessionModel.GetUserID(App.Session);
 
+                    if (!string.IsNullOrEmpty(reportNo))
+                    {
+                        var report = await RestAPI.Report.GetReportNo.GetUserReportNo(reportNo, isAdmin);
+                        if (report.dateErrorOccured.HasValue)
+                        {
+                            errorDate.Date = DateFormat.FormatYearMonthDateSplit((DateTime)report.dateErrorOccured);
+                        }
+                        if (!string.IsNullOrEmpty(report.errorCronologic))
+                        {
+                            cronologicEditor.Text = report.errorCronologic;
+                        }
+                        if (!string.IsNullOrEmpty(report.personID))
+                        {
+                            personidLabel.Text = report.personID;
+                            IsEditAble = Compare.StringCompare(report.personID, userID);
+                        }
+                        if (isAdmin)
+                        {
+                            if ((bool)report.isApprove)
+                            {
+                                isapproveCheckBox.IsChecked = (bool)report.isApprove;
+                            }
+                            if (isapproveCheckBox.IsChecked)
+                            {
+                                lastupdateLabel.Text = report.approvedDateTime.HasValue
+                                    ? DateFormat.FormattingDate((DateTime)report.approvedDateTime, ParameterModel.DateTimeFormat.Datetime)
+                                    : DateFormat.FormattingDate((DateTime)report.lastUpdateDateTime, ParameterModel.DateTimeFormat.Datetime);
+                            }
+                            else
+                            {
+                                lastupdateLabel.Text = report.voidDateTime.HasValue
+                                    ? DateFormat.FormattingDate((DateTime)report.voidDateTime, ParameterModel.DateTimeFormat.Datetime)
+                                    : DateFormat.FormattingDate((DateTime)report.lastUpdateDateTime, ParameterModel.DateTimeFormat.Datetime);
+                            }
+                            if (!string.IsNullOrEmpty(report.srReportStatus))
+                            {
+                                reportstatusLabel.Text = report.srReportStatus;
+                            }
+                            if (report.createdDateTime.HasValue)
+                            {
+                                createdateLabel.Text = DateFormat.FormattingDate((DateTime)report.createdDateTime, ParameterModel.DateTimeFormat.Datetime);
+                            }
+                        }
+                    }
+                }
+                if (App.Access.IsAdmin)
+                {
+                    var status = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriThreeRoot>(ParameterModel.AppStandardReferenceItem.Reportstatus,
+                        true, true);
+                    if (status.Count > 0)
+                    {
+                        ListReportStatus.Clear();
+                        for (int i = 0; i < status.Count; i++)
+                        {
+                            ListReportStatus.Add(status[i]);
+                        }
+                    }
+                    IsVisible = true;
+                }
+                else
+                {
+                    IsVisible = false;
                 }
                 var location = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriRoot>(ParameterModel.AppStandardReferenceItem.ErrorLocation, 
                     true, true);
@@ -65,7 +132,6 @@ namespace UangKu.ViewModel.SubMenu
                         ListErrorLocation.Add(location[i]);
                     }
                 }
-
                 var posibility = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriTwoRoot>(ParameterModel.AppStandardReferenceItem.ErrorPossibility,
                     true, true);
                 if (posibility.Count > 0)
@@ -121,7 +187,7 @@ namespace UangKu.ViewModel.SubMenu
                     if (Mode == ParameterModel.ItemDefaultValue.NewFile)
                     {
                         var userID = SessionModel.GetUserID(App.Session);
-                        var generateReportNo = SessionModel.GenerateUserReportNo(userID, App.Session.accessName);
+                        var generateReportNo = GetNewAutoNumber.GenerateUserReportNo(userID, App.Session.accessName);
                         var reportNo = await RestAPI.Report.NewReportNo.GetNewReportNo(generateReportNo);
 
                         if (string.IsNullOrEmpty(reportNo))

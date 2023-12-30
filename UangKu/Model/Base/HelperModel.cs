@@ -53,12 +53,6 @@ namespace UangKu.Model.Base
             CultureInfo info = new CultureInfo(culture);
             return amount.ToString("C", info);
         }
-
-        public static int DecimalToInt(decimal value)
-        {
-            var values = (int)value;
-            return values;
-        }
     }
 
     public static class SessionModel
@@ -109,19 +103,8 @@ namespace UangKu.Model.Base
 
         public static bool IsAdult(int age)
         {
-            bool adult = age >= Converter.StringToInt(AppParameter.AgeMinimum);
+            bool adult = age >= Converter.StringToInt(AppParameter.AgeMinimum, ItemDefaultValue.Age);
             return adult;
-        }
-
-        public static string GenerateUserReportNo(string firstString, string secondString)
-        {
-            string value = string.Empty;
-            if (!string.IsNullOrEmpty(firstString) && !string.IsNullOrEmpty(secondString))
-            {
-                value = $"{firstString}{secondString}";
-            }
-
-            return value;
         }
 
         public static async void LoadProfile()
@@ -157,6 +140,10 @@ namespace UangKu.Model.Base
                         case "AgeMinimum":
                             AppParameter.AgeMinimum = data.parameterValue;
                             break;
+
+                        case "MaxResult":
+                            AppParameter.MaxResult = data.parameterValue;
+                            break;
                     }
                 }
             }
@@ -170,6 +157,13 @@ namespace UangKu.Model.Base
             string formattedDate = date.ToString(format);
 
             return formattedDate;
+        }
+
+        public static DateTime FormatYearMonthDateSplit(DateTime dateTime)
+        {
+            var date = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day);
+
+            return date;
         }
     }
 
@@ -289,7 +283,7 @@ namespace UangKu.Model.Base
             var stream = await result.OpenReadAsync();
 
             long fileSize = stream.Length;
-            var intResult = Converter.StringToInt(AppParameter.MaxFileSize);
+            var intResult = Converter.StringToInt(AppParameter.MaxFileSize, ItemDefaultValue.MaxFileSize);
             var longResult = Converter.IntToLong(intResult);
 
             if (fileSize > longResult)
@@ -331,7 +325,7 @@ namespace UangKu.Model.Base
                 var stream = await item.OpenReadAsync();
 
                 long fileSize = stream.Length;
-                var intResult = Converter.StringToInt(AppParameter.MaxFileSize);
+                var intResult = Converter.StringToInt(AppParameter.MaxFileSize, ItemDefaultValue.MaxFileSize);
                 var longResult = Converter.IntToLong(intResult);
 
                 if (fileSize > longResult)
@@ -364,9 +358,9 @@ namespace UangKu.Model.Base
 
     public static class Converter
     {
-        public static int StringToInt(string data)
+        public static int StringToInt(string dataString, int dataInt)
         {
-            int result = int.Parse(data);
+            int result = !string.IsNullOrEmpty(dataString) ? int.Parse(dataString) : dataInt;
 
             return result;
         }
@@ -374,6 +368,22 @@ namespace UangKu.Model.Base
         public static long IntToLong(int data)
         {
             long result = data * 1024 * 1024;
+
+            return result;
+        }
+
+        public static int DecimalToInt(decimal value)
+        {
+            var values = (int)value;
+            return values;
+        }
+    }
+
+    public static class Compare
+    {
+        public static bool StringCompare(string firstString, string secondString)
+        {
+            bool result = firstString == secondString;
 
             return result;
         }
@@ -463,6 +473,17 @@ namespace UangKu.Model.Base
                 await MsgModel.MsgNotification($"Error: {e.Message}");
                 return null;
             }
+        }
+
+        public static string GenerateUserReportNo(string firstString, string secondString)
+        {
+            string value = string.Empty;
+            if (!string.IsNullOrEmpty(firstString) && !string.IsNullOrEmpty(secondString))
+            {
+                value = $"{firstString}{secondString}";
+            }
+
+            return value;
         }
     }
 

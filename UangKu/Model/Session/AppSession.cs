@@ -27,5 +27,7 @@
         public static string MaxFileSize { get => maxfilesize; set => maxfilesize = value; }
         private static string maxpicture = string.Empty;
         public static string MaxPicture { get => maxpicture; set => maxpicture = value; }
+        private static string maxResult;
+        public static string MaxResult { get => maxResult; set => maxResult = value; }
     }
 }
