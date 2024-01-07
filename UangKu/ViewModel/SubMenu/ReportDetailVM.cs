@@ -42,6 +42,7 @@ namespace UangKu.ViewModel.SubMenu
         public async void LoadData(DatePicker errorDate, Editor cronologicEditor, Label reportstatusLabel, Label createdateLabel, Label lastupdateLabel, Label personidLabel, CheckBox isapproveCheckBox)
         {
             bool isConnect = network.IsConnected;
+            bool isAdmin = App.Access.IsAdmin;
             IsBusy = true;
             try
             {
@@ -51,12 +52,11 @@ namespace UangKu.ViewModel.SubMenu
                 }
                 if (Mode == ParameterModel.ItemDefaultValue.NewFile)
                 {
-                    
+                    IsEditAble = true;
                 }
                 else if (Mode == ParameterModel.ItemDefaultValue.EditFile)
                 {
                     var reportNo = ParameterModel.Report.ReportNo;
-                    bool isAdmin = App.Access.IsAdmin;
                     var userID = SessionModel.GetUserID(App.Session);
 
                     if (!string.IsNullOrEmpty(reportNo))
@@ -104,7 +104,7 @@ namespace UangKu.ViewModel.SubMenu
                         }
                     }
                 }
-                if (App.Access.IsAdmin)
+                if (isAdmin)
                 {
                     var status = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriThreeRoot>(ParameterModel.AppStandardReferenceItem.Reportstatus,
                         true, true);

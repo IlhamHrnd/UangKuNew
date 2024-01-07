@@ -483,14 +483,41 @@ namespace UangKu.Model.Base
             }
         }
 
-        public static string GenerateUserReportNo(string firstString, string secondString)
+        public static string GenerateUserReportNo(string userID, string accessName)
         {
             string value = string.Empty;
-            if (!string.IsNullOrEmpty(firstString) && !string.IsNullOrEmpty(secondString))
+            if (!string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(accessName))
             {
-                value = $"{firstString}{secondString}";
+                value = string.Concat(userID, GenerateAccesNameForReportNo(accessName));
             }
 
+            return value;
+        }
+
+        public static string GenerateAccesNameForReportNo(string accessName)
+        {
+            string value = string.Empty;
+            if (!string.IsNullOrEmpty(accessName))
+            {
+                switch (accessName)
+                {
+                    case "Admin":
+                        value = accessName.Substring(0, 3);
+                        break;
+                    case "User":
+                        {
+                            var accessStartSplit = accessName.Substring(0, 2);
+                            var accessEndSplit = accessName.Substring(accessName.Length - 1);
+                            value = string.Concat(accessStartSplit, accessEndSplit);
+                            break;
+                        }
+
+                    default:
+                        //Temporary Jika Akses User Bukan Admin Atau User
+                        value = "TEM";
+                        break;
+                }
+            }
             return value;
         }
     }
