@@ -1,5 +1,6 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
+using UangKu.Model.Session;
 using UangKu.View.SubMenu;
 using UangKu.ViewModel.RestAPI.Report;
 using UangKu.ViewModel.RestAPI.User;
@@ -42,7 +43,7 @@ namespace UangKu.ViewModel.Menu
                 }
                 if (App.Access.IsAdmin)
                 {
-                    var alluser = await UserAll.GetAllUser(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.Maxresult);
+                    var alluser = await UserAll.GetAllUser(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult));
                     if ((bool)alluser.succeeded)
                     {
                         ListAllUser.Clear();
@@ -71,7 +72,7 @@ namespace UangKu.ViewModel.Menu
                 {
                     personID = $"&PersonID={App.Session.personID}";
                 }
-                var report = await GetUserReport.GetAllUserReport(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.Maxresult, personID);
+                var report = await GetUserReport.GetAllUserReport(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), personID);
                 if ((bool)report.succeeded)
                 {
                     ListReport.Clear();

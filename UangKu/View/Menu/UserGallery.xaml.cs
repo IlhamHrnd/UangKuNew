@@ -1,4 +1,5 @@
 using UangKu.Model.Base;
+using UangKu.Model.Session;
 using UangKu.ViewModel.Menu;
 
 namespace UangKu.View.Menu;
@@ -25,12 +26,12 @@ public partial class UserGallery : ContentPage
 
     private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
     {
-        _vm.PreviousPage_Clicked(ParameterModel.ItemDefaultValue.Maxresult);
+        _vm.PreviousPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult));
     }
 
     private void Btn_NextPage_Clicked(object sender, EventArgs e)
     {
-        _vm.NextPage_Clicked(ParameterModel.ItemDefaultValue.Maxresult);
+        _vm.NextPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult));
     }
 
     private async void Btn_DeletePicture_Clicked(object sender, EventArgs e)

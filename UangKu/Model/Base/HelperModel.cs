@@ -103,7 +103,7 @@ namespace UangKu.Model.Base
 
         public static bool IsAdult(int age)
         {
-            bool adult = age >= Converter.StringToInt(AppParameter.AgeMinimum, ItemDefaultValue.Age);
+            bool adult = age >= Converter.StringToInt(AppParameter.AgeMinimum, AppParameterDefault.Age);
             return adult;
         }
 
@@ -143,6 +143,10 @@ namespace UangKu.Model.Base
 
                         case "MaxResult":
                             AppParameter.MaxResult = data.parameterValue;
+                            break;
+
+                        case "HomeMaxResult":
+                            AppParameter.HomeMaxResult = data.parameterValue;
                             break;
                     }
                 }
@@ -283,7 +287,7 @@ namespace UangKu.Model.Base
             var stream = await result.OpenReadAsync();
 
             long fileSize = stream.Length;
-            var intResult = Converter.StringToInt(AppParameter.MaxFileSize, ItemDefaultValue.MaxFileSize);
+            var intResult = Converter.StringToInt(AppParameter.MaxFileSize, Converter.StringToInt(AppParameter.MaxFileSize, AppParameterDefault.MaxFileSize));
             var longResult = Converter.IntToLong(intResult);
 
             if (fileSize > longResult)
@@ -325,7 +329,7 @@ namespace UangKu.Model.Base
                 var stream = await item.OpenReadAsync();
 
                 long fileSize = stream.Length;
-                var intResult = Converter.StringToInt(AppParameter.MaxFileSize, ItemDefaultValue.MaxFileSize);
+                var intResult = Converter.StringToInt(AppParameter.MaxFileSize, Converter.StringToInt(AppParameter.MaxFileSize, AppParameterDefault.MaxFileSize));
                 var longResult = Converter.IntToLong(intResult);
 
                 if (fileSize > longResult)

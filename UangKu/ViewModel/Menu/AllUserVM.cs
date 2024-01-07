@@ -1,5 +1,6 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
+using UangKu.Model.Session;
 using UangKu.ViewModel.RestAPI.User;
 
 namespace UangKu.ViewModel.Menu
@@ -25,7 +26,7 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                var alluser = await UserAll.GetAllUser(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.Maxresult);
+                var alluser = await UserAll.GetAllUser(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult));
                 if ((bool)alluser.succeeded)
                 {
                     ListAllUser.Clear();

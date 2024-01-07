@@ -1,4 +1,5 @@
 using UangKu.Model.Base;
+using UangKu.Model.Session;
 using UangKu.ViewModel.Menu;
 
 namespace UangKu.View.Menu;
@@ -16,7 +17,7 @@ public partial class AllParameter : ContentPage
     {
         await SessionModel.SessionCheck();
 
-		_vm.LoadData(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.Maxresult);
+		_vm.LoadData(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult));
     }
 
     private void SwipeParameter_Invoked(object sender, EventArgs e)

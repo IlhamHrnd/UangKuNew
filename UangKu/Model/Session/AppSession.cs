@@ -29,5 +29,7 @@
         public static string MaxPicture { get => maxpicture; set => maxpicture = value; }
         private static string maxResult;
         public static string MaxResult { get => maxResult; set => maxResult = value; }
+        private static string homemaxresult = string.Empty;
+        public static string HomeMaxResult { get => homemaxresult; set => homemaxresult = value; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
 using UangKu.Model.Response.Picture;
+using UangKu.Model.Session;
 using UangKu.ViewModel.RestAPI.Picture;
 using static UangKu.Model.Base.ParameterModel.PermissionManager;
 
@@ -29,7 +30,7 @@ namespace UangKu.ViewModel.Menu
 
                 if (!string.IsNullOrEmpty(userID))
                 {
-                    var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.Maxresult,
+                    var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult),
                         userID, ParameterModel.ItemDefaultValue.IsDeleted);
                     if ((bool)picture.succeeded && picture.data.Count > 0)
                     {

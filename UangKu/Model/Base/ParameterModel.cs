@@ -96,14 +96,9 @@
             public static decimal Expenditure { get => expenditure; set => expenditure = value; }
         }
 
-        public class ItemDefaultValue
+        //Data Default Saat Gagal Ambil Data Dari AppParameter
+        public class AppParameterDefault
         {
-            private static string offline = "You're Offline";
-            public static string Offline { get => offline; set => offline = value; }
-            private static string online = "Back Online";
-            public static string Online { get => online; set => online = value; }
-            private static int firstpage = 1;
-            public static int FirstPage { get => firstpage; set => firstpage = value; }
             private static int maxresult = 25;
             public static int Maxresult { get => maxresult; set => maxresult = value; }
             private static int homemaxresult = 5;
@@ -112,6 +107,16 @@
             public static int Age { get => age; set => age = value; }
             private static int maxfilesize = 1; //Dalam MB
             public static int MaxFileSize { get => maxfilesize; set => maxfilesize = value; }
+        }
+
+        public class ItemDefaultValue
+        {
+            private static string offline = "You're Offline";
+            public static string Offline { get => offline; set => offline = value; }
+            private static string online = "Back Online";
+            public static string Online { get => online; set => online = value; }
+            private static int firstpage = 1;
+            public static int FirstPage { get => firstpage; set => firstpage = value; }
             private static int timeout = 10000;
             public static int Timeout { get => timeout; set => timeout = value; }
             private static bool isactive = true;

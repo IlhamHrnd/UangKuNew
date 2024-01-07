@@ -3,6 +3,7 @@ using Microcharts.Maui;
 using SkiaSharp;
 using UangKu.Model.Base;
 using UangKu.Model.Menu;
+using UangKu.Model.Session;
 using UangKu.View.SubMenu;
 using UangKu.ViewModel.RestAPI.Picture;
 using UangKu.ViewModel.RestAPI.Profile;
@@ -136,7 +137,7 @@ namespace UangKu.ViewModel.Menu
                         };
                     }
 
-                    var alltrans = await AllTransaction.GetAllTransaction(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.HomeMaxResult,
+                    var alltrans = await AllTransaction.GetAllTransaction(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.HomeMaxResult, ParameterModel.AppParameterDefault.HomeMaxResult),
                         userID);
                     if (alltrans != null)
                     {
@@ -159,7 +160,7 @@ namespace UangKu.ViewModel.Menu
                         ListAllTrans.Add(item);
                     }
 
-                    var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, ParameterModel.ItemDefaultValue.HomeMaxResult, 
+                    var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.HomeMaxResult, ParameterModel.AppParameterDefault.HomeMaxResult), 
                         userID, ParameterModel.ItemDefaultValue.IsDeleted);
                     if ((bool)picture.succeeded && picture.data.Count > 0)
                     {
