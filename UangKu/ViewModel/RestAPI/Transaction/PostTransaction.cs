@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
             var request = new RestRequest
             {
                 Method = Method.Post,
-                Timeout = ParameterModel.ItemDefaultValue.Timeout
+                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
             };
             var body = new Model.Index.Body.PostTransaction
             {

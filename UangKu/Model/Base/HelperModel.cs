@@ -148,6 +148,10 @@ namespace UangKu.Model.Base
                         case "HomeMaxResult":
                             AppParameter.HomeMaxResult = data.parameterValue;
                             break;
+
+                        case "Timeout":
+                            AppParameter.Timeout = data.parameterValue;
+                            break;
                     }
                 }
             }

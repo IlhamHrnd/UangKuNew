@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
             var request = new RestRequest
             {
                 Method = Method.Patch,
-                Timeout = ParameterModel.ItemDefaultValue.Timeout
+                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
             };
             var response = await client.PatchAsync(request);
 

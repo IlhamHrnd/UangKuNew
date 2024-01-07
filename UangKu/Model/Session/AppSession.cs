@@ -31,5 +31,7 @@
         public static string MaxResult { get => maxResult; set => maxResult = value; }
         private static string homemaxresult = string.Empty;
         public static string HomeMaxResult { get => homemaxresult; set => homemaxresult = value; }
+        private static string timeout = string.Empty;
+        public static string Timeout { get => timeout; set => timeout = value; }
     }
 }

@@ -107,6 +107,8 @@
             public static int Age { get => age; set => age = value; }
             private static int maxfilesize = 1; //Dalam MB
             public static int MaxFileSize { get => maxfilesize; set => maxfilesize = value; }
+            private static int timeout = 10000; //Dalam Mili Detik
+            public static int Timeout { get => timeout; set => timeout = value; }
         }
 
         public class ItemDefaultValue
@@ -117,8 +119,6 @@
             public static string Online { get => online; set => online = value; }
             private static int firstpage = 1;
             public static int FirstPage { get => firstpage; set => firstpage = value; }
-            private static int timeout = 10000;
-            public static int Timeout { get => timeout; set => timeout = value; }
             private static bool isactive = true;
             public static bool IsActive { get => isactive; set => isactive = value; }
             private static bool isused = true;

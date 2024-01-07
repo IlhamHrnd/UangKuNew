@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.Profile
             var request = new RestRequest
             {
                 Method = Method.Patch,
-                Timeout = ParameterModel.ItemDefaultValue.Timeout
+                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
             };
             var body = new Model.Index.Body.PatchProfile
             {
