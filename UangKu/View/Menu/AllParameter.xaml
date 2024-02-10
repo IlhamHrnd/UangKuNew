@@ -10,7 +10,8 @@
         <Model:AllParameter/>
     </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="Bar_AddItem">
+        <ToolbarItem x:Name="Bar_AddItem"
+                     Clicked="Bar_AddItem_Clicked">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="FARegular"
                              Glyph="{x:Static Font:FARegular.Plus}"

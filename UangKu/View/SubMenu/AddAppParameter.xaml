@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Font="clr-namespace:UangKu.Model.Base"
+             x:Class="UangKu.View.SubMenu.AddAppParameter"
+             xmlns:Model="clr-namespace:UangKu.Model.SubMenu"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <Model:AddAppParameter />
+    </ContentPage.BindingContext>
+    <ScrollView Style="{StaticResource ScrollView}">
+        <StackLayout Style="{StaticResource StackLayout}">
+            <ActivityIndicator Style="{StaticResource ActivityIndicator}"
+                               IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"/>
+            <Frame Style="{StaticResource Frame}"
+                   Margin="0, 10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*" />
+                        <ColumnDefinition Width="50*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0"
+                           Grid.Row="0"
+                           Style="{StaticResource Label}"
+                           Text="Parameter ID"/>
+                    <Entry Grid.Column="1"
+                           Grid.Row="0"
+                           Style="{StaticResource Entry}"
+                           IsReadOnly="{Binding IsReadOnly}"
+                           x:Name="Ent_ParameterID"/>
+                    <Label Grid.Column="0"
+                           Grid.Row="1"
+                           Style="{StaticResource Label}"
+                           Text="Parameter Note"/>
+                    <Entry Grid.Column="1"
+                           Grid.Row="1"
+                           Style="{StaticResource Entry}"
+                           x:Name="Ent_ParameterNote"/>
+                    <Label Grid.Column="0"
+                           Grid.Row="2"
+                           Style="{StaticResource Label}"
+                           Text="Parameter Value"/>
+                    <Entry Grid.Column="1"
+                           Grid.Row="2"
+                           Style="{StaticResource Entry}"
+                           x:Name="Ent_ParameterValue"/>
+                    <HorizontalStackLayout Grid.Column="0"
+                                           Grid.Row="4">
+                        <CheckBox Style="{StaticResource CheckBox}"
+                                  x:Name="CB_ParameterIsActive"/>
+                        <Label Style="{StaticResource Label}"
+                               Text="Is Active"
+                               VerticalTextAlignment="Center"/>
+                    </HorizontalStackLayout>
+                </Grid>
+            </Frame>
+            <Button Style="{StaticResource Button}"
+                    Text="Save Parameter"
+                    Margin="10"
+                    x:Name="Btn_SaveAppParameter"
+                    Clicked="Btn_SaveAppParameter_Clicked"/>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

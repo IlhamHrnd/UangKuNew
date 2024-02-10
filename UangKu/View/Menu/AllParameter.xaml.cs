@@ -20,8 +20,13 @@ public partial class AllParameter : ContentPage
 		_vm.LoadData(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult));
     }
 
-    private void SwipeParameter_Invoked(object sender, EventArgs e)
+    private async void SwipeParameter_Invoked(object sender, EventArgs e)
     {
+        await _vm.SwipeItem_Invoked(sender, ParameterModel.ItemDefaultValue.EditFile);
+    }
 
+    private async void Bar_AddItem_Clicked(object sender, EventArgs e)
+    {
+        await _vm.AddAppParameter_ToolBar();
     }
 }

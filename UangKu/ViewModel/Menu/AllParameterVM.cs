@@ -1,5 +1,7 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
+using UangKu.View.SubMenu;
+using static UangKu.Model.Response.AppParameter.GetAllAppParameter;
 
 namespace UangKu.ViewModel.Menu
 {
@@ -51,6 +53,28 @@ namespace UangKu.ViewModel.Menu
             {
                 IsBusy = false;
             }
+        }
+
+        public async Task SwipeItem_Invoked(object sender, string mode)
+        {
+            var item = sender as SwipeItem;
+            if (item == null)
+            {
+                return;
+            }
+
+            var parameterID = item.BindingContext as Datum;
+            if (parameterID == null)
+            {
+                return;
+            }
+
+            await _navigation.PushAsync(new AddAppParameter(mode, parameterID.parameterID));
+        }
+
+        public async Task AddAppParameter_ToolBar()
+        {
+            await _navigation.PushAsync(new AddAppParameter(ParameterModel.ItemDefaultValue.NewFile, string.Empty));
         }
     }
 }
