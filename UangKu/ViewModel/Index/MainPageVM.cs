@@ -1,6 +1,8 @@
-﻿using UangKu.Model.Base;
+﻿using System.Diagnostics.CodeAnalysis;
+using UangKu.Model.Base;
 using UangKu.Model.Index;
 using UangKu.Model.Session;
+using UangKu.ViewModel.RestAPI.AppParameter;
 using UangKu.ViewModel.RestAPI.User;
 
 namespace UangKu.ViewModel.Index
@@ -12,7 +14,9 @@ namespace UangKu.ViewModel.Index
         {
             
         }
-        public void LoadData(Entry entUser, Entry entPass, Button btnLogin)
+
+        [RequiresAssemblyFiles()]
+        public async void LoadData(Entry entUser, Entry entPass, Button btnLogin)
         {
             bool isConnect = network.IsConnected;
             if (!isConnect)
@@ -26,6 +30,21 @@ namespace UangKu.ViewModel.Index
                 entUser.IsEnabled = true;
                 entPass.IsEnabled = true;
                 btnLogin.IsEnabled = true;
+
+                var parameterID = await GetParameterID.GetParameter("ShowLastBuild");
+                if (!string.IsNullOrEmpty(parameterID.parameterID))
+                {
+                    var isShowLastBuild = Converter.StringToBool(parameterID.parameterValue);
+                    if (isShowLastBuild)
+                    {
+                        var lastBuild = SessionModel.GetBuildDate();
+                        LastBuild = lastBuild.ToString(ParameterModel.DateTimeFormat.Date);
+                    }
+                    else
+                    {
+                        IsVisible = false;
+                    }
+                }
             }
         }
 

@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using SkiaSharp;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Reflection;
 using System.Text;
 using UangKu.Model.Session;
 using UangKu.ViewModel.RestAPI.AppParameter;
@@ -68,6 +70,15 @@ namespace UangKu.Model.Base
                 return false;
             }
             return true;
+        }
+
+        [RequiresAssemblyFiles()]
+        public static DateTime GetBuildDate()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var fileInfo = new FileInfo(assembly.Location);
+            var lastWriteTime = fileInfo.LastWriteTime;
+            return lastWriteTime;
         }
 
         public static string GetUserID(AppSession session)
@@ -151,6 +162,10 @@ namespace UangKu.Model.Base
 
                         case "Timeout":
                             AppParameter.Timeout = data.parameterValue;
+                            break;
+
+                        case "ShowLastBuild":
+                            AppParameter.ShowLastBuild = data.parameterValue;
                             break;
                     }
                 }
@@ -384,6 +399,22 @@ namespace UangKu.Model.Base
         {
             var values = (int)value;
             return values;
+        }
+
+        public static bool StringToBool(string value)
+        {
+            bool result;
+
+            try
+            {
+                result = Convert.ToBoolean(value);
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+
+            return result;
         }
     }
 

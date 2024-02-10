@@ -53,6 +53,17 @@
                         x:Name="Btn_Login"
                         Clicked="Btn_Login_Clicked"/>
             </StackLayout>
+            <Label Style="{StaticResource Label}"
+                   HorizontalTextAlignment="Center"
+                   FontSize="Small"
+                   IsVisible="{Binding IsVisible}">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Last Build : "/>
+                        <Span Text="{Binding LastBuild}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
         </StackLayout>
     </ScrollView>
 </ContentPage>
