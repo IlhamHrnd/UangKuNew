@@ -17,7 +17,7 @@ namespace UangKu.Model.Index
         public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private string lastbuild = string.Empty;
         public string LastBuild { get => lastbuild; set => SetProperty(ref lastbuild, value); }
-        private bool isvisible = true;
+        private bool isvisible = false;
         public bool IsVisible { get => isvisible; set => SetProperty(ref isvisible, value); }
     }
 }

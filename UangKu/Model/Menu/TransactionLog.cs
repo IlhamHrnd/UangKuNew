@@ -11,6 +11,8 @@ namespace UangKu.Model.Menu
         public string Title { get => title; set => SetProperty(ref title, value); }
         private bool isbusy = false;
         public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
+        private bool isallowcustomdate = false;
+        public bool IsAllowCustomDate { get => isallowcustomdate; set => SetProperty(ref isallowcustomdate, value); }
         private int page = 0;
         public int Page { get => page; set => page = value; }
         private IList<SumTransactionRoot> listsumtrans { get; set; }

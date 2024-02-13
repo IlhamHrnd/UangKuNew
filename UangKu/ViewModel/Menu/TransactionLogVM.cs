@@ -1,5 +1,6 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
+using UangKu.Model.Session;
 using static UangKu.Model.Response.Transaction.AllTransaction;
 using static UangKu.Model.Response.Transaction.SumTransaction;
 
@@ -9,25 +10,33 @@ namespace UangKu.ViewModel.Menu
     {
         private NetworkModel network = NetworkModel.Instance;
         private readonly INavigation _navigation;
+        private string DateRange = string.Empty;
         public TransactionLogVM(INavigation navigation)
         {
             Title = $"Transaction Log For {App.Session.username}";
             _navigation = navigation;
         }
-        public async void LoadData(int pageNumber, int pageSize)
+        public async void LoadData(int pageNumber, int pageSize, DatePicker startDate, DatePicker endDate)
         {
+            var isallow = Converter.StringToBool(AppParameter.IsAllowCustomDate);
+            IsAllowCustomDate = isallow;
+
             bool isConnect = network.IsConnected;
             IsBusy = true;
             try
             {
                 var sessionID = App.Session;
                 string userID = SessionModel.GetUserID(sessionID);
-
+                
                 if (!isConnect)
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID);
+                if (IsAllowCustomDate && startDate != null && endDate != null)
+                {
+                    DateRange = $"&StartDate={startDate.Date}&EndDate={endDate.Date}";
+                }
+                var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID, DateRange);
                 if (sumtrans.Count > 0)
                 {
                     ListSumTrans.Clear();
@@ -53,7 +62,7 @@ namespace UangKu.ViewModel.Menu
                         }
                     }
                 }
-                var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(pageNumber, pageSize, userID);
+                var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(pageNumber, pageSize, userID, DateRange);
                 if (alltrans.data.Count > 0)
                 {
                     ListAllTrans.Clear();
@@ -100,7 +109,7 @@ namespace UangKu.ViewModel.Menu
                 IsBusy = false;
             }
         }
-        public async void NextPage_Clicked(int pageSize)
+        public async void NextPage_Clicked(int pageSize, DatePicker startDate, DatePicker endDate)
         {
             var maxPage = ListAllTrans[0].totalPages;
             bool isConnect = network.IsConnected;
@@ -120,7 +129,11 @@ namespace UangKu.ViewModel.Menu
                 }
                 else
                 {
-                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page + 1, pageSize, userID);
+                    if (IsAllowCustomDate && startDate != null && endDate != null)
+                    {
+                        DateRange = $"&StartDate={startDate.Date}&EndDate={endDate.Date}";
+                    }
+                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page + 1, pageSize, userID, DateRange);
                     if (alltrans.data.Count > 0)
                     {
                         ListAllTrans.Clear();
@@ -139,6 +152,7 @@ namespace UangKu.ViewModel.Menu
                                 item.data[i].source = ImageConvert.ImgByte(byteImg);
                             }
                         }
+                        Page = (int)alltrans.pageNumber;
                         ListAllTrans.Add(item);
                     }
                 }
@@ -152,7 +166,7 @@ namespace UangKu.ViewModel.Menu
                 IsBusy = false;
             }
         }
-        public async void PreviousPage_Click(int pageSize)
+        public async void PreviousPage_Click(int pageSize, DatePicker startDate, DatePicker endDate)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -171,7 +185,11 @@ namespace UangKu.ViewModel.Menu
                 }
                 else
                 {
-                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page - 1, pageSize, userID);
+                    if (IsAllowCustomDate && startDate != null && endDate != null)
+                    {
+                        DateRange = $"&StartDate={startDate.Date}&EndDate={endDate.Date}";
+                    }
+                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page - 1, pageSize, userID, DateRange);
                     if (alltrans.data.Count > 0)
                     {
                         ListAllTrans.Clear();
@@ -190,6 +208,7 @@ namespace UangKu.ViewModel.Menu
                                 item.data[i].source = ImageConvert.ImgByte(byteImg);
                             }
                         }
+                        Page = (int)alltrans.pageNumber;
                         ListAllTrans.Add(item);
                     }
                 }

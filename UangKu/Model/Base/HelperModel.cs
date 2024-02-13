@@ -167,6 +167,10 @@ namespace UangKu.Model.Base
                         case "ShowLastBuild":
                             AppParameter.ShowLastBuild = data.parameterValue;
                             break;
+
+                        case "IsAllowCustomDate":
+                            AppParameter.IsAllowCustomDate = data.parameterValue;
+                            break;
                     }
                 }
             }

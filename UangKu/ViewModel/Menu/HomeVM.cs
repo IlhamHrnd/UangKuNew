@@ -77,7 +77,7 @@ namespace UangKu.ViewModel.Menu
                         await _navigation.PushAsync(new EditProfile(ParameterModel.ItemDefaultValue.NewFile));
                     }
 
-                    var sumtrans = await GetSumTransaction.GetSumTransactionID(userID);
+                    var sumtrans = await GetSumTransaction.GetSumTransactionID(userID, string.Empty);
                     if (sumtrans.Count > 0)
                     {
                         ListSumTrans.Clear();
@@ -138,7 +138,7 @@ namespace UangKu.ViewModel.Menu
                     }
 
                     var alltrans = await AllTransaction.GetAllTransaction(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.HomeMaxResult, ParameterModel.AppParameterDefault.HomeMaxResult),
-                        userID);
+                        userID, string.Empty);
                     if (alltrans != null)
                     {
                         ListAllTrans.Clear();

@@ -35,5 +35,7 @@
         public static string Timeout { get => timeout; set => timeout = value; }
         private static string showlastbuild = string.Empty;
         public static string ShowLastBuild { get => showlastbuild; set => showlastbuild = value; }
+        private static string isallowcustomdate = string.Empty;
+        public static string IsAllowCustomDate { get => isallowcustomdate; set => isallowcustomdate = value; }
     }
 }
