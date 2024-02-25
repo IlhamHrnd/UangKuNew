@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              x:Class="UangKu.View.Menu.TransactionLog"
              xmlns:Model="clr-namespace:UangKu.Model.Menu"
              xmlns:Font="clr-namespace:UangKu.Model.Base"
@@ -55,8 +56,10 @@
             <Frame Style="{StaticResource Frame}"
                    IsVisible="{Binding IsAllowCustomDate}"
                    IsEnabled="{Binding IsAllowCustomDate}">
-                <Grid>
+                <Grid RowSpacing="5">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -79,7 +82,21 @@
                                 Grid.Column="1"
                                 Style="{StaticResource DatePicker}"
                                 x:Name="Date_EndDate"/>
-                    <Button Grid.Row="2"
+                    <Picker Grid.Row="2"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            ItemsSource="{Binding ListOrderBy}"
+                            ItemDisplayBinding="{Binding itemName}"
+                            SelectedItem="{Binding SelectedOrderBy}"
+                            Style="{StaticResource Picker}"
+                            Title="Order By"
+                            x:Name="Pic_OrderBy"/>
+                    <input:CheckBox Grid.Row="3"
+                                    Grid.Column="0"
+                                    Style="{StaticResource CheckBox2}"
+                                    Text="Oldest First"
+                                    x:Name="CB_IsAscending"/>
+                    <Button Grid.Row="4"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             Style="{StaticResource Button}"
@@ -164,7 +181,7 @@
                                                                     Grid.ColumnSpan="2"
                                                                     HeightRequest="150"
                                                                     WidthRequest="200"
-                                                                    Text="{Binding srTransItem}"
+                                                                    Text="{Binding transDateFormat}"
                                                                     Style="{StaticResource Avatar}"
                                                                     ImageSource="{Binding source}"/>
                                             </Grid>

@@ -198,6 +198,7 @@ namespace UangKu.ViewModel.SubMenu
             finally
             {
                 IsBusy = false;
+                ParameterModel.ImageManager.ImageString = string.Empty;
             }
         }
 

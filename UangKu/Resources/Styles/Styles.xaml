@@ -465,4 +465,15 @@
     <Style TargetType="input:SelectionView" x:Key="SelectionView">
         <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}" />
     </Style>
+
+    <Style TargetType="input:CheckBox" x:Key="CheckBox2">
+        <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
+        <Setter Property="IconColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}" />
+        <Setter Property="BoxBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
+        <Setter Property="Type" Value="Material" />
+        <Setter Property="IconGeometry" Value="{x:Static input:PredefinedShapes.CheckCircle}" />
+        <Setter Property="LabelPosition" Value="After" />
+    </Style>
 </ResourceDictionary>

@@ -1,6 +1,7 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
 using UangKu.Model.Session;
+using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 using static UangKu.Model.Response.Transaction.AllTransaction;
 using static UangKu.Model.Response.Transaction.SumTransaction;
 
@@ -11,12 +12,15 @@ namespace UangKu.ViewModel.Menu
         private NetworkModel network = NetworkModel.Instance;
         private readonly INavigation _navigation;
         private string DateRange = string.Empty;
+        private string OrderBy = string.Empty;
+        private string Ascending = string.Empty;
+        private string Builder = string.Empty;
         public TransactionLogVM(INavigation navigation)
         {
             Title = $"Transaction Log For {App.Session.username}";
             _navigation = navigation;
         }
-        public async void LoadData(int pageNumber, int pageSize, DatePicker startDate, DatePicker endDate)
+        public async void LoadData(int pageNumber, int pageSize, DatePicker startDate, DatePicker endDate, Picker orderByPicker, InputKit.Shared.Controls.CheckBox isAscendingCheckBox)
         {
             var isallow = Converter.StringToBool(AppParameter.IsAllowCustomDate);
             IsAllowCustomDate = isallow;
@@ -32,11 +36,39 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (IsAllowCustomDate && startDate != null && endDate != null)
+                if (IsAllowCustomDate)
                 {
-                    DateRange = $"&StartDate={startDate.Date}&EndDate={endDate.Date}";
+                    if (startDate != null && endDate != null)
+                    {
+                        DateRange = $"&StartDate={startDate.Date}&EndDate={endDate.Date}";
+                    }
+
+                    if (orderByPicker.SelectedItem != null)
+                    {
+                        switch (SelectedOrderBy.itemID)
+                        {
+                            case "OrderByTransaction-001":
+                                OrderBy = "&OrderBy=TransNo";
+                                break;
+
+                            case "OrderByTransaction-002":
+                                OrderBy = "&OrderBy=TransType";
+                                break;
+
+                            case "OrderByTransaction-003":
+                                OrderBy = "&OrderBy=CreatedDateTime";
+                                break;
+
+                            default:
+                                OrderBy = "&OrderBy=CreatedDateTime";
+                                break;
+                        }
+                    }
+
+                    Ascending = isAscendingCheckBox.IsChecked ? "&IsAscending=true" : "&IsAscending=false";
+                    Builder = Converter.BuilderString(DateRange, OrderBy, Ascending);
                 }
-                var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID, DateRange);
+                var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID, Builder);
                 if (sumtrans.Count > 0)
                 {
                     ListSumTrans.Clear();
@@ -62,27 +94,42 @@ namespace UangKu.ViewModel.Menu
                         }
                     }
                 }
-                var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(pageNumber, pageSize, userID, DateRange);
+                var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(pageNumber, pageSize, userID, Builder);
                 if (alltrans.data.Count > 0)
                 {
                     ListAllTrans.Clear();
                     var item = alltrans;
-                    for (int i = 0; i < item.data.Count; i++)
+                    var datas = item.data;
+                    for (int i = 0; i < datas.Count; i++)
                     {
-                        if (item.data[i].amount != null)
+                        if (datas[i].amount != null)
                         {
-                            item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, ParameterModel.ItemDefaultValue.Currency);
+                            datas[i].amountFormat = FormatCurrency.Currency((decimal)datas[i].amount, ParameterModel.ItemDefaultValue.Currency);
                         }
 
-                        if (!string.IsNullOrEmpty(item.data[i].photo))
+                        if (!string.IsNullOrEmpty(datas[i].photo))
                         {
-                            string decodeImg = ImageConvert.DecodeBase64ToString(item.data[i].photo);
+                            string decodeImg = ImageConvert.DecodeBase64ToString(datas[i].photo);
                             byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
-                            item.data[i].source = ImageConvert.ImgByte(byteImg);
+                            datas[i].source = ImageConvert.ImgByte(byteImg);
+                        }
+                        
+                        if (datas[i].transDate != null)
+                        {
+                            datas[i].transDateFormat = DateFormat.FormattingDate((DateTime)datas[i].transDate, ParameterModel.DateTimeFormat.Date);
                         }
                     }
                     Page = (int)alltrans.pageNumber;
                     ListAllTrans.Add(item);
+                }
+                var orderby = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriRoot>("OrderByTransaction", true, true);
+                if (orderby.Count > 0)
+                {
+                    ListOrderBy.Clear();
+                    for (int i = 0; i < orderby.Count; i++)
+                    {
+                        ListOrderBy.Add(orderby[i]);
+                    }
                 }
                 if (ParameterModel.Transaction.Income != 0 && ParameterModel.Transaction.Expenditure != 0 && ListSumTrans.Count > 0)
                 {
@@ -109,7 +156,7 @@ namespace UangKu.ViewModel.Menu
                 IsBusy = false;
             }
         }
-        public async void NextPage_Clicked(int pageSize, DatePicker startDate, DatePicker endDate)
+        public async void NextPage_Clicked(int pageSize, DatePicker startDate, DatePicker endDate, Picker orderByPicker, InputKit.Shared.Controls.CheckBox isAscendingCheckBox)
         {
             var maxPage = ListAllTrans[0].totalPages;
             bool isConnect = network.IsConnected;
@@ -129,11 +176,39 @@ namespace UangKu.ViewModel.Menu
                 }
                 else
                 {
-                    if (IsAllowCustomDate && startDate != null && endDate != null)
+                    if (IsAllowCustomDate)
                     {
-                        DateRange = $"&StartDate={startDate.Date}&EndDate={endDate.Date}";
+                        if (startDate != null && endDate != null)
+                        {
+                            DateRange = $"&StartDate={startDate.Date}&EndDate={endDate.Date}";
+                        }
+
+                        if (orderByPicker.SelectedItem != null)
+                        {
+                            switch (SelectedOrderBy.itemID)
+                            {
+                                case "OrderByTransaction-001":
+                                    OrderBy = "&OrderBy=TransNo";
+                                    break;
+
+                                case "OrderByTransaction-002":
+                                    OrderBy = "&OrderBy=TransType";
+                                    break;
+
+                                case "OrderByTransaction-003":
+                                    OrderBy = "&OrderBy=CreatedDateTime";
+                                    break;
+
+                                default:
+                                    OrderBy = "&OrderBy=CreatedDateTime";
+                                    break;
+                            }
+                        }
+
+                        Ascending = isAscendingCheckBox.IsChecked ? "&IsAscending=true" : "&IsAscending=false";
+                        Builder = Converter.BuilderString(DateRange, OrderBy, Ascending);
                     }
-                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page + 1, pageSize, userID, DateRange);
+                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page + 1, pageSize, userID, Builder);
                     if (alltrans.data.Count > 0)
                     {
                         ListAllTrans.Clear();
@@ -166,7 +241,7 @@ namespace UangKu.ViewModel.Menu
                 IsBusy = false;
             }
         }
-        public async void PreviousPage_Click(int pageSize, DatePicker startDate, DatePicker endDate)
+        public async void PreviousPage_Click(int pageSize, DatePicker startDate, DatePicker endDate, Picker orderByPicker, InputKit.Shared.Controls.CheckBox isAscendingCheckBox)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -185,11 +260,39 @@ namespace UangKu.ViewModel.Menu
                 }
                 else
                 {
-                    if (IsAllowCustomDate && startDate != null && endDate != null)
+                    if (IsAllowCustomDate)
                     {
-                        DateRange = $"&StartDate={startDate.Date}&EndDate={endDate.Date}";
+                        if (startDate != null && endDate != null)
+                        {
+                            DateRange = $"&StartDate={startDate.Date}&EndDate={endDate.Date}";
+                        }
+
+                        if (orderByPicker.SelectedItem != null)
+                        {
+                            switch (SelectedOrderBy.itemID)
+                            {
+                                case "OrderByTransaction-001":
+                                    OrderBy = "&OrderBy=TransNo";
+                                    break;
+
+                                case "OrderByTransaction-002":
+                                    OrderBy = "&OrderBy=TransType";
+                                    break;
+
+                                case "OrderByTransaction-003":
+                                    OrderBy = "&OrderBy=CreatedDateTime";
+                                    break;
+
+                                default:
+                                    OrderBy = "&OrderBy=CreatedDateTime";
+                                    break;
+                            }
+                        }
+
+                        Ascending = isAscendingCheckBox.IsChecked ? "&IsAscending=true" : "&IsAscending=false";
+                        Builder = Converter.BuilderString(DateRange, OrderBy, Ascending);
                     }
-                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page - 1, pageSize, userID, DateRange);
+                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page - 1, pageSize, userID, Builder);
                     if (alltrans.data.Count > 0)
                     {
                         ListAllTrans.Clear();

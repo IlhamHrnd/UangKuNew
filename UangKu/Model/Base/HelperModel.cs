@@ -420,6 +420,19 @@ namespace UangKu.Model.Base
 
             return result;
         }
+
+        //Function Untuk StringBuilder
+        public static string BuilderString(params object[] items)
+        {
+            var builder = new StringBuilder();
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                builder.Append(items[i]);
+            }
+            var result = builder.ToString();
+            return result;
+        }
     }
 
     public static class Compare

@@ -30,6 +30,6 @@ public partial class NewTransaction : ContentPage
 
     private async void Btn_SaveTransaction_Clicked(object sender, EventArgs e)
     {
-        await _vm.SaveTransaction_Click(Ent_TransNo, Ent_Amount, Ent_Description, Pic_TransType, Pic_TransItem);
+        await _vm.SaveTransaction_Click(Ent_TransNo, Ent_Amount, Ent_Description, Pic_TransType, Pic_TransItem, Date_TransDate);
     }
 }

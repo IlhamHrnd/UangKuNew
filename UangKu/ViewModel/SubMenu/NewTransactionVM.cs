@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Views;
 using UangKu.Model.Base;
+using UangKu.Model.Session;
 using UangKu.Model.SubMenu;
 using UangKu.ViewModel.RestAPI.AppStandardReferenceItem;
 using UangKu.ViewModel.RestAPI.Transaction;
@@ -41,6 +42,9 @@ namespace UangKu.ViewModel.SubMenu
             Picker PicTrans, Picker PicTransItem, AvatarView Avatar)
         {
             bool isConnect = network.IsConnected;
+            var isallow = Converter.StringToBool(AppParameter.IsAllowCustomDate);
+            IsAllowCustomDate = isallow;
+
             IsBusy = true;
             try
             {
@@ -173,10 +177,10 @@ namespace UangKu.ViewModel.SubMenu
             }
         }
         public async Task SaveTransaction_Click(Entry EntTransNo, Entry EntAmount, Entry EntDescription,
-            Picker PicTrans, Picker PicTransItem)
+            Picker PicTrans, Picker PicTransItem, DatePicker DateTransDate)
         {
             bool isConnect = network.IsConnected;
-            string dateOnly = DateFormat.FormattingDate(ParameterModel.DateFormat.DateTime, ParameterModel.DateTimeFormat.Yearmonthdate);
+            string dateOnly;
             IsBusy = true;
             try
             {
@@ -195,6 +199,9 @@ namespace UangKu.ViewModel.SubMenu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
+                dateOnly = DateTransDate != null && IsAllowCustomDate
+                    ? DateFormat.FormattingDate(DateTransDate.Date, ParameterModel.DateTimeFormat.Yearmonthdate)
+                    : DateFormat.FormattingDate(ParameterModel.DateFormat.DateTime, ParameterModel.DateTimeFormat.Yearmonthdate);
                 if (Mode == ParameterModel.ItemDefaultValue.NewFile)
                 {
                     if (!string.IsNullOrEmpty(TransTypes))
@@ -257,6 +264,7 @@ namespace UangKu.ViewModel.SubMenu
             finally
             {
                 IsBusy = false;
+                ParameterModel.ImageManager.ImageString = string.Empty;
             }
         }
     }

@@ -33,6 +33,7 @@ namespace UangKu.Model.Response.Transaction
             [JsonPropertyName("transDate")]
             public DateTime? transDate { get; set; }
             public string amountFormat { get; set; }
+            public string transDateFormat { get; set; }
             public ImageSource source { get; set; }
         }
 

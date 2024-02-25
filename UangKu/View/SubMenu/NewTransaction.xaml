@@ -24,6 +24,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*" />
@@ -63,28 +64,40 @@
                             x:Name="Pic_TransItem"/>
                     <Label Grid.Column="0"
                            Grid.Row="3"
+                           IsVisible="{Binding IsAllowCustomDate}"
+                           IsEnabled="{Binding IsAllowCustomDate}"
+                           Style="{StaticResource Label}"
+                           Text="Trans Date"/>
+                    <DatePicker Grid.Column="1"
+                                Grid.Row="3"
+                                Style="{StaticResource DatePicker}"
+                                IsVisible="{Binding IsAllowCustomDate}"
+                                IsEnabled="{Binding IsAllowCustomDate}"
+                                x:Name="Date_TransDate"/>
+                    <Label Grid.Column="0"
+                           Grid.Row="4"
                            Style="{StaticResource Label}"
                            Text="Amount"/>
                     <Entry Grid.Column="1"
-                           Grid.Row="3"
+                           Grid.Row="4"
                            Style="{StaticResource Entry}"
                            MaxLength="10"
                            Placeholder="Amount"
                            Keyboard="Numeric"
                            x:Name="Ent_Amount"/>
                     <Label Grid.Column="0"
-                           Grid.Row="4"
+                           Grid.Row="5"
                            Style="{StaticResource Label}"
                            Text="Description"/>
                     <Entry Grid.Column="1"
-                           Grid.Row="4"
+                           Grid.Row="5"
                            Style="{StaticResource Entry}"
                            MaxLength="200"
                            Placeholder="Description"
                            Keyboard="Text"
                            x:Name="Ent_Description"/>
                     <Label Grid.Column="0"
-                           Grid.Row="5"
+                           Grid.Row="6"
                            Style="{StaticResource Label}">
                         <Label.FormattedText>
                             <FormattedString>
@@ -94,13 +107,13 @@
                         </Label.FormattedText>
                     </Label>
                     <Button Grid.Column="1"
-                            Grid.Row="5"
+                            Grid.Row="6"
                             Style="{StaticResource Button}"
                             Text="Upload"
                             x:Name="Btn_Upload"
                             Clicked="Btn_Upload_Clicked"/>
                     <toolkit:AvatarView Grid.Column="0"
-                                        Grid.Row="6"
+                                        Grid.Row="7"
                                         Grid.ColumnSpan="2"
                                         HeightRequest="200"
                                         WidthRequest="200"

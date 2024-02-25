@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using UangKu.Model.Base;
+using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 using static UangKu.Model.Response.Transaction.AllTransaction;
 using static UangKu.Model.Response.Transaction.SumTransaction;
 
@@ -15,6 +16,19 @@ namespace UangKu.Model.Menu
         public bool IsAllowCustomDate { get => isallowcustomdate; set => SetProperty(ref isallowcustomdate, value); }
         private int page = 0;
         public int Page { get => page; set => page = value; }
+        private AsriRoot selectedorderby { get; set; }
+        public AsriRoot SelectedOrderBy
+        {
+            get { return selectedorderby; }
+            set
+            {
+                if (selectedorderby != value)
+                {
+                    selectedorderby = value;
+                    OnPropertyChanged(nameof(selectedorderby));
+                }
+            }
+        }
         private IList<SumTransactionRoot> listsumtrans { get; set; }
 
         public IList<SumTransactionRoot> ListSumTrans
@@ -42,6 +56,20 @@ namespace UangKu.Model.Menu
                 return listalltrans;
             }
             set { listalltrans = value; }
+        }
+        private IList<AsriRoot> listorderby { get; set; }
+
+        public IList<AsriRoot> ListOrderBy
+        {
+            get
+            {
+                if (listorderby == null)
+                {
+                    listorderby = new ObservableCollection<AsriRoot>();
+                }
+                return listorderby;
+            }
+            set { listorderby = value; }
         }
     }
 }

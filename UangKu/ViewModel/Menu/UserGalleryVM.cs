@@ -333,6 +333,7 @@ namespace UangKu.ViewModel.Menu
                     finally
                     {
                         IsBusy = false;
+                        item.ImageString = string.Empty;
                     }
                 }
                 await LoadData();
