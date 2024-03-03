@@ -16,6 +16,12 @@ namespace UangKu.Model.SubMenu
         public bool IsCheckedBoxVisible { get => ischeckboxvisible; set => SetProperty(ref ischeckboxvisible, value); }
         private bool isentryvisible = false;
         public bool IsEntryVisible { get => isentryvisible; set => SetProperty(ref isentryvisible, value); }
+        private string mode = string.Empty;
+        public string Mode { get => mode; set => SetProperty(ref mode, value); }
+        private string parameterid = string.Empty;
+        public string ParameterID { get => parameterid; set => SetProperty(ref parameterid, value); }
+        private string parametertypes = string.Empty;
+        public string ParameterTypes { get => parametertypes; set => SetProperty(ref parametertypes, value); }
         private AsriRoot selectedparametertype { get; set; }
         public AsriRoot SelectedParameterType
         {

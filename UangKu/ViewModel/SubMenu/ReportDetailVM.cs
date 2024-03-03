@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Maui.Views;
-using System.Runtime.Serialization;
 using UangKu.Model.Base;
-using UangKu.Model.Session;
 using UangKu.Model.SubMenu;
 using static UangKu.Model.Base.ParameterModel.PermissionManager;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
@@ -12,7 +10,6 @@ namespace UangKu.ViewModel.SubMenu
     {
         private NetworkModel network = NetworkModel.Instance;
         private readonly INavigation _navigation;
-        private string Mode { get; set; }
         public ReportDetailVM(INavigation navigation, string mode)
         {
             _navigation = navigation;

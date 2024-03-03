@@ -11,10 +11,6 @@ namespace UangKu.ViewModel.Menu
     {
         private NetworkModel network = NetworkModel.Instance;
         private readonly INavigation _navigation;
-        private string DateRange = string.Empty;
-        private string OrderBy = string.Empty;
-        private string Ascending = string.Empty;
-        private string Builder = string.Empty;
         public TransactionLogVM(INavigation navigation)
         {
             Title = $"Transaction Log For {App.Session.username}";

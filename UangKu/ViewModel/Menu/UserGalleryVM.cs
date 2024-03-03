@@ -280,6 +280,7 @@ namespace UangKu.ViewModel.Menu
             finally
             {
                 IsBusy = false;
+                ListDifferentUserPicture.Clear();
             }
         }
         public async Task UploadPicture_PopUp()

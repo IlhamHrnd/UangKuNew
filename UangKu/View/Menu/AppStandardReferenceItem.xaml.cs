@@ -4,10 +4,10 @@ namespace UangKu.View.Menu;
 public partial class AppStandardReferenceItem : ContentPage
 {
 	private readonly AppStandardReferenceItemVM _vm;
-	public AppStandardReferenceItem()
+	public AppStandardReferenceItem(string itemID)
 	{
 		InitializeComponent();
-		_vm = new AppStandardReferenceItemVM();
+		_vm = new AppStandardReferenceItemVM(itemID);
 		BindingContext = _vm;
 	}
 

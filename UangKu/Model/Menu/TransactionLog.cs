@@ -16,6 +16,14 @@ namespace UangKu.Model.Menu
         public bool IsAllowCustomDate { get => isallowcustomdate; set => SetProperty(ref isallowcustomdate, value); }
         private int page = 0;
         public int Page { get => page; set => page = value; }
+        private string daterange = string.Empty;
+        public string DateRange { get => daterange; set => SetProperty(ref daterange, value); }
+        private string orderby = string.Empty;
+        public string OrderBy { get => orderby; set => SetProperty(ref orderby, value); }
+        private string ascending = string.Empty;
+        public string Ascending { get => ascending; set => SetProperty(ref ascending, value); }
+        private string builder = string.Empty;
+        public string Builder { get => builder; set => SetProperty(ref builder, value); }
         private AsriRoot selectedorderby { get; set; }
         public AsriRoot SelectedOrderBy
         {

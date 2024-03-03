@@ -12,9 +12,6 @@ namespace UangKu.ViewModel.SubMenu
     public class NewTransactionVM : NewTransaction
     {
         private NetworkModel network = NetworkModel.Instance;
-        private string Mode { get; set; }
-        private string TransTypes { get; set; }
-        private string TransNo { get; set; }
         public NewTransactionVM(string mode, string transNo)
         {
             Mode = mode;

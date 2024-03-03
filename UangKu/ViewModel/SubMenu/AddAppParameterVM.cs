@@ -8,10 +8,6 @@ namespace UangKu.ViewModel.SubMenu
     public class AddAppParameterVM : AddAppParameter
     {
         private NetworkModel network = NetworkModel.Instance;
-        private string Mode { get; set; }
-        private string ParameterID { get; set; }
-        private string ParameterTypes { get; set; }
-
         public AddAppParameterVM(string mode, string parameterID)
         {
             Mode = mode;

@@ -12,6 +12,12 @@ namespace UangKu.Model.SubMenu
         public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private bool isallowcustomdate = false;
         public bool IsAllowCustomDate { get => isallowcustomdate; set => SetProperty(ref isallowcustomdate, value); }
+        private string mode = string.Empty;
+        public string Mode { get => mode; set => SetProperty(ref mode, value); }
+        private string transtypes = string.Empty;
+        public string TransTypes { get => transtypes; set => SetProperty(ref transtypes, value); }
+        private string transno = string.Empty;
+        public string TransNo { get => transno; set => SetProperty(ref transno, value); }
         private IList<AsriRoot> listtransaction { get; set; }
 
         public IList<AsriRoot> ListTransaction

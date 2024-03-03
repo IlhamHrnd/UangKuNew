@@ -15,6 +15,8 @@ namespace UangKu.Model.Menu
         public string Title { get => title; set => SetProperty(ref title, value); }
         private bool isbusy = false;
         public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
+        private string id = string.Empty;
+        public string Id { get => id; set => SetProperty(ref id, value); }
         private IList<AsriRoot> listasri { get; set; }
 
         public IList<AsriRoot> ListASRI
@@ -28,6 +30,32 @@ namespace UangKu.Model.Menu
                 return listasri;
             }
             set { listasri = value; }
+        }
+        private IList<AsriTwoRoot> listasritwo { get; set; }
+        public IList<AsriTwoRoot> ListASRITwo
+        {
+            get
+            {
+                if (listasritwo == null)
+                {
+                    listasritwo = new ObservableCollection<AsriTwoRoot>();
+                }
+                return listasritwo;
+            }
+            set { listasritwo = value; }
+        }
+        private IList<AsriThreeRoot> listdifferentasri { get; set; }
+        public IList<AsriThreeRoot> ListDifferentASRI
+        {
+            get
+            {
+                if (listdifferentasri == null)
+                {
+                    listdifferentasri = new ObservableCollection<AsriThreeRoot>();
+                }
+                return listdifferentasri;
+            }
+            set { listdifferentasri = value; }
         }
         private IList<AppStandardReferenceIDRoot> listasr { get; set; }
 

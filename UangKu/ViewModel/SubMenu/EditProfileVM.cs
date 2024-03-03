@@ -10,9 +10,6 @@ namespace UangKu.ViewModel.SubMenu
     public class EditProfileVM : EditProfile
     {
         private NetworkModel network = NetworkModel.Instance;
-
-        public string Mode { get; set; }
-
         public EditProfileVM(string mode)
         {
             Title = $"{Mode} Profile {App.Session.personID}";

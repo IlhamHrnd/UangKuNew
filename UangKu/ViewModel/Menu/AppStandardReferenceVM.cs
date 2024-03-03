@@ -112,11 +112,10 @@ namespace UangKu.ViewModel.Menu
         {
             var standardID = args.CurrentSelection[0] as Model.Response.AppStandardReference.AppStandardReference.Datum;
             var itemID = standardID?.standardReferenceID;
-            ParameterModel.AppStandardReference.ItemID = itemID;
-
+            
             if (!string.IsNullOrEmpty(itemID))
             {
-                await _navigation.PushAsync(new View.Menu.AppStandardReferenceItem());
+                await _navigation.PushAsync(new View.Menu.AppStandardReferenceItem(itemID));
             }
             else
             {

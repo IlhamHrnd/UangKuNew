@@ -20,6 +20,8 @@ namespace UangKu.Model.SubMenu
         public bool IsEditAble { get => iseditable; set => SetProperty(ref iseditable, value); }
         private bool isenabled = false;
         public bool IsEnabled { get => isenabled; set => SetProperty(ref isenabled, value); }
+        private string mode = string.Empty;
+        public string Mode { get => mode; set => SetProperty(ref mode, value); }
         private IList<AsriRoot> listerrorlocation { get; set; }
 
         public IList<AsriRoot> ListErrorLocation
