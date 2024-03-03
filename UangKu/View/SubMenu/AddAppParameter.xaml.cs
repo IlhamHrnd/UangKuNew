@@ -17,11 +17,16 @@ public partial class AddAppParameter : ContentPage
     protected async override void OnAppearing()
     {
         await SessionModel.SessionCheck();
-        _vm.LoadData(Ent_ParameterID, Ent_ParameterNote, Ent_ParameterValue, CB_ParameterIsActive);
+        _vm.LoadData(Ent_ParameterID, Ent_ParameterNote, Ent_ParameterValue, CB_ParameterIsActive, Pic_ParamType, CB_ParameterValue);
     }
 
     private async void Btn_SaveAppParameter_Clicked(object sender, EventArgs e)
     {
-        await _vm.SaveAppParameter_Click(Ent_ParameterID, Ent_ParameterNote, Ent_ParameterValue, CB_ParameterIsActive);
+        await _vm.SaveAppParameter_Click(Ent_ParameterID, Ent_ParameterNote, Ent_ParameterValue, CB_ParameterIsActive, Pic_ParamType, CB_ParameterValue);
+    }
+
+    private void Pic_ParamType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        _vm.PickerParameterType_Changed(Pic_ParamType);
     }
 }

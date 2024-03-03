@@ -15,6 +15,9 @@ namespace UangKu.Model.Response.AppParameter
             [JsonProperty("parameterValue")]
             public string parameterValue { get; set; }
 
+            [JsonProperty("srControl")]
+            public string srControl { get; set; }
+
             [JsonProperty("lastUpdateDateTime")]
             public DateTime? lastUpdateDateTime { get; set; }
 

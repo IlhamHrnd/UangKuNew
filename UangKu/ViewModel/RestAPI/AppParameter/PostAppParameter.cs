@@ -24,7 +24,8 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
                 parameterValue = parameter.parameterValue,
                 lastUpdateDateTime = parameter.lastUpdateDateTime,
                 lastUpdateByUserID = parameter.lastUpdateByUserID,
-                isUsedBySystem = parameter.isUsedBySystem
+                isUsedBySystem = parameter.isUsedBySystem,
+                srControl = parameter.srControl
             };
             request.AddJsonBody(body);
 
