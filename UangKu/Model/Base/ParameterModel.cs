@@ -149,6 +149,8 @@
             public static string UserReport { get => userreport; set => userreport = value; }
             private static string wishlist = "WSL";
             public static string WishList { get => wishlist; set => wishlist = value; }
+            private static string numbericformat = "D3";
+            public static string NumbericFormat { get => numbericformat; set => numbericformat = value; }
         }
 
         public class PermissionManager

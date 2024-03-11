@@ -39,5 +39,7 @@
         public static string IsAllowCustomDate { get => isallowcustomdate; set => isallowcustomdate = value; }
         private static string url = string.Empty;
         public static string URL { get => url; set => url = value; }
+        private static string numbericformat = string.Empty;
+        public static string NumbericFormat { get => numbericformat; set => numbericformat = value; }
     }
 }
