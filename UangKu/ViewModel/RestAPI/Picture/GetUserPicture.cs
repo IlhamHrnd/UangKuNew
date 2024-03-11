@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.Picture
 {
     public class GetUserPicture
     {
-        private const string GetUserPictureEndPoint = "https://uangkuapi.azurewebsites.net/UserPicture/GetUserPicture?PageNumber={0}&PageSize={1}&PersonID={2}&IsDeleted={3}";
+        private const string GetUserPictureEndPoint = "{4}UserPicture/GetUserPicture?PageNumber={0}&PageSize={1}&PersonID={2}&IsDeleted={3}";
 
         public static async Task<UserPictureRoot> GetAllUserPicture(int pageNumber, int pageSize, string personID, bool isDeleted)
         {
             UserPictureRoot root = new UserPictureRoot();
-            string url = string.Format(GetUserPictureEndPoint, pageNumber, pageSize, personID, isDeleted);
+            string url = string.Format(GetUserPictureEndPoint, pageNumber, pageSize, personID, isDeleted, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

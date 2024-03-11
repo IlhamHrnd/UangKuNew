@@ -7,11 +7,11 @@ namespace UangKu.ViewModel.RestAPI.User
 {
     public class UserSignUp
     {
-        private const string UserSignUpEndPoint = "https://uangkuapi.azurewebsites.net/User/CreateUsername?password={0}&email={1}";
+        private const string UserSignUpEndPoint = "{2}User/CreateUsername?password={0}&email={1}";
 
         public static async Task<string> PostUserSignUp(string username, string password, string sexname, string email)
         {
-            string url = string.Format(UserSignUpEndPoint, password, email);
+            string url = string.Format(UserSignUpEndPoint, password, email, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

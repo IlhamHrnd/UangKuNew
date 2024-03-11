@@ -115,6 +115,8 @@
             public static bool ShowLastBuild { get => showlastbuild; set => showlastbuild = value; }
             private static bool isallowcustomdate = false;
             public static bool IsAllowCustomDate { get => isallowcustomdate; set => isallowcustomdate = value; }
+            private static string url = "https://uangkuapi.azurewebsites.net/";
+            public static string URL { get => url; set => url = value; }
         }
 
         public class ItemDefaultValue

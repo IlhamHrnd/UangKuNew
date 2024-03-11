@@ -6,12 +6,12 @@ namespace UangKu.ViewModel.RestAPI.Picture
 {
     public class PostUserPicture
     {
-        private const string PostUserPictureEndPoint = "https://uangkuapi.azurewebsites.net/UserPicture/PostUserPicture";
+        private const string PostUserPictureEndPoint = "{0}UserPicture/PostUserPicture";
 
         public static async Task<string> PostNewUserPicture(Model.Index.Body.PostPicture picture)
         {
             string UserPicture = string.Empty;
-            string url = string.Format(PostUserPictureEndPoint);
+            string url = string.Format(PostUserPictureEndPoint, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

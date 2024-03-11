@@ -6,11 +6,11 @@ namespace UangKu.ViewModel.RestAPI.Transaction
 {
     public class PostTransaction
     {
-        private const string PostTransactionEndPoint = "https://uangkuapi.azurewebsites.net/Transaction/PostTransaction";
+        private const string PostTransactionEndPoint = "{0}Transaction/PostTransaction";
 
         public static async Task<string> PostTransactionTransNo(Model.Index.Body.PostTransaction transaction)
         {
-            string url = string.Format(PostTransactionEndPoint);
+            string url = string.Format(PostTransactionEndPoint, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

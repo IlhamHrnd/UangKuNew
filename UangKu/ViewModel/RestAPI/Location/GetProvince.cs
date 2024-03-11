@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.Location
 {
     public class GetProvince
     {
-        private const string GetProvinceEndPoint = "https://uangkuapi.azurewebsites.net/Location/GetAllProvince";
+        private const string GetProvinceEndPoint = "{1}Location/GetAllProvince";
 
         public static async Task<List<ProvincesRoot>> GetProvinces()
         {
             List<ProvincesRoot> root = new List<ProvincesRoot>();
-            string url = string.Format(GetProvinceEndPoint);
+            string url = string.Format(GetProvinceEndPoint, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

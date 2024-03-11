@@ -82,6 +82,9 @@ namespace UangKu.ViewModel.SubMenu
         }
         public async Task UpdateUsername_Click(Picker picker, CheckBox checkbox)
         {
+            var sessionID = App.Session;
+            string userID = SessionModel.GetUserID(sessionID);
+
             bool isConnect = network.IsConnected;
             IsBusy = true;
             try
@@ -101,7 +104,7 @@ namespace UangKu.ViewModel.SubMenu
                         sex = SelectedSex.itemID,
                         access = SelectedAccess.itemID,
                         isActive = checkbox.IsChecked,
-                        lastUpdateUser = App.Session.username
+                        lastUpdateUser = userID
                     };
 
                     var user = await UserUpdate.PatchUsername(body, Name);

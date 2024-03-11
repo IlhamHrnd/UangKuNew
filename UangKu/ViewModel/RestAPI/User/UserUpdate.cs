@@ -6,11 +6,11 @@ namespace UangKu.ViewModel.RestAPI.User
 {
     public class UserUpdate
     {
-        private const string UserUpdateEndPoint = "https://uangkuapi.azurewebsites.net/User/UpdateUsername?username={0}";
+        private const string UserUpdateEndPoint = "{1}User/UpdateUsername?username={0}";
 
         public static async Task<string> PatchUsername(Model.Index.Body.PatchUsername user, string username)
         {
-            string url = string.Format(UserUpdateEndPoint, username);
+            string url = string.Format(UserUpdateEndPoint, username, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

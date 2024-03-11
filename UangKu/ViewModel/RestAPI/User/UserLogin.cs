@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.User
 {
     public class UserLogin
     {
-        private const string UserLoginEndPoint = "https://uangkuapi.azurewebsites.net/User/GetLoginUserName?Username={0}&Password={1}";
+        private const string UserLoginEndPoint = "{2}User/GetLoginUserName?Username={0}&Password={1}";
 
         public static async Task<UserRoot> GetUsernameLogin(string username, string password)
         {
             UserRoot root = new UserRoot();
-            string url = string.Format(UserLoginEndPoint, username, password);
+            string url = string.Format(UserLoginEndPoint, username, password, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

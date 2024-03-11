@@ -6,12 +6,12 @@ namespace UangKu.ViewModel.RestAPI.Report
 {
     internal class NewReportNo
     {
-        private const string GetNewReportNoEndPoint = "https://uangkuapi.azurewebsites.net/UserReport/GetNewReportNo?TransType={0}";
+        private const string GetNewReportNoEndPoint = "{1}UserReport/GetNewReportNo?TransType={0}";
 
         public static async Task<string> GetNewReportNo(string reportType)
         {
             string reportNo = string.Empty;
-            string url = string.Format(GetNewReportNoEndPoint, reportType);
+            string url = string.Format(GetNewReportNoEndPoint, reportType, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

@@ -176,6 +176,9 @@ namespace UangKu.ViewModel.SubMenu
         public async Task SaveTransaction_Click(Entry EntTransNo, Entry EntAmount, Entry EntDescription,
             Picker PicTrans, Picker PicTransItem, DatePicker DateTransDate)
         {
+            var sessionID = App.Session;
+            string userID = SessionModel.GetUserID(sessionID);
+
             bool isConnect = network.IsConnected;
             string dateOnly;
             IsBusy = true;
@@ -212,12 +215,12 @@ namespace UangKu.ViewModel.SubMenu
                             description = EntDescription.Text,
                             photo = ParameterModel.ImageManager.ImageString,
                             createdDateTime = ParameterModel.DateFormat.DateTime,
-                            createdByUserID = App.Session.username,
+                            createdByUserID = userID,
                             lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
-                            lastUpdateByUserID = App.Session.username,
+                            lastUpdateByUserID = userID,
                             transType = TransTypes,
                             transDate = dateOnly,
-                            personID = App.Session.username
+                            personID = userID
                         };
 
                         var transaction = await PostTransaction.PostTransactionTransNo(bodyPost);
@@ -238,7 +241,7 @@ namespace UangKu.ViewModel.SubMenu
                         description = EntDescription.Text,
                         photo = ParameterModel.ImageManager.ImageString,
                         lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
-                        lastUpdateByUserID = App.Session.username,
+                        lastUpdateByUserID = userID,
                         transType = TransTypes,
                         transDate = dateOnly
                     };

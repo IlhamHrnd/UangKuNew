@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.Location
 {
     public class GetSubdistrict
     {
-        private const string GetSubdistrictEndPoint = "https://uangkuapi.azurewebsites.net/Location/GetAllSubDistrict?DistrictID={0}";
+        private const string GetSubdistrictEndPoint = "{1}Location/GetAllSubDistrict?DistrictID={0}";
 
         public static async Task<List<SubdistrictRoot>> GetSubdistricts(string districtID)
         {
             List<SubdistrictRoot> root = new List<SubdistrictRoot>();
-            string url = string.Format(GetSubdistrictEndPoint, districtID);
+            string url = string.Format(GetSubdistrictEndPoint, districtID, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

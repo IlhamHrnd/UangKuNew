@@ -6,11 +6,11 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
 {
     public class PostAppParameter
     {
-        private const string PostAppParameterEndPoint = "https://uangkuapi.azurewebsites.net/AppParameter/PostAppParameter";
+        private const string PostAppParameterEndPoint = "{0}AppParameter/PostAppParameter";
 
         public static async Task<string> PostAppParameterID(Model.Index.Body.PostAppParameter parameter)
         {
-            string url = string.Format(PostAppParameterEndPoint);
+            string url = string.Format(PostAppParameterEndPoint, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

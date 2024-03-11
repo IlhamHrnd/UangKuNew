@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.User
 {
     public class UserAll
     {
-        private const string AllUserEndPoint = "https://uangkuapi.azurewebsites.net/User/GetAllUser?PageNumber={0}&PageSize={1}";
+        private const string AllUserEndPoint = "{2}User/GetAllUser?PageNumber={0}&PageSize={1}";
 
         public static async Task<AllUserRoot> GetAllUser(int pageNumber, int pageSize)
         {
             AllUserRoot root = new AllUserRoot();
-            string url = string.Format(AllUserEndPoint, pageNumber, pageSize);
+            string url = string.Format(AllUserEndPoint, pageNumber, pageSize, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

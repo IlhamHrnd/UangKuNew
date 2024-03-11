@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.Profile
 {
     public class GetProfile
     {
-        private const string ProfileEndPoint = "https://uangkuapi.azurewebsites.net/Profile/GetPersonID?PersonID={0}";
+        private const string ProfileEndPoint = "{1}Profile/GetPersonID?PersonID={0}";
 
         public static async Task<ProfileRoot> GetProfileID(string personID)
         {
             ProfileRoot root = new ProfileRoot();
-            string url = string.Format(ProfileEndPoint, personID);
+            string url = string.Format(ProfileEndPoint, personID, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

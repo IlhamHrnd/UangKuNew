@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.Transaction
 {
     public class AllTransaction
     {
-        private const string AllTransactionEndPoint = "https://uangkuapi.azurewebsites.net/Transaction/GetAllTransaction?PageNumber={0}&PageSize={1}&PersonID={2}{3}";
+        private const string AllTransactionEndPoint = "{4}Transaction/GetAllTransaction?PageNumber={0}&PageSize={1}&PersonID={2}{3}";
 
         public static async Task<AllTransactionRoot> GetAllTransaction(int pageNumber, int pageSize, string personID, string dateRange)
         {
             AllTransactionRoot root = new AllTransactionRoot();
-            string url = string.Format(AllTransactionEndPoint, pageNumber, pageSize, personID, dateRange);
+            string url = string.Format(AllTransactionEndPoint, pageNumber, pageSize, personID, dateRange, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

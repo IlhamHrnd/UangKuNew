@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.User
 {
     public class UserName
     {
-        private const string UserNameEndPoint = "https://uangkuapi.azurewebsites.net/User/GetUsername?Username={0}";
+        private const string UserNameEndPoint = "{1}User/GetUsername?Username={0}";
 
         public static async Task<UsernameRoot> GetUserName(string username)
         {
             UsernameRoot root = new UsernameRoot();
-            string url = string.Format(UserNameEndPoint, username);
+            string url = string.Format(UserNameEndPoint, username, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

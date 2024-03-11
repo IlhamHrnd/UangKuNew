@@ -6,12 +6,12 @@ namespace UangKu.ViewModel.RestAPI.Picture
 {
     public class DeleteUserPicture
     {
-        private const string DeleteUserPictureEndPoint = "https://uangkuapi.azurewebsites.net/UserPicture/DeleteUserPicture?pictureID={0}";
+        private const string DeleteUserPictureEndPoint = "{1}UserPicture/DeleteUserPicture?pictureID={0}";
 
         public static async Task<string> DeleteUserPictureID(string pictureID, Model.Index.Body.DeleteUserPicture picture)
         {
             string pictureMsg = string.Empty;
-            string url = string.Format(DeleteUserPictureEndPoint, pictureID);
+            string url = string.Format(DeleteUserPictureEndPoint, pictureID, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

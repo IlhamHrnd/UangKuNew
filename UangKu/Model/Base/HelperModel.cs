@@ -171,9 +171,19 @@ namespace UangKu.Model.Base
                         case "IsAllowCustomDate":
                             AppParameter.IsAllowCustomDate = data.parameterValue;
                             break;
+
+                        case "URL":
+                            AppParameter.URL = data.parameterValue;
+                            break;
                     }
                 }
             }
+        }
+
+        public static string APIUrlLink()
+        {
+            string result = Compare.StringReplace(AppParameter.URL, AppParameterDefault.URL);
+            return result;
         }
     }
 
@@ -440,7 +450,12 @@ namespace UangKu.Model.Base
         public static bool StringCompare(string firstString, string secondString)
         {
             bool result = firstString == secondString;
+            return result;
+        }
 
+        public static string StringReplace(string valueString, string defaultString)
+        {
+            string result = string.IsNullOrEmpty(valueString) ? defaultString : valueString;
             return result;
         }
     }

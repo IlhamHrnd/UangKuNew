@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.Location
 {
     public class GetPostalCode
     {
-        private const string PostalCodeEndPoint = "https://uangkuapi.azurewebsites.net/Location/GetPostalCode?SubdisID={0}&DisID={1}&CityID={2}&ProvID={3}";
+        private const string PostalCodeEndPoint = "{4}Location/GetPostalCode?SubdisID={0}&DisID={1}&CityID={2}&ProvID={3}";
 
         public static async Task<PostalCodeRoot> GetPostalCodes(string provID, string cityID, string disID, string subdisID)
         {
             PostalCodeRoot root = new PostalCodeRoot();
-            string url = string.Format(PostalCodeEndPoint, subdisID, disID, cityID, provID);
+            string url = string.Format(PostalCodeEndPoint, subdisID, disID, cityID, provID, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

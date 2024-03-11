@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
 {
     public class GetParameterID
     {
-        private const string ParameterIDEndPoint = "https://uangkuapi.azurewebsites.net/AppParameter/GetParameterID?parameterID={0}";
+        private const string ParameterIDEndPoint = "{1}AppParameter/GetParameterID?parameterID={0}";
 
         public static async Task<ParameterIDRoot> GetParameter(string parameterID)
         {
             ParameterIDRoot root = new ParameterIDRoot();
-            string url = string.Format(ParameterIDEndPoint, parameterID);
+            string url = string.Format(ParameterIDEndPoint, parameterID, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {
