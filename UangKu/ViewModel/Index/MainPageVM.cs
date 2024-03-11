@@ -34,7 +34,7 @@ namespace UangKu.ViewModel.Index
                 var parameterID = await GetParameterID.GetParameter("ShowLastBuild");
                 if (!string.IsNullOrEmpty(parameterID.parameterValue))
                 {
-                    var isShowLastBuild = Converter.StringToBool(parameterID.parameterValue);
+                    var isShowLastBuild = Converter.StringToBool(parameterID.parameterValue, ParameterModel.AppParameterDefault.ShowLastBuild);
                     IsVisible = isShowLastBuild;
                 }
             }

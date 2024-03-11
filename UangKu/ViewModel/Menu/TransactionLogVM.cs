@@ -18,7 +18,7 @@ namespace UangKu.ViewModel.Menu
         }
         public async void LoadData(int pageNumber, int pageSize, DatePicker startDate, DatePicker endDate, Picker orderByPicker, InputKit.Shared.Controls.CheckBox isAscendingCheckBox)
         {
-            var isallow = Converter.StringToBool(AppParameter.IsAllowCustomDate);
+            var isallow = Converter.StringToBool(AppParameter.IsAllowCustomDate, ParameterModel.AppParameterDefault.IsAllowCustomDate);
             IsAllowCustomDate = isallow;
 
             bool isConnect = network.IsConnected;
