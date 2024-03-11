@@ -109,6 +109,12 @@
             public static int MaxFileSize { get => maxfilesize; set => maxfilesize = value; }
             private static int timeout = 10000; //Dalam Mili Detik
             public static int Timeout { get => timeout; set => timeout = value; }
+            private static int maxpicture = 25;
+            public static int MaxPicture { get => maxpicture; set => maxpicture = value; }
+            private static bool showlastbuild = false;
+            public static bool ShowLastBuild { get => showlastbuild; set => showlastbuild = value; }
+            private static bool isallowcustomdate = false;
+            public static bool IsAllowCustomDate { get => isallowcustomdate; set => isallowcustomdate = value; }
         }
 
         public class ItemDefaultValue
@@ -139,6 +145,8 @@
             public static string Currency { get => currency; set => currency = value; }
             private static string userreport = string.Empty; //Report No Diambil Dari User > PersonID Dan User > Access
             public static string UserReport { get => userreport; set => userreport = value; }
+            private static string wishlist = "WSL";
+            public static string WishList { get => wishlist; set => wishlist = value; }
         }
 
         public class PermissionManager

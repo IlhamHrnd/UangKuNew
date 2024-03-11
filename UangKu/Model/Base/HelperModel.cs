@@ -405,7 +405,7 @@ namespace UangKu.Model.Base
             return values;
         }
 
-        public static bool StringToBool(string value)
+        public static bool StringToBool(string value, bool defaultValue)
         {
             bool result;
 
@@ -415,7 +415,7 @@ namespace UangKu.Model.Base
             }
             catch (Exception)
             {
-                result = false;
+                result = defaultValue;
             }
 
             return result;

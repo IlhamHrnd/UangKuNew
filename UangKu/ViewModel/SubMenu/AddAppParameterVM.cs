@@ -76,8 +76,7 @@ namespace UangKu.ViewModel.SubMenu
                                     IsCheckedBoxVisible = true;
                                     IsEntryVisible = false;
                                     Pic_ParameterType.SelectedIndex = 0;
-                                    var isChecked = Converter.StringToBool(parameterID.parameterValue);
-                                    CB_ParameterValue.IsChecked = isChecked;
+                                    CB_ParameterValue.IsChecked = Converter.StringToBool(parameterID.parameterValue, false);
                                     break;
 
                                 case "Control-002":
