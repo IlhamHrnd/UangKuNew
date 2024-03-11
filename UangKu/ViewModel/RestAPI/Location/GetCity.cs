@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.Location
 {
     public class GetCity
     {
-        private const string GetCitiesEndPoint = "https://uangkuapi.azurewebsites.net/Location/GetAllCities?ProvID={0}";
+        private const string GetCitiesEndPoint = "{1}Location/GetAllCities?ProvID={0}";
 
         public static async Task<List<CitiesRoot>> GetCities(string provID)
         {
             List<CitiesRoot> root = new List<CitiesRoot>();
-            string url = string.Format(GetCitiesEndPoint, provID);
+            string url = string.Format(GetCitiesEndPoint, provID, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

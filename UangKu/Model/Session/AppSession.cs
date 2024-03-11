@@ -37,5 +37,7 @@
         public static string ShowLastBuild { get => showlastbuild; set => showlastbuild = value; }
         private static string isallowcustomdate = string.Empty;
         public static string IsAllowCustomDate { get => isallowcustomdate; set => isallowcustomdate = value; }
+        private static string url = string.Empty;
+        public static string URL { get => url; set => url = value; }
     }
 }

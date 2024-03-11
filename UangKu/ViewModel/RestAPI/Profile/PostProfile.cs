@@ -6,11 +6,11 @@ namespace UangKu.ViewModel.RestAPI.Profile
 {
     public class PostProfile
     {
-        private const string ProfileEndPoint = "https://uangkuapi.azurewebsites.net/Profile/PostProfile";
+        private const string ProfileEndPoint = "{0}Profile/PostProfile";
 
         public static async Task<string> PostProfileID(Model.Index.Body.PostProfile profile)
         {
-            string url = string.Format(ProfileEndPoint);
+            string url = string.Format(ProfileEndPoint, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

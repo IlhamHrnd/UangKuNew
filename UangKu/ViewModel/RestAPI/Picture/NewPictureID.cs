@@ -6,12 +6,12 @@ namespace UangKu.ViewModel.RestAPI.Picture
 {
     public class NewPictureID
     {
-        private const string GetNewPictureIDEndPoint = "https://uangkuapi.azurewebsites.net/UserPicture/GetNewPictureID?TransType={0}";
+        private const string GetNewPictureIDEndPoint = "{1}UserPicture/GetNewPictureID?TransType={0}";
 
         public static async Task<string> GetNewPictureID(string transType)
         {
             string pictureID = string.Empty;
-            string url = string.Format(GetNewPictureIDEndPoint, transType);
+            string url = string.Format(GetNewPictureIDEndPoint, transType, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

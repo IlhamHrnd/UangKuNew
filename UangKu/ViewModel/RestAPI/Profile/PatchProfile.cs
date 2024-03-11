@@ -6,11 +6,11 @@ namespace UangKu.ViewModel.RestAPI.Profile
 {
     public class PatchProfile
     {
-        private const string ProfileEndPoint = "https://uangkuapi.azurewebsites.net/Profile/PatchProfile";
+        private const string ProfileEndPoint = "{0}Profile/PatchProfile";
 
         public static async Task<string> PatchProfileID(Model.Index.Body.PatchProfile profile)
         {
-            string url = string.Format(ProfileEndPoint);
+            string url = string.Format(ProfileEndPoint, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

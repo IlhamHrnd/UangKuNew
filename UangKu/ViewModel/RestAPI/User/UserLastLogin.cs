@@ -6,11 +6,11 @@ namespace UangKu.ViewModel.RestAPI.User
 {
     public class UserLastLogin
     {
-        private const string UserLastLoginEndPoint = "https://uangkuapi.azurewebsites.net//User/UpdateLastLogin?username={0}";
+        private const string UserLastLoginEndPoint = "{1}User/UpdateLastLogin?username={0}";
 
         public static async Task<string> PatchUserLastLogin(string username)
         {
-            string url = string.Format(UserLastLoginEndPoint, username);
+            string url = string.Format(UserLastLoginEndPoint, username, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

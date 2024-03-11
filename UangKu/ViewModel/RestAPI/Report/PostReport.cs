@@ -6,11 +6,11 @@ namespace UangKu.ViewModel.RestAPI.Report
 {
     public class PostReport
     {
-        private const string ReportEndPoint = "https://uangkuapi.azurewebsites.net/UserReport/PostUserReport";
+        private const string ReportEndPoint = "{0}UserReport/PostUserReport";
 
         public static async Task<string> PostNewReport(Model.Index.Body.PostReport report)
         {
-            string url = string.Format(ReportEndPoint);
+            string url = string.Format(ReportEndPoint, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

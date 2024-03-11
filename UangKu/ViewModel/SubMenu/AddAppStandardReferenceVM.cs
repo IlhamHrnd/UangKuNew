@@ -157,6 +157,9 @@ namespace UangKu.ViewModel.SubMenu
 
         public async Task AddItem_Click(Entry StandardID, Entry itemID, Entry itemName, Entry note)
         {
+            var sessionID = App.Session;
+            string userID = SessionModel.GetUserID(sessionID);
+
             int oldASRI = ListASRI.Count;
             int newASRI = 0;
             if (string.IsNullOrEmpty(StandardID.Text))
@@ -174,7 +177,7 @@ namespace UangKu.ViewModel.SubMenu
                     isUsedBySystem = ParameterModel.ItemDefaultValue.IsUsed,
                     isActive = ParameterModel.ItemDefaultValue.IsActive,
                     lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
-                    lastUpdateByUserID = App.Session.username
+                    lastUpdateByUserID = userID
                 };
                 ListASRI.Add(root);
                 newASRI = ListASRI.Count;

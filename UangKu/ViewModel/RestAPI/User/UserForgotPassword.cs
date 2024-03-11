@@ -6,11 +6,11 @@ namespace UangKu.ViewModel.RestAPI.User
 {
     public class UserForgotPassword
     {
-        private const string UserForgotPasswordEndPoint = "https://uangkuapi.azurewebsites.net/User/UpdatePasswordUser?username={0}&password={1}&email={2}";
+        private const string UserForgotPasswordEndPoint = "{3}User/UpdatePasswordUser?username={0}&password={1}&email={2}";
 
         public static async Task<string> PatchUserForgotPassword(string username, string email, string password)
         {
-            string url = string.Format(UserForgotPasswordEndPoint, username, password, email);
+            string url = string.Format(UserForgotPasswordEndPoint, username, password, email, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

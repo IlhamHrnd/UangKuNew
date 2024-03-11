@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.Report
 {
     public class GetReportNo
     {
-        private const string GetReportNoEndPoint = "https://uangkuapi.azurewebsites.net/UserReport/GetReportNo?ReportNo={0}&IsAdmin={1}";
+        private const string GetReportNoEndPoint = "{2}UserReport/GetReportNo?ReportNo={0}&IsAdmin={1}";
 
         public static async Task<GetReportNoRoot> GetUserReportNo(string reportNo, bool isAdmin)
         {
             GetReportNoRoot root = new GetReportNoRoot();
-            string url = string.Format(GetReportNoEndPoint, reportNo, isAdmin);
+            string url = string.Format(GetReportNoEndPoint, reportNo, isAdmin, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

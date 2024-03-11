@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.Report
 {
     public class GetUserReport
     {
-        private const string UserReportEndPoint = "https://uangkuapi.azurewebsites.net/UserReport/GetUserReport?PageNumber={0}&PageSize={1}{2}";
+        private const string UserReportEndPoint = "{3}UserReport/GetUserReport?PageNumber={0}&PageSize={1}{2}";
 
         public static async Task<ReportRoot> GetAllUserReport(int pageNumber, int pageSize, string personID)
         {
             ReportRoot root = new ReportRoot();
-            string url = string.Format(UserReportEndPoint, pageNumber, pageSize, personID);
+            string url = string.Format(UserReportEndPoint, pageNumber, pageSize, personID, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

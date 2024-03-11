@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
 {
     public class AppStandardReference
     {
-        private const string AppStandardReferenceEndPoint = "https://uangkuapi.azurewebsites.net/AppStandardReference/GetAllReferenceID?PageNumber={0}&PageSize={1}";
+        private const string AppStandardReferenceEndPoint = "{2}AppStandardReference/GetAllReferenceID?PageNumber={0}&PageSize={1}";
 
         public static async Task<AppStandardReferenceRoot> GetAllASR(int pageNumber, int pageSize)
         {
             AppStandardReferenceRoot root = new AppStandardReferenceRoot();
-            string url = string.Format(AppStandardReferenceEndPoint, pageNumber, pageSize);
+            string url = string.Format(AppStandardReferenceEndPoint, pageNumber, pageSize, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

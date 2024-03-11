@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
 {
     public class AllAppParameter
     {
-        private const string AllAppParameterEndPoint = "https://uangkuapi.azurewebsites.net/AppParameter/GetAllAppParameter?PageNumber={0}&PageSize={1}";
+        private const string AllAppParameterEndPoint = "{2}AppParameter/GetAllAppParameter?PageNumber={0}&PageSize={1}";
 
         public static async Task<GetAllAppParameterRoot> GetAllAppParameter(int pageNumber, int pageSize)
         {
             GetAllAppParameterRoot root = new GetAllAppParameterRoot();
-            string url = string.Format(AllAppParameterEndPoint, pageNumber, pageSize);
+            string url = string.Format(AllAppParameterEndPoint, pageNumber, pageSize, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

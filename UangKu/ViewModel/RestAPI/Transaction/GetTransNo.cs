@@ -7,12 +7,12 @@ namespace UangKu.ViewModel.RestAPI.Transaction
 {
     public class GetTransNo
     {
-        private const string GetTransNoEndPoint = "https://uangkuapi.azurewebsites.net/Transaction/GetTransactionNo?TransNo={0}";
+        private const string GetTransNoEndPoint = "{1}Transaction/GetTransactionNo?TransNo={0}";
 
         public static async Task<GetTransactionNoRoot> GetTransactionNo(string transNo)
         {
             GetTransactionNoRoot root = new GetTransactionNoRoot();
-            string url = string.Format(GetTransNoEndPoint, transNo);
+            string url = string.Format(GetTransNoEndPoint, transNo, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

@@ -6,12 +6,12 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
 {
     public class AppStandardReferenceItem
     {
-        private const string AppStandardReferenceItemEndPoint = "https://uangkuapi.azurewebsites.net/AppStandardReferenceItem/GetStandardID?StandardReferenceID={0}&isActive={1}&isUse={2}";
+        private const string AppStandardReferenceItemEndPoint = "{3}AppStandardReferenceItem/GetStandardID?StandardReferenceID={0}&isActive={1}&isUse={2}";
 
         public static async Task<List<T>> GetAsriAsync<T>(string id, bool isActive, bool isUse)
         {
             List<T> root = new List<T>();
-            string url = string.Format(AppStandardReferenceItemEndPoint, id, isActive, isUse);
+            string url = string.Format(AppStandardReferenceItemEndPoint, id, isActive, isUse, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

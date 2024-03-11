@@ -7,11 +7,11 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
 {
     public class PostAppStandardReference
     {
-        private const string PostASREndPoint = "https://uangkuapi.azurewebsites.net/AppStandardReference/CreateAppStandardReference";
+        private const string PostASREndPoint = "{0}AppStandardReference/CreateAppStandardReference";
 
         public static async Task<string> PostASR(string referenceID, string referenceName, int itemLength, string note)
         {
-            string url = string.Format(PostASREndPoint);
+            string url = string.Format(PostASREndPoint, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

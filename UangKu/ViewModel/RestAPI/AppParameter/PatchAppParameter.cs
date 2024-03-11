@@ -6,11 +6,11 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
 {
     public class PatchAppParameter
     {
-        private const string PatchParameterEndPoint = "https://uangkuapi.azurewebsites.net/AppParameter/UpdateAppParameter";
+        private const string PatchParameterEndPoint = "{0}AppParameter/UpdateAppParameter";
 
         public static async Task<string> PatchParameterID(Model.Index.Body.PatchParameter parameter)
         {
-            string url = string.Format(PatchParameterEndPoint);
+            string url = string.Format(PatchParameterEndPoint, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {

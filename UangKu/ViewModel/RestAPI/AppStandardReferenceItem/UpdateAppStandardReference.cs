@@ -6,11 +6,11 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
 {
     public class UpdateAppStandardReference
     {
-        private const string UpdateASREndPoint = "https://uangkuapi.azurewebsites.net/AppStandardReference/UpdateAppStandardReference?referenceID={0}&itemLength={1}&isActive={2}&isUse={3}&user={4}&note={5}";
+        private const string UpdateASREndPoint = "{6}AppStandardReference/UpdateAppStandardReference?referenceID={0}&itemLength={1}&isActive={2}&isUse={3}&user={4}&note={5}";
 
         public static async Task<string> PatchASR(string referenceid, int length, bool isactive, bool isuse, string user, string note)
         {
-            string url = string.Format(UpdateASREndPoint, referenceid, length, isactive, isuse, user, note);
+            string url = string.Format(UpdateASREndPoint, referenceid, length, isactive, isuse, user, note, SessionModel.APIUrlLink());
             var client = new RestClient(url);
             var request = new RestRequest
             {
