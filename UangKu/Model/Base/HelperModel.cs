@@ -175,6 +175,10 @@ namespace UangKu.Model.Base
                         case "URL":
                             AppParameter.URL = data.parameterValue;
                             break;
+
+                        case "NumbericFormat":
+                            AppParameter.NumbericFormat = data.parameterValue;
+                            break;
                     }
                 }
             }
@@ -201,6 +205,15 @@ namespace UangKu.Model.Base
             var date = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day);
 
             return date;
+        }
+    }
+
+    public static class NumericFormat
+    {
+        public static string NumberDigit(int number, string format)
+        {
+            string formattedNumber = number.ToString(format);
+            return formattedNumber;
         }
     }
 

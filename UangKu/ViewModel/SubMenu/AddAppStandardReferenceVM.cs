@@ -1,4 +1,5 @@
 ﻿using UangKu.Model.Base;
+using UangKu.Model.Session;
 using UangKu.Model.SubMenu;
 using UangKu.ViewModel.RestAPI.AppStandardReferenceItem;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
@@ -142,8 +143,6 @@ namespace UangKu.ViewModel.SubMenu
 
         public async Task AddASRIItem_ToolBar(Entry StandardID, Entry itemID)
         {
-            var asriCount = ListASRI.Count;
-
             if (string.IsNullOrEmpty(StandardID.Text))
             {
                 await MsgModel.MsgNotification("Standard ID Cannot Null");
@@ -151,7 +150,9 @@ namespace UangKu.ViewModel.SubMenu
             else
             {
                 IsEdit = true;
-                itemID.Text = $"{StandardID.Text}-00{asriCount + 1}";
+                int number = ListASRI.Count + 1;
+                var format = NumericFormat.NumberDigit(number, Compare.StringReplace(AppParameter.NumbericFormat, ParameterModel.ItemDefaultValue.NumbericFormat));
+                itemID.Text = $"{StandardID.Text}-{format}";
             }
         }
 
