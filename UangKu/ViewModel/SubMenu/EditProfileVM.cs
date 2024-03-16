@@ -32,6 +32,17 @@ namespace UangKu.ViewModel.SubMenu
                     {
                         await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                     }
+
+                    var provinces = await GetProvince.GetProvinces();
+                    if (provinces.Count > 0)
+                    {
+                        ListProvinces.Clear();
+                        for (int i = 0; i < provinces.Count; i++)
+                        {
+                            ListProvinces.Add(provinces[i]);
+                        }
+                    }
+
                     if (!string.IsNullOrEmpty(userID))
                     {
                         var person = await GetProfile.GetProfileID(userID);
@@ -40,22 +51,36 @@ namespace UangKu.ViewModel.SubMenu
                             EntFirstName.Text = person.firstName;
                             EntMiddleName.Text = person.middleName;
                             EntLastName.Text = person.lastName;
-                            PicPlaceOfBirth.SelectedItem = person.placeOfBirth;
                             StreetName.Text = person.address;
-                            Provinces.SelectedItem = person.province;
-                            City.SelectedItem = person.city;
-                            District.SelectedItem = person.district;
-                            SubDistrict.SelectedItem = person.subdistrict;
+                            //Process Get Item Index To Picker
+                            var listPlace = Converter.ConvertIListToList(ListProvinces);
+                            int selectedIndex = ControlHelper.GetIndexByName(listPlace, item => item.provName, person.placeOfBirth);
+                            PicPlaceOfBirth.SelectedIndex = selectedIndex;
+
+                            var listProv = Converter.ConvertIListToList(ListProvinces);
+                            selectedIndex = new int();
+                            selectedIndex = ControlHelper.GetIndexByName(listProv, item => item.provName, person.province);
+                            Provinces.SelectedIndex = selectedIndex;
+                            await PickerProvinces_Changed(Provinces);
+
+                            var listCity = Converter.ConvertIListToList(ListCities);
+                            selectedIndex = new int();
+                            selectedIndex = ControlHelper.GetIndexByName(listCity, item => item.cityName, person.city);
+                            City.SelectedIndex = selectedIndex;
+                            await PickerCity_Changed(City);
+
+                            var listDistrict = Converter.ConvertIListToList(ListDistricts);
+                            selectedIndex = new int();
+                            selectedIndex = ControlHelper.GetIndexByName(listDistrict, item => item.disName, person.district);
+                            District.SelectedIndex = selectedIndex;
+                            await PickerDistrict_Changed(District);
+
+                            var listSub = Converter.ConvertIListToList(ListSubdistricts);
+                            selectedIndex = new int();
+                            selectedIndex = ControlHelper.GetIndexByName(listSub, item => item.subdisName, person.subdistrict);
+                            SubDistrict.SelectedIndex = selectedIndex;
+
                             PostalCode.Text = person.postalCode.ToString();
-                        }
-                        var provinces = await GetProvince.GetProvinces();
-                        if (provinces.Count > 0)
-                        {
-                            ListProvinces.Clear();
-                            for (int i = 0; i < provinces.Count; i++)
-                            {
-                                ListProvinces.Add(provinces[i]);
-                            }
                         }
                         if (person.photo != null)
                         {

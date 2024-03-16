@@ -48,6 +48,11 @@
         <ShellContent ContentTemplate="{DataTemplate Menu:TransactionLog}"
                       Route="TransactionLog"/>
     </FlyoutItem>
+    <FlyoutItem Title="Wishlist"
+                Icon="dotnet_bot.svg">
+        <ShellContent ContentTemplate="{DataTemplate Menu:Wishlist}"
+                      Route="Wishlsit"/>
+    </FlyoutItem>
     <FlyoutItem Title="Gallery"
                 Icon="dotnet_bot.svg">
         <ShellContent ContentTemplate="{DataTemplate Menu:UserGallery}"

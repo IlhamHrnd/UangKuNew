@@ -75,17 +75,18 @@ namespace UangKu.ViewModel.SubMenu
                                 case "Control-001":
                                     IsCheckedBoxVisible = true;
                                     IsEntryVisible = false;
-                                    Pic_ParameterType.SelectedIndex = 0;
                                     CB_ParameterValue.IsChecked = Converter.StringToBool(parameterID.parameterValue, false);
                                     break;
 
                                 case "Control-002":
                                     IsEntryVisible = true;
                                     IsCheckedBoxVisible = false;
-                                    Pic_ParameterType.SelectedIndex = 1;
                                     Ent_ParameterValue.Text = parameterID.parameterValue;
                                     break;
                             }
+                            var newParamList = Converter.ConvertIListToList(ListParameterType);
+                            int selectedIndex = ControlHelper.GetIndexByName(newParamList, item => item.itemID, parameterID.srControl);
+                            Pic_ParameterType.SelectedIndex = selectedIndex;
                             Pic_ParameterType.IsEnabled = string.IsNullOrEmpty(parameterID.srControl);
                         }
                     }

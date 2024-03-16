@@ -73,7 +73,7 @@ namespace UangKu.ViewModel.Menu
                         var item = sumtrans[i];
                         if (item.amount != null)
                         {
-                            item.amountFormat = FormatCurrency.Currency((decimal)item.amount, ParameterModel.ItemDefaultValue.Currency);
+                            item.amountFormat = FormatCurrency.Currency((decimal)item.amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
                         }
 
                         ListSumTrans.Add(item);
@@ -100,7 +100,7 @@ namespace UangKu.ViewModel.Menu
                     {
                         if (datas[i].amount != null)
                         {
-                            datas[i].amountFormat = FormatCurrency.Currency((decimal)datas[i].amount, ParameterModel.ItemDefaultValue.Currency);
+                            datas[i].amountFormat = FormatCurrency.Currency((decimal)datas[i].amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
                         }
 
                         if (!string.IsNullOrEmpty(datas[i].photo))
@@ -131,7 +131,7 @@ namespace UangKu.ViewModel.Menu
                 {
                     decimal? amount = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
                     string srTransaction = "Summary";
-                    string amountFormat = FormatCurrency.Currency((decimal)amount, ParameterModel.ItemDefaultValue.Currency);
+                    string amountFormat = FormatCurrency.Currency((decimal)amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
 
                     var item = new SumTransactionRoot
                     {
@@ -213,7 +213,7 @@ namespace UangKu.ViewModel.Menu
                         {
                             if (item.data[i].amount != null)
                             {
-                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, ParameterModel.ItemDefaultValue.Currency);
+                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
                             }
 
                             if (!string.IsNullOrEmpty(item.data[i].photo))
@@ -297,7 +297,7 @@ namespace UangKu.ViewModel.Menu
                         {
                             if (item.data[i].amount != null)
                             {
-                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, ParameterModel.ItemDefaultValue.Currency);
+                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
                             }
 
                             if (!string.IsNullOrEmpty(item.data[i].photo))

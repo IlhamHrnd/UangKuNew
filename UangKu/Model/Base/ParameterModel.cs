@@ -117,6 +117,10 @@
             public static bool IsAllowCustomDate { get => isallowcustomdate; set => isallowcustomdate = value; }
             private static string url = "https://uangkuapi.azurewebsites.net/";
             public static string URL { get => url; set => url = value; }
+            private static string currency = "id-ID";
+            public static string Currency { get => currency; set => currency = value; }
+            private static string numbericformat = "D3";
+            public static string NumbericFormat { get => numbericformat; set => numbericformat = value; }
         }
 
         public class ItemDefaultValue
@@ -136,6 +140,8 @@
             private static string newfile = "New";
             public static string NewFile { get => newfile; set => newfile = value; }
             private static string editfile = "Edit";
+            private static string viewfile = "View";
+            public static string ViewFile { get => viewfile; set => viewfile = value; }
             public static string EditFile { get =>  editfile; set => editfile = value; }
             private static string incometrans = "IN";
             public static string IncomeTrans { get => incometrans; set => incometrans = value; }
@@ -143,14 +149,10 @@
             public static string OutcomeTrans { get => outcometrans; set => outcometrans = value; }
             private static string upload = "UPL";
             public static string Upload { get => upload; set => upload = value; }
-            private static string currency = "id-ID";
-            public static string Currency { get => currency; set => currency = value; }
             private static string userreport = string.Empty; //Report No Diambil Dari User > PersonID Dan User > Access
             public static string UserReport { get => userreport; set => userreport = value; }
             private static string wishlist = "WSL";
             public static string WishList { get => wishlist; set => wishlist = value; }
-            private static string numbericformat = "D3";
-            public static string NumbericFormat { get => numbericformat; set => numbericformat = value; }
         }
 
         public class PermissionManager

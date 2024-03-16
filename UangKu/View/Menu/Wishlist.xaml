@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Model="clr-namespace:UangKu.Model.Menu"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:Font="clr-namespace:UangKu.Model.Base"
+             x:Class="UangKu.View.Menu.Wishlist"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <Model:Wishlist/>
+    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="Bar_AddItem"
+                     Clicked="Bar_AddItem_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FARegular"
+                                 Glyph="{x:Static Font:FARegular.Plus}"
+                                 ToolTipProperties.Text="Click To Add New Transaction"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ScrollView Style="{StaticResource ScrollView}">
+        <StackLayout Style="{StaticResource StackLayout}">
+            <ActivityIndicator Style="{StaticResource ActivityIndicator}"
+                               IsRunning="{Binding IsBusy}"
+                               IsVisible="{Binding IsBusy}"/>
+            <CollectionView ItemsSource="{Binding ListWishlist}"
+                            Margin="0,10"
+                            EmptyView="No Data Wishlist To Display">
+                <CollectionView.Header>
+                    <Frame Style="{StaticResource Frame}">
+                        <Label Style="{StaticResource Label}"
+                               Text="My Wishlist"
+                               HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <CollectionView ItemsSource="{Binding data}"
+                                        Margin="0,10">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Vertical" 
+                                                   ItemSpacing="10"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <SwipeView Style="{StaticResource SwipeView}">
+                                        <SwipeView.LeftItems>
+                                            <SwipeItems>
+                                                <SwipeItem Text="Edit"
+                                                           Invoked="SwipeTrans_Edit"/>
+                                            </SwipeItems>
+                                        </SwipeView.LeftItems>
+                                        <SwipeView.RightItems>
+                                            <SwipeItems>
+                                                <SwipeItem Text="View"
+                                                           Invoked="SwipeTrans_View"/>
+                                            </SwipeItems>
+                                        </SwipeView.RightItems>
+                                        <Frame Style="{StaticResource Frame}">
+                                            <Frame.Triggers>
+                                                <DataTrigger TargetType="Frame" Binding="{Binding isComplete}" Value="True">
+                                                    <Setter Property="BorderColor" Value="Red"/>
+                                                </DataTrigger>
+                                            </Frame.Triggers>
+                                            <Grid ColumnSpacing="10">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <toolkit:AvatarView Grid.Row="0"
+                                                                    Grid.Column="0"
+                                                                    Grid.RowSpan="2"
+                                                                    HeightRequest="100"
+                                                                    WidthRequest="100"
+                                                                    Text="{Binding srProductCategory}"
+                                                                    Style="{StaticResource Avatar}"
+                                                                    ImageSource="{Binding source}"/>
+                                                <Label Grid.Row="0"
+                                                       Grid.Column="1"
+                                                       Text="{Binding productName}"
+                                                       FontSize="Medium">
+                                                    <Label.Triggers>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding isComplete}" Value="True">
+                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
+                                                <Label Grid.Row="1"
+                                                       Grid.Column="1"
+                                                       Text="{Binding priceFormat}"
+                                                       FontSize="Small">
+                                                    <Label.Triggers>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding isComplete}" Value="True">
+                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
+                                            </Grid>
+                                        </Frame>
+                                    </SwipeView>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <VerticalStackLayout>
+                        <HorizontalStackLayout HorizontalOptions="CenterAndExpand"
+                                               Spacing="20">
+                            <Button Style="{StaticResource Button}"
+                                    Text="Previous Page"
+                                    x:Name="Btn_PreviousPage"/>
+                            <Button Style="{StaticResource Button}"
+                                    Text="Next Page"
+                                    x:Name="Btn_NextPage"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </CollectionView.Footer>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
