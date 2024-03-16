@@ -2,6 +2,8 @@
 using UangKu.Model.Base;
 using UangKu.Model.Session;
 using UangKu.Model.SubMenu;
+using UangKu.ViewModel.RestAPI.Wishlist;
+using static UangKu.Model.Base.ParameterModel.PermissionManager;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 
 namespace UangKu.ViewModel.SubMenu
@@ -16,7 +18,7 @@ namespace UangKu.ViewModel.SubMenu
         }
 
         public async Task LoadData(Label Lbl_ProductName, Button Btn_WishlistAction, AvatarView Avt_ProductPicture, Picker Pic_ProductCategory, Entry Ent_Quantity, 
-            Entry Ent_Price, CheckBox CB_IsComplete, DatePicker Date_WishlistDate)
+            Entry Ent_Price, CheckBox CB_IsComplete, DatePicker Date_WishlistDate, Entry Ent_WishlistLink, Entry Ent_ProductName)
         {
             if (Mode == ParameterModel.ItemDefaultValue.NewFile)
             {
@@ -59,7 +61,7 @@ namespace UangKu.ViewModel.SubMenu
 
                     LoadASRI("Wishlist", true, true, ListWishList);
                     LoadWishList(Lbl_ProductName, Avt_ProductPicture, Pic_ProductCategory, Ent_Quantity,
-                        Ent_Price, CB_IsComplete, Date_WishlistDate, true);
+                        Ent_Price, CB_IsComplete, Date_WishlistDate, true, Ent_WishlistLink, Ent_ProductName);
                 }
                 else if (Mode == ParameterModel.ItemDefaultValue.ViewFile)
                 {
@@ -70,7 +72,7 @@ namespace UangKu.ViewModel.SubMenu
 
                     LoadASRI("Wishlist", true, true, ListWishList);
                     LoadWishList(Lbl_ProductName, Avt_ProductPicture, Pic_ProductCategory, Ent_Quantity,
-                        Ent_Price, CB_IsComplete, Date_WishlistDate, false);
+                        Ent_Price, CB_IsComplete, Date_WishlistDate, false, Ent_WishlistLink, Ent_ProductName);
                 }
             }
             catch (Exception e)
@@ -98,7 +100,7 @@ namespace UangKu.ViewModel.SubMenu
         }
 
         private async void LoadWishList(Label Lbl_ProductName, AvatarView Avt_ProductPicture, Picker Pic_ProductCategory, Entry Ent_Quantity,
-            Entry Ent_Price, CheckBox CB_IsComplete, DatePicker Date_WishlistDate, bool isEdit)
+            Entry Ent_Price, CheckBox CB_IsComplete, DatePicker Date_WishlistDate, bool isEdit, Entry Ent_Link, Entry Ent_Name)
         {
             var wishlist = await RestAPI.Wishlist.GetWishlistID.GetWishlistIDUser(WishlistID);
             if (!string.IsNullOrEmpty(wishlist.wishlistID))
@@ -125,12 +127,15 @@ namespace UangKu.ViewModel.SubMenu
                 if (isEdit)
                 {
                     Ent_Price.Text = Converter.DecimalToString((decimal)wishlist.productPrice);
+                    Ent_Link.Text = wishlist.productLink;
+                    Ent_Name.Text = wishlist.productName;
                 }
                 else
                 {
                     var price = FormatCurrency.Currency((decimal)wishlist.productPrice, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
                     Ent_Price.Text = price;
                     LinkProduct = wishlist.productLink;
+                    Ent_Name.Text = wishlist.productName;
                 }
 
                 //Load Picker From Index
@@ -150,6 +155,111 @@ namespace UangKu.ViewModel.SubMenu
             else
             {
                 await Launcher.OpenAsync(LinkProduct);
+            }
+        }
+
+        public async Task UploadPhoto_Click(AvatarView avatar)
+        {
+            PermissionType type = PermissionType.StorageRead;
+            await PermissionRequest.RequestPermission(type);
+
+            ImageSource source = await ImageConvert.PickImageAsync();
+
+            if (source != null)
+            {
+                avatar.ImageSource = source;
+            }
+        }
+
+        public async Task SaveWishlist_Click(Entry Ent_Quantity, Entry Ent_Price, Picker Pic_ProductCategory, DatePicker Date_WishlistDate,
+            Entry Ent_Name, CheckBox CB_IsComplete, Entry Ent_URL)
+        {
+            bool isConnect = network.IsConnected;
+            IsBusy = true;
+            string dateOnly;
+
+            var sessionID = App.Session;
+            string userID = SessionModel.GetUserID(sessionID);
+
+            try
+            {
+                bool isValidEntry = await ValidateNullChecker.EntryValidateFields(
+                    (Ent_Quantity.Text, "Quantity"),
+                    (Ent_Price.Text, "Price"),
+                    (Ent_Name.Text, "Name")
+                );
+
+                bool isValidPicker = await ValidateNullChecker.PickerValidateFields(
+                    (Pic_ProductCategory, "Product Category")
+                );
+
+                dateOnly = DateFormat.FormattingDate(Date_WishlistDate.Date, ParameterModel.DateTimeFormat.Yearmonthdate);
+                var wishlistID = await GetNewAutoNumber.GetWishlistID(ParameterModel.ItemDefaultValue.WishList);
+
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                }
+                if (Mode == ParameterModel.ItemDefaultValue.NewFile && isValidEntry && isValidPicker)
+                {
+                    var bodyPost = new Model.Index.Body.PostWishlist
+                    {
+                        wishlistID = wishlistID,
+                        personID = userID,
+                        srProductCategory = SelectedWishlistID.itemID,
+                        productName = Ent_Name.Text,
+                        productQuantity = Converter.StringToInt(Ent_Quantity.Text, 0),
+                        productPrice = Converter.StringToInt(Ent_Price.Text, 0),
+                        productLink = Ent_URL.Text,
+                        createdByUserID = userID,
+                        createdDateTime = ParameterModel.DateFormat.DateTime,
+                        lastUpdateByUserID = userID,
+                        lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
+                        wishlistDate = Converter.StringToDateTime(dateOnly, ParameterModel.DateFormat.DateTime),
+                        productPicture = ParameterModel.ImageManager.ImageString,
+                        isComplete = CB_IsComplete.IsChecked,
+                        pictureSize = ParameterModel.ImageManager.ImageSize
+                    };
+
+                    var wishlist = await PostWishlist.PostNewWishlist(bodyPost);
+                    if (!string.IsNullOrEmpty(wishlist))
+                    {
+                        await MsgModel.MsgNotification($"{wishlist}");
+                    }
+                }
+                else if (Mode == ParameterModel.ItemDefaultValue.EditFile && isValidEntry && isValidPicker)
+                {
+                    var bodyPatch = new Model.Index.Body.PatchWishlist
+                    {
+                        wishlistID = WishlistID,
+                        srProductCategory = SelectedWishlistID.itemID,
+                        productName = Ent_Name.Text,
+                        productQuantity = Converter.StringToInt(Ent_Quantity.Text, 0),
+                        productPrice = Converter.StringToInt(Ent_Price.Text, 0),
+                        productLink = Ent_URL.Text,
+                        lastUpdateByUserID = userID,
+                        lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
+                        wishlistDate = Converter.StringToDateTime(dateOnly, ParameterModel.DateFormat.DateTime),
+                        productPicture = ParameterModel.ImageManager.ImageString,
+                        isComplete = CB_IsComplete.IsChecked,
+                        pictureSize = ParameterModel.ImageManager.ImageSize
+                    };
+
+                    var wishlist = await PatchWishlist.PatchWishlistID(bodyPatch);
+                    if (!string.IsNullOrEmpty(wishlist))
+                    {
+                        await MsgModel.MsgNotification($"{wishlist}");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+                ParameterModel.ImageManager.ImageString = string.Empty;
             }
         }
     }
