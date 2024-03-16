@@ -355,6 +355,7 @@ namespace UangKu.Model.Base
             ImageManager.ImageString = ByteToStringImg(imgBytes);
             ImageManager.ImageName = result.FileName;
             ImageManager.ImageFormat = result.ContentType;
+            ImageManager.ImageSize = fileSize;
 
             return ImageSource.FromStream(() => new MemoryStream(imgBytes));
         }

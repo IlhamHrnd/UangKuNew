@@ -212,7 +212,7 @@ namespace UangKu.ViewModel.SubMenu
                             transNo = EntTransNo.Text,
                             srTransaction = SelectedTransType.itemID,
                             srTransItem = SelectedTransItem.itemID,
-                            amount = int.Parse(EntAmount.Text),
+                            amount = Converter.StringToInt(EntAmount.Text, 0),
                             description = EntDescription.Text,
                             photo = ParameterModel.ImageManager.ImageString,
                             createdDateTime = ParameterModel.DateFormat.DateTime,

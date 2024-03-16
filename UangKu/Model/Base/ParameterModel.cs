@@ -174,6 +174,8 @@
             public static string ImageName { get => imagename; set => imagename = value; }
             private static string imageformat = string.Empty;
             public static string ImageFormat { get => imageformat; set => imageformat = value; }
+            private static long imagesize = 0;
+            public static long ImageSize { get => imagesize; set => imagesize = value; }
         }
 
         //Untuk Gambar Yang Ter Pick Beberapa Item
