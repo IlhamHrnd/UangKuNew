@@ -11,6 +11,7 @@ using UangKu.ViewModel.RestAPI.Picture;
 using UangKu.ViewModel.RestAPI.Profile;
 using UangKu.ViewModel.RestAPI.Report;
 using UangKu.ViewModel.RestAPI.Transaction;
+using UangKu.ViewModel.RestAPI.Wishlist;
 using static UangKu.Model.Base.ParameterModel;
 using static UangKu.Model.Base.ParameterModel.PermissionManager;
 
@@ -176,8 +177,12 @@ namespace UangKu.Model.Base
                             AppParameter.URL = data.parameterValue;
                             break;
 
-                        case "NumbericFormat":
+                        case "NumericFormat":
                             AppParameter.NumbericFormat = data.parameterValue;
+                            break;
+
+                        case "CurrencyFormat":
+                            AppParameter.CurrencyFormat = data.parameterValue;
                             break;
                     }
                 }
@@ -415,6 +420,12 @@ namespace UangKu.Model.Base
             return result;
         }
 
+        public static string IntToString(int data)
+        {
+            var result = data.ToString();
+            return result;
+        }
+
         public static long IntToLong(int data)
         {
             long result = data * 1024 * 1024;
@@ -426,6 +437,20 @@ namespace UangKu.Model.Base
         {
             var values = (int)value;
             return values;
+        }
+
+        public static string DecimalToString(decimal value)
+        {
+            try
+            {
+                int result = (int)Math.Round(value);
+                var values = result.ToString();
+                return values;
+            }
+            catch (OverflowException)
+            {
+                return "Value too large";
+            }
         }
 
         public static bool StringToBool(string value, bool defaultValue)
@@ -444,6 +469,22 @@ namespace UangKu.Model.Base
             return result;
         }
 
+        public static DateTime StringToDateTime(string value, DateTime defaultValue)
+        {
+            DateTime result;
+
+            try
+            {
+                result = DateTime.Parse(value);
+            }
+            catch
+            {
+                result = defaultValue;
+            }
+
+            return result;
+        }
+
         //Function Untuk StringBuilder
         public static string BuilderString(params object[] items)
         {
@@ -455,6 +496,13 @@ namespace UangKu.Model.Base
             }
             var result = builder.ToString();
             return result;
+        }
+
+        //Function Untuk IList Jadi List
+        public static List<T> ConvertIListToList<T>(IList<T> inputList)
+        {
+            var list = new List<T>(inputList);
+            return list;
         }
     }
 
@@ -559,6 +607,22 @@ namespace UangKu.Model.Base
             }
         }
 
+        public static async Task<string> GetWishlistID(string wishlistType)
+        {
+            try
+            {
+                string wishlistID = string.Empty;
+                var generateID = await GetNewWishlistID.GetNewWishlistIDNo(wishlistType);
+                wishlistID = !string.IsNullOrEmpty(generateID) ? generateID : string.Empty;
+                return wishlistID;
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification($"Error: {e.Message}");
+                return null;
+            }
+        }
+
         public static string GenerateUserReportNo(string userID, string accessName)
         {
             string value = string.Empty;
@@ -595,6 +659,16 @@ namespace UangKu.Model.Base
                 }
             }
             return value;
+        }
+    }
+
+    public static class ControlHelper
+    {
+        public static int GetIndexByName<T>(List<T> itemList, Func<T, string> nameSelector, string targetName)
+        {
+            // Find the index using LINQ
+            int selectedIndex = itemList.FindIndex(item => nameSelector(item) == targetName);
+            return selectedIndex;
         }
     }
 

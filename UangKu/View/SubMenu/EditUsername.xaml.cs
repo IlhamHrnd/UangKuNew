@@ -15,7 +15,7 @@ public partial class EditUsername : ContentPage
     protected async override void OnAppearing()
     {
         await SessionModel.SessionCheck();
-		_vm.LoadData(Avt_User, CB_IsActive, SV_Gender);
+		_vm.LoadData(Avt_User, CB_IsActive, SV_Gender, Pic_Access);
     }
 
     private async void Btn_Update_Clicked(object sender, EventArgs e)

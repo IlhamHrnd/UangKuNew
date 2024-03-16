@@ -8,6 +8,7 @@ using UangKu.View.SubMenu;
 using UangKu.ViewModel.RestAPI.Picture;
 using UangKu.ViewModel.RestAPI.Profile;
 using UangKu.ViewModel.RestAPI.Transaction;
+using UangKu.ViewModel.RestAPI.Wishlist;
 using static UangKu.Model.Response.Transaction.SumTransaction;
 
 namespace UangKu.ViewModel.Menu
@@ -86,7 +87,7 @@ namespace UangKu.ViewModel.Menu
                             var item = sumtrans[i];
                             if (item.amount != null)
                             {
-                                item.amountFormat = FormatCurrency.Currency((decimal)item.amount, ParameterModel.ItemDefaultValue.Currency);
+                                item.amountFormat = FormatCurrency.Currency((decimal)item.amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
                             }
                             ListSumTrans.Add(item);
 
@@ -114,7 +115,7 @@ namespace UangKu.ViewModel.Menu
                     {
                         decimal? amount = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
                         string srTransaction = "Summary";
-                        string amountFormat = FormatCurrency.Currency((decimal)amount, ParameterModel.ItemDefaultValue.Currency);
+                        string amountFormat = FormatCurrency.Currency((decimal)amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
 
                         var item = new SumTransactionRoot
                         {
@@ -147,7 +148,7 @@ namespace UangKu.ViewModel.Menu
                         {
                             if (item.data[i].amount != null)
                             {
-                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, ParameterModel.ItemDefaultValue.Currency);
+                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
                             }
 
                             if (!string.IsNullOrEmpty(item.data[i].photo))

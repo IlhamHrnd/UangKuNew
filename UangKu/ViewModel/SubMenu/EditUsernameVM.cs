@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.SubMenu
             Title = $"Edit Username {ParameterModel.User.UserID}";
             Name = ParameterModel.User.UserID;
         }
-        public async void LoadData(AvatarView avatar, CheckBox checkbox, InputKit.Shared.Controls.SelectionView selection)
+        public async void LoadData(AvatarView avatar, CheckBox checkbox, InputKit.Shared.Controls.SelectionView selection, Picker picker)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -50,16 +50,24 @@ namespace UangKu.ViewModel.SubMenu
                     {
                         case "Laki - Laki":
                             user.imgavatar = "man.svg";
-                            selection.SelectedIndex = 0;
                             break;
                         case "Perempuan":
                             user.imgavatar = "woman.svg";
-                            selection.SelectedIndex = 1;
                             break;
                         default:
                             await MsgModel.MsgNotification($"Sexname For {user.sexName} Is Invalid");
                             break;
                     }
+
+                    var newSexList = Converter.ConvertIListToList(ListSex);
+                    int selectedIndex = ControlHelper.GetIndexByName(newSexList, item => item.itemName, user.sexName);
+                    selection.SelectedIndex = selectedIndex;
+
+                    var newAccessList = Converter.ConvertIListToList(ListAccess);
+                    selectedIndex = new int();
+                    selectedIndex = ControlHelper.GetIndexByName(newAccessList, item => item.itemName, user.accessName);
+                    picker.SelectedIndex = selectedIndex;
+
                     if (!string.IsNullOrEmpty(user.imgavatar))
                     {
                         avatar.ImageSource = user.imgavatar;

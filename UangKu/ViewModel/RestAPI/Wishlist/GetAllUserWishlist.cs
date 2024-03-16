@@ -1,18 +1,18 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using UangKu.Model.Base;
-using static UangKu.Model.Response.Location.Provinces;
+using static UangKu.Model.Response.Wishlist.GetAllUserWishlist;
 
-namespace UangKu.ViewModel.RestAPI.Location
+namespace UangKu.ViewModel.RestAPI.Wishlist
 {
-    public class GetProvince
+    public class GetAllUserWishlist
     {
-        private const string GetProvinceEndPoint = "{0}Location/GetAllProvince";
+        private const string GetAllUserWishlistEndPoint = "{0}UserWishlist/GetAllUserWishlist?PageNumber={2}&PageSize={3}&PersonID={1}";
 
-        public static async Task<List<ProvincesRoot>> GetProvinces()
+        public static async Task<GetAllUserWishlistRoot> GetAllWishlist(string personID, int pageNumber, int pageSize)
         {
-            List<ProvincesRoot> root = new List<ProvincesRoot>();
-            string url = string.Format(GetProvinceEndPoint, SessionModel.APIUrlLink());
+            GetAllUserWishlistRoot root = new GetAllUserWishlistRoot();
+            string url = string.Format(GetAllUserWishlistEndPoint, SessionModel.APIUrlLink(), personID, pageNumber, pageSize);
             var client = new RestClient(url);
             var request = new RestRequest
             {
@@ -26,7 +26,7 @@ namespace UangKu.ViewModel.RestAPI.Location
                 if (response.IsSuccessStatusCode)
                 {
                     var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<List<ProvincesRoot>>(content);
+                    var get = JsonConvert.DeserializeObject<GetAllUserWishlistRoot>(content);
                     root = get;
                 }
                 else

@@ -49,11 +49,16 @@ namespace UangKu.ViewModel.SubMenu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (Mode == ParameterModel.ItemDefaultValue.NewFile)
+                var trans = await AppStandardReferenceItem.GetAsriAsync<AsriRoot>("Transaction", true, true);
+                if (trans.Count > 0)
                 {
-                    
+                    ListTransaction.Clear();
+                    for (int i = 0; i < trans.Count; i++)
+                    {
+                        ListTransaction.Add(trans[i]);
+                    }
                 }
-                else if (Mode == ParameterModel.ItemDefaultValue.EditFile)
+                if (Mode == ParameterModel.ItemDefaultValue.EditFile)
                 {
                     if (!string.IsNullOrEmpty(TransNo))
                     {
@@ -61,8 +66,18 @@ namespace UangKu.ViewModel.SubMenu
                         if (!string.IsNullOrEmpty(transno.transNo))
                         {
                             EntTransNo.Text = transno.transNo;
-                            PicTrans.SelectedItem = transno.transType;
-                            PicTransItem.SelectedItem = transno.srTransItem;
+
+                            //Process Get Item Index To Picker
+                            var newPicTransList = Converter.ConvertIListToList(ListTransaction);
+                            int selectedIndex = ControlHelper.GetIndexByName(newPicTransList, item => item.itemName, transno.srTransaction);
+                            PicTrans.SelectedIndex = selectedIndex;
+                            await PickerTransType_Changed(PicTrans, EntTransNo);
+
+                            var newPicTransItemList= Converter.ConvertIListToList(ListTransItem);
+                            selectedIndex = new int();
+                            selectedIndex = ControlHelper.GetIndexByName(newPicTransItemList, item => item.itemName, transno.srTransItem);
+                            PicTransItem.SelectedIndex = selectedIndex;
+
                             EntDescription.Text = transno.description;
                             Avatar.Text = transno.srTransItem;
                         }
@@ -81,20 +96,6 @@ namespace UangKu.ViewModel.SubMenu
                         }
                     }
                 }
-                else
-                {
-
-                }
-                var trans = await AppStandardReferenceItem.GetAsriAsync<AsriRoot>("Transaction", true, true);
-                if (trans.Count > 0)
-                {
-                    ListTransaction.Clear();
-                    for (int i = 0; i < trans.Count; i++)
-                    {
-                        ListTransaction.Add(trans[i]);
-                    }
-                }
-
             }
             catch (Exception e)
             {

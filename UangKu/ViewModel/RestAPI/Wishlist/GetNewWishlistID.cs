@@ -1,18 +1,17 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using UangKu.Model.Base;
-using static UangKu.Model.Response.Location.Provinces;
 
-namespace UangKu.ViewModel.RestAPI.Location
+namespace UangKu.ViewModel.RestAPI.Wishlist
 {
-    public class GetProvince
+    public class GetNewWishlistID
     {
-        private const string GetProvinceEndPoint = "{0}Location/GetAllProvince";
+        private const string GetNewWishlistIDEndPoint = "{0}UserWishlist/GetNewUserWishlistID?TransType={1}";
 
-        public static async Task<List<ProvincesRoot>> GetProvinces()
+        public static async Task<string> GetNewWishlistIDNo(string transType)
         {
-            List<ProvincesRoot> root = new List<ProvincesRoot>();
-            string url = string.Format(GetProvinceEndPoint, SessionModel.APIUrlLink());
+            string wishlistID = string.Empty;
+            string url = string.Format(GetNewWishlistIDEndPoint, SessionModel.APIUrlLink(), transType);
             var client = new RestClient(url);
             var request = new RestRequest
             {
@@ -26,8 +25,8 @@ namespace UangKu.ViewModel.RestAPI.Location
                 if (response.IsSuccessStatusCode)
                 {
                     var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<List<ProvincesRoot>>(content);
-                    root = get;
+                    var get = JsonConvert.DeserializeObject<string>(content);
+                    wishlistID = get;
                 }
                 else
                 {
@@ -38,7 +37,8 @@ namespace UangKu.ViewModel.RestAPI.Location
             {
                 await MsgModel.MsgNotification(e.Message);
             }
-            return root;
+
+            return wishlistID;
         }
     }
 }
