@@ -6,14 +6,8 @@ namespace UangKu.Model.SubMenu
 {
     public class NewTransaction : BaseModel
     {
-        private string title = string.Empty;
-        public string Title { get => title; set => SetProperty(ref title, value); }
-        private bool isbusy = false;
-        public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private bool isallowcustomdate = false;
         public bool IsAllowCustomDate { get => isallowcustomdate; set => SetProperty(ref isallowcustomdate, value); }
-        private string mode = string.Empty;
-        public string Mode { get => mode; set => SetProperty(ref mode, value); }
         private string transtypes = string.Empty;
         public string TransTypes { get => transtypes; set => SetProperty(ref transtypes, value); }
         private string transno = string.Empty;

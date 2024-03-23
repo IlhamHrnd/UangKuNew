@@ -36,4 +36,9 @@ public partial class AddAppStandardReference : ContentPage
     {
         await _vm.AddItem_Click(Ent_StandardID, Ent_ItemID, Ent_ItemName, Ent_NoteASRI);
     }
+
+    private async void Btn_ASRIIcon_Clicked(object sender, EventArgs e)
+    {
+        await _vm.UploadItemIcon_Click();
+    }
 }

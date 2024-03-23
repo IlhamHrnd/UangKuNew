@@ -51,6 +51,8 @@ namespace UangKu.ViewModel.Menu
                             }
                         }
                         Page = (int)picture.pageNumber;
+                        TotalPages = (int)picture.totalPages;
+                        TotalRecords = (int)picture.totalRecords;
                         ListUserPicture.Add(picture);
 
                         ListUserPictureTwo.Clear();
@@ -76,9 +78,8 @@ namespace UangKu.ViewModel.Menu
                 IsBusy = false;
             }
         }
-        public async void NextPage_Clicked(int pageSize)
+        public async void NextPreviousPage_Clicked(int pageSize, bool isNext)
         {
-            var maxPage = ListUserPicture[0].totalPages;
             bool isConnect = network.IsConnected;
             IsBusy = true;
             try
@@ -90,78 +91,18 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (Page >= maxPage)
+                if (Page >= TotalPages && isNext)
                 {
                     await MsgModel.MsgNotification("This Is The Latest Page");
                 }
-                else
-                {
-                    var picture = await GetUserPicture.GetAllUserPicture(Page + 1, pageSize,
-                        userID, ParameterModel.ItemDefaultValue.IsDeleted);
-                    if ((bool)picture.succeeded && picture.data.Count > 0)
-                    {
-                        ListUserPicture.Clear();
-                        for (int i = 0; i < picture.data.Count; i++)
-                        {
-                            if (!string.IsNullOrEmpty(picture.data[i].picture))
-                            {
-                                string decodeImg = ImageConvert.DecodeBase64ToString(picture.data[i].picture);
-                                byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
-                                picture.data[i].source = ImageConvert.ImgByte(byteImg);
-                            }
-
-                            if (!string.IsNullOrEmpty(picture.data[i].pictureFormat))
-                            {
-                                string result = ImageConvert.SubstringContentType(picture.data[0].pictureFormat, '/');
-                                picture.data[i].contenttype = result;
-                            }
-                        }
-                        Page = (int)picture.pageNumber;
-                        ListUserPicture.Add(picture);
-
-                        ListUserPictureTwo.Clear();
-                        foreach (var item in picture.data)
-                        {
-                            var datum = new UserPictureTwo.Datum
-                            {
-                                pictureID = item.pictureID,
-                                isDeleted = item.isDeleted
-                            };
-
-                            ListUserPictureTwo.Add(datum);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                await MsgModel.MsgNotification(e.Message);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-        public async void PreviousPage_Clicked(int pageSize)
-        {
-            bool isConnect = network.IsConnected;
-            IsBusy = true;
-            try
-            {
-                var sessionID = App.Session;
-                string userID = SessionModel.GetUserID(sessionID);
-
-                if (!isConnect)
-                {
-                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
-                }
-                if (Page <= 1)
+                else if (Page <= 1 && !isNext)
                 {
                     await MsgModel.MsgNotification("This Is The First Page");
                 }
                 else
                 {
-                    var picture = await GetUserPicture.GetAllUserPicture(Page - 1, pageSize,
+                    int pages = isNext ? Page + 1 : Page - 1;
+                    var picture = await GetUserPicture.GetAllUserPicture(pages, pageSize,
                         userID, ParameterModel.ItemDefaultValue.IsDeleted);
                     if ((bool)picture.succeeded && picture.data.Count > 0)
                     {
@@ -182,6 +123,8 @@ namespace UangKu.ViewModel.Menu
                             }
                         }
                         Page = (int)picture.pageNumber;
+                        TotalPages = (int)picture.totalPages;
+                        TotalRecords = (int)picture.totalRecords;
                         ListUserPicture.Add(picture);
 
                         ListUserPictureTwo.Clear();

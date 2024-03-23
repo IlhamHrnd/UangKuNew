@@ -23,12 +23,12 @@ public partial class AppStandardReference : ContentPage
 
     private void Btn_NextPage_Clicked(object sender, EventArgs e)
     {
-		_vm.NextPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult));
+		_vm.NextPreviousPage_Click(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), true);
     }
 
     private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
     {
-        _vm.PreviousPage_Click(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult));
+        _vm.NextPreviousPage_Click(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), false);
     }
 
     private async void Coll_AppStandardReference_SelectionChanged(object sender, SelectionChangedEventArgs e)

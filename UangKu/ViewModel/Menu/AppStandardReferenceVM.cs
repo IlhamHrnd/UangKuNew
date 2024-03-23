@@ -11,6 +11,7 @@ namespace UangKu.ViewModel.Menu
         public AppStandardReferenceVM(INavigation navigation)
         {
             _navigation = navigation;
+            Title = "App Standard Reference";
         }
         public async void LoadData(int pageNumber, int pageSize)
         {
@@ -28,6 +29,8 @@ namespace UangKu.ViewModel.Menu
                     ListASR.Clear();
                     ListASR.Add(asr);
                     Page = (int)asr.pageNumber;
+                    TotalPages = (int)asr.totalPages;
+                    TotalRecords = (int)asr.totalRecords;
                 }
             }
             catch (Exception e)
@@ -39,9 +42,8 @@ namespace UangKu.ViewModel.Menu
                 IsBusy = false;
             }
         }
-        public async void NextPage_Clicked(int pageSize)
+        public async void NextPreviousPage_Click(int pageSize, bool isNext)
         {
-            var maxPage = ListASR[0].totalPages;
             bool isConnect = network.IsConnected;
             IsBusy = true;
             try
@@ -50,52 +52,25 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (Page >= maxPage)
+                if (Page >= TotalPages && isNext)
                 {
                     await MsgModel.MsgNotification("This Is The Latest Page");
                 }
-                else
-                {
-                    var asr = await RestAPI.AppStandardReferenceItem.AppStandardReference.GetAllASR(Page + 1, pageSize);
-                    if ((bool)asr.succeeded)
-                    {
-                        ListASR.Clear();
-                        ListASR.Add(asr);
-                        Page = (int)asr.pageNumber;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                await MsgModel.MsgNotification(e.Message);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-        public async void PreviousPage_Click(int pageSize)
-        {
-            bool isConnect = network.IsConnected;
-            IsBusy = true;
-            try
-            {
-                if (!isConnect)
-                {
-                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
-                }
-                if (Page <= 1)
+                else if (Page <= 1 && !isNext)
                 {
                     await MsgModel.MsgNotification("This Is The First Page");
                 }
                 else
                 {
-                    var asr = await RestAPI.AppStandardReferenceItem.AppStandardReference.GetAllASR(Page - 1, pageSize);
+                    int pages = isNext ? Page + 1 : Page - 1;
+                    var asr = await RestAPI.AppStandardReferenceItem.AppStandardReference.GetAllASR(pages, pageSize);
                     if ((bool)asr.succeeded)
                     {
                         ListASR.Clear();
                         ListASR.Add(asr);
                         Page = (int)asr.pageNumber;
+                        TotalPages = (int)asr.totalPages;
+                        TotalRecords = (int)asr.totalRecords;
                     }
                 }
             }

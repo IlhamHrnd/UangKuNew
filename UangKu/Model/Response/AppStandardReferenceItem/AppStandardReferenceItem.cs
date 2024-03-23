@@ -29,6 +29,9 @@ namespace UangKu.Model.Response.AppStandardReferenceItem
 
             [JsonProperty("lastUpdateByUserID")]
             public string lastUpdateByUserID { get; set; }
+
+            [JsonProperty("itemIcon")]
+            public string itemIcon { get; set; }
         }
 
         public class AsriTwoRoot
@@ -56,6 +59,9 @@ namespace UangKu.Model.Response.AppStandardReferenceItem
 
             [JsonProperty("lastUpdateByUserID")]
             public string lastUpdateByUserID { get; set; }
+
+            [JsonProperty("itemIcon")]
+            public string itemIcon { get; set; }
         }
 
         public class AsriThreeRoot
@@ -83,6 +89,9 @@ namespace UangKu.Model.Response.AppStandardReferenceItem
 
             [JsonProperty("lastUpdateByUserID")]
             public string lastUpdateByUserID { get; set; }
+
+            [JsonProperty("itemIcon")]
+            public string itemIcon { get; set; }
         }
     }
 }

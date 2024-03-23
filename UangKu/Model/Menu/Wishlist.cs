@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using UangKu.Model.Base;
 using static UangKu.Model.Response.Wishlist.GetAllUserWishlist;
+using static UangKu.Model.Response.Wishlist.GetUserWishlistPerCategory;
 
 namespace UangKu.Model.Menu
 {
@@ -10,13 +11,6 @@ namespace UangKu.Model.Menu
         {
             
         }
-
-        private string title = string.Empty;
-        public string Title { get => title; set => SetProperty(ref title, value); }
-        private bool isbusy = false;
-        public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
-        private int page = 0;
-        public int Page { get => page; set => page = value; }
         private IList<GetAllUserWishlistRoot> listwishlist { get; set; }
 
         public IList<GetAllUserWishlistRoot> ListWishlist
@@ -30,6 +24,19 @@ namespace UangKu.Model.Menu
                 return listwishlist;
             }
             set { listwishlist = value; }
+        }
+        private IList<GetUserWishlistPerCategoryRoot> listwishlistcategory { get; set; }
+        public IList<GetUserWishlistPerCategoryRoot> ListWishlistCategory
+        {
+            get
+            {
+                if (listwishlistcategory == null)
+                {
+                    listwishlistcategory = new ObservableCollection<GetUserWishlistPerCategoryRoot>();
+                }
+                return listwishlistcategory;
+            }
+            set { listwishlistcategory= value; }
         }
     }
 }

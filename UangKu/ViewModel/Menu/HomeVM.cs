@@ -22,6 +22,7 @@ namespace UangKu.ViewModel.Menu
         {
             LoadData();
             _navigation = navigation;
+            Title = "Home";
         }
         private void LoadData()
         {

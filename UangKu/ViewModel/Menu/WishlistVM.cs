@@ -29,6 +29,22 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
+                var wishlistcategory = await RestAPI.Wishlist.GetUserWishlistPerCategory.UserWishlistPerCategory(userID, false);
+                if (wishlistcategory.Count > 0)
+                {
+                    ListWishlistCategory.Clear();
+                    for (int i = 0; i < wishlistcategory.Count; i++)
+                    {
+                        var item = wishlistcategory[i];
+                        if (!string.IsNullOrEmpty(item.itemIcon))
+                        {
+                            string decodeImg = ImageConvert.DecodeBase64ToString(item.itemIcon);
+                            byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                            item.source = ImageConvert.ImgByte(byteImg);
+                        }
+                        ListWishlistCategory.Add(item);
+                    }
+                }
                 var allwish = await RestAPI.Wishlist.GetAllUserWishlist.GetAllWishlist(userID, pageNumber, pageSize);
                 if ((bool)allwish.succeeded && allwish.data.Count > 0)
                 {
@@ -55,6 +71,8 @@ namespace UangKu.ViewModel.Menu
                         }
                     }
                     Page = (int)allwish.pageNumber;
+                    TotalRecords = (int)allwish.totalRecords;
+                    TotalPages = (int)allwish.totalPages;
                     ListWishlist.Add(item);
                 }
             }

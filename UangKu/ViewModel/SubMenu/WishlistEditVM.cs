@@ -61,7 +61,7 @@ namespace UangKu.ViewModel.SubMenu
 
                     LoadASRI("Wishlist", true, true, ListWishList);
                     LoadWishList(Lbl_ProductName, Avt_ProductPicture, Pic_ProductCategory, Ent_Quantity,
-                        Ent_Price, CB_IsComplete, Date_WishlistDate, true, Ent_WishlistLink, Ent_ProductName);
+                        Ent_Price, CB_IsComplete, Date_WishlistDate, true, Ent_WishlistLink, Ent_ProductName, ListWishList);
                 }
                 else if (Mode == ParameterModel.ItemDefaultValue.ViewFile)
                 {
@@ -72,7 +72,7 @@ namespace UangKu.ViewModel.SubMenu
 
                     LoadASRI("Wishlist", true, true, ListWishList);
                     LoadWishList(Lbl_ProductName, Avt_ProductPicture, Pic_ProductCategory, Ent_Quantity,
-                        Ent_Price, CB_IsComplete, Date_WishlistDate, false, Ent_WishlistLink, Ent_ProductName);
+                        Ent_Price, CB_IsComplete, Date_WishlistDate, false, Ent_WishlistLink, Ent_ProductName, ListWishList);
                 }
             }
             catch (Exception e)
@@ -100,7 +100,7 @@ namespace UangKu.ViewModel.SubMenu
         }
 
         private async void LoadWishList(Label Lbl_ProductName, AvatarView Avt_ProductPicture, Picker Pic_ProductCategory, Entry Ent_Quantity,
-            Entry Ent_Price, CheckBox CB_IsComplete, DatePicker Date_WishlistDate, bool isEdit, Entry Ent_Link, Entry Ent_Name)
+            Entry Ent_Price, CheckBox CB_IsComplete, DatePicker Date_WishlistDate, bool isEdit, Entry Ent_Link, Entry Ent_Name, IList<AsriRoot> list)
         {
             var wishlist = await RestAPI.Wishlist.GetWishlistID.GetWishlistIDUser(WishlistID);
             if (!string.IsNullOrEmpty(wishlist.wishlistID))
@@ -139,7 +139,7 @@ namespace UangKu.ViewModel.SubMenu
                 }
 
                 //Load Picker From Index
-                var newASRIList = Converter.ConvertIListToList(ListWishList);
+                var newASRIList = Converter.ConvertIListToList(list);
                 int selectedIndex = ControlHelper.GetIndexByName(newASRIList, item => item.itemID, wishlist.srProductCategory);
                 Pic_ProductCategory.SelectedIndex = selectedIndex;
             }

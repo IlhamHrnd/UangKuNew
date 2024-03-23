@@ -7,6 +7,19 @@ namespace UangKu.Model.Base
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private string title = string.Empty;
+        public string Title { get => title; set => SetProperty(ref title, value); }
+        private bool isbusy = false;
+        public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
+        private int page = 0;
+        public int Page { get => page; set => page = value; }
+        private int totalrecords = 0;
+        public int TotalRecords { get => totalrecords; set => totalrecords = value; }
+        private int totalpages = 0;
+        public int TotalPages { get => totalpages; set => totalpages = value; }
+        private string mode = string.Empty;
+        public string Mode { get => mode; set => SetProperty(ref mode, value); }
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

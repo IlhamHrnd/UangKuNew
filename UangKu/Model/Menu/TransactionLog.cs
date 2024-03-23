@@ -8,14 +8,8 @@ namespace UangKu.Model.Menu
 {
     public class TransactionLog : BaseModel
     {
-        private string title = string.Empty;
-        public string Title { get => title; set => SetProperty(ref title, value); }
-        private bool isbusy = false;
-        public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private bool isallowcustomdate = false;
         public bool IsAllowCustomDate { get => isallowcustomdate; set => SetProperty(ref isallowcustomdate, value); }
-        private int page = 0;
-        public int Page { get => page; set => page = value; }
         private string daterange = string.Empty;
         public string DateRange { get => daterange; set => SetProperty(ref daterange, value); }
         private string orderby = string.Empty;

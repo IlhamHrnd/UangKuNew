@@ -12,14 +12,10 @@ namespace UangKu.Model.Menu
         {
             
         }
-        private string title = "Home Page";
-        public string Title { get => title; set => SetProperty(ref title, value); }
         private string name = string.Empty;
         public string Name { get => name; set => name = value; }
         private string person = string.Empty;
         public string Person { get => person; set => person = value; }
-        private bool isbusy = false;
-        public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private string image = string.Empty;
         public string Image { get => image; set => image = value; }
         public string month = string.Empty;

@@ -6,10 +6,6 @@ namespace UangKu.Model.SubMenu
 {
     public class EditUsername : BaseModel
     {
-        private string title = string.Empty;
-        public string Title { get => title; set => SetProperty(ref title, value); }
-        private bool isbusy = false;
-        public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private string name = string.Empty;
         public string Name { get => name; set => name = value; }
         private IList<AsriRoot> listsex { get; set; }
