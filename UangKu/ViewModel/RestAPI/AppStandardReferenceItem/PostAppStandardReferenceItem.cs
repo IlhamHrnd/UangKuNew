@@ -9,7 +9,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
     {
         private const string PostASRIEndPoint = "{0}AppStandardReferenceItem/CreateAppStandardReferenceItem";
 
-        public static async Task<string> PostASRI(string referenceID, string itemID, string itemName, string note)
+        public static async Task<string> PostASRI(string referenceID, string itemID, string itemName, string note, string itemIcon)
         {
             string url = string.Format(PostASRIEndPoint, SessionModel.APIUrlLink());
             var client = new RestClient(url);
@@ -27,7 +27,8 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
                 isUsedBySystem = ParameterModel.ItemDefaultValue.IsUsed,
                 isActive = ParameterModel.ItemDefaultValue.IsActive,
                 lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
-                lastUpdateByUserID = App.Session.username
+                lastUpdateByUserID = App.Session.username,
+                itemIcon = itemIcon
             };
             request.AddJsonBody(body);
 

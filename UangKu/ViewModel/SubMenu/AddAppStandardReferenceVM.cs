@@ -2,6 +2,7 @@
 using UangKu.Model.Session;
 using UangKu.Model.SubMenu;
 using UangKu.ViewModel.RestAPI.AppStandardReferenceItem;
+using static UangKu.Model.Base.ParameterModel.PermissionManager;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 
 namespace UangKu.ViewModel.SubMenu
@@ -11,7 +12,7 @@ namespace UangKu.ViewModel.SubMenu
         private NetworkModel network = NetworkModel.Instance;
         public AddAppStandardReferenceVM()
         {
-
+            Title = "Add New Standard Reference";
         }
 
         public async void ReferenceID_Complete(Entry referenceID, Entry referenceName, Entry itemLength, Entry note)
@@ -112,7 +113,7 @@ namespace UangKu.ViewModel.SubMenu
                 }
                 if (isValidEntry)
                 {
-                    var addASR = await PostAppStandardReference.PostASR(referenceID.Text, referenceName.Text, int.Parse(itemLength.Text), note.Text);
+                    var addASR = await PostAppStandardReference.PostASR(referenceID.Text, referenceName.Text, Converter.StringToInt(itemLength.Text, 0), note.Text);
                     if (!string.IsNullOrEmpty(addASR))
                     {
                         await MsgModel.MsgNotification($"{addASR}");
@@ -122,7 +123,8 @@ namespace UangKu.ViewModel.SubMenu
                     {
                         for (int i = 0; i < ListASRI.Count; i++)
                         {
-                            var addASRI = await PostAppStandardReferenceItem.PostASRI(ListASRI[i].standardReferenceID, ListASRI[i].itemID, ListASRI[i].itemName, ListASRI[i].note);
+                            var addASRI = await PostAppStandardReferenceItem.PostASRI(ListASRI[i].standardReferenceID, ListASRI[i].itemID, 
+                                ListASRI[i].itemName, ListASRI[i].note, ListASRI[i].itemIcon);
                             if (!string.IsNullOrEmpty(addASRI))
                             {
                                 await MsgModel.MsgNotification($"{addASRI}");
@@ -161,6 +163,7 @@ namespace UangKu.ViewModel.SubMenu
             var sessionID = App.Session;
             string userID = SessionModel.GetUserID(sessionID);
 
+            string itemIcon = !string.IsNullOrEmpty(ParameterModel.ImageManager.ImageString) ? ParameterModel.ImageManager.ImageString : string.Empty;
             int oldASRI = ListASRI.Count;
             int newASRI = 0;
             if (string.IsNullOrEmpty(StandardID.Text))
@@ -178,10 +181,12 @@ namespace UangKu.ViewModel.SubMenu
                     isUsedBySystem = ParameterModel.ItemDefaultValue.IsUsed,
                     isActive = ParameterModel.ItemDefaultValue.IsActive,
                     lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
-                    lastUpdateByUserID = userID
+                    lastUpdateByUserID = userID,
+                    itemIcon = itemIcon
                 };
                 ListASRI.Add(root);
                 newASRI = ListASRI.Count;
+                ParameterModel.ImageManager.ImageString = string.Empty;
             }
 
             if (newASRI > oldASRI)
@@ -191,6 +196,13 @@ namespace UangKu.ViewModel.SubMenu
                 itemID.Text = string.Empty;
                 itemName.Text = string.Empty;
             }
+        }
+
+        public async Task UploadItemIcon_Click()
+        {
+            PermissionType type = PermissionType.StorageRead;
+            await PermissionRequest.RequestPermission(type);
+            _ = await ImageConvert.PickImageAsync();
         }
     }
 }

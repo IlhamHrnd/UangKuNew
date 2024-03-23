@@ -6,12 +6,6 @@ namespace UangKu.Model.SubMenu
 {
     public class WishlistEdit : BaseModel
     {
-        private string title = string.Empty;
-        public string Title { get => title; set => SetProperty(ref title, value); }
-        private bool isbusy = false;
-        public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
-        private string mode = string.Empty;
-        public string Mode { get => mode; set => SetProperty(ref mode, value); }
         private string wishlistid = string.Empty;
         public string WishlistID { get => wishlistid; set => SetProperty(ref wishlistid, value); }
         private bool isenabled = false;

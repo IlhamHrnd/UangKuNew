@@ -49,6 +49,8 @@ namespace UangKu.ViewModel.Menu
                         }
                     }
                     Page = (int)alluser.pageNumber;
+                    TotalRecords = (int)alluser.totalRecords;
+                    TotalPages = (int)alluser.totalPages;
                     ListAllUser.Add(alluser);
                 }
             }
@@ -61,9 +63,8 @@ namespace UangKu.ViewModel.Menu
                 IsBusy = false;
             }
         }
-        public async void NextPage_Clicked(int pageSize)
+        public async void NextPreviousPage_Clicked(int pageSize, bool isNext)
         {
-            var maxPage = ListAllUser[0].totalPages;
             bool isConnect = network.IsConnected;
             IsBusy = true;
             try
@@ -72,65 +73,18 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (Page >= maxPage)
+                if (Page >= TotalPages && isNext)
                 {
                     await MsgModel.MsgNotification("This Is The Latest Page");
                 }
-                else
-                {
-                    var alluser = await UserAll.GetAllUser(Page + 1, pageSize);
-                    if ((bool)alluser.succeeded)
-                    {
-                        ListAllUser.Clear();
-                        for (int i = 0; i < alluser.data.Count; i++)
-                        {
-                            var data = alluser.data[i];
-                            if (!string.IsNullOrEmpty(data.statusName))
-                            {
-                                data.isActive = data.statusName == ParameterModel.Login.Status;
-                            }
-
-                            if (data.activeDate != null)
-                            {
-                                data.dateActive = DateFormat.FormattingDate((DateTime)data.activeDate, ParameterModel.DateTimeFormat.Date);
-                            }
-
-                            if (data.lastLogin != null)
-                            {
-                                data.dateLogin = DateFormat.FormattingDate((DateTime)data.lastLogin, ParameterModel.DateTimeFormat.Date);
-                            }
-                        }
-                        Page = (int)alluser.pageNumber;
-                        ListAllUser.Add(alluser);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                await MsgModel.MsgNotification(e.Message);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-        public async void PreviousPage_Clicked(int pageSize)
-        {
-            bool isConnect = network.IsConnected;
-            IsBusy = true;
-            try
-            {
-                if (!isConnect)
-                {
-                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
-                }
-                if (Page <= 1)
+                else if (Page <= 1 && !isNext)
                 {
                     await MsgModel.MsgNotification("This Is The First Page");
                 }
                 else
                 {
-                    var alluser = await UserAll.GetAllUser(Page - 1, pageSize);
+                    int pages = isNext ? Page + 1 : Page - 1;
+                    var alluser = await UserAll.GetAllUser(pages, pageSize);
                     if ((bool)alluser.succeeded)
                     {
                         ListAllUser.Clear();
@@ -153,6 +107,8 @@ namespace UangKu.ViewModel.Menu
                             }
                         }
                         Page = (int)alluser.pageNumber;
+                        TotalRecords = (int)alluser.totalRecords;
+                        TotalPages = (int)alluser.totalPages;
                         ListAllUser.Add(alluser);
                     }
                 }

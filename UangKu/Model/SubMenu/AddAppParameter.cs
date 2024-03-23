@@ -6,18 +6,12 @@ namespace UangKu.Model.SubMenu
 {
     public class AddAppParameter : BaseModel
     {
-        private string title = string.Empty;
-        public string Title { get => title; set => SetProperty(ref title, value); }
-        private bool isbusy = false;
-        public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private bool isreadonly = false;
         public bool IsReadOnly { get => isreadonly; set => SetProperty(ref isreadonly, value); }
         private bool ischeckboxvisible = false;
         public bool IsCheckedBoxVisible { get => ischeckboxvisible; set => SetProperty(ref ischeckboxvisible, value); }
         private bool isentryvisible = false;
         public bool IsEntryVisible { get => isentryvisible; set => SetProperty(ref isentryvisible, value); }
-        private string mode = string.Empty;
-        public string Mode { get => mode; set => SetProperty(ref mode, value); }
         private string parameterid = string.Empty;
         public string ParameterID { get => parameterid; set => SetProperty(ref parameterid, value); }
         private string parametertypes = string.Empty;

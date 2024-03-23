@@ -39,7 +39,58 @@ namespace UangKu.ViewModel.Menu
                     }
                     Page = (int)param.pageNumber;
                     TotalRecords = (int)param.totalRecords;
+                    TotalPages = (int)param.totalPages;
                     ListParameter.Add(param);
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        public async void NextPreviousPage_Clicked(int pageSize, bool isNext)
+        {
+            bool isConnect = network.IsConnected;
+            IsBusy = true;
+            try
+            {
+                if (!isConnect)
+                {
+                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                }
+                if (Page >= TotalPages && isNext)
+                {
+                    await MsgModel.MsgNotification("This Is The Latest Page");
+                }
+                else if (Page <= 1 && !isNext)
+                {
+                    await MsgModel.MsgNotification("This Is The First Page");
+                }
+                else
+                {
+                    int pages = isNext ? Page + 1 : Page - 1;
+                    var param = await RestAPI.AppParameter.AllAppParameter.GetAllAppParameter(pages, pageSize);
+                    if ((bool)param.succeeded)
+                    {
+                        ListParameter.Clear();
+                        for (int i = 0; i < param.data.Count; i++)
+                        {
+                            var data = param.data[i];
+                            if (data.lastUpdateDateTime != null)
+                            {
+                                data.lastUpdateDateTimeString = DateFormat.FormattingDate((DateTime)data.lastUpdateDateTime, ParameterModel.DateTimeFormat.Daydatemonthyear);
+                            }
+                        }
+                        Page = (int)param.pageNumber;
+                        TotalRecords = (int)param.totalRecords;
+                        TotalPages = (int)param.totalPages;
+                        ListParameter.Add(param);
+                    }
                 }
             }
             catch (Exception e)

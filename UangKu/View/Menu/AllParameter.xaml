@@ -139,10 +139,12 @@
                                            Spacing="20">
                         <Button Style="{StaticResource Button}"
                                 Text="Previous Page"
-                                x:Name="Btn_PreviousPage"/>
+                                x:Name="Btn_PreviousPage"
+                                Clicked="Btn_PreviousPage_Clicked"/>
                         <Button Style="{StaticResource Button}"
                                 Text="Next Page"
-                                x:Name="Btn_NextPage"/>
+                                x:Name="Btn_NextPage"
+                                Clicked="Btn_NextPage_Clicked"/>
                     </HorizontalStackLayout>
                 </CollectionView.Footer>
             </CollectionView>

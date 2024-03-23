@@ -29,4 +29,14 @@ public partial class AllParameter : ContentPage
     {
         await _vm.AddAppParameter_ToolBar();
     }
+
+    private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
+    {
+        _vm.NextPreviousPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), false);
+    }
+
+    private void Btn_NextPage_Clicked(object sender, EventArgs e)
+    {
+        _vm.NextPreviousPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), true);
+    }
 }

@@ -10,12 +10,6 @@ namespace UangKu.Model.SubMenu
 {
     public class EditProfile : BaseModel
     {
-        private string title = string.Empty;
-        public string Title { get => title; set => SetProperty(ref title, value); }
-        private bool isbusy = false;
-        public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
-        private string mode = string.Empty;
-        public string Mode { get => mode; set => SetProperty(ref mode, value); }
         private IList<ProvincesRoot> listprovinces { get; set; }
 
         public IList<ProvincesRoot> ListProvinces

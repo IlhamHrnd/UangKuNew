@@ -172,8 +172,10 @@
                 </CollectionView.Footer>
             </CollectionView>
             <Grid IsVisible="{Binding IsEdit}"
-                  Margin="10">
+                  Margin="10"
+                  RowSpacing="10">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -229,6 +231,13 @@
                 </HorizontalStackLayout>
                 <Button Grid.Column="0"
                         Grid.Row="3"
+                        Grid.ColumnSpan="2"
+                        Style="{StaticResource Button}"
+                        Text="Add Icon"
+                        x:Name="Btn_ASRIIcon"
+                        Clicked="Btn_ASRIIcon_Clicked"/>
+                <Button Grid.Column="0"
+                        Grid.Row="4"
                         Grid.ColumnSpan="2"
                         Style="{StaticResource Button}"
                         Text="Add Item To List"

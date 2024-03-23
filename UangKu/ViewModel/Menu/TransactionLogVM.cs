@@ -116,6 +116,8 @@ namespace UangKu.ViewModel.Menu
                         }
                     }
                     Page = (int)alltrans.pageNumber;
+                    TotalPages = (int)alltrans.totalPages;
+                    TotalRecords = (int)alltrans.totalRecords;
                     ListAllTrans.Add(item);
                 }
                 var orderby = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriRoot>("OrderByTransaction", true, true);
@@ -152,9 +154,9 @@ namespace UangKu.ViewModel.Menu
                 IsBusy = false;
             }
         }
-        public async void NextPage_Clicked(int pageSize, DatePicker startDate, DatePicker endDate, Picker orderByPicker, InputKit.Shared.Controls.CheckBox isAscendingCheckBox)
+        public async void NextPreviousPage_Clicked(int pageSize, DatePicker startDate, DatePicker endDate, Picker orderByPicker, 
+            InputKit.Shared.Controls.CheckBox isAscendingCheckBox, bool isNext)
         {
-            var maxPage = ListAllTrans[0].totalPages;
             bool isConnect = network.IsConnected;
             IsBusy = true;
             try
@@ -166,96 +168,17 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (Page >= maxPage)
+                if (Page >= TotalPages && isNext)
                 {
                     await MsgModel.MsgNotification("This Is The Latest Page");
                 }
-                else
-                {
-                    if (IsAllowCustomDate)
-                    {
-                        if (startDate != null && endDate != null)
-                        {
-                            DateRange = $"&StartDate={startDate.Date}&EndDate={endDate.Date}";
-                        }
-
-                        if (orderByPicker.SelectedItem != null)
-                        {
-                            switch (SelectedOrderBy.itemID)
-                            {
-                                case "OrderByTransaction-001":
-                                    OrderBy = "&OrderBy=TransNo";
-                                    break;
-
-                                case "OrderByTransaction-002":
-                                    OrderBy = "&OrderBy=TransType";
-                                    break;
-
-                                case "OrderByTransaction-003":
-                                    OrderBy = "&OrderBy=CreatedDateTime";
-                                    break;
-
-                                default:
-                                    OrderBy = "&OrderBy=CreatedDateTime";
-                                    break;
-                            }
-                        }
-
-                        Ascending = isAscendingCheckBox.IsChecked ? "&IsAscending=true" : "&IsAscending=false";
-                        Builder = Converter.BuilderString(DateRange, OrderBy, Ascending);
-                    }
-                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page + 1, pageSize, userID, Builder);
-                    if (alltrans.data.Count > 0)
-                    {
-                        ListAllTrans.Clear();
-                        var item = alltrans;
-                        for (int i = 0; i < item.data.Count; i++)
-                        {
-                            if (item.data[i].amount != null)
-                            {
-                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
-                            }
-
-                            if (!string.IsNullOrEmpty(item.data[i].photo))
-                            {
-                                string decodeImg = ImageConvert.DecodeBase64ToString(item.data[i].photo);
-                                byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
-                                item.data[i].source = ImageConvert.ImgByte(byteImg);
-                            }
-                        }
-                        Page = (int)alltrans.pageNumber;
-                        ListAllTrans.Add(item);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                await MsgModel.MsgNotification(e.Message);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-        public async void PreviousPage_Click(int pageSize, DatePicker startDate, DatePicker endDate, Picker orderByPicker, InputKit.Shared.Controls.CheckBox isAscendingCheckBox)
-        {
-            bool isConnect = network.IsConnected;
-            IsBusy = true;
-            try
-            {
-                var sessionID = App.Session;
-                string userID = SessionModel.GetUserID(sessionID);
-
-                if (!isConnect)
-                {
-                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
-                }
-                if (Page <= 1)
+                else if (Page <= 1 && !isNext)
                 {
                     await MsgModel.MsgNotification("This Is The First Page");
                 }
                 else
                 {
+                    int pages = isNext ? Page + 1 : Page - 1;
                     if (IsAllowCustomDate)
                     {
                         if (startDate != null && endDate != null)
@@ -288,7 +211,7 @@ namespace UangKu.ViewModel.Menu
                         Ascending = isAscendingCheckBox.IsChecked ? "&IsAscending=true" : "&IsAscending=false";
                         Builder = Converter.BuilderString(DateRange, OrderBy, Ascending);
                     }
-                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page - 1, pageSize, userID, Builder);
+                    var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(pages, pageSize, userID, Builder);
                     if (alltrans.data.Count > 0)
                     {
                         ListAllTrans.Clear();
@@ -308,6 +231,8 @@ namespace UangKu.ViewModel.Menu
                             }
                         }
                         Page = (int)alltrans.pageNumber;
+                        TotalPages = (int)alltrans.totalPages;
+                        TotalRecords = (int)alltrans.totalRecords;
                         ListAllTrans.Add(item);
                     }
                 }

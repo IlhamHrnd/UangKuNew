@@ -27,5 +27,8 @@ namespace UangKu.Model.Index.Body
 
         [JsonProperty("lastUpdateByUserID")]
         public string lastUpdateByUserID { get; set; }
+
+        [JsonProperty("itemIcon")]
+        public string itemIcon { get; set; }
     }
 }

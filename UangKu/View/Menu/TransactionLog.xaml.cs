@@ -25,12 +25,14 @@ public partial class TransactionLog : ContentPage
 
     private void Btn_NextPage_Clicked(object sender, EventArgs e)
     {
-        _vm.NextPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), Date_StartDate, Date_EndDate, Pic_OrderBy, CB_IsAscending);
+        _vm.NextPreviousPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), Date_StartDate, Date_EndDate, 
+            Pic_OrderBy, CB_IsAscending, true);
     }
 
     private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
     {
-        _vm.PreviousPage_Click(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), Date_StartDate, Date_EndDate, Pic_OrderBy, CB_IsAscending);
+        _vm.NextPreviousPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), Date_StartDate, Date_EndDate,
+            Pic_OrderBy, CB_IsAscending, false);
     }
 
     private async void Bar_AddItem_Clicked(object sender, EventArgs e)

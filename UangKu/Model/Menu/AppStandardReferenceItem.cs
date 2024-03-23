@@ -11,10 +11,6 @@ namespace UangKu.Model.Menu
         {
             
         }
-        private string title = string.Empty;
-        public string Title { get => title; set => SetProperty(ref title, value); }
-        private bool isbusy = false;
-        public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private string id = string.Empty;
         public string Id { get => id; set => SetProperty(ref id, value); }
         private IList<AsriRoot> listasri { get; set; }
