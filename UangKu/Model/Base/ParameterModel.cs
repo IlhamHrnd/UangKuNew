@@ -14,38 +14,6 @@
             public static DateTime DateTime { get => datetime; set => datetime = value; }
         }
 
-        public class AppStandardReference
-        {
-            private static string itemid = string.Empty;
-            public static string ItemID { get => itemid; set => itemid = value; }
-        }
-
-        public class AppStandardReferenceItem
-        {
-            private static string itemid = string.Empty;
-            public static string ItemID { get => itemid; set => itemid = value; }
-            private static string access = "Access";
-            public static string Access { get => access; set => access = value; }
-            private static string errorlocation = "ErrorLocation";
-            public static string ErrorLocation { get => errorlocation; set => errorlocation = value; }
-            private static string errorpossibility = "ErrorPossibility";
-            public static string ErrorPossibility { get => errorpossibility; set => errorpossibility = value; }
-            private static string income = "Income";
-            public static string Income { get => income; set => income = value; }            
-            private static string keyboardkeypad = "KeyboardKeypad";
-            public static string Keyboardkeypad { get => keyboardkeypad; set => keyboardkeypad = value; }
-            private static string expenditure = "Expenditure";
-            public static string Expenditure { get => expenditure; set => expenditure = value; }
-            private static string reportstatus = "ReportStatus";
-            public static string Reportstatus { get => reportstatus; set => reportstatus = value; }
-            private static string sex = "Sex";
-            public static string Sex { get => sex; set => sex = value; }
-            private static string status = "Status";
-            public static string Status { get => status; set => status = value; }
-            private static string transaction = "Transaction";
-            public static string Transaction { get => transaction; set => transaction = value; }
-        }
-
         public class Report
         {
             private static string reportno = string.Empty;
@@ -79,12 +47,6 @@
             public static string Month { get => month; set => month = value; }
             public static string Yearmonthdate { get => yearmonthdate; set => yearmonthdate = value; }
             public static string Daydatemonthyear { get => daydatemonthyear; set => daydatemonthyear = value; }
-        }
-
-        public class User
-        {
-            private static string userid = string.Empty;
-            public static string UserID { get => userid; set => userid = value; }
         }
 
         public class Transaction

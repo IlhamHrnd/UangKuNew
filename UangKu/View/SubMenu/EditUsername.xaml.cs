@@ -6,10 +6,10 @@ namespace UangKu.View.SubMenu;
 public partial class EditUsername : ContentPage
 {
 	private readonly EditUsernameVM _vm;
-	public EditUsername()
+	public EditUsername(string itemID)
 	{
 		InitializeComponent();
-		_vm = new EditUsernameVM();
+		_vm = new EditUsernameVM(itemID);
 		BindingContext = _vm;
 	}
     protected async override void OnAppearing()

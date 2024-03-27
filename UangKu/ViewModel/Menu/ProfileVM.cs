@@ -42,11 +42,19 @@ namespace UangKu.ViewModel.Menu
                 if (Profiles.Count > 0)
                 {
                     var profile = Profiles[0];
-                    string decodeImg = ImageConvert.DecodeBase64ToString(profile.photo);
-                    byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
-                    ParameterModel.ImageManager.ImageByte = byteImg;
-                    ParameterModel.ImageManager.ImageString = decodeImg;
-                    avatar.ImageSource = ImageConvert.ImgByte(byteImg);
+                    if (!string.IsNullOrEmpty(profile.photo))
+                    {
+                        string decodeImg = ImageConvert.DecodeBase64ToString(profile.photo);
+                        byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                        ParameterModel.ImageManager.ImageByte = byteImg;
+                        ParameterModel.ImageManager.ImageString = decodeImg;
+                        avatar.ImageSource = ImageConvert.ImgByte(byteImg);
+                    }
+                    if (profile.birthDate.HasValue)
+                    {
+                        profile.birthDateFormat = profile.birthDate.HasValue ? DateFormat.FormattingDate((DateTime)profile.birthDate, ParameterModel.DateTimeFormat.Date) : string.Empty;
+                    }
+                    profile.fullName = $"{profile.firstName} {profile.middleName} {profile.lastName}";
                     avatar.Text = profile.personID;
                 }
             }

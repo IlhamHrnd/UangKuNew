@@ -10,10 +10,10 @@ namespace UangKu.ViewModel.SubMenu
     public class EditUsernameVM : EditUsername
     {
         private NetworkModel network = NetworkModel.Instance;
-        public EditUsernameVM()
+        public EditUsernameVM(string itemID)
         {
-            Title = $"Edit Username {ParameterModel.User.UserID}";
-            Name = ParameterModel.User.UserID;
+            Title = $"Edit Username {itemID}";
+            Name = itemID;
         }
         public async void LoadData(AvatarView avatar, CheckBox checkbox, InputKit.Shared.Controls.SelectionView selection, Picker picker)
         {
