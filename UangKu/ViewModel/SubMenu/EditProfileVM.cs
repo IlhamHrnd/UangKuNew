@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.SubMenu
         }
 
         public async void LoadData(AvatarView avatar, Entry EntFirstName, Entry EntMiddleName, Entry EntLastName, Picker PicPlaceOfBirth,
-            Entry StreetName, Picker Provinces, Picker City, Picker District, Picker SubDistrict, Entry PostalCode)
+            Entry StreetName, Picker Provinces, Picker City, Picker District, Picker SubDistrict, Entry PostalCode, DatePicker DateOfBirth)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -52,6 +52,12 @@ namespace UangKu.ViewModel.SubMenu
                             EntMiddleName.Text = person.middleName;
                             EntLastName.Text = person.lastName;
                             StreetName.Text = person.address;
+
+                            if (person.birthDate.HasValue)
+                            {
+                                DateOfBirth.Date = (DateTime)person.birthDate;
+                            }
+
                             //Process Get Item Index To Picker
                             var listPlace = Converter.ConvertIListToList(ListProvinces);
                             int selectedIndex = ControlHelper.GetIndexByName(listPlace, item => item.provName, person.placeOfBirth);

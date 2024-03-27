@@ -17,7 +17,7 @@ public partial class EditProfile : ContentPage
     {
         await SessionModel.SessionCheck();
         _vm.LoadData(Avt_Profile, Ent_FirstName, Ent_MiddleName, Ent_LastName, Pic_PlaceOfBirth,
-            Ent_StreetName, Pic_Provinces, Pic_Cities, Pic_Districts, Pic_Subdistricts, Ent_PostalCode);
+            Ent_StreetName, Pic_Provinces, Pic_Cities, Pic_Districts, Pic_Subdistricts, Ent_PostalCode, BirthOfDate);
     }
 
     private void Btn_UploadPhoto_Clicked(object sender, EventArgs e)

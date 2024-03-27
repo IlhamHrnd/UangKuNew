@@ -61,7 +61,7 @@ namespace UangKu.ViewModel.SubMenu
                         var report = await RestAPI.Report.GetReportNo.GetUserReportNo(reportNo, isAdmin);
                         if (report.dateErrorOccured.HasValue)
                         {
-                            errorDate.Date = DateFormat.FormatYearMonthDateSplit((DateTime)report.dateErrorOccured);
+                            errorDate.Date = (DateTime)report.dateErrorOccured;
                         }
                         if (!string.IsNullOrEmpty(report.errorCronologic))
                         {
@@ -103,8 +103,7 @@ namespace UangKu.ViewModel.SubMenu
                 }
                 if (isAdmin)
                 {
-                    var status = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriThreeRoot>(ParameterModel.AppStandardReferenceItem.Reportstatus,
-                        true, true);
+                    var status = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriThreeRoot>("ReportStatus", true, true);
                     if (status.Count > 0)
                     {
                         ListReportStatus.Clear();
@@ -119,8 +118,7 @@ namespace UangKu.ViewModel.SubMenu
                 {
                     IsVisible = false;
                 }
-                var location = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriRoot>(ParameterModel.AppStandardReferenceItem.ErrorLocation, 
-                    true, true);
+                var location = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriRoot>("ErrorLocation", true, true);
                 if (location.Count > 0)
                 {
                     ListErrorLocation.Clear();
@@ -129,8 +127,7 @@ namespace UangKu.ViewModel.SubMenu
                         ListErrorLocation.Add(location[i]);
                     }
                 }
-                var posibility = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriTwoRoot>(ParameterModel.AppStandardReferenceItem.ErrorPossibility,
-                    true, true);
+                var posibility = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriTwoRoot>("ErrorPossibility", true, true);
                 if (posibility.Count > 0)
                 {
                     ListErrorPosibility.Clear();

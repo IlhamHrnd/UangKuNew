@@ -15,7 +15,8 @@ public partial class NewTransaction : ContentPage
     protected async override void OnAppearing()
     {
         await SessionModel.SessionCheck();
-		_vm.LoadData(Ent_TransNo, Ent_Amount, Ent_Description, Pic_TransType, Pic_TransItem, Avt_Transaction);
+		_vm.LoadData(Ent_TransNo, Ent_Amount, Ent_Description, Pic_TransType, 
+            Pic_TransItem, Avt_Transaction, Date_TransDate);
     }
 
     private async void Pic_TransType_SelectedIndexChanged(object sender, EventArgs e)

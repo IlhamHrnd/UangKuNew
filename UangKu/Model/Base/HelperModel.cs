@@ -205,11 +205,18 @@ namespace UangKu.Model.Base
             return formattedDate;
         }
 
-        public static DateTime FormatYearMonthDateSplit(DateTime dateTime)
+        public static DateTime FormattingDateSplit(DateTime dateTime)
         {
             var date = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day);
 
             return date;
+        }
+
+        public static DateTime AddDays(int days, DateTime dateTime)
+        {
+            var day = dateTime.AddDays(days);
+
+            return day;
         }
     }
 

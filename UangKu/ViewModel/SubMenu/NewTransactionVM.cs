@@ -36,7 +36,7 @@ namespace UangKu.ViewModel.SubMenu
             }
         }
         public async void LoadData(Entry EntTransNo, Entry EntAmount, Entry EntDescription,
-            Picker PicTrans, Picker PicTransItem, AvatarView Avatar)
+            Picker PicTrans, Picker PicTransItem, AvatarView Avatar, DatePicker TransDate)
         {
             bool isConnect = network.IsConnected;
             var isallow = Converter.StringToBool(AppParameter.IsAllowCustomDate, ParameterModel.AppParameterDefault.IsAllowCustomDate);
@@ -63,6 +63,10 @@ namespace UangKu.ViewModel.SubMenu
                     if (!string.IsNullOrEmpty(TransNo))
                     {
                         var transno = await GetTransNo.GetTransactionNo(TransNo);
+                        if (transno.transDate.HasValue)
+                        {
+                            TransDate.Date = (DateTime)transno.transDate;
+                        }
                         if (!string.IsNullOrEmpty(transno.transNo))
                         {
                             EntTransNo.Text = transno.transNo;

@@ -126,11 +126,9 @@ namespace UangKu.ViewModel.Menu
         {
             var userID = args.CurrentSelection[0] as Model.Response.User.AllUser.Datum;
             var itemID = userID?.username;
-            ParameterModel.User.UserID = itemID;
-
             if (!string.IsNullOrEmpty(itemID))
             {
-                await _navigation.PushAsync(new View.SubMenu.EditUsername());
+                await _navigation.PushAsync(new View.SubMenu.EditUsername(itemID));
             }
             else
             {
