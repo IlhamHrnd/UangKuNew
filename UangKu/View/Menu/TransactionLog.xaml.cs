@@ -20,13 +20,13 @@ public partial class TransactionLog : ContentPage
     protected async override void OnAppearing()
     {
         await SessionModel.SessionCheck();
-		_vm.LoadData(FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), 
-            DatePicker, DatePicker, Picker, CheckBox, CheckBox);
+        _vm.LoadData(FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult),
+                  DatePicker, DatePicker, Picker, CheckBox, CheckBox);
     }
 
     private void Btn_NextPage_Clicked(object sender, EventArgs e)
     {
-        _vm.NextPreviousPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), Date_StartDate, Date_EndDate, 
+        _vm.NextPreviousPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), Date_StartDate, Date_EndDate,
             Pic_OrderBy, CB_IsAscending, true, CB_FilterTransaction);
     }
 
@@ -48,7 +48,18 @@ public partial class TransactionLog : ContentPage
 
     private void Btn_SearchTransaction_Clicked(object sender, EventArgs e)
     {
-        _vm.LoadData(FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), 
+        _vm.LoadData(FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult),
             Date_StartDate, Date_EndDate, Pic_OrderBy, CB_IsAscending, CB_FilterTransaction);
+    }
+
+    private void ImgBtn_ScrollTop_Clicked(object sender, EventArgs e)
+    {
+        _vm.ScrollTopBottom_Clicked(ScrollView, 0, 0, true);
+    }
+
+    private void ImgBtn_ScrollBottom_Clicked(object sender, EventArgs e)
+    {
+        double y = ScrollView.ContentSize.Height;
+        _vm.ScrollTopBottom_Clicked(ScrollView, 0, y, true);
     }
 }
