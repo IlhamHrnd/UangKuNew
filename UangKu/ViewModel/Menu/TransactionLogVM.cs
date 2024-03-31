@@ -251,6 +251,10 @@ namespace UangKu.ViewModel.Menu
                 IsBusy = false;
             }
         }
+        public void ScrollTopBottom_Clicked(ScrollView scroll, double x, double y, bool isAnimated)
+        {
+            scroll.ScrollToAsync(x, y, isAnimated);
+        }
         public async Task SwipeItem_Invoked(object sender, string mode)
         {
             var item = sender as SwipeItem;
