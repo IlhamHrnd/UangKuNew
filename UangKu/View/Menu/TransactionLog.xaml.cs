@@ -20,19 +20,20 @@ public partial class TransactionLog : ContentPage
     protected async override void OnAppearing()
     {
         await SessionModel.SessionCheck();
-		_vm.LoadData(FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), DatePicker, DatePicker, Picker, CheckBox);
+		_vm.LoadData(FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), 
+            DatePicker, DatePicker, Picker, CheckBox, CheckBox);
     }
 
     private void Btn_NextPage_Clicked(object sender, EventArgs e)
     {
         _vm.NextPreviousPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), Date_StartDate, Date_EndDate, 
-            Pic_OrderBy, CB_IsAscending, true);
+            Pic_OrderBy, CB_IsAscending, true, CB_FilterTransaction);
     }
 
     private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
     {
         _vm.NextPreviousPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), Date_StartDate, Date_EndDate,
-            Pic_OrderBy, CB_IsAscending, false);
+            Pic_OrderBy, CB_IsAscending, false, CB_FilterTransaction);
     }
 
     private async void Bar_AddItem_Clicked(object sender, EventArgs e)
@@ -47,6 +48,7 @@ public partial class TransactionLog : ContentPage
 
     private void Btn_SearchTransaction_Clicked(object sender, EventArgs e)
     {
-        _vm.LoadData(FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), Date_StartDate, Date_EndDate, Pic_OrderBy, CB_IsAscending);
+        _vm.LoadData(FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), 
+            Date_StartDate, Date_EndDate, Pic_OrderBy, CB_IsAscending, CB_FilterTransaction);
     }
 }
