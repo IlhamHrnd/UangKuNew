@@ -92,10 +92,15 @@
                             Title="Order By"
                             x:Name="Pic_OrderBy"/>
                     <input:CheckBox Grid.Row="3"
-                                    Grid.Column="0"
+                                    Grid.Column="1"
                                     Style="{StaticResource CheckBox2}"
                                     Text="Oldest First"
                                     x:Name="CB_IsAscending"/>
+                    <input:CheckBox Grid.Row="3"
+                                    Grid.Column="0"
+                                    Style="{StaticResource CheckBox2}"
+                                    Text="Filter Transaction"
+                                    x:Name="CB_FilterTransaction"/>
                     <Button Grid.Row="4"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"

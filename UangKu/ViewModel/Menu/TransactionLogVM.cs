@@ -16,7 +16,8 @@ namespace UangKu.ViewModel.Menu
             Title = $"Transaction Log For {App.Session.username}";
             _navigation = navigation;
         }
-        public async void LoadData(int pageNumber, int pageSize, DatePicker startDate, DatePicker endDate, Picker orderByPicker, InputKit.Shared.Controls.CheckBox isAscendingCheckBox)
+        public async void LoadData(int pageNumber, int pageSize, DatePicker startDate, DatePicker endDate, 
+            Picker orderByPicker, InputKit.Shared.Controls.CheckBox isAscendingCheckBox, InputKit.Shared.Controls.CheckBox isFilterTransaction)
         {
             var isallow = Converter.StringToBool(AppParameter.IsAllowCustomDate, ParameterModel.AppParameterDefault.IsAllowCustomDate);
             IsAllowCustomDate = isallow;
@@ -32,7 +33,7 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                if (IsAllowCustomDate)
+                if (IsAllowCustomDate && isFilterTransaction.IsChecked)
                 {
                     if (startDate != null && endDate != null)
                     {
@@ -64,7 +65,11 @@ namespace UangKu.ViewModel.Menu
                     Ascending = isAscendingCheckBox.IsChecked ? "&IsAscending=true" : "&IsAscending=false";
                     Builder = Converter.BuilderString(DateRange, OrderBy, Ascending);
                 }
-                var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID, Builder);
+                else
+                {
+                    Builder = string.Empty;
+                }
+                var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID);
                 if (sumtrans.Count > 0)
                 {
                     ListSumTrans.Clear();
@@ -155,7 +160,7 @@ namespace UangKu.ViewModel.Menu
             }
         }
         public async void NextPreviousPage_Clicked(int pageSize, DatePicker startDate, DatePicker endDate, Picker orderByPicker, 
-            InputKit.Shared.Controls.CheckBox isAscendingCheckBox, bool isNext)
+            InputKit.Shared.Controls.CheckBox isAscendingCheckBox, bool isNext, InputKit.Shared.Controls.CheckBox isFilterTransaction)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -179,7 +184,7 @@ namespace UangKu.ViewModel.Menu
                 else
                 {
                     int pages = isNext ? Page + 1 : Page - 1;
-                    if (IsAllowCustomDate)
+                    if (IsAllowCustomDate && isFilterTransaction.IsChecked)
                     {
                         if (startDate != null && endDate != null)
                         {
