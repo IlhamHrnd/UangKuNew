@@ -43,5 +43,7 @@
         public static string NumbericFormat { get => numbericformat; set => numbericformat = value; }
         private static string currencyformat = string.Empty;
         public static string CurrencyFormat { get => currencyformat; set => currencyformat = value; }
+        private static string downloadFolder = string.Empty;
+        public static string DownloadFolder { get => downloadFolder; set => downloadFolder = value; }
     }
 }

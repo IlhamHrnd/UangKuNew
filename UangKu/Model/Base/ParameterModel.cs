@@ -83,6 +83,8 @@
             public static string Currency { get => currency; set => currency = value; }
             private static string numbericformat = "D3";
             public static string NumbericFormat { get => numbericformat; set => numbericformat = value; }
+            private static string downloadFolder = "Downloads";
+            public static string DownloadFolder { get => downloadFolder; set => downloadFolder = value; }
         }
 
         public class ItemDefaultValue

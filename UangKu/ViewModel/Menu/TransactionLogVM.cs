@@ -28,7 +28,7 @@ namespace UangKu.ViewModel.Menu
             {
                 var sessionID = App.Session;
                 string userID = SessionModel.GetUserID(sessionID);
-                
+
                 if (!isConnect)
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);

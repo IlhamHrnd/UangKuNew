@@ -1,5 +1,6 @@
 ﻿using UangKu.Model.Base;
 using UangKu.ViewModel.RestAPI.AppStandardReferenceItem;
+using static UangKu.Model.Base.ParameterModel.PermissionManager;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 
 namespace UangKu.ViewModel.Menu
@@ -51,7 +52,8 @@ namespace UangKu.ViewModel.Menu
                             isUsedBySystem = item.isUsedBySystem,
                             isActive = item.isActive,
                             lastUpdateDateTime = item.lastUpdateDateTime,
-                            lastUpdateByUserID = item.lastUpdateByUserID
+                            lastUpdateByUserID = item.lastUpdateByUserID,
+                            itemIcon = item.itemIcon
                         };
                         ListASRITwo.Add(data);
                     }
@@ -103,7 +105,7 @@ namespace UangKu.ViewModel.Menu
                     for (int i = 0; i < ListASRI.Count; i++)
                     {
                         if (ListASRI[i].note != ListASRITwo[i].note || ListASRI[i].isUsedBySystem != ListASRITwo[i].isUsedBySystem
-                            || ListASRI[i].isActive != ListASRITwo[i].isActive)
+                            || ListASRI[i].isActive != ListASRITwo[i].isActive || ListASRI[i].itemName != ListASRITwo[i].itemName)
                         {
                             var different = new AsriThreeRoot
                             {
@@ -154,6 +156,13 @@ namespace UangKu.ViewModel.Menu
                 IsBusy = false;
                 ListDifferentASRI.Clear();
             }
+        }
+
+        public async Task UploadASRIIcon_Click()
+        {
+            PermissionType type = PermissionType.StorageRead;
+            await PermissionRequest.RequestPermission(type);
+            _ = await ImageConvert.PickImageAsync();
         }
     }
 }

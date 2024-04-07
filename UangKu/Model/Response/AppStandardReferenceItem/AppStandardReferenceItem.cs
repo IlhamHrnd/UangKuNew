@@ -32,6 +32,9 @@ namespace UangKu.Model.Response.AppStandardReferenceItem
 
             [JsonProperty("itemIcon")]
             public string itemIcon { get; set; }
+
+            [JsonProperty("iconSize")]
+            public int? iconSize { get; set; }
         }
 
         public class AsriTwoRoot
@@ -62,6 +65,9 @@ namespace UangKu.Model.Response.AppStandardReferenceItem
 
             [JsonProperty("itemIcon")]
             public string itemIcon { get; set; }
+
+            [JsonProperty("iconSize")]
+            public int? iconSize { get; set; }
         }
 
         public class AsriThreeRoot
@@ -92,6 +98,9 @@ namespace UangKu.Model.Response.AppStandardReferenceItem
 
             [JsonProperty("itemIcon")]
             public string itemIcon { get; set; }
+
+            [JsonProperty("iconSize")]
+            public int? iconSize { get; set; }
         }
     }
 }

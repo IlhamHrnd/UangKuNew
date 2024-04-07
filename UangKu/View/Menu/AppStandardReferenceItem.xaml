@@ -106,19 +106,21 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="50*" />
                                     <ColumnDefinition Width="50*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0"
+                                <Entry Grid.Column="0"
                                        Grid.Row="0"
                                        Grid.ColumnSpan="2"
-                                       Style="{StaticResource Label}"
-                                       HorizontalTextAlignment="Center"
-                                       Text="{Binding itemName}"/>
+                                       Style="{StaticResource Entry}"
+                                       Text="{Binding itemName}"
+                                       HorizontalTextAlignment="Center"/>
                                 <HorizontalStackLayout Grid.Column="0"
-                                                       Grid.Row="1">
+                                                       Grid.Row="1"
+                                                       Grid.ColumnSpan="2">
                                     <Label Style="{StaticResource Label}"
                                            VerticalTextAlignment="Center"
                                            Text="Note : "/>
@@ -144,6 +146,13 @@
                                            Text="Is Active"
                                            VerticalTextAlignment="Center"/>
                                 </HorizontalStackLayout>
+                                <Button Grid.Column="0"
+                                        Grid.Row="3"
+                                        Grid.ColumnSpan="2"
+                                        Style="{StaticResource Button}"
+                                        Text="Add Icon"
+                                        x:Name="Btn_AddIcon"
+                                        Clicked="Btn_AddIcon_Clicked"/>
                             </Grid>
                         </Frame>
                     </DataTemplate>
