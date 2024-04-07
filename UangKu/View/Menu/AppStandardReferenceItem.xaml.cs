@@ -15,4 +15,9 @@ public partial class AppStandardReferenceItem : ContentPage
     {
 		await _vm.BtnUpdateAppStandard_Click();
     }
+
+    private async void Btn_AddIcon_Clicked(object sender, EventArgs e)
+    {
+		await _vm.UploadASRIIcon_Click();
+    }
 }

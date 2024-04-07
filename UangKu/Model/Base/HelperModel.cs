@@ -184,6 +184,10 @@ namespace UangKu.Model.Base
                         case "CurrencyFormat":
                             AppParameter.CurrencyFormat = data.parameterValue;
                             break;
+
+                        case "DownloadFolder":
+                            AppParameter.DownloadFolder = data.parameterValue;
+                            break;
                     }
                 }
             }
