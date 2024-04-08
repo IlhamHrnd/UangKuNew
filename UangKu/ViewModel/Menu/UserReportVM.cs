@@ -90,8 +90,8 @@ namespace UangKu.ViewModel.Menu
                         }
                         if (!string.IsNullOrEmpty(data.picture))
                         {
-                            string decodeImg = ImageConvert.DecodeBase64ToString(data.picture);
-                            byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                            string decodeImg = Converter.DecodeBase64ToString(data.picture);
+                            byte[] byteImg = Converter.StringToByteImg(decodeImg);
                             data.source = ImageConvert.ImgByte(byteImg);
                         } 
                     }

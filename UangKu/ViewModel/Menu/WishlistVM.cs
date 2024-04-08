@@ -38,8 +38,8 @@ namespace UangKu.ViewModel.Menu
                         var item = wishlistcategory[i];
                         if (!string.IsNullOrEmpty(item.itemIcon))
                         {
-                            string decodeImg = ImageConvert.DecodeBase64ToString(item.itemIcon);
-                            byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                            string decodeImg = Converter.DecodeBase64ToString(item.itemIcon);
+                            byte[] byteImg = Converter.StringToByteImg(decodeImg);
                             item.source = ImageConvert.ImgByte(byteImg);
                         }
                         ListWishlistCategory.Add(item);
@@ -60,8 +60,8 @@ namespace UangKu.ViewModel.Menu
 
                         if (!string.IsNullOrEmpty(datas[i].productPicture))
                         {
-                            string decodeImg = ImageConvert.DecodeBase64ToString(datas[i].productPicture);
-                            byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                            string decodeImg = Converter.DecodeBase64ToString(datas[i].productPicture);
+                            byte[] byteImg = Converter.StringToByteImg(decodeImg);
                             datas[i].source = ImageConvert.ImgByte(byteImg);
                         }
 

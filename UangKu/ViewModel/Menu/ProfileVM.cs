@@ -44,8 +44,8 @@ namespace UangKu.ViewModel.Menu
                     var profile = Profiles[0];
                     if (!string.IsNullOrEmpty(profile.photo))
                     {
-                        string decodeImg = ImageConvert.DecodeBase64ToString(profile.photo);
-                        byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                        string decodeImg = Converter.DecodeBase64ToString(profile.photo);
+                        byte[] byteImg = Converter.StringToByteImg(decodeImg);
                         ParameterModel.ImageManager.ImageByte = byteImg;
                         ParameterModel.ImageManager.ImageString = decodeImg;
                         avatar.ImageSource = ImageConvert.ImgByte(byteImg);
