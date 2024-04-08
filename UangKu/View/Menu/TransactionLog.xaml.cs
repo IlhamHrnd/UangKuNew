@@ -62,4 +62,10 @@ public partial class TransactionLog : ContentPage
         double y = ScrollView.ContentSize.Height;
         _vm.ScrollTopBottom_Clicked(ScrollView, 0, y, true);
     }
+
+    private async void ImgBtn_ExportPDF_Clicked(object sender, EventArgs e)
+    {
+        CancellationToken token = new CancellationToken();
+        await _vm.SavePDF(token);
+    }
 }

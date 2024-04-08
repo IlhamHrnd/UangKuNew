@@ -1,4 +1,6 @@
-﻿using UangKu.Model.Base;
+﻿using CommunityToolkit.Maui.Storage;
+using System.Text;
+using UangKu.Model.Base;
 using UangKu.Model.Menu;
 using UangKu.Model.Session;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
@@ -110,8 +112,8 @@ namespace UangKu.ViewModel.Menu
 
                         if (!string.IsNullOrEmpty(datas[i].photo))
                         {
-                            string decodeImg = ImageConvert.DecodeBase64ToString(datas[i].photo);
-                            byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                            string decodeImg = Converter.DecodeBase64ToString(datas[i].photo);
+                            byte[] byteImg = Converter.StringToByteImg(decodeImg);
                             datas[i].source = ImageConvert.ImgByte(byteImg);
                         }
                         
@@ -230,8 +232,8 @@ namespace UangKu.ViewModel.Menu
 
                             if (!string.IsNullOrEmpty(item.data[i].photo))
                             {
-                                string decodeImg = ImageConvert.DecodeBase64ToString(item.data[i].photo);
-                                byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                                string decodeImg = Converter.DecodeBase64ToString(item.data[i].photo);
+                                byte[] byteImg = Converter.StringToByteImg(decodeImg);
                                 item.data[i].source = ImageConvert.ImgByte(byteImg);
                             }
                         }
@@ -254,6 +256,35 @@ namespace UangKu.ViewModel.Menu
         public void ScrollTopBottom_Clicked(ScrollView scroll, double x, double y, bool isAnimated)
         {
             scroll.ScrollToAsync(x, y, isAnimated);
+        }
+        public async Task SavePDF(CancellationToken cancellationToken)
+        {
+            var sessionID = App.Session;
+            string userID = SessionModel.GetUserID(sessionID);
+            string title = $"{userID} Transaction Report \n";
+
+            var month = DateFormat.FormattingDate(ParameterModel.DateFormat.DateTime, ParameterModel.DateTimeFormat.Month);
+            var subtitle = $"Periode {month}";
+
+            var str = Converter.BuilderString(title, subtitle);
+
+            try
+            {
+                using var stream = new MemoryStream(Encoding.Default.GetBytes(str));
+                var fileSaverResult = await FileSaver.Default.SaveAsync($"{userID} Transaction Report.txt", stream, cancellationToken);
+                if (fileSaverResult.IsSuccessful)
+                {
+                    await MsgModel.MsgNotification($"The file was saved successfully to location: {fileSaverResult.FilePath}", cancellationToken);
+                }
+                else
+                {
+                    await MsgModel.MsgNotification($"The file was not saved successfully with error: {fileSaverResult.Exception.Message}", cancellationToken);
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification($"{e.Message}");
+            }
         }
         public async Task SwipeItem_Invoked(object sender, string mode)
         {
