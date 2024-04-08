@@ -110,8 +110,8 @@ namespace UangKu.ViewModel.SubMenu
                 wishlist.wishlistDateFormat = DateFormat.FormattingDate((DateTime)wishlist.wishlistDate, ParameterModel.DateTimeFormat.Date);
                 if (!string.IsNullOrEmpty(wishlist.productPicture))
                 {
-                    string decodeImg = ImageConvert.DecodeBase64ToString(wishlist.productPicture);
-                    byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                    string decodeImg = Converter.DecodeBase64ToString(wishlist.productPicture);
+                    byte[] byteImg = Converter.StringToByteImg(decodeImg);
                     wishlist.source = ImageConvert.ImgByte(byteImg);
                 }
 

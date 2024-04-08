@@ -154,8 +154,8 @@ namespace UangKu.ViewModel.Menu
 
                             if (!string.IsNullOrEmpty(item.data[i].photo))
                             {
-                                string decodeImg = ImageConvert.DecodeBase64ToString(item.data[i].photo);
-                                byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                                string decodeImg = Converter.DecodeBase64ToString(item.data[i].photo);
+                                byte[] byteImg = Converter.StringToByteImg(decodeImg);
                                 item.data[i].source = ImageConvert.ImgByte(byteImg);
                             }
                         }
@@ -171,8 +171,8 @@ namespace UangKu.ViewModel.Menu
                         {
                             if (!string.IsNullOrEmpty(picture.data[i].picture))
                             {
-                                string decodeImg = ImageConvert.DecodeBase64ToString(picture.data[i].picture);
-                                byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                                string decodeImg = Converter.DecodeBase64ToString(picture.data[i].picture);
+                                byte[] byteImg = Converter.StringToByteImg(decodeImg);
                                 picture.data[i].source = ImageConvert.ImgByte(byteImg);
                             }
 

@@ -85,6 +85,8 @@
             public static string NumbericFormat { get => numbericformat; set => numbericformat = value; }
             private static string downloadFolder = "Downloads";
             public static string DownloadFolder { get => downloadFolder; set => downloadFolder = value; }
+            private static string blankpdf = "blank.pdf";
+            public static string BlankPDF { get => blankpdf; set => blankpdf = value; }
         }
 
         public class ItemDefaultValue

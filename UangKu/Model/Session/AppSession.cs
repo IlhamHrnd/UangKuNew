@@ -45,5 +45,7 @@
         public static string CurrencyFormat { get => currencyformat; set => currencyformat = value; }
         private static string downloadFolder = string.Empty;
         public static string DownloadFolder { get => downloadFolder; set => downloadFolder = value; }
+        private static string blankpdf = string.Empty;
+        public static string BlankPDF { get => blankpdf; set => blankpdf = value; }
     }
 }

@@ -92,8 +92,8 @@ namespace UangKu.ViewModel.SubMenu
                         }
                         if (transno.photo != null)
                         {
-                            string decodeImg = ImageConvert.DecodeBase64ToString(transno.photo);
-                            byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                            string decodeImg = Converter.DecodeBase64ToString(transno.photo);
+                            byte[] byteImg = Converter.StringToByteImg(decodeImg);
                             ParameterModel.ImageManager.ImageByte = byteImg;
                             ParameterModel.ImageManager.ImageString = decodeImg;
                             Avatar.ImageSource = ImageConvert.ImgByte(byteImg);

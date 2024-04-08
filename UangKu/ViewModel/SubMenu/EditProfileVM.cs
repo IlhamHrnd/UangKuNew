@@ -90,8 +90,8 @@ namespace UangKu.ViewModel.SubMenu
                         }
                         if (person.photo != null)
                         {
-                            string decodeImg = ImageConvert.DecodeBase64ToString(person.photo);
-                            byte[] byteImg = ImageConvert.StringToByteImg(decodeImg);
+                            string decodeImg = Converter.DecodeBase64ToString(person.photo);
+                            byte[] byteImg = Converter.StringToByteImg(decodeImg);
                             ParameterModel.ImageManager.ImageByte = byteImg;
                             ParameterModel.ImageManager.ImageString = decodeImg;
                             avatar.ImageSource = ImageConvert.ImgByte(byteImg);

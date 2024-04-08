@@ -24,6 +24,12 @@ namespace UangKu.Model.Base
             var toast = Toast.Make(message, ToastDuration.Long);
             await toast.Show();
         }
+
+        public static async Task MsgNotification(string message, CancellationToken token)
+        {
+            var toast = Toast.Make(message, ToastDuration.Long);
+            await toast.Show(token);
+        }
     }
 
     public class NetworkModel
@@ -80,6 +86,12 @@ namespace UangKu.Model.Base
             var fileInfo = new FileInfo(assembly.Location);
             var lastWriteTime = fileInfo.LastWriteTime;
             return lastWriteTime;
+        }
+
+        public static string GetAppName()
+        {
+            var appName = AppInfo.Current.Name;
+            return appName;
         }
 
         public static string GetUserID(AppSession session)
@@ -188,6 +200,10 @@ namespace UangKu.Model.Base
                         case "DownloadFolder":
                             AppParameter.DownloadFolder = data.parameterValue;
                             break;
+
+                        case "BlankPDF":
+                            AppParameter.BlankPDF = data.parameterValue;
+                            break;
                     }
                 }
             }
@@ -250,67 +266,6 @@ namespace UangKu.Model.Base
             }
         }
 
-        //Class Untuk Convert Byte[] Ke Base64String
-        public static string ByteToStringImg(byte[] imgPath)
-        {
-            try
-            {
-                string imgString = Convert.ToBase64String(imgPath);
-                return imgString;
-            }
-            catch (Exception e)
-            {
-                _ = MsgModel.MsgNotification($"{e.Message}");
-                return null;
-            }
-        }
-
-        //Class Untuk Convert Base64String Ke Byte[]
-        public static byte[] StringToByteImg(string imgPath)
-        {
-            try
-            {
-                byte[] imgByte = Convert.FromBase64String(imgPath);
-                return imgByte;
-            }
-            catch (Exception e)
-            {
-                _ = MsgModel.MsgNotification($"{e.Message}");
-                return null;
-            }
-        }
-
-        //Class Untuk Decode Base64 Ke Byte[]
-        public static byte[] DecodeBase64ToBytes(string base64String)
-        {
-            try
-            {
-                byte[] data = Convert.FromBase64String(base64String);
-                return data;
-            }
-            catch (Exception e)
-            {
-                _ = MsgModel.MsgNotification($"{e.Message}");
-                return null;
-            }
-        }
-
-        //Class Untuk Decode Base64 Ke String
-        public static string DecodeBase64ToString(string base64String)
-        {
-            try
-            {
-                byte[] data = Convert.FromBase64String(base64String);
-                string decodedString = Encoding.UTF8.GetString(data);
-                return decodedString;
-            }
-            catch (Exception e)
-            {
-                _ = MsgModel.MsgNotification($"{e.Message}");
-                return null;
-            }
-        }
-
         //Class Untuk Substring ContentType
         public static string SubstringContentType(string content, char type)
         {
@@ -363,7 +318,7 @@ namespace UangKu.Model.Base
             await stream.CopyToAsync(memorystream);
             imgBytes = memorystream.ToArray();
             ImageManager.ImageByte = memorystream.ToArray();
-            ImageManager.ImageString = ByteToStringImg(imgBytes);
+            ImageManager.ImageString = Converter.ByteToStringImg(imgBytes);
             ImageManager.ImageName = result.FileName;
             ImageManager.ImageFormat = result.ContentType;
             ImageManager.ImageSize = fileSize;
@@ -408,7 +363,7 @@ namespace UangKu.Model.Base
 
                     var images = new ImageManagerList
                     {
-                        ImageString = ByteToStringImg(imgBytes),
+                        ImageString = Converter.ByteToStringImg(imgBytes),
                         ImageByte = memorystream.ToArray(),
                         ImageName = item.FileName,
                         ImageFormat = item.ContentType,
@@ -497,6 +452,67 @@ namespace UangKu.Model.Base
             return result;
         }
 
+        //Class Untuk Convert Byte[] Ke Base64String
+        public static string ByteToStringImg(byte[] imgPath)
+        {
+            try
+            {
+                string imgString = Convert.ToBase64String(imgPath);
+                return imgString;
+            }
+            catch (Exception e)
+            {
+                _ = MsgModel.MsgNotification($"{e.Message}");
+                return null;
+            }
+        }
+
+        //Class Untuk Convert Base64String Ke Byte[]
+        public static byte[] StringToByteImg(string imgPath)
+        {
+            try
+            {
+                byte[] imgByte = Convert.FromBase64String(imgPath);
+                return imgByte;
+            }
+            catch (Exception e)
+            {
+                _ = MsgModel.MsgNotification($"{e.Message}");
+                return null;
+            }
+        }
+
+        //Class Untuk Decode Base64 Ke Byte[]
+        public static byte[] DecodeBase64ToBytes(string base64String)
+        {
+            try
+            {
+                byte[] data = Convert.FromBase64String(base64String);
+                return data;
+            }
+            catch (Exception e)
+            {
+                _ = MsgModel.MsgNotification($"{e.Message}");
+                return null;
+            }
+        }
+
+        //Class Untuk Decode Base64 Ke String
+        public static string DecodeBase64ToString(string base64String)
+        {
+            try
+            {
+                byte[] data = Convert.FromBase64String(base64String);
+                string decodedString = Encoding.UTF8.GetString(data);
+                return decodedString;
+            }
+            catch (Exception e)
+            {
+                _ = MsgModel.MsgNotification($"{e.Message}");
+                return null;
+            }
+        }
+
         //Function Untuk StringBuilder
         public static string BuilderString(params object[] items)
         {
@@ -515,6 +531,68 @@ namespace UangKu.Model.Base
         {
             var list = new List<T>(inputList);
             return list;
+        }
+    }
+
+    public static class GeneratePDFFile
+    {
+        public static Task CreateNewFolder(DevicePlatform platform, string folderPath)
+        {
+            try
+            {
+                if (platform == DevicePlatform.iOS)
+                {
+
+                }
+                else if (platform == DevicePlatform.Android)
+                {
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+                }
+                else if (platform == DevicePlatform.WinUI)
+                {
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                _ = MsgModel.MsgNotification($"{e.Message}");
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public static string GetForlderPath(DevicePlatform platform)
+        {
+            try
+            {
+                string root = string.Empty;
+
+                if (platform == DevicePlatform.iOS)
+                {
+
+                }
+                else if (platform == DevicePlatform.Android)
+                {
+                    root = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                }
+                else if (platform == DevicePlatform.WinUI)
+                {
+                    root = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                }
+
+                return root;
+            }
+            catch (Exception e)
+            {
+                _ = MsgModel.MsgNotification($"{e.Message}");
+                return null;
+            }
         }
     }
 
