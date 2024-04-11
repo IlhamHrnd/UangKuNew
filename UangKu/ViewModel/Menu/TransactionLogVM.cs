@@ -1,6 +1,5 @@
-﻿using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Storage;
-using System.Text;
+﻿using iText.Kernel.Pdf;
+using iText.Layout;
 using UangKu.Model.Base;
 using UangKu.Model.Menu;
 using UangKu.Model.Session;
@@ -274,61 +273,101 @@ namespace UangKu.ViewModel.Menu
 
             try
             {
-                //Title
+                //FilePath
+                var fileName = Compare.StringReplace(AppParameter.BlankPDF, ParameterModel.AppParameterDefault.BlankPDF);
+                var filePath = GeneratePDFFile.GetFilePath(fileName);
+
+                //Process Generate PDF
+                PdfWriter writer = new PdfWriter(filePath);
+                PdfDocument pdfdoc = new PdfDocument(writer);
+                Document doc = new Document(pdfdoc);
+
+                #region Process PDF Data
                 var sessionID = App.Session;
                 string userID = SessionModel.GetUserID(sessionID);
-                string title = $"{userID} Transaction Report \n";
+                var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page, Size, userID, Builder);
 
-                //Subtitle
-                var month = DateFormat.FormattingDate(ParameterModel.DateFormat.DateTime, ParameterModel.DateTimeFormat.Month);
-                var subtitle = $"Periode {month} \n";
+                //Header
+                string title = $"{userID} Transaction Report";
+                var header = GeneratePDFFile.SetParagraph(title, 20, iText.Layout.Properties.TextAlignment.CENTER);
+                doc.Add(header);
 
-                //Table
-                var sb = new StringBuilder();
-                var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Number, Size, userID, Builder);
+                //Subheader
+                var firstItem = alltrans.data.FirstOrDefault();
+                var lastItem = alltrans.data.LastOrDefault();
+
+                var firstDate = DateFormat.FormattingDate((DateTime)firstItem.transDate, ParameterModel.DateTimeFormat.Date);
+                var lastDate = DateFormat.FormattingDate((DateTime)lastItem.transDate, ParameterModel.DateTimeFormat.Date);
+
+                var subtitle = $"Periode {firstDate} - {lastDate}";
+                var subheader = GeneratePDFFile.SetParagraph(subtitle, 15, iText.Layout.Properties.TextAlignment.CENTER);
+                doc.Add(subheader);
+
+                //Line Separator
+                var ls = GeneratePDFFile.SetLine();
+                doc.Add(ls);
+
+                //New Line
+                var nl = GeneratePDFFile.SetNewLine();
+                doc.Add(nl);
+
+                // Table
                 if ((bool)alltrans.succeeded)
                 {
-                    var amount = string.Empty;
-                    sb.AppendLine("Description\tIncome\tExpenditure");
+                    var culture = Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency);
+                    var tbl = GeneratePDFFile.SetTable(5, true);
 
+                    // Table Header
+                    tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "Description", iText.Layout.Properties.TextAlignment.CENTER));
+                    tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "TransNo", iText.Layout.Properties.TextAlignment.CENTER));
+                    tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "Income", iText.Layout.Properties.TextAlignment.CENTER));
+                    tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "Expenditure", iText.Layout.Properties.TextAlignment.CENTER));
+                    tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "Trans Date", iText.Layout.Properties.TextAlignment.CENTER));
+
+                    //Table Data
                     foreach (var item in alltrans.data)
                     {
-                        if (item.amount != null)
-                        {
-                            amount = FormatCurrency.Currency((decimal)item.amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
-                        }
+                        var amountFormat = item.amount != null ? FormatCurrency.Currency((decimal)item.amount, culture) : string.Empty;
+                        var description = string.IsNullOrEmpty(item.description) ? item.srTransItem : item.description;
+                        var transDate = DateFormat.FormattingDate((DateTime)item.transDate, ParameterModel.DateTimeFormat.Date);
+                        var textAlignment = item.transType == ParameterModel.ItemDefaultValue.IncomeTrans ? iText.Layout.Properties.TextAlignment.RIGHT : iText.Layout.Properties.TextAlignment.LEFT;
 
-                        if (item.transType == ParameterModel.ItemDefaultValue.IncomeTrans)
-                        {
-                            sb.AppendLine($"{item.description}\t{amount}\t{string.Empty}");
-                        }
-                        else if (item.transType == ParameterModel.ItemDefaultValue.OutcomeTrans)
-                        {
-                            sb.AppendLine($"{item.description}\t{string.Empty}\t{amount}");
-                        }
-                        else
-                        {
-                            sb.AppendLine($"{item.description}\t{string.Empty}\t{string.Empty}");
-                        }
+                        // Add Item To Cell
+                        tbl.AddCell(GeneratePDFFile.SetCell(1, false, description, iText.Layout.Properties.TextAlignment.LEFT));
+                        tbl.AddCell(GeneratePDFFile.SetCell(1, false, item.transNo, iText.Layout.Properties.TextAlignment.LEFT));
+                        tbl.AddCell(GeneratePDFFile.SetCell(1, false, item.transType == ParameterModel.ItemDefaultValue.IncomeTrans ? amountFormat : string.Empty, iText.Layout.Properties.TextAlignment.RIGHT));
+                        tbl.AddCell(GeneratePDFFile.SetCell(1, false, item.transType == ParameterModel.ItemDefaultValue.OutcomeTrans ? amountFormat : string.Empty, iText.Layout.Properties.TextAlignment.RIGHT));
+                        tbl.AddCell(GeneratePDFFile.SetCell(1, false, transDate, iText.Layout.Properties.TextAlignment.RIGHT));
                     }
-                }
-                var tbl = Converter.StringBuilderToTable(sb);
 
-                //Value
-                var str = Converter.BuilderString(title, subtitle, tbl);
+                    //Table Footer
+                    var totalIncome = alltrans.data
+                        .Where(item => item.transType == ParameterModel.ItemDefaultValue.IncomeTrans)
+                        .Sum(item => item.amount);
+                    var totalExpenditure = alltrans.data
+                        .Where(item => item.transType == ParameterModel.ItemDefaultValue.OutcomeTrans)
+                        .Sum(item => item.amount);
+                    var totalTransaction = totalIncome - totalExpenditure;
 
-                //Save File
-                using var stream = new MemoryStream(Encoding.Default.GetBytes(str));
-                var fileSaverResult = await FileSaver.Default.SaveAsync($"{userID}-Transaction-Report.txt", stream, cancellationToken);
-                if (fileSaverResult.IsSuccessful)
-                {
-                    await Toast.Make($"The file was saved successfully to location: {fileSaverResult.FilePath}").Show(cancellationToken);
-                    SaveDir = fileSaverResult.FilePath;
+                    var IncomeFormat = FormatCurrency.Currency((decimal)totalIncome, culture);
+                    var ExpenditureFormat = FormatCurrency.Currency((decimal)totalExpenditure, culture);
+                    var TotalFormat = FormatCurrency.Currency((decimal)totalTransaction, culture);
+
+                    tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, "Summary", iText.Layout.Properties.TextAlignment.CENTER));
+                    tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, string.Empty, iText.Layout.Properties.TextAlignment.LEFT));
+                    tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, IncomeFormat, iText.Layout.Properties.TextAlignment.RIGHT));
+                    tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, ExpenditureFormat, iText.Layout.Properties.TextAlignment.RIGHT));
+                    tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, TotalFormat, iText.Layout.Properties.TextAlignment.RIGHT));
+
+                    doc.Add(tbl);
                 }
-                else
-                {
-                    await Toast.Make($"The file was not saved successfully with error: {fileSaverResult.Exception.Message}").Show(cancellationToken);
-                }
+
+                //Add Pages Number
+                GeneratePDFFile.SetPagesNumber(pdfdoc, doc);
+
+                //Close Doc
+                doc.Close();
+                #endregion
             }
             catch (Exception e)
             {
