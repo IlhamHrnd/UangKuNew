@@ -526,6 +526,50 @@ namespace UangKu.Model.Base
             return result;
         }
 
+        //Function Untuk StringBuilder Ke Table
+        public static string StringBuilderToTable(StringBuilder sb)
+        {
+            // Parse the StringBuilder content and create a table string
+            string[] lines = sb.ToString().Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] headers = lines[0].Split('\t');
+            int numColumns = headers.Length;
+
+            // Generate the table content
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("<table>");
+            builder.AppendLine("<thead>");
+            builder.AppendLine("<tr>");
+
+            foreach (var header in headers)
+            {
+                builder.AppendLine($"<th>{header}</th>");
+            }
+
+            builder.AppendLine("</tr>");
+            builder.AppendLine("</thead>");
+            builder.AppendLine("<tbody>");
+
+            foreach (var line in lines.Skip(1))
+            {
+                string[] columns = line.Split('\t');
+                builder.AppendLine("<tr>");
+
+                foreach (var column in columns)
+                {
+                    builder.AppendLine($"<td>{column}</td>");
+                }
+
+                builder.AppendLine("</tr>");
+            }
+
+            builder.AppendLine("</tbody>");
+            builder.AppendLine("</table>");
+
+            //Result
+            var result = builder.ToString();
+            return result;
+        }
+
         //Function Untuk IList Jadi List
         public static List<T> ConvertIListToList<T>(IList<T> inputList)
         {
