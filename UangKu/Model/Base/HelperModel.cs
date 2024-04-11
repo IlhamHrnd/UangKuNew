@@ -1,5 +1,11 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using iText.IO.Image;
+using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Action;
+using iText.Kernel.Pdf.Canvas.Draw;
+using iText.Layout;
+using iText.Layout.Element;
 using SkiaSharp;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -580,62 +586,83 @@ namespace UangKu.Model.Base
 
     public static class GeneratePDFFile
     {
-        public static Task CreateNewFolder(DevicePlatform platform, string folderPath)
+        public static string GetFilePath(string fileName)
         {
-            try
-            {
-                if (platform == DevicePlatform.iOS)
-                {
-
-                }
-                else if (platform == DevicePlatform.Android)
-                {
-                    if (!Directory.Exists(folderPath))
-                    {
-                        Directory.CreateDirectory(folderPath);
-                    }
-                }
-                else if (platform == DevicePlatform.WinUI)
-                {
-                    if (!Directory.Exists(folderPath))
-                    {
-                        Directory.CreateDirectory(folderPath);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                _ = MsgModel.MsgNotification($"{e.Message}");
-            }
-
-            return Task.CompletedTask;
+            string result;
+            #if ANDROID
+		        var docsDirectory = Android.App.Application.Context.GetExternalFilesDir(Android.OS.Environment.DirectoryDocuments);
+		        result = Path.Combine(docsDirectory.AbsoluteFile.Path, fileName);
+            #else
+                result = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
+            #endif
+            return result;
         }
 
-        public static string GetForlderPath(DevicePlatform platform)
+        public static Paragraph SetParagraph(string title, int size, iText.Layout.Properties.TextAlignment alignment)
         {
-            try
+            Paragraph paragraph = new Paragraph(title)
+                .SetTextAlignment(alignment)
+                .SetFontSize(size);
+            return paragraph;
+        }
+
+        public static LineSeparator SetLine()
+        {
+            LineSeparator ls = new LineSeparator(new SolidLine());
+            return ls;
+        }
+
+        public static Paragraph SetNewLine()
+        {
+            Paragraph paragraph = new Paragraph(new Text("\n"));
+            return paragraph;
+        }
+
+        public static iText.Layout.Element.Image SetImage(string imgPath, iText.Layout.Properties.TextAlignment alignment)
+        {
+            var img = new iText.Layout.Element.Image(ImageDataFactory
+               .Create(imgPath))
+               .SetTextAlignment(alignment);
+            return img;
+        }
+
+        public static Link SetLink(string title, string url)
+        {
+            var link = new Link(title,
+                PdfAction.CreateURI(url));
+            return link;
+        }
+
+        public static Table SetTable(int column, bool isLarge)
+        {
+            var tbl = new Table(column, isLarge)
+                .SetKeepTogether(false);
+            return tbl;
+        }
+
+        public static iText.Layout.Element.Cell SetCell(int rowsSpan, bool isAddBGColor, string title,
+            iText.Layout.Properties.TextAlignment alignment)
+        {
+            var cell = new iText.Layout.Element.Cell(rowsSpan, rowsSpan)
+                .SetTextAlignment(alignment)
+                .Add(new Paragraph(title));
+
+            if (isAddBGColor)
             {
-                string root = string.Empty;
-
-                if (platform == DevicePlatform.iOS)
-                {
-
-                }
-                else if (platform == DevicePlatform.Android)
-                {
-                    root = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                }
-                else if (platform == DevicePlatform.WinUI)
-                {
-                    root = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                }
-
-                return root;
+                cell.SetBackgroundColor(iText.Kernel.Colors.ColorConstants.GRAY);
             }
-            catch (Exception e)
+
+            return cell;
+        }
+
+        public static void SetPagesNumber(PdfDocument pdfDoc, Document doc)
+        {
+            int n = pdfDoc.GetNumberOfPages();
+            for (int i = 1; i <= n; i++)
             {
-                _ = MsgModel.MsgNotification($"{e.Message}");
-                return null;
+                doc.ShowTextAligned(new Paragraph($"Page " + i + " of " + n),
+                   559, 806, i, iText.Layout.Properties.TextAlignment.RIGHT,
+                   iText.Layout.Properties.VerticalAlignment.TOP, 0);
             }
         }
     }
