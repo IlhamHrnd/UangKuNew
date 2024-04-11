@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Maui.Storage;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Storage;
 using System.Text;
 using UangKu.Model.Base;
 using UangKu.Model.Menu;
@@ -125,6 +126,8 @@ namespace UangKu.ViewModel.Menu
                     Page = (int)alltrans.pageNumber;
                     TotalPages = (int)alltrans.totalPages;
                     TotalRecords = (int)alltrans.totalRecords;
+                    Number = pageNumber;
+                    Size = pageSize;
                     ListAllTrans.Add(item);
                 }
                 var orderby = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriRoot>("OrderByTransaction", true, true);
@@ -223,23 +226,31 @@ namespace UangKu.ViewModel.Menu
                     {
                         ListAllTrans.Clear();
                         var item = alltrans;
-                        for (int i = 0; i < item.data.Count; i++)
+                        var datas = item.data;
+                        for (int i = 0; i < datas.Count; i++)
                         {
-                            if (item.data[i].amount != null)
+                            if (datas[i].amount != null)
                             {
-                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
+                                datas[i].amountFormat = FormatCurrency.Currency((decimal)datas[i].amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
                             }
 
-                            if (!string.IsNullOrEmpty(item.data[i].photo))
+                            if (!string.IsNullOrEmpty(datas[i].photo))
                             {
-                                string decodeImg = Converter.DecodeBase64ToString(item.data[i].photo);
+                                string decodeImg = Converter.DecodeBase64ToString(datas[i].photo);
                                 byte[] byteImg = Converter.StringToByteImg(decodeImg);
-                                item.data[i].source = ImageConvert.ImgByte(byteImg);
+                                datas[i].source = ImageConvert.ImgByte(byteImg);
+                            }
+
+                            if (datas[i].transDate != null)
+                            {
+                                datas[i].transDateFormat = DateFormat.FormattingDate((DateTime)datas[i].transDate, ParameterModel.DateTimeFormat.Date);
                             }
                         }
                         Page = (int)alltrans.pageNumber;
                         TotalPages = (int)alltrans.totalPages;
                         TotalRecords = (int)alltrans.totalRecords;
+                        Number = pages;
+                        Size = pageSize;
                         ListAllTrans.Add(item);
                     }
                 }
@@ -259,31 +270,73 @@ namespace UangKu.ViewModel.Menu
         }
         public async Task SavePDF(CancellationToken cancellationToken)
         {
-            var sessionID = App.Session;
-            string userID = SessionModel.GetUserID(sessionID);
-            string title = $"{userID} Transaction Report \n";
-
-            var month = DateFormat.FormattingDate(ParameterModel.DateFormat.DateTime, ParameterModel.DateTimeFormat.Month);
-            var subtitle = $"Periode {month}";
-
-            var str = Converter.BuilderString(title, subtitle);
+            IsBusy = true;
 
             try
             {
+                //Title
+                var sessionID = App.Session;
+                string userID = SessionModel.GetUserID(sessionID);
+                string title = $"{userID} Transaction Report \n";
+
+                //Subtitle
+                var month = DateFormat.FormattingDate(ParameterModel.DateFormat.DateTime, ParameterModel.DateTimeFormat.Month);
+                var subtitle = $"Periode {month} \n";
+
+                //Table
+                var sb = new StringBuilder();
+                var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Number, Size, userID, Builder);
+                if ((bool)alltrans.succeeded)
+                {
+                    var amount = string.Empty;
+                    sb.AppendLine("Description\tIncome\tExpenditure");
+
+                    foreach (var item in alltrans.data)
+                    {
+                        if (item.amount != null)
+                        {
+                            amount = FormatCurrency.Currency((decimal)item.amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
+                        }
+
+                        if (item.transType == ParameterModel.ItemDefaultValue.IncomeTrans)
+                        {
+                            sb.AppendLine($"{item.description}\t{amount}\t{string.Empty}");
+                        }
+                        else if (item.transType == ParameterModel.ItemDefaultValue.OutcomeTrans)
+                        {
+                            sb.AppendLine($"{item.description}\t{string.Empty}\t{amount}");
+                        }
+                        else
+                        {
+                            sb.AppendLine($"{item.description}\t{string.Empty}\t{string.Empty}");
+                        }
+                    }
+                }
+                var tbl = Converter.StringBuilderToTable(sb);
+
+                //Value
+                var str = Converter.BuilderString(title, subtitle, tbl);
+
+                //Save File
                 using var stream = new MemoryStream(Encoding.Default.GetBytes(str));
-                var fileSaverResult = await FileSaver.Default.SaveAsync($"{userID} Transaction Report.txt", stream, cancellationToken);
+                var fileSaverResult = await FileSaver.Default.SaveAsync($"{userID}-Transaction-Report.txt", stream, cancellationToken);
                 if (fileSaverResult.IsSuccessful)
                 {
-                    await MsgModel.MsgNotification($"The file was saved successfully to location: {fileSaverResult.FilePath}", cancellationToken);
+                    await Toast.Make($"The file was saved successfully to location: {fileSaverResult.FilePath}").Show(cancellationToken);
+                    SaveDir = fileSaverResult.FilePath;
                 }
                 else
                 {
-                    await MsgModel.MsgNotification($"The file was not saved successfully with error: {fileSaverResult.Exception.Message}", cancellationToken);
+                    await Toast.Make($"The file was not saved successfully with error: {fileSaverResult.Exception.Message}").Show(cancellationToken);
                 }
             }
             catch (Exception e)
             {
                 await MsgModel.MsgNotification($"{e.Message}");
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
         public async Task SwipeItem_Invoked(object sender, string mode)

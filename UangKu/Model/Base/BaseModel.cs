@@ -13,12 +13,18 @@ namespace UangKu.Model.Base
         public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private int page = 0;
         public int Page { get => page; set => page = value; }
+        private int number = 0;
+        public int Number { get => number; set => number = value; }
+        private int size = 0;
+        public int Size { get => size; set => size = value; }
         private int totalrecords = 0;
         public int TotalRecords { get => totalrecords; set => totalrecords = value; }
         private int totalpages = 0;
         public int TotalPages { get => totalpages; set => totalpages = value; }
         private string mode = string.Empty;
         public string Mode { get => mode; set => SetProperty(ref mode, value); }
+        private string savedir = string.Empty;
+        public string SaveDir { get => savedir; set => savedir = value; }
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
