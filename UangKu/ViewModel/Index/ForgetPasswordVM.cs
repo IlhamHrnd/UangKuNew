@@ -9,7 +9,7 @@ namespace UangKu.ViewModel.Index
         private NetworkModel network = NetworkModel.Instance;
         public ForgetPasswordVM()
         {
-            
+            Title = "Forget Password";
         }
 
         public async void BtnUpdate_User(Entry username, Entry email, Entry password, Entry confirmpass)

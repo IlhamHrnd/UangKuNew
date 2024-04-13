@@ -11,10 +11,6 @@ namespace UangKu.Model.Index
             
         }
 
-        private string title = "Sign Up";
-        public string Title { get => title; set => SetProperty(ref title, value); }
-        private bool isbusy = false;
-        public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private AsriRoot selectedsex { get; set; }
         public AsriRoot SelectedSex
         {

@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using UangKu.Model.Base;
-using static UangKu.Model.Response.AppParameter.GetAllParameterWithNoPageFilter;
+﻿using UangKu.Model.Base;
 
 namespace UangKu.Model.Index
 {
@@ -11,10 +9,6 @@ namespace UangKu.Model.Index
             
         }
 
-        private string title = "Main Page";
-        public string Title { get => title; set => SetProperty(ref title, value); }
-        private bool isbusy = false;
-        public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private string lastbuild = string.Empty;
         public string LastBuild { get => lastbuild; set => SetProperty(ref lastbuild, value); }
         private bool isvisible = false;

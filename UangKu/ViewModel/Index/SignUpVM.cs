@@ -11,7 +11,7 @@ namespace UangKu.ViewModel.Index
         private NetworkModel network = NetworkModel.Instance;
         public SignUpVM()
         {
-            
+            Title = "Sign Up";
         }
 
         public async void LoadData()
