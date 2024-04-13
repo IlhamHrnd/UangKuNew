@@ -133,7 +133,7 @@ namespace UangKu.Model.Base
 
         public static bool IsAdult(int age)
         {
-            bool adult = age >= Converter.StringToInt(AppParameter.AgeMinimum, AppParameterDefault.Age);
+            bool adult = age >= AppParameter.AgeMinimum;
             return adult;
         }
 
@@ -154,62 +154,81 @@ namespace UangKu.Model.Base
             var allParameter = await AllParameterWithNoPageFilter.GetAllAppParameter();
             if (allParameter.Count > 0)
             {
-                for (int i = 0; i < allParameter.Count; i++)
+                foreach (var data in allParameter)
                 {
-                    var data = allParameter[i];
-                    switch (data.parameterID)
+                    try
                     {
-                        case "MaxFileSize":
-                            AppParameter.MaxFileSize = data.parameterValue;
-                            break;
+                        if (bool.TryParse(data.parameterValue, out var valueBool))
+                        {
+                            switch (data.parameterID)
+                            {
+                                case "ShowLastBuild":
+                                    AppParameter.ShowLastBuild = valueBool;
+                                    break;
 
-                        case "MaxPicture":
-                            AppParameter.MaxPicture = data.parameterValue;
-                            break;
+                                case "IsAllowCustomDate":
+                                    AppParameter.IsAllowCustomDate = valueBool;
+                                    break;
+                            }
+                        }
+                        else if (int.TryParse(data.parameterValue, out var valueInt))
+                        {
+                            switch (data.parameterID)
+                            {
+                                case "AgeMinimum":
+                                    AppParameter.AgeMinimum = valueInt;
+                                    break;
 
-                        case "AgeMinimum":
-                            AppParameter.AgeMinimum = data.parameterValue;
-                            break;
+                                case "MaxFileSize":
+                                    AppParameter.MaxFileSize = valueInt;
+                                    break;
 
-                        case "MaxResult":
-                            AppParameter.MaxResult = data.parameterValue;
-                            break;
+                                case "MaxPicture":
+                                    AppParameter.MaxPicture = valueInt;
+                                    break;
 
-                        case "HomeMaxResult":
-                            AppParameter.HomeMaxResult = data.parameterValue;
-                            break;
+                                case "MaxResult":
+                                    AppParameter.MaxResult = valueInt;
+                                    break;
 
-                        case "Timeout":
-                            AppParameter.Timeout = data.parameterValue;
-                            break;
+                                case "HomeMaxResult":
+                                    AppParameter.HomeMaxResult = valueInt;
+                                    break;
 
-                        case "ShowLastBuild":
-                            AppParameter.ShowLastBuild = data.parameterValue;
-                            break;
+                                case "Timeout":
+                                    AppParameter.Timeout = valueInt;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            switch (data.parameterID)
+                            {
+                                case "URL":
+                                    AppParameter.URL = data.parameterValue;
+                                    break;
 
-                        case "IsAllowCustomDate":
-                            AppParameter.IsAllowCustomDate = data.parameterValue;
-                            break;
+                                case "NumbericFormat":
+                                    AppParameter.NumbericFormat = data.parameterValue;
+                                    break;
 
-                        case "URL":
-                            AppParameter.URL = data.parameterValue;
-                            break;
+                                case "CurrencyFormat":
+                                    AppParameter.CurrencyFormat = data.parameterValue;
+                                    break;
 
-                        case "NumericFormat":
-                            AppParameter.NumbericFormat = data.parameterValue;
-                            break;
+                                case "DownloadFolder":
+                                    AppParameter.DownloadFolder = data.parameterValue;
+                                    break;
 
-                        case "CurrencyFormat":
-                            AppParameter.CurrencyFormat = data.parameterValue;
-                            break;
-
-                        case "DownloadFolder":
-                            AppParameter.DownloadFolder = data.parameterValue;
-                            break;
-
-                        case "BlankPDF":
-                            AppParameter.BlankPDF = data.parameterValue;
-                            break;
+                                case "BlankPDF":
+                                    AppParameter.BlankPDF = data.parameterValue;
+                                    break;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        await MsgModel.MsgNotification($"{e.Message}");
                     }
                 }
             }
@@ -310,7 +329,7 @@ namespace UangKu.Model.Base
             var stream = await result.OpenReadAsync();
 
             long fileSize = stream.Length;
-            var intResult = Converter.StringToInt(AppParameter.MaxFileSize, Converter.StringToInt(AppParameter.MaxFileSize, AppParameterDefault.MaxFileSize));
+            var intResult = AppParameter.MaxFileSize;
             var longResult = Converter.IntToLong(intResult);
 
             if (fileSize > longResult)
@@ -353,7 +372,7 @@ namespace UangKu.Model.Base
                 var stream = await item.OpenReadAsync();
 
                 long fileSize = stream.Length;
-                var intResult = Converter.StringToInt(AppParameter.MaxFileSize, Converter.StringToInt(AppParameter.MaxFileSize, AppParameterDefault.MaxFileSize));
+                var intResult = AppParameter.MaxFileSize;
                 var longResult = Converter.IntToLong(intResult);
 
                 if (fileSize > longResult)
@@ -695,6 +714,12 @@ namespace UangKu.Model.Base
         public static string StringReplace(string valueString, string defaultString)
         {
             string result = string.IsNullOrEmpty(valueString) ? defaultString : valueString;
+            return result;
+        }
+
+        public static int IntReplace(int valueInt, int defaultInt)
+        {
+            int result = valueInt > 0 ? valueInt : defaultInt;
             return result;
         }
     }

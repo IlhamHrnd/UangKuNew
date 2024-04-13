@@ -61,32 +61,10 @@
         //Data Default Saat Gagal Ambil Data Dari AppParameter
         public class AppParameterDefault
         {
-            private static int maxresult = 25;
-            public static int Maxresult { get => maxresult; set => maxresult = value; }
-            private static int homemaxresult = 5;
-            public static int HomeMaxResult { get => homemaxresult; set => homemaxresult = value; }
-            private static int age = 21;
-            public static int Age { get => age; set => age = value; }
-            private static int maxfilesize = 1; //Dalam MB
-            public static int MaxFileSize { get => maxfilesize; set => maxfilesize = value; }
-            private static int timeout = 10000; //Dalam Mili Detik
-            public static int Timeout { get => timeout; set => timeout = value; }
-            private static int maxpicture = 25;
-            public static int MaxPicture { get => maxpicture; set => maxpicture = value; }
-            private static bool showlastbuild = false;
-            public static bool ShowLastBuild { get => showlastbuild; set => showlastbuild = value; }
-            private static bool isallowcustomdate = false;
-            public static bool IsAllowCustomDate { get => isallowcustomdate; set => isallowcustomdate = value; }
             private static string url = "https://uangkuapi.azurewebsites.net/";
             public static string URL { get => url; set => url = value; }
-            private static string currency = "id-ID";
-            public static string Currency { get => currency; set => currency = value; }
-            private static string numbericformat = "D3";
-            public static string NumbericFormat { get => numbericformat; set => numbericformat = value; }
-            private static string downloadFolder = "Downloads";
-            public static string DownloadFolder { get => downloadFolder; set => downloadFolder = value; }
-            private static string blankpdf = "blank.pdf";
-            public static string BlankPDF { get => blankpdf; set => blankpdf = value; }
+            private static int timeout = 10000; //Waktu Timeout Proses Ambil Data(Dalam Mili Detik)
+            public static int TimeOut { get => timeout; set => timeout = value; }
         }
 
         public class ItemDefaultValue

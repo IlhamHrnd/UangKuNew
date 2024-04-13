@@ -5,7 +5,7 @@ using static UangKu.Model.Response.Picture.UserPicture;
 
 namespace UangKu.ViewModel.RestAPI.Picture
 {
-    public class GetUserPicture
+    public class GetUserPicture : BaseModel
     {
         private const string GetUserPictureEndPoint = "{4}UserPicture/GetUserPicture?PageNumber={0}&PageSize={1}&PersonID={2}&IsDeleted={3}";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.Picture
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

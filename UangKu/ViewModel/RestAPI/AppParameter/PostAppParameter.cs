@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.AppParameter
 {
-    public class PostAppParameter
+    public class PostAppParameter : BaseModel
     {
         private const string PostAppParameterEndPoint = "{0}AppParameter/PostAppParameter";
 
@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
             var request = new RestRequest
             {
                 Method = Method.Post,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var body = new Model.Index.Body.PostAppParameter
             {

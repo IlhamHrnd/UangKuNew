@@ -18,17 +18,17 @@ public partial class AppStandardReference : ContentPage
     {
         await SessionModel.SessionCheck();
 
-        _vm.LoadData(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult));
+        _vm.LoadData(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.MaxResult);
     }
 
     private void Btn_NextPage_Clicked(object sender, EventArgs e)
     {
-		_vm.NextPreviousPage_Click(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), true);
+		_vm.NextPreviousPage_Click(AppParameter.MaxResult, true);
     }
 
     private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
     {
-        _vm.NextPreviousPage_Click(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), false);
+        _vm.NextPreviousPage_Click(AppParameter.MaxResult, false);
     }
 
     private async void Coll_AppStandardReference_SelectionChanged(object sender, SelectionChangedEventArgs e)

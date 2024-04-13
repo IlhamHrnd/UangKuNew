@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
 {
-    public class AppStandardReferenceItem
+    public class AppStandardReferenceItem : BaseModel
     {
         private const string AppStandardReferenceItemEndPoint = "{3}AppStandardReferenceItem/GetStandardID?StandardReferenceID={0}&isActive={1}&isUse={2}";
 
@@ -16,7 +16,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.AppParameter
 {
-    public class PatchAppParameter
+    public class PatchAppParameter : BaseModel
     {
         private const string PatchParameterEndPoint = "{0}AppParameter/UpdateAppParameter";
 
@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
             var request = new RestRequest
             {
                 Method = Method.Patch,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var body = new Model.Index.Body.PatchParameter
             {

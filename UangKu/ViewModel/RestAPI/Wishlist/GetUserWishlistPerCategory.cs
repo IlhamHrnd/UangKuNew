@@ -5,7 +5,7 @@ using static UangKu.Model.Response.Wishlist.GetUserWishlistPerCategory;
 
 namespace UangKu.ViewModel.RestAPI.Wishlist
 {
-    public class GetUserWishlistPerCategory
+    public class GetUserWishlistPerCategory : BaseModel
     {
         private const string GetUserWishlistPerCategoryEndPoint = "{0}UserWishlist/GetUserWishlistPerCategory?PersonID={1}&IsComplete={2}";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

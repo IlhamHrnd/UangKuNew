@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.User
 {
-    public class UserUpdate
+    public class UserUpdate : BaseModel
     {
         private const string UserUpdateEndPoint = "{1}User/UpdateUsername?username={0}";
 
@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.User
             var request = new RestRequest
             {
                 Method = Method.Patch,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var body = new Model.Index.Body.PatchUsername
             {

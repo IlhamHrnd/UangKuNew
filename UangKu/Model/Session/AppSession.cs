@@ -21,22 +21,22 @@
 
     public class AppParameter
     {
-        private static string ageminimum = string.Empty;
-        public static string AgeMinimum { get => ageminimum; set => ageminimum = value; }
-        private static string maxfilesize = string.Empty;
-        public static string MaxFileSize { get => maxfilesize; set => maxfilesize = value; }
-        private static string maxpicture = string.Empty;
-        public static string MaxPicture { get => maxpicture; set => maxpicture = value; }
-        private static string maxResult;
-        public static string MaxResult { get => maxResult; set => maxResult = value; }
-        private static string homemaxresult = string.Empty;
-        public static string HomeMaxResult { get => homemaxresult; set => homemaxresult = value; }
-        private static string timeout = string.Empty;
-        public static string Timeout { get => timeout; set => timeout = value; }
-        private static string showlastbuild = string.Empty;
-        public static string ShowLastBuild { get => showlastbuild; set => showlastbuild = value; }
-        private static string isallowcustomdate = string.Empty;
-        public static string IsAllowCustomDate { get => isallowcustomdate; set => isallowcustomdate = value; }
+        private static int ageminimum = 0;
+        public static int AgeMinimum { get => ageminimum; set => ageminimum = value; }
+        private static int maxfilesize = 0;
+        public static int MaxFileSize { get => maxfilesize; set => maxfilesize = value; }
+        private static int maxpicture = 0;
+        public static int MaxPicture { get => maxpicture; set => maxpicture = value; }
+        private static int maxResult;
+        public static int MaxResult { get => maxResult; set => maxResult = value; }
+        private static int homemaxresult = 0;
+        public static int HomeMaxResult { get => homemaxresult; set => homemaxresult = value; }
+        private static int timeout = 0;
+        public static int Timeout { get => timeout; set => timeout = value; }
+        private static bool showlastbuild = false;
+        public static bool ShowLastBuild { get => showlastbuild; set => showlastbuild = value; }
+        private static bool isallowcustomdate = false;
+        public static bool IsAllowCustomDate { get => isallowcustomdate; set => isallowcustomdate = value; }
         private static string url = string.Empty;
         public static string URL { get => url; set => url = value; }
         private static string numbericformat = string.Empty;

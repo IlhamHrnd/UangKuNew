@@ -5,7 +5,7 @@ using UangKu.Model.Response.User;
 
 namespace UangKu.ViewModel.RestAPI.User
 {
-    public class UserLogin
+    public class UserLogin : BaseModel
     {
         private const string UserLoginEndPoint = "{2}User/GetLoginUserName?Username={0}&Password={1}";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.User
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

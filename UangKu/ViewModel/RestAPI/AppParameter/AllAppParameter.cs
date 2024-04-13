@@ -5,7 +5,7 @@ using static UangKu.Model.Response.AppParameter.GetAllAppParameter;
 
 namespace UangKu.ViewModel.RestAPI.AppParameter
 {
-    public class AllAppParameter
+    public class AllAppParameter : BaseModel
     {
         private const string AllAppParameterEndPoint = "{2}AppParameter/GetAllAppParameter?PageNumber={0}&PageSize={1}";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

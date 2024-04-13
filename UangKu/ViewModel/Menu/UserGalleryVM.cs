@@ -30,7 +30,7 @@ namespace UangKu.ViewModel.Menu
 
                 if (!string.IsNullOrEmpty(userID))
                 {
-                    var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.MaxPicture, ParameterModel.AppParameterDefault.MaxPicture),
+                    var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.MaxPicture,
                         userID, ParameterModel.ItemDefaultValue.IsDeleted);
                     if ((bool)picture.succeeded && picture.data.Count > 0)
                     {

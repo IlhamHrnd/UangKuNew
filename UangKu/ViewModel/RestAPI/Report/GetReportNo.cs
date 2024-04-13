@@ -5,7 +5,7 @@ using UangKu.Model.Response.Report;
 
 namespace UangKu.ViewModel.RestAPI.Report
 {
-    public class GetReportNo
+    public class GetReportNo : BaseModel
     {
         private const string GetReportNoEndPoint = "{2}UserReport/GetReportNo?ReportNo={0}&IsAdmin={1}";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.Report
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.Transaction
 {
-    public class PostTransaction
+    public class PostTransaction : BaseModel
     {
         private const string PostTransactionEndPoint = "{0}Transaction/PostTransaction";
 
@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
             var request = new RestRequest
             {
                 Method = Method.Post,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var body = new Model.Index.Body.PostTransaction
             {

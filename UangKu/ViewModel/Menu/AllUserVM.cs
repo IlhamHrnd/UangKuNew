@@ -26,7 +26,7 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                var alluser = await UserAll.GetAllUser(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult));
+                var alluser = await UserAll.GetAllUser(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.MaxResult);
                 if ((bool)alluser.succeeded)
                 {
                     ListAllUser.Clear();

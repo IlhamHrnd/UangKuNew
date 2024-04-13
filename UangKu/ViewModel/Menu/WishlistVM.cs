@@ -55,7 +55,7 @@ namespace UangKu.ViewModel.Menu
                     {
                         if (datas[i].productPrice != null)
                         {
-                            datas[i].priceFormat = FormatCurrency.Currency((decimal)datas[i].productPrice, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
+                            datas[i].priceFormat = FormatCurrency.Currency((decimal)datas[i].productPrice, AppParameter.CurrencyFormat);
                         }
 
                         if (!string.IsNullOrEmpty(datas[i].productPicture))

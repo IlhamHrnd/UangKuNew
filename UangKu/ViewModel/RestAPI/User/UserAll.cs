@@ -5,7 +5,7 @@ using static UangKu.Model.Response.User.AllUser;
 
 namespace UangKu.ViewModel.RestAPI.User
 {
-    public class UserAll
+    public class UserAll : BaseModel
     {
         private const string AllUserEndPoint = "{2}User/GetAllUser?PageNumber={0}&PageSize={1}";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.User
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

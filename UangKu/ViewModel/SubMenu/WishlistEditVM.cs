@@ -106,7 +106,7 @@ namespace UangKu.ViewModel.SubMenu
             if (!string.IsNullOrEmpty(wishlist.wishlistID))
             {
                 //Root Model Formatting
-                wishlist.priceFormat = FormatCurrency.Currency((decimal)wishlist.productPrice, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
+                wishlist.priceFormat = FormatCurrency.Currency((decimal)wishlist.productPrice, AppParameter.CurrencyFormat);
                 wishlist.wishlistDateFormat = DateFormat.FormattingDate((DateTime)wishlist.wishlistDate, ParameterModel.DateTimeFormat.Date);
                 if (!string.IsNullOrEmpty(wishlist.productPicture))
                 {
@@ -132,7 +132,7 @@ namespace UangKu.ViewModel.SubMenu
                 }
                 else
                 {
-                    var price = FormatCurrency.Currency((decimal)wishlist.productPrice, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
+                    var price = FormatCurrency.Currency((decimal)wishlist.productPrice, AppParameter.CurrencyFormat);
                     Ent_Price.Text = price;
                     LinkProduct = wishlist.productLink;
                     Ent_Name.Text = wishlist.productName;

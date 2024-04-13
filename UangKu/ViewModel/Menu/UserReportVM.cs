@@ -43,7 +43,7 @@ namespace UangKu.ViewModel.Menu
                 }
                 if (App.Access.IsAdmin)
                 {
-                    var alluser = await UserAll.GetAllUser(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult));
+                    var alluser = await UserAll.GetAllUser(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.MaxResult);
                     if ((bool)alluser.succeeded)
                     {
                         ListAllUser.Clear();
@@ -72,7 +72,7 @@ namespace UangKu.ViewModel.Menu
                 {
                     personID = $"&PersonID={App.Session.personID}";
                 }
-                var report = await GetUserReport.GetAllUserReport(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), personID);
+                var report = await GetUserReport.GetAllUserReport(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.MaxResult, personID);
                 if ((bool)report.succeeded)
                 {
                     ListReport.Clear();

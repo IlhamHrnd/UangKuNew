@@ -21,7 +21,7 @@ namespace UangKu.ViewModel.Menu
         public async void LoadData(int pageNumber, int pageSize, DatePicker startDate, DatePicker endDate, 
             Picker orderByPicker, InputKit.Shared.Controls.CheckBox isAscendingCheckBox, InputKit.Shared.Controls.CheckBox isFilterTransaction)
         {
-            var isallow = Converter.StringToBool(AppParameter.IsAllowCustomDate, ParameterModel.AppParameterDefault.IsAllowCustomDate);
+            var isallow = AppParameter.IsAllowCustomDate;
             IsAllowCustomDate = isallow;
 
             bool isConnect = network.IsConnected;
@@ -82,7 +82,7 @@ namespace UangKu.ViewModel.Menu
                         var item = sumtrans[i];
                         if (item.amount != null)
                         {
-                            item.amountFormat = FormatCurrency.Currency((decimal)item.amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
+                            item.amountFormat = FormatCurrency.Currency((decimal)item.amount, AppParameter.CurrencyFormat);
                         }
 
                         ListSumTrans.Add(item);
@@ -109,7 +109,7 @@ namespace UangKu.ViewModel.Menu
                     {
                         if (datas[i].amount != null)
                         {
-                            datas[i].amountFormat = FormatCurrency.Currency((decimal)datas[i].amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
+                            datas[i].amountFormat = FormatCurrency.Currency((decimal)datas[i].amount, AppParameter.CurrencyFormat);
                         }
 
                         if (!string.IsNullOrEmpty(datas[i].photo))
@@ -144,7 +144,7 @@ namespace UangKu.ViewModel.Menu
                 {
                     decimal? amount = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
                     string srTransaction = "Summary";
-                    string amountFormat = FormatCurrency.Currency((decimal)amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
+                    string amountFormat = FormatCurrency.Currency((decimal)amount, AppParameter.CurrencyFormat);
 
                     var item = new SumTransactionRoot
                     {
@@ -232,7 +232,7 @@ namespace UangKu.ViewModel.Menu
                         {
                             if (datas[i].amount != null)
                             {
-                                datas[i].amountFormat = FormatCurrency.Currency((decimal)datas[i].amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
+                                datas[i].amountFormat = FormatCurrency.Currency((decimal)datas[i].amount, AppParameter.CurrencyFormat);
                             }
 
                             if (!string.IsNullOrEmpty(datas[i].photo))
@@ -276,7 +276,7 @@ namespace UangKu.ViewModel.Menu
             try
             {
                 //FilePath
-                var fileName = Compare.StringReplace(AppParameter.BlankPDF, ParameterModel.AppParameterDefault.BlankPDF);
+                var fileName = AppParameter.BlankPDF;
                 var filePath = FileHelper.GetFilePath(fileName);
 
                 //Save Directory Location File
@@ -320,7 +320,7 @@ namespace UangKu.ViewModel.Menu
                 // Table
                 if ((bool)alltrans.succeeded)
                 {
-                    var culture = Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency);
+                    var culture = AppParameter.CurrencyFormat;
                     var tbl = GeneratePDFFile.SetTable(5, true);
 
                     // Table Header

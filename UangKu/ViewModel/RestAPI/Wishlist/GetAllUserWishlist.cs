@@ -5,7 +5,7 @@ using static UangKu.Model.Response.Wishlist.GetAllUserWishlist;
 
 namespace UangKu.ViewModel.RestAPI.Wishlist
 {
-    public class GetAllUserWishlist
+    public class GetAllUserWishlist : BaseModel
     {
         private const string GetAllUserWishlistEndPoint = "{0}UserWishlist/GetAllUserWishlist?PageNumber={2}&PageSize={3}&PersonID={1}";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 
