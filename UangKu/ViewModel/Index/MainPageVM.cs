@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.Index
         private NetworkModel network = NetworkModel.Instance;
         public MainPageVM()
         {
-            
+            Title = "Main Page";
         }
 
         [RequiresAssemblyFiles()]

@@ -10,18 +10,12 @@ namespace UangKu.Model.SubMenu
         {
             
         }
-        private string title = string.Empty;
-        public string Title { get => title; set => SetProperty(ref title, value); }
-        private bool isbusy = false;
-        public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
         private bool isvisible = false;
         public bool IsVisible { get => isvisible; set => SetProperty(ref isvisible, value); }
         private bool iseditable = false;
         public bool IsEditAble { get => iseditable; set => SetProperty(ref iseditable, value); }
         private bool isenabled = false;
         public bool IsEnabled { get => isenabled; set => SetProperty(ref isenabled, value); }
-        private string mode = string.Empty;
-        public string Mode { get => mode; set => SetProperty(ref mode, value); }
         private IList<AsriRoot> listerrorlocation { get; set; }
 
         public IList<AsriRoot> ListErrorLocation
