@@ -5,6 +5,7 @@ using UangKu.Model.Menu;
 using UangKu.Model.Session;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 using static UangKu.Model.Response.Transaction.AllTransaction;
+using static UangKu.Model.Response.Transaction.GetAllPDFTransaction;
 using static UangKu.Model.Response.Transaction.SumTransaction;
 
 namespace UangKu.ViewModel.Menu
@@ -285,12 +286,17 @@ namespace UangKu.ViewModel.Menu
                 //Process Generate PDF
                 PdfWriter writer = new PdfWriter(filePath);
                 PdfDocument pdfdoc = new PdfDocument(writer);
-                Document doc = new Document(pdfdoc);
+                Document doc = new Document(pdfdoc, iText.Kernel.Geom.PageSize.A4, false);
 
                 #region Process PDF Data
                 var sessionID = App.Session;
                 string userID = SessionModel.GetUserID(sessionID);
-                var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page, Size, userID, Builder);
+                var alltrans = await RestAPI.Transaction.GetAllPDFTransaction.AllPDFTransaction(userID, Builder);
+                var list = new List<PDFTransactionRoot>();
+                foreach (var transaction in alltrans)
+                {
+                    list.Add(transaction);
+                }
                 var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID, BuilderSum);
 
                 //Header
@@ -299,8 +305,8 @@ namespace UangKu.ViewModel.Menu
                 doc.Add(header);
 
                 //Subheader
-                var firstItem = alltrans.data.FirstOrDefault();
-                var lastItem = alltrans.data.LastOrDefault();
+                var firstItem = list.FirstOrDefault();
+                var lastItem = list.LastOrDefault();
 
                 var firstDate = DateFormat.FormattingDate((DateTime)firstItem.transDate, ParameterModel.DateTimeFormat.Date);
                 var lastDate = DateFormat.FormattingDate((DateTime)lastItem.transDate, ParameterModel.DateTimeFormat.Date);
@@ -318,7 +324,7 @@ namespace UangKu.ViewModel.Menu
                 doc.Add(nl);
 
                 // Table
-                if ((bool)alltrans.succeeded)
+                if (alltrans.Count > 0)
                 {
                     var culture = AppParameter.CurrencyFormat;
                     var tbl = GeneratePDFFile.SetTable(5, true);
@@ -331,7 +337,7 @@ namespace UangKu.ViewModel.Menu
                     tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "Trans Date", iText.Layout.Properties.TextAlignment.CENTER));
 
                     //Table Data
-                    foreach (var item in alltrans.data)
+                    foreach (var item in alltrans)
                     {
                         var amountFormat = item.amount != null ? FormatCurrency.Currency((decimal)item.amount, culture) : string.Empty;
                         var description = string.IsNullOrEmpty(item.description) ? item.srTransItem : item.description;
@@ -384,8 +390,11 @@ namespace UangKu.ViewModel.Menu
                     doc.Add(tbl);
                 }
 
-                //Add Pages Number
-                GeneratePDFFile.SetPagesNumber(pdfdoc, doc);
+                if (AppParameter.IsAddPageNumber)
+                {
+                    //Add Pages Number
+                    GeneratePDFFile.SetPagesNumber(pdfdoc, doc);
+                }
 
                 //Close Doc
                 doc.Close();

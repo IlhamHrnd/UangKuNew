@@ -169,6 +169,18 @@ namespace UangKu.Model.Base
                                 case "IsAllowCustomDate":
                                     AppParameter.IsAllowCustomDate = valueBool;
                                     break;
+
+                                case "IsAddPageNumber":
+                                    AppParameter.IsAddPageNumber = valueBool;
+                                    break;
+
+                                case "IsAddHeader":
+                                    AppParameter.IsAddHeader = valueBool;
+                                    break;
+
+                                case "IsAddFooter":
+                                    AppParameter.IsAddFooter = valueBool;
+                                    break;
                             }
                         }
                         else if (int.TryParse(data.parameterValue, out var valueInt))
