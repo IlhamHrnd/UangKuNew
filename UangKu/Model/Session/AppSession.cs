@@ -47,5 +47,11 @@
         public static string DownloadFolder { get => downloadFolder; set => downloadFolder = value; }
         private static string blankpdf = string.Empty;
         public static string BlankPDF { get => blankpdf; set => blankpdf = value; }
+        private static bool isaddpagenumber = false;
+        public static bool IsAddPageNumber { get => isaddpagenumber; set => isaddpagenumber = value; }
+        private static bool isaddheader = false;
+        public static bool IsAddHeader { get => isaddheader; set => isaddheader = value; }
+        private static bool isaddfooter = false;
+        public static bool IsAddFooter { get => isaddfooter; set => isaddfooter = value; }
     }
 }
