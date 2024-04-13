@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
 {
-    public class UpdateAppStandardReferenceItem
+    public class UpdateAppStandardReferenceItem : BaseModel
     {
         private const string UpdateASRIEndPoint = "{7}AppStandardReferenceItem/UpdateAppStandardReferenceItem?referenceID={0}&itemID={1}&itemName={2}&note={3}&isActive={4}&isUse={5}&user={6}";
 
@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
             var request = new RestRequest
             {
                 Method = Method.Patch,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.PatchAsync(request);
 

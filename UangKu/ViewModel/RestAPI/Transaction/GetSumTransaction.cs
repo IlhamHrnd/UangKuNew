@@ -6,7 +6,7 @@ using static UangKu.Model.Response.Transaction.SumTransaction;
 
 namespace UangKu.ViewModel.RestAPI.Transaction
 {
-    public class GetSumTransaction
+    public class GetSumTransaction : BaseModel
     {
         private const string SumTransactionEndPoint = "{1}Transaction/GetSumTransaction?personID={0}{2}";
 
@@ -18,7 +18,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.Profile
 {
-    public class PatchProfile
+    public class PatchProfile : BaseModel
     {
         private const string ProfileEndPoint = "{0}Profile/PatchProfile";
 
@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.Profile
             var request = new RestRequest
             {
                 Method = Method.Patch,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var body = new Model.Index.Body.PatchProfile
             {

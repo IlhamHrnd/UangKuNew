@@ -5,7 +5,7 @@ using static UangKu.Model.Response.Location.District;
 
 namespace UangKu.ViewModel.RestAPI.Location
 {
-    public class GetDistrict
+    public class GetDistrict : BaseModel
     {
         private const string GetDistrictEndPoint = "{1}Location/GetAllDistrict?CityID={0}";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.Location
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

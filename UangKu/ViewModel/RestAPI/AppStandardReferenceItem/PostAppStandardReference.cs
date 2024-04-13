@@ -5,7 +5,7 @@ using UangKu.Model.Index.Body;
 
 namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
 {
-    public class PostAppStandardReference
+    public class PostAppStandardReference : BaseModel
     {
         private const string PostASREndPoint = "{0}AppStandardReference/CreateAppStandardReference";
 
@@ -16,7 +16,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
             var request = new RestRequest
             {
                 Method = Method.Post,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var body = new PostASR
             {

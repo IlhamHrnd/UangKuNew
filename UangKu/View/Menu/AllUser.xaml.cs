@@ -22,12 +22,12 @@ public partial class AllUser : ContentPage
 
     private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
     {
-        _vm.NextPreviousPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), false);
+        _vm.NextPreviousPage_Clicked(AppParameter.MaxResult, false);
     }
 
     private void Btn_NextPage_Clicked(object sender, EventArgs e)
     {
-        _vm.NextPreviousPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), true);
+        _vm.NextPreviousPage_Clicked(AppParameter.MaxResult, true);
     }
 
     private async void Coll_User_SelectionChanged(object sender, SelectionChangedEventArgs e)

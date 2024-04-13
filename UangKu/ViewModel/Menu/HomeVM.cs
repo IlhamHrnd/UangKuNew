@@ -8,7 +8,6 @@ using UangKu.View.SubMenu;
 using UangKu.ViewModel.RestAPI.Picture;
 using UangKu.ViewModel.RestAPI.Profile;
 using UangKu.ViewModel.RestAPI.Transaction;
-using UangKu.ViewModel.RestAPI.Wishlist;
 using static UangKu.Model.Response.Transaction.SumTransaction;
 
 namespace UangKu.ViewModel.Menu
@@ -88,7 +87,7 @@ namespace UangKu.ViewModel.Menu
                             var item = sumtrans[i];
                             if (item.amount != null)
                             {
-                                item.amountFormat = FormatCurrency.Currency((decimal)item.amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
+                                item.amountFormat = FormatCurrency.Currency((decimal)item.amount, AppParameter.CurrencyFormat);
                             }
                             ListSumTrans.Add(item);
 
@@ -116,7 +115,7 @@ namespace UangKu.ViewModel.Menu
                     {
                         decimal? amount = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
                         string srTransaction = "Summary";
-                        string amountFormat = FormatCurrency.Currency((decimal)amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
+                        string amountFormat = FormatCurrency.Currency((decimal)amount, AppParameter.CurrencyFormat);
 
                         var item = new SumTransactionRoot
                         {
@@ -139,7 +138,7 @@ namespace UangKu.ViewModel.Menu
                         };
                     }
 
-                    var alltrans = await AllTransaction.GetAllTransaction(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.HomeMaxResult, ParameterModel.AppParameterDefault.HomeMaxResult),
+                    var alltrans = await AllTransaction.GetAllTransaction(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.HomeMaxResult,
                         userID, string.Empty);
                     if (alltrans != null)
                     {
@@ -149,7 +148,7 @@ namespace UangKu.ViewModel.Menu
                         {
                             if (item.data[i].amount != null)
                             {
-                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, Compare.StringReplace(AppParameter.CurrencyFormat, ParameterModel.AppParameterDefault.Currency));
+                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, AppParameter.CurrencyFormat);
                             }
 
                             if (!string.IsNullOrEmpty(item.data[i].photo))
@@ -162,7 +161,7 @@ namespace UangKu.ViewModel.Menu
                         ListAllTrans.Add(item);
                     }
 
-                    var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.HomeMaxResult, ParameterModel.AppParameterDefault.HomeMaxResult), 
+                    var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.HomeMaxResult, 
                         userID, ParameterModel.ItemDefaultValue.IsDeleted);
                     if ((bool)picture.succeeded && picture.data.Count > 0)
                     {

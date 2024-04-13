@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.Report
 {
-    public class PostReport
+    public class PostReport : BaseModel
     {
         private const string ReportEndPoint = "{0}UserReport/PostUserReport";
 
@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.Report
             var request = new RestRequest
             {
                 Method = Method.Post,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var body = new Model.Index.Body.PostReport
             {

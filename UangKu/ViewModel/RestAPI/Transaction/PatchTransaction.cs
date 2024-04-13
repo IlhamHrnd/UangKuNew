@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.Transaction
 {
-    public class PatchTransaction
+    public class PatchTransaction : BaseModel
     {
         private const string PatchTransactionEndPoint = "{0}Transaction/PatchTransaction";
 
@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
             var request = new RestRequest
             {
                 Method = Method.Patch,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var body = new Model.Index.Body.PatchTransaction
             {

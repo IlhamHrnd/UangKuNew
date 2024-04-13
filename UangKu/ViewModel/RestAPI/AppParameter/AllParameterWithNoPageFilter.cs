@@ -5,7 +5,7 @@ using static UangKu.Model.Response.AppParameter.GetAllParameterWithNoPageFilter;
 
 namespace UangKu.ViewModel.RestAPI.AppParameter
 {
-    public class AllParameterWithNoPageFilter
+    public class AllParameterWithNoPageFilter : BaseModel
     {
         private const string AllAppParameterEndPoint = "{0}AppParameter/GetAllParameterWithNoPageFilter";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

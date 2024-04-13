@@ -18,7 +18,7 @@ public partial class Wishlist : ContentPage
     protected async override void OnAppearing()
     {
         await SessionModel.SessionCheck();
-		await _vm.LoadData(FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult));
+		await _vm.LoadData(FirstPage, AppParameter.MaxResult);
     }
 
     private async void SwipeTrans_Edit(object sender, EventArgs e)

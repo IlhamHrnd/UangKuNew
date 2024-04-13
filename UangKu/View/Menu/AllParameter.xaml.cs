@@ -17,7 +17,7 @@ public partial class AllParameter : ContentPage
     {
         await SessionModel.SessionCheck();
 
-		_vm.LoadData(ParameterModel.ItemDefaultValue.FirstPage, Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult));
+		_vm.LoadData(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.MaxResult);
     }
 
     private async void SwipeParameter_Invoked(object sender, EventArgs e)
@@ -32,11 +32,11 @@ public partial class AllParameter : ContentPage
 
     private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
     {
-        _vm.NextPreviousPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), false);
+        _vm.NextPreviousPage_Clicked(AppParameter.MaxResult, false);
     }
 
     private void Btn_NextPage_Clicked(object sender, EventArgs e)
     {
-        _vm.NextPreviousPage_Clicked(Converter.StringToInt(AppParameter.MaxResult, ParameterModel.AppParameterDefault.Maxresult), true);
+        _vm.NextPreviousPage_Clicked(AppParameter.MaxResult, true);
     }
 }

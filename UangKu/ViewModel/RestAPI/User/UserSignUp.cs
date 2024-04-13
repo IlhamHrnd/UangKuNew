@@ -5,7 +5,7 @@ using UangKu.Model.Index.Body;
 
 namespace UangKu.ViewModel.RestAPI.User
 {
-    public class UserSignUp
+    public class UserSignUp : BaseModel
     {
         private const string UserSignUpEndPoint = "{2}User/CreateUsername?password={0}&email={1}";
 
@@ -16,7 +16,7 @@ namespace UangKu.ViewModel.RestAPI.User
             var request = new RestRequest
             {
                 Method = Method.Post,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var body = new SignUpBody
             {

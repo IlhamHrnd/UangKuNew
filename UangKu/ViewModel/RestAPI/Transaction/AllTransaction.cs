@@ -5,7 +5,7 @@ using static UangKu.Model.Response.Transaction.AllTransaction;
 
 namespace UangKu.ViewModel.RestAPI.Transaction
 {
-    public class AllTransaction
+    public class AllTransaction : BaseModel
     {
         private const string AllTransactionEndPoint = "{4}Transaction/GetAllTransaction?PageNumber={0}&PageSize={1}&PersonID={2}{3}";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

@@ -5,7 +5,7 @@ using static UangKu.Model.Response.AppParameter.ParameterID;
 
 namespace UangKu.ViewModel.RestAPI.AppParameter
 {
-    public class GetParameterID
+    public class GetParameterID : BaseModel
     {
         private const string ParameterIDEndPoint = "{1}AppParameter/GetParameterID?parameterID={0}";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

@@ -39,7 +39,7 @@ namespace UangKu.ViewModel.SubMenu
             Picker PicTrans, Picker PicTransItem, AvatarView Avatar, DatePicker TransDate)
         {
             bool isConnect = network.IsConnected;
-            var isallow = Converter.StringToBool(AppParameter.IsAllowCustomDate, ParameterModel.AppParameterDefault.IsAllowCustomDate);
+            var isallow = AppParameter.IsAllowCustomDate;
             IsAllowCustomDate = isallow;
 
             IsBusy = true;

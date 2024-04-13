@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.Wishlist
 {
-    public class PatchWishlist
+    public class PatchWishlist : BaseModel
     {
         private const string PatchWishlistEndPoint = "{0}UserWishlist/PatchUserWishlist";
 
@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
             var request = new RestRequest
             {
                 Method = Method.Patch,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var body = new Model.Index.Body.PatchWishlist
             {

@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.User
 {
-    public class UserLastLogin
+    public class UserLastLogin : BaseModel
     {
         private const string UserLastLoginEndPoint = "{1}User/UpdateLastLogin?username={0}";
 
@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.User
             var request = new RestRequest
             {
                 Method = Method.Patch,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteAsync(request);
 

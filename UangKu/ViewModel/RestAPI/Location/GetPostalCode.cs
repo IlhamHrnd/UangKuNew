@@ -5,7 +5,7 @@ using static UangKu.Model.Response.Location.PostalCode;
 
 namespace UangKu.ViewModel.RestAPI.Location
 {
-    public class GetPostalCode
+    public class GetPostalCode : BaseModel
     {
         private const string PostalCodeEndPoint = "{4}Location/GetPostalCode?SubdisID={0}&DisID={1}&CityID={2}&ProvID={3}";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.Location
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.Picture
 {
-    public class PostUserPicture
+    public class PostUserPicture : BaseModel
     {
         private const string PostUserPictureEndPoint = "{0}UserPicture/PostUserPicture";
 
@@ -16,7 +16,7 @@ namespace UangKu.ViewModel.RestAPI.Picture
             var request = new RestRequest
             {
                 Method = Method.Post,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var body = new Model.Index.Body.PostPicture
             {

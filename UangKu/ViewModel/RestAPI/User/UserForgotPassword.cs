@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.User
 {
-    public class UserForgotPassword
+    public class UserForgotPassword : BaseModel
     {
         private const string UserForgotPasswordEndPoint = "{3}User/UpdatePasswordUser?username={0}&password={1}&email={2}";
 
@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.User
             var request = new RestRequest
             {
                 Method = Method.Patch,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteAsync(request);
 

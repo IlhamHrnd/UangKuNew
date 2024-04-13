@@ -5,7 +5,7 @@ using static UangKu.Model.Response.Location.Provinces;
 
 namespace UangKu.ViewModel.RestAPI.Location
 {
-    public class GetProvince
+    public class GetProvince : BaseModel
     {
         private const string GetProvinceEndPoint = "{0}Location/GetAllProvince";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.Location
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

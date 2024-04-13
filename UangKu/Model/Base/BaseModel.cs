@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using UangKu.Model.Session;
 
 namespace UangKu.Model.Base
 {
@@ -27,7 +28,8 @@ namespace UangKu.Model.Base
         public string SaveDir { get => savedir; set => savedir = value; }
         private string copydir = string.Empty;
         public string CopyDir { get => copydir; set => copydir = value; }
-
+        private static int timeout = Compare.IntReplace(AppParameter.Timeout, ParameterModel.AppParameterDefault.TimeOut);
+        public static int TimeOut { get => timeout; set => timeout = value; }
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

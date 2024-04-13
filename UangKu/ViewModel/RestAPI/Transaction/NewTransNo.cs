@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.Transaction
 {
-    public class NewTransNo
+    public class NewTransNo : BaseModel
     {
         private const string GetNewTransNoEndPoint = "{1}Transaction/GetNewTransactionNo?TransType={0}";
 
@@ -16,7 +16,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

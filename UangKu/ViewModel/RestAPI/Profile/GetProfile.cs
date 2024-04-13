@@ -5,7 +5,7 @@ using static UangKu.Model.Response.Profile.Profile;
 
 namespace UangKu.ViewModel.RestAPI.Profile
 {
-    public class GetProfile
+    public class GetProfile : BaseModel
     {
         private const string ProfileEndPoint = "{1}Profile/GetPersonID?PersonID={0}";
 
@@ -17,7 +17,7 @@ namespace UangKu.ViewModel.RestAPI.Profile
             var request = new RestRequest
             {
                 Method = Method.Get,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var response = await client.ExecuteGetAsync(request);
 

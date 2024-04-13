@@ -4,7 +4,7 @@ using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.Wishlist
 {
-    public class PostWishlist
+    public class PostWishlist : BaseModel
     {
         private const string PostWishlistEndPoint = "{0}UserWishlist/PostUserWishlist";
 
@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
             var request = new RestRequest
             {
                 Method = Method.Post,
-                Timeout = Converter.StringToInt(Model.Session.AppParameter.Timeout, ParameterModel.AppParameterDefault.Timeout)
+                Timeout = TimeOut
             };
             var body = new Model.Index.Body.PostWishlist
             {
