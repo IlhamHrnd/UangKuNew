@@ -18,6 +18,8 @@ namespace UangKu.Model.Menu
         public string Ascending { get => ascending; set => SetProperty(ref ascending, value); }
         private string builder = string.Empty;
         public string Builder { get => builder; set => SetProperty(ref builder, value); }
+        private string buildersum = string.Empty;
+        public string BuilderSum { get => buildersum; set => SetProperty(ref buildersum, value); }
         private AsriRoot selectedorderby { get; set; }
         public AsriRoot SelectedOrderBy
         {

@@ -8,12 +8,12 @@ namespace UangKu.ViewModel.RestAPI.Transaction
 {
     public class GetSumTransaction
     {
-        private const string SumTransactionEndPoint = "{1}Transaction/GetSumTransaction?personID={0}";
+        private const string SumTransactionEndPoint = "{1}Transaction/GetSumTransaction?personID={0}{2}";
 
-        public static async Task<List<SumTransactionRoot>> GetSumTransactionID(string personID)
+        public static async Task<List<SumTransactionRoot>> GetSumTransactionID(string personID, string dateRange)
         {
             List<SumTransactionRoot> root = new List<SumTransactionRoot>();
-            string url = string.Format(SumTransactionEndPoint, personID, SessionModel.APIUrlLink());
+            string url = string.Format(SumTransactionEndPoint, personID, SessionModel.APIUrlLink(), dateRange);
             var client = new RestClient(url);
             var request = new RestRequest
             {
