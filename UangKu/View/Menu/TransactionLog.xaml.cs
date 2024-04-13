@@ -65,7 +65,6 @@ public partial class TransactionLog : ContentPage
 
     private async void ImgBtn_ExportPDF_Clicked(object sender, EventArgs e)
     {
-        CancellationToken token = new CancellationToken();
-        await _vm.SavePDF(token);
+        await _vm.SavePDF();
     }
 }

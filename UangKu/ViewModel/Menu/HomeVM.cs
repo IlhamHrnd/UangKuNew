@@ -79,7 +79,7 @@ namespace UangKu.ViewModel.Menu
                         await _navigation.PushAsync(new EditProfile(ParameterModel.ItemDefaultValue.NewFile));
                     }
 
-                    var sumtrans = await GetSumTransaction.GetSumTransactionID(userID);
+                    var sumtrans = await GetSumTransaction.GetSumTransactionID(userID, string.Empty);
                     if (sumtrans.Count > 0)
                     {
                         ListSumTrans.Clear();

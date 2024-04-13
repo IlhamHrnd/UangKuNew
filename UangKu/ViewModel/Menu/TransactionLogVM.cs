@@ -66,12 +66,14 @@ namespace UangKu.ViewModel.Menu
 
                     Ascending = isAscendingCheckBox.IsChecked ? "&IsAscending=true" : "&IsAscending=false";
                     Builder = Converter.BuilderString(DateRange, OrderBy, Ascending);
+                    BuilderSum = Converter.BuilderString(DateRange);
                 }
                 else
                 {
                     Builder = string.Empty;
+                    BuilderSum = string.Empty;
                 }
-                var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID);
+                var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID, BuilderSum);
                 if (sumtrans.Count > 0)
                 {
                     ListSumTrans.Clear();
@@ -267,7 +269,7 @@ namespace UangKu.ViewModel.Menu
         {
             scroll.ScrollToAsync(x, y, isAnimated);
         }
-        public async Task SavePDF(CancellationToken cancellationToken)
+        public async Task SavePDF()
         {
             IsBusy = true;
 
@@ -275,7 +277,10 @@ namespace UangKu.ViewModel.Menu
             {
                 //FilePath
                 var fileName = Compare.StringReplace(AppParameter.BlankPDF, ParameterModel.AppParameterDefault.BlankPDF);
-                var filePath = GeneratePDFFile.GetFilePath(fileName);
+                var filePath = FileHelper.GetFilePath(fileName);
+
+                //Save Directory Location File
+                SaveDir = filePath;
 
                 //Process Generate PDF
                 PdfWriter writer = new PdfWriter(filePath);
@@ -286,6 +291,7 @@ namespace UangKu.ViewModel.Menu
                 var sessionID = App.Session;
                 string userID = SessionModel.GetUserID(sessionID);
                 var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(Page, Size, userID, Builder);
+                var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID, BuilderSum);
 
                 //Header
                 string title = $"{userID} Transaction Report";
@@ -341,23 +347,39 @@ namespace UangKu.ViewModel.Menu
                     }
 
                     //Table Footer
-                    var totalIncome = alltrans.data
-                        .Where(item => item.transType == ParameterModel.ItemDefaultValue.IncomeTrans)
-                        .Sum(item => item.amount);
-                    var totalExpenditure = alltrans.data
-                        .Where(item => item.transType == ParameterModel.ItemDefaultValue.OutcomeTrans)
-                        .Sum(item => item.amount);
-                    var totalTransaction = totalIncome - totalExpenditure;
+                    if (sumtrans.Count > 0)
+                    {
+                        decimal summary = 0;
+                        foreach (var item in sumtrans)
+                        {
+                            switch (item.srTransaction)
+                            {
+                                case "Income":
+                                    ParameterModel.Transaction.Income = (decimal)item.amount;
+                                    break;
 
-                    var IncomeFormat = FormatCurrency.Currency((decimal)totalIncome, culture);
-                    var ExpenditureFormat = FormatCurrency.Currency((decimal)totalExpenditure, culture);
-                    var TotalFormat = FormatCurrency.Currency((decimal)totalTransaction, culture);
+                                case "Expenditure":
+                                    ParameterModel.Transaction.Expenditure = (decimal)item.amount;
+                                    break;
+                            }
+                        }
 
-                    tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, "Summary", iText.Layout.Properties.TextAlignment.CENTER));
-                    tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, string.Empty, iText.Layout.Properties.TextAlignment.LEFT));
-                    tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, IncomeFormat, iText.Layout.Properties.TextAlignment.RIGHT));
-                    tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, ExpenditureFormat, iText.Layout.Properties.TextAlignment.RIGHT));
-                    tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, TotalFormat, iText.Layout.Properties.TextAlignment.RIGHT));
+                        if (ParameterModel.Transaction.Income != 0 && ParameterModel.Transaction.Expenditure != 0 && sumtrans.Count > 0)
+                        {
+                            summary = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
+                        }
+
+                        //Format
+                        var income = FormatCurrency.Currency(ParameterModel.Transaction.Income, culture);
+                        var expenditure = FormatCurrency.Currency(ParameterModel.Transaction.Expenditure, culture);
+                        var sum = FormatCurrency.Currency(summary, culture);
+
+                        tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, "Summary", iText.Layout.Properties.TextAlignment.CENTER));
+                        tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, string.Empty, iText.Layout.Properties.TextAlignment.LEFT));
+                        tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, income, iText.Layout.Properties.TextAlignment.RIGHT));
+                        tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, expenditure, iText.Layout.Properties.TextAlignment.RIGHT));
+                        tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, sum, iText.Layout.Properties.TextAlignment.RIGHT));
+                    }
 
                     doc.Add(tbl);
                 }

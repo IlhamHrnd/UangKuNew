@@ -584,7 +584,7 @@ namespace UangKu.Model.Base
         }
     }
 
-    public static class GeneratePDFFile
+    public static class FileHelper
     {
         public static string GetFilePath(string fileName)
         {
@@ -598,6 +598,23 @@ namespace UangKu.Model.Base
             return result;
         }
 
+        public static bool CopyFile(string sourcePath, string destinationPath, bool isReplace)
+        {
+            try
+            {
+                File.Copy(sourcePath, destinationPath, isReplace);
+                return true;
+            }
+            catch (Exception e)
+            {
+                _ = MsgModel.MsgNotification($"{e.Message}");
+                return false;
+            }
+        }
+    }
+
+    public static class GeneratePDFFile
+    {
         public static Paragraph SetParagraph(string title, int size, iText.Layout.Properties.TextAlignment alignment)
         {
             Paragraph paragraph = new Paragraph(title)

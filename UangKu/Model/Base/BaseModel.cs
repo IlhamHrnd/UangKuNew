@@ -25,6 +25,8 @@ namespace UangKu.Model.Base
         public string Mode { get => mode; set => SetProperty(ref mode, value); }
         private string savedir = string.Empty;
         public string SaveDir { get => savedir; set => savedir = value; }
+        private string copydir = string.Empty;
+        public string CopyDir { get => copydir; set => copydir = value; }
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
