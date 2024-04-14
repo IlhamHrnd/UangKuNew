@@ -30,6 +30,8 @@ namespace UangKu.Model.Base
         public string CopyDir { get => copydir; set => copydir = value; }
         private static int timeout = Compare.IntReplace(AppParameter.Timeout, ParameterModel.AppParameterDefault.TimeOut);
         public static int TimeOut { get => timeout; set => timeout = value; }
+        private static string url = Compare.StringReplace(AppParameter.URL, ParameterModel.AppParameterDefault.URL);
+        public static string URL { get => url; set => url = value; }
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

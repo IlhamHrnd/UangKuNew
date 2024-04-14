@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.Location
         public static async Task<List<ProvincesRoot>> GetProvinces()
         {
             List<ProvincesRoot> root = new List<ProvincesRoot>();
-            string url = string.Format(GetProvinceEndPoint, SessionModel.APIUrlLink());
+            string url = string.Format(GetProvinceEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

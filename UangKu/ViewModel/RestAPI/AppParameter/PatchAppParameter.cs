@@ -10,7 +10,7 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
 
         public static async Task<string> PatchParameterID(Model.Index.Body.PatchParameter parameter)
         {
-            string url = string.Format(PatchParameterEndPoint, SessionModel.APIUrlLink());
+            string url = string.Format(PatchParameterEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

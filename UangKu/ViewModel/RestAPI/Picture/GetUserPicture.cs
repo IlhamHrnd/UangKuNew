@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.Picture
         public static async Task<UserPictureRoot> GetAllUserPicture(int pageNumber, int pageSize, string personID, bool isDeleted)
         {
             UserPictureRoot root = new UserPictureRoot();
-            string url = string.Format(GetUserPictureEndPoint, pageNumber, pageSize, personID, isDeleted, SessionModel.APIUrlLink());
+            string url = string.Format(GetUserPictureEndPoint, pageNumber, pageSize, personID, isDeleted, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

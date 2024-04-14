@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
         public static async Task<AppStandardReferenceIDRoot> GetASRAsync(string standardid)
         {
             AppStandardReferenceIDRoot root = new AppStandardReferenceIDRoot();
-            string url = string.Format(AppStandardReferenceIDEndPoint, standardid, SessionModel.APIUrlLink());
+            string url = string.Format(AppStandardReferenceIDEndPoint, standardid, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

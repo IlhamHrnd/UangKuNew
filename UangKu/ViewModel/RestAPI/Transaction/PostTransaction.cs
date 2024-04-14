@@ -10,7 +10,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
 
         public static async Task<string> PostTransactionTransNo(Model.Index.Body.PostTransaction transaction)
         {
-            string url = string.Format(PostTransactionEndPoint, SessionModel.APIUrlLink());
+            string url = string.Format(PostTransactionEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

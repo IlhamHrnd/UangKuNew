@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
         public static async Task<GetAllAppParameterRoot> GetAllAppParameter(int pageNumber, int pageSize)
         {
             GetAllAppParameterRoot root = new GetAllAppParameterRoot();
-            string url = string.Format(AllAppParameterEndPoint, pageNumber, pageSize, SessionModel.APIUrlLink());
+            string url = string.Format(AllAppParameterEndPoint, pageNumber, pageSize, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

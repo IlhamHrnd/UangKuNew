@@ -10,7 +10,7 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
 
         public static async Task<string> PostAppParameterID(Model.Index.Body.PostAppParameter parameter)
         {
-            string url = string.Format(PostAppParameterEndPoint, SessionModel.APIUrlLink());
+            string url = string.Format(PostAppParameterEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

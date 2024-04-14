@@ -10,7 +10,7 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
 
         public static async Task<string> PostNewWishlist(Model.Index.Body.PostWishlist wishlist)
         {
-            string url = string.Format(PostWishlistEndPoint, SessionModel.APIUrlLink());
+            string url = string.Format(PostWishlistEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

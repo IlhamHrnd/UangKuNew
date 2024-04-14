@@ -11,7 +11,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
         public static async Task<string> GetNewTransNo(string transType)
         {
             string transNo = string.Empty;
-            string url = string.Format(GetNewTransNoEndPoint, transType, SessionModel.APIUrlLink());
+            string url = string.Format(GetNewTransNoEndPoint, transType, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

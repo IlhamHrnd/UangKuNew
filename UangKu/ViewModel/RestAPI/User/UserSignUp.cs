@@ -11,7 +11,7 @@ namespace UangKu.ViewModel.RestAPI.User
 
         public static async Task<string> PostUserSignUp(string username, string password, string sexname, string email)
         {
-            string url = string.Format(UserSignUpEndPoint, password, email, SessionModel.APIUrlLink());
+            string url = string.Format(UserSignUpEndPoint, password, email, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

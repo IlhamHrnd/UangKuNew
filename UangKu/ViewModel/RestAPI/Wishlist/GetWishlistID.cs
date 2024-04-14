@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
         public static async Task<GetWishlistIDRoot> GetWishlistIDUser(string wishlistID)
         {
             GetWishlistIDRoot root = new GetWishlistIDRoot();
-            string url = string.Format(GetWishlistIDEndPoint, SessionModel.APIUrlLink(), wishlistID);
+            string url = string.Format(GetWishlistIDEndPoint, URL, wishlistID);
             var client = new RestClient(url);
             var request = new RestRequest
             {

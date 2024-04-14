@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.Profile
         public static async Task<ProfileRoot> GetProfileID(string personID)
         {
             ProfileRoot root = new ProfileRoot();
-            string url = string.Format(ProfileEndPoint, personID, SessionModel.APIUrlLink());
+            string url = string.Format(ProfileEndPoint, personID, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

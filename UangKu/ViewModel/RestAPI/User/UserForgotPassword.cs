@@ -10,7 +10,7 @@ namespace UangKu.ViewModel.RestAPI.User
 
         public static async Task<string> PatchUserForgotPassword(string username, string email, string password)
         {
-            string url = string.Format(UserForgotPasswordEndPoint, username, password, email, SessionModel.APIUrlLink());
+            string url = string.Format(UserForgotPasswordEndPoint, username, password, email, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.Location
         public static async Task<PostalCodeRoot> GetPostalCodes(string provID, string cityID, string disID, string subdisID)
         {
             PostalCodeRoot root = new PostalCodeRoot();
-            string url = string.Format(PostalCodeEndPoint, subdisID, disID, cityID, provID, SessionModel.APIUrlLink());
+            string url = string.Format(PostalCodeEndPoint, subdisID, disID, cityID, provID, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {
