@@ -103,7 +103,8 @@
         {
             public enum PermissionType
             {
-                StorageRead
+                StorageRead,
+                StorageWrite
             }
         }
 
