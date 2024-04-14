@@ -10,7 +10,7 @@ namespace UangKu.ViewModel.RestAPI.Report
 
         public static async Task<string> PostNewReport(Model.Index.Body.PostReport report)
         {
-            string url = string.Format(ReportEndPoint, SessionModel.APIUrlLink());
+            string url = string.Format(ReportEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

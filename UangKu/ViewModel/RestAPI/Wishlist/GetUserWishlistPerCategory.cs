@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
         public static async Task<List<GetUserWishlistPerCategoryRoot>> UserWishlistPerCategory(string personID, bool isComplete)
         {
             List<GetUserWishlistPerCategoryRoot> root = new List<GetUserWishlistPerCategoryRoot>();
-            string url = string.Format(GetUserWishlistPerCategoryEndPoint, SessionModel.APIUrlLink(), personID, isComplete);
+            string url = string.Format(GetUserWishlistPerCategoryEndPoint, URL, personID, isComplete);
             var client = new RestClient(url);
             var request = new RestRequest
             {

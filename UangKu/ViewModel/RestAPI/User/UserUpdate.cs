@@ -10,7 +10,7 @@ namespace UangKu.ViewModel.RestAPI.User
 
         public static async Task<string> PatchUsername(Model.Index.Body.PatchUsername user, string username)
         {
-            string url = string.Format(UserUpdateEndPoint, username, SessionModel.APIUrlLink());
+            string url = string.Format(UserUpdateEndPoint, username, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

@@ -11,7 +11,7 @@ namespace UangKu.ViewModel.RestAPI.Picture
         public static async Task<string> GetNewPictureID(string transType)
         {
             string pictureID = string.Empty;
-            string url = string.Format(GetNewPictureIDEndPoint, transType, SessionModel.APIUrlLink());
+            string url = string.Format(GetNewPictureIDEndPoint, transType, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

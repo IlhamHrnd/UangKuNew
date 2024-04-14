@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
         public static async Task<GetTransactionNoRoot> GetTransactionNo(string transNo)
         {
             GetTransactionNoRoot root = new GetTransactionNoRoot();
-            string url = string.Format(GetTransNoEndPoint, transNo, SessionModel.APIUrlLink());
+            string url = string.Format(GetTransNoEndPoint, transNo, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

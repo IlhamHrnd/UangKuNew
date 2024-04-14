@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.Location
         public static async Task<List<CitiesRoot>> GetCities(string provID)
         {
             List<CitiesRoot> root = new List<CitiesRoot>();
-            string url = string.Format(GetCitiesEndPoint, provID, SessionModel.APIUrlLink());
+            string url = string.Format(GetCitiesEndPoint, provID, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

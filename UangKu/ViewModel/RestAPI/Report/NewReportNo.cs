@@ -11,7 +11,7 @@ namespace UangKu.ViewModel.RestAPI.Report
         public static async Task<string> GetNewReportNo(string reportType)
         {
             string reportNo = string.Empty;
-            string url = string.Format(GetNewReportNoEndPoint, reportType, SessionModel.APIUrlLink());
+            string url = string.Format(GetNewReportNoEndPoint, reportType, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

@@ -11,7 +11,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
 
         public static async Task<string> PostASR(string referenceID, string referenceName, int itemLength, string note)
         {
-            string url = string.Format(PostASREndPoint, SessionModel.APIUrlLink());
+            string url = string.Format(PostASREndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

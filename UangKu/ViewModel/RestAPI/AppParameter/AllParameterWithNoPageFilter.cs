@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
         public static async Task<List<ParameterWithNoPageFilterRoot>> GetAllAppParameter()
         {
             List<ParameterWithNoPageFilterRoot> root = new List<ParameterWithNoPageFilterRoot>();
-            string url = string.Format(AllAppParameterEndPoint, SessionModel.APIUrlLink());
+            string url = string.Format(AllAppParameterEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

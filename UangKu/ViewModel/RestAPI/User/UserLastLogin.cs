@@ -10,7 +10,7 @@ namespace UangKu.ViewModel.RestAPI.User
 
         public static async Task<string> PatchUserLastLogin(string username)
         {
-            string url = string.Format(UserLastLoginEndPoint, username, SessionModel.APIUrlLink());
+            string url = string.Format(UserLastLoginEndPoint, username, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
         public static async Task<AllTransactionRoot> GetAllTransaction(int pageNumber, int pageSize, string personID, string dateRange)
         {
             AllTransactionRoot root = new AllTransactionRoot();
-            string url = string.Format(AllTransactionEndPoint, pageNumber, pageSize, personID, dateRange, SessionModel.APIUrlLink());
+            string url = string.Format(AllTransactionEndPoint, pageNumber, pageSize, personID, dateRange, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

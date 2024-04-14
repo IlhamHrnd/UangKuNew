@@ -10,7 +10,7 @@ namespace UangKu.ViewModel.RestAPI.Profile
 
         public static async Task<string> PatchProfileID(Model.Index.Body.PatchProfile profile)
         {
-            string url = string.Format(ProfileEndPoint, SessionModel.APIUrlLink());
+            string url = string.Format(ProfileEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

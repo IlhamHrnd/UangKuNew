@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
         public static async Task<ParameterIDRoot> GetParameter(string parameterID)
         {
             ParameterIDRoot root = new ParameterIDRoot();
-            string url = string.Format(ParameterIDEndPoint, parameterID, SessionModel.APIUrlLink());
+            string url = string.Format(ParameterIDEndPoint, parameterID, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

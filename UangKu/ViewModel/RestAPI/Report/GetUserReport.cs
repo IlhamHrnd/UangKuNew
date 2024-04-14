@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.Report
         public static async Task<ReportRoot> GetAllUserReport(int pageNumber, int pageSize, string personID)
         {
             ReportRoot root = new ReportRoot();
-            string url = string.Format(UserReportEndPoint, pageNumber, pageSize, personID, SessionModel.APIUrlLink());
+            string url = string.Format(UserReportEndPoint, pageNumber, pageSize, personID, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

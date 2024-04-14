@@ -11,7 +11,7 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
         public static async Task<string> GetNewWishlistIDNo(string transType)
         {
             string wishlistID = string.Empty;
-            string url = string.Format(GetNewWishlistIDEndPoint, SessionModel.APIUrlLink(), transType);
+            string url = string.Format(GetNewWishlistIDEndPoint, URL, transType);
             var client = new RestClient(url);
             var request = new RestRequest
             {

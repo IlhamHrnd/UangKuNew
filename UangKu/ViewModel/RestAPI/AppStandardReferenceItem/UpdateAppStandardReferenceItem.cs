@@ -10,7 +10,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
 
         public static async Task<string> PatchASRI(string referenceID, string itemID, string itemName, string note, bool isActive, bool isUse, string user)
         {
-            string url = string.Format(UpdateASRIEndPoint, referenceID, itemID, itemName, note, isActive, isUse, user, SessionModel.APIUrlLink());
+            string url = string.Format(UpdateASRIEndPoint, referenceID, itemID, itemName, note, isActive, isUse, user, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

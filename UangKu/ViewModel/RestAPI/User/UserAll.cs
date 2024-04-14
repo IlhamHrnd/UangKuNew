@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.User
         public static async Task<AllUserRoot> GetAllUser(int pageNumber, int pageSize)
         {
             AllUserRoot root = new AllUserRoot();
-            string url = string.Format(AllUserEndPoint, pageNumber, pageSize, SessionModel.APIUrlLink());
+            string url = string.Format(AllUserEndPoint, pageNumber, pageSize, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

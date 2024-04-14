@@ -11,7 +11,7 @@ namespace UangKu.ViewModel.RestAPI.Picture
         public static async Task<string> PostNewUserPicture(Model.Index.Body.PostPicture picture)
         {
             string UserPicture = string.Empty;
-            string url = string.Format(PostUserPictureEndPoint, SessionModel.APIUrlLink());
+            string url = string.Format(PostUserPictureEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

@@ -11,7 +11,7 @@ namespace UangKu.ViewModel.RestAPI.Picture
         public static async Task<string> DeleteUserPictureID(string pictureID, Model.Index.Body.DeleteUserPicture picture)
         {
             string pictureMsg = string.Empty;
-            string url = string.Format(DeleteUserPictureEndPoint, pictureID, SessionModel.APIUrlLink());
+            string url = string.Format(DeleteUserPictureEndPoint, pictureID, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

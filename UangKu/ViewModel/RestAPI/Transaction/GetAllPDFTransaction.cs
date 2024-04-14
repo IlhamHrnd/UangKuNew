@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
         public static async Task<List<PDFTransactionRoot>> AllPDFTransaction(string personID, string dateRange)
         {
             List<PDFTransactionRoot> root = new List<PDFTransactionRoot>();
-            string url = string.Format(GetAllPDFTransactionEndPoint, SessionModel.APIUrlLink(), personID, dateRange);
+            string url = string.Format(GetAllPDFTransactionEndPoint, URL, personID, dateRange);
             var client = new RestClient(url);
             var request = new RestRequest
             {

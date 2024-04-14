@@ -11,7 +11,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
         public static async Task<List<T>> GetAsriAsync<T>(string id, bool isActive, bool isUse)
         {
             List<T> root = new List<T>();
-            string url = string.Format(AppStandardReferenceItemEndPoint, id, isActive, isUse, SessionModel.APIUrlLink());
+            string url = string.Format(AppStandardReferenceItemEndPoint, id, isActive, isUse, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

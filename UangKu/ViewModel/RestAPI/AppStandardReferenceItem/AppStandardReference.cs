@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
         public static async Task<AppStandardReferenceRoot> GetAllASR(int pageNumber, int pageSize)
         {
             AppStandardReferenceRoot root = new AppStandardReferenceRoot();
-            string url = string.Format(AppStandardReferenceEndPoint, pageNumber, pageSize, SessionModel.APIUrlLink());
+            string url = string.Format(AppStandardReferenceEndPoint, pageNumber, pageSize, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

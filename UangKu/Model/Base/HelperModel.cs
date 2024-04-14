@@ -245,12 +245,6 @@ namespace UangKu.Model.Base
                 }
             }
         }
-
-        public static string APIUrlLink()
-        {
-            string result = Compare.StringReplace(AppParameter.URL, AppParameterDefault.URL);
-            return result;
-        }
     }
 
     public static class DateFormat

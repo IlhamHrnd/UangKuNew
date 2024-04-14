@@ -12,7 +12,7 @@ namespace UangKu.ViewModel.RestAPI.User
         public static async Task<UsernameRoot> GetUserName(string username)
         {
             UsernameRoot root = new UsernameRoot();
-            string url = string.Format(UserNameEndPoint, username, SessionModel.APIUrlLink());
+            string url = string.Format(UserNameEndPoint, username, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {

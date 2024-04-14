@@ -10,7 +10,7 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
 
         public static async Task<string> PatchWishlistID(Model.Index.Body.PatchWishlist wishlist)
         {
-            string url = string.Format(PatchWishlistEndPoint, SessionModel.APIUrlLink());
+            string url = string.Format(PatchWishlistEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
             {
