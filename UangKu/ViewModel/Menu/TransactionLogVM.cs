@@ -3,6 +3,7 @@ using iText.Layout;
 using UangKu.Model.Base;
 using UangKu.Model.Menu;
 using UangKu.Model.Session;
+using static UangKu.Model.Base.ParameterModel.PermissionManager;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 using static UangKu.Model.Response.Transaction.AllTransaction;
 using static UangKu.Model.Response.Transaction.GetAllPDFTransaction;
@@ -270,12 +271,30 @@ namespace UangKu.ViewModel.Menu
         {
             scroll.ScrollToAsync(x, y, isAnimated);
         }
-        public async Task SavePDF()
+        public async Task<bool> SavePDF()
         {
             IsBusy = true;
 
             try
             {
+                //Check Permission
+                PermissionType[] type =
+                {
+                    PermissionType.StorageRead,
+                    PermissionType.StorageWrite
+                };
+
+                foreach (var item in type)
+                {
+                    await PermissionRequest.RequestPermission(item);
+                    var isGranted = await PermissionRequest.CheckPermissionAsync(item);
+                    if (!isGranted)
+                    {
+                        await MsgModel.MsgNotification($"{item} Not Granted");
+                        return false;
+                    }
+                }
+
                 //FilePath
                 var fileName = AppParameter.BlankPDF;
                 var filePath = FileHelper.GetFilePath(fileName);
@@ -390,19 +409,37 @@ namespace UangKu.ViewModel.Menu
                     doc.Add(tbl);
                 }
 
+                //Add Header Pages
+                if (AppParameter.IsAddHeader)
+                {
+
+                }
+
+                //Add Footer Pages
+                if (AppParameter.IsAddFooter)
+                {
+                    var date = DateFormat.FormattingDate(ParameterModel.DateFormat.DateTime, ParameterModel.DateTimeFormat.Dateshortmonthhourminute);
+                    string footer = $"Generated On {date}";
+                    var parFooter = GeneratePDFFile.SetParagraph(footer, 10, iText.Layout.Properties.TextAlignment.CENTER);
+                    GeneratePDFFile.SetFooterPages(parFooter, pdfdoc, doc);
+                }
+
+                //Add Pages Number
                 if (AppParameter.IsAddPageNumber)
                 {
-                    //Add Pages Number
                     GeneratePDFFile.SetPagesNumber(pdfdoc, doc);
                 }
 
                 //Close Doc
                 doc.Close();
+                await MsgModel.MsgNotification($"Successfully Create {fileName} On {filePath}");
+                return true;
                 #endregion
             }
             catch (Exception e)
             {
                 await MsgModel.MsgNotification($"{e.Message}");
+                return false;
             }
             finally
             {

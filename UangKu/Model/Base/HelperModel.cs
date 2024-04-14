@@ -713,6 +713,31 @@ namespace UangKu.Model.Base
                    iText.Layout.Properties.VerticalAlignment.TOP, 0);
             }
         }
+
+        public static void SetFooterPages(Paragraph par, PdfDocument pdfdoc, Document doc)
+        {
+            for (int i = 1; i <= pdfdoc.GetNumberOfPages(); i++)
+            {
+                PdfPage pdfPage = pdfdoc.GetPage(i);
+                pdfPage.SetIgnorePageRotationForContent(true);
+
+                var pageSize = pdfPage.GetPageSize();
+                float x;
+                float y;
+                if (pdfPage.GetRotation() % 180 == 0)
+                {
+                    x = pageSize.GetWidth() / 2;
+                    y = pageSize.GetBottom() + 20;
+                }
+                else
+                {
+                    x = pageSize.GetHeight() / 2;
+                    y = pageSize.GetRight() - 20;
+                }
+
+                doc.ShowTextAligned(par, x, y, i, iText.Layout.Properties.TextAlignment.CENTER, iText.Layout.Properties.VerticalAlignment.BOTTOM, 0);
+            }
+        }
     }
 
     public static class Compare
@@ -899,6 +924,10 @@ namespace UangKu.Model.Base
                 case PermissionType.StorageRead:
                     status = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
                     break;
+
+                case PermissionType.StorageWrite:
+                    status = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
+                    break;
             }
 
             if (status != PermissionStatus.Granted)
@@ -908,10 +937,33 @@ namespace UangKu.Model.Base
                     case PermissionType.StorageRead:
                         status = await Permissions.RequestAsync<Permissions.StorageRead>();
                         break;
+
+                    case PermissionType.StorageWrite:
+                        status = await Permissions.RequestAsync<Permissions.StorageWrite>();
+                        break;
                 }
             }
 
             await MsgModel.MsgNotification($"{permissionType} Is {status}");
+        }
+
+        public static async Task<bool> CheckPermissionAsync(PermissionType type)
+        {
+            var status = PermissionStatus.Unknown;
+
+            switch (type)
+            {
+                case PermissionType.StorageRead:
+                    status = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
+                    break;
+
+                case PermissionType.StorageWrite:
+                    status = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
+                    break;
+            }
+
+            bool isGranted = status == PermissionStatus.Granted;
+            return isGranted;
         }
     }
 
