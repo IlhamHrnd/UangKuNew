@@ -432,7 +432,13 @@ namespace UangKu.ViewModel.Menu
 
                 //Close Doc
                 doc.Close();
-                await MsgModel.MsgNotification($"Successfully Create {fileName} On {filePath}");
+
+                if (!string.IsNullOrEmpty(filePath))
+                {
+                    var token = new CancellationToken();
+                    var pdfBytes = Converter.PDFToByte(filePath);
+                    await FileHelper.SaveFile(fileName, pdfBytes, token);
+                }
                 return true;
                 #endregion
             }

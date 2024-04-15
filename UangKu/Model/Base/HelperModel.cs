@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Storage;
 using iText.IO.Image;
 using iText.Kernel.Pdf;
 using iText.Kernel.Pdf.Action;
@@ -513,6 +514,13 @@ namespace UangKu.Model.Base
             }
         }
 
+        //Function Untuk Convert PDF Ke Byte[]
+        public static byte[] PDFToByte(string filePath)
+        {
+            byte[] pdfBytes = File.ReadAllBytes(filePath);
+            return pdfBytes;
+        }
+
         //Class Untuk Decode Base64 Ke Byte[]
         public static byte[] DecodeBase64ToBytes(string base64String)
         {
@@ -634,6 +642,21 @@ namespace UangKu.Model.Base
             {
                 _ = MsgModel.MsgNotification($"{e.Message}");
                 return false;
+            }
+        }
+
+        public static async Task SaveFile(string fileName, byte[] pdfBytes, CancellationToken token)
+        {
+            var stream = new MemoryStream(pdfBytes);
+            var fileSaverResult = await FileSaver.SaveAsync(fileName, stream, token);
+
+            if (fileSaverResult.IsSuccessful)
+            {
+                await MsgModel.MsgNotification($"PDF file saved successfully at: {fileSaverResult.FilePath}", token);
+            }
+            else
+            {
+                await MsgModel.MsgNotification($"Failed to save PDF file: {fileSaverResult.Exception.Message}", token);
             }
         }
     }
