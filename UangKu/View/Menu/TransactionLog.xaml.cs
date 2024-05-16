@@ -11,6 +11,7 @@ public partial class TransactionLog : ContentPage
     DatePicker DatePicker = null;
     Picker Picker = new Picker();
     InputKit.Shared.Controls.CheckBox CheckBox = new InputKit.Shared.Controls.CheckBox();
+    InputKit.Shared.Controls.SelectionView SelectionView = new InputKit.Shared.Controls.SelectionView();
     public TransactionLog()
 	{
         InitializeComponent();
@@ -20,20 +21,20 @@ public partial class TransactionLog : ContentPage
     protected async override void OnAppearing()
     {
         await SessionModel.SessionCheck();
-        _vm.LoadData(FirstPage, AppParameter.MaxResult,
-                  DatePicker, DatePicker, Picker, CheckBox, CheckBox);
+        _vm.LoadData(FirstPage, AppParameter.MaxResult, DatePicker, DatePicker, 
+            Picker, CheckBox, CheckBox, SelectionView);
     }
 
     private void Btn_NextPage_Clicked(object sender, EventArgs e)
     {
-        _vm.NextPreviousPage_Clicked(AppParameter.MaxResult, Date_StartDate, Date_EndDate,
-            Pic_OrderBy, CB_IsAscending, true, CB_FilterTransaction);
+        _vm.NextPreviousPage_Clicked(AppParameter.MaxResult, Date_StartDate, Date_EndDate, Pic_OrderBy, 
+            CB_IsAscending, true, CB_FilterTransaction, SV_Filter);
     }
 
     private void Btn_PreviousPage_Clicked(object sender, EventArgs e)
     {
-        _vm.NextPreviousPage_Clicked(AppParameter.MaxResult, Date_StartDate, Date_EndDate,
-            Pic_OrderBy, CB_IsAscending, false, CB_FilterTransaction);
+        _vm.NextPreviousPage_Clicked(AppParameter.MaxResult, Date_StartDate, Date_EndDate, Pic_OrderBy, 
+            CB_IsAscending, false, CB_FilterTransaction, SV_Filter);
     }
 
     private async void Bar_AddItem_Clicked(object sender, EventArgs e)
@@ -48,8 +49,8 @@ public partial class TransactionLog : ContentPage
 
     private void Btn_SearchTransaction_Clicked(object sender, EventArgs e)
     {
-        _vm.LoadData(FirstPage, AppParameter.MaxResult,
-            Date_StartDate, Date_EndDate, Pic_OrderBy, CB_IsAscending, CB_FilterTransaction);
+        _vm.LoadData(FirstPage, AppParameter.MaxResult, Date_StartDate, Date_EndDate, 
+            Pic_OrderBy, CB_IsAscending, CB_FilterTransaction, SV_Filter);
     }
 
     private void ImgBtn_ScrollTop_Clicked(object sender, EventArgs e)

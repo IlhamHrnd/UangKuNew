@@ -75,5 +75,33 @@ namespace UangKu.Model.Menu
             }
             set { listorderby = value; }
         }
+        private IList<AsriTwoRoot> listtrans { get; set; }
+
+        public IList<AsriTwoRoot> ListTrans
+        {
+            get
+            {
+                if (listtrans == null)
+                {
+                    listtrans = new ObservableCollection<AsriTwoRoot>();
+                }
+                return listtrans;
+            }
+            set { listtrans = value; }
+        }
+        private AsriTwoRoot selectedfilter { get; set; }
+
+        public AsriTwoRoot SelectedFilter
+        {
+            get { return selectedfilter; }
+            set
+            {
+                if (selectedfilter != value)
+                {
+                    selectedfilter = value;
+                    OnPropertyChanged(nameof(selectedfilter));
+                }
+            }
+        }
     }
 }

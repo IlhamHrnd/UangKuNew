@@ -221,8 +221,8 @@ namespace UangKu.Model.Base
                                     AppParameter.URL = data.parameterValue;
                                     break;
 
-                                case "NumbericFormat":
-                                    AppParameter.NumbericFormat = data.parameterValue;
+                                case "NumericFormat":
+                                    AppParameter.NumericFormat = data.parameterValue;
                                     break;
 
                                 case "CurrencyFormat":
@@ -257,9 +257,15 @@ namespace UangKu.Model.Base
             return formattedDate;
         }
 
-        public static DateTime FormattingDateSplit(DateTime dateTime)
+        public static DateTime FormattingDateSplit(int year, int month, int day)
         {
-            var date = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day);
+            if (month == 1)
+            {
+                year--;
+                month = 12;
+            }
+
+            var date = new DateTime(year, month, day);
 
             return date;
         }
@@ -561,50 +567,6 @@ namespace UangKu.Model.Base
             {
                 builder.Append(items[i]);
             }
-            var result = builder.ToString();
-            return result;
-        }
-
-        //Function Untuk StringBuilder Ke Table
-        public static string StringBuilderToTable(StringBuilder sb)
-        {
-            // Parse the StringBuilder content and create a table string
-            string[] lines = sb.ToString().Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-            string[] headers = lines[0].Split('\t');
-            int numColumns = headers.Length;
-
-            // Generate the table content
-            StringBuilder builder = new StringBuilder();
-            builder.AppendLine("<table>");
-            builder.AppendLine("<thead>");
-            builder.AppendLine("<tr>");
-
-            foreach (var header in headers)
-            {
-                builder.AppendLine($"<th>{header}</th>");
-            }
-
-            builder.AppendLine("</tr>");
-            builder.AppendLine("</thead>");
-            builder.AppendLine("<tbody>");
-
-            foreach (var line in lines.Skip(1))
-            {
-                string[] columns = line.Split('\t');
-                builder.AppendLine("<tr>");
-
-                foreach (var column in columns)
-                {
-                    builder.AppendLine($"<td>{column}</td>");
-                }
-
-                builder.AppendLine("</tr>");
-            }
-
-            builder.AppendLine("</tbody>");
-            builder.AppendLine("</table>");
-
-            //Result
             var result = builder.ToString();
             return result;
         }

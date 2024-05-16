@@ -153,7 +153,7 @@ namespace UangKu.ViewModel.SubMenu
             {
                 IsEdit = true;
                 int number = ListASRI.Count + 1;
-                var format = NumericFormat.NumberDigit(number, AppParameter.NumbericFormat);
+                var format = NumericFormat.NumberDigit(number, AppParameter.NumericFormat);
                 itemID.Text = $"{StandardID.Text}-{format}";
             }
         }
