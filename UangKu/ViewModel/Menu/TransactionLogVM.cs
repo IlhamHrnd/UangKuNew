@@ -21,11 +21,10 @@ namespace UangKu.ViewModel.Menu
             _navigation = navigation;
         }
         public async void LoadData(int pageNumber, int pageSize, DatePicker startDate, DatePicker endDate, 
-            Picker orderByPicker, InputKit.Shared.Controls.CheckBox isAscendingCheckBox, InputKit.Shared.Controls.CheckBox isFilterTransaction)
+            Picker orderByPicker, InputKit.Shared.Controls.CheckBox isAscendingCheckBox, InputKit.Shared.Controls.CheckBox isFilterTransaction,
+            InputKit.Shared.Controls.SelectionView transFilter)
         {
-            var isallow = AppParameter.IsAllowCustomDate;
-            IsAllowCustomDate = isallow;
-
+            IsAllowCustomDate = AppParameter.IsAllowCustomDate;
             bool isConnect = network.IsConnected;
             IsBusy = true;
             try
@@ -39,7 +38,44 @@ namespace UangKu.ViewModel.Menu
                 }
                 if (IsAllowCustomDate && isFilterTransaction.IsChecked)
                 {
-                    if (startDate != null && endDate != null)
+                    if (transFilter.SelectedItem != null)
+                    {
+                        var date = ParameterModel.DateFormat.DateTime;
+                        DateTime startDays;
+                        DateTime endDays;
+                        string start;
+                        string end;
+
+                        switch (SelectedFilter.itemID)
+                        {
+                            case "TransFilter-001":
+                                DateRange = $"&StartDate={date}&EndDate={date}";
+                                break;
+
+                            case "TransFilter-002":
+                                startDays = DateFormat.AddDays(-7, date);
+                                start = DateFormat.FormattingDate(startDays, ParameterModel.DateTimeFormat.Date);
+                                end = DateFormat.FormattingDate(date, ParameterModel.DateTimeFormat.Date);
+                                DateRange = $"&StartDate={start}&EndDate={end}";
+                                break;
+
+                            case "TransFilter-003":
+                                startDays = DateFormat.FormattingDateSplit(date.Year, date.Month, 1);
+                                start = DateFormat.FormattingDate(startDays, ParameterModel.DateTimeFormat.Date);
+                                end = DateFormat.FormattingDate(date, ParameterModel.DateTimeFormat.Date);
+                                DateRange = $"&StartDate={start}&EndDate={end}";
+                                break;
+
+                            case "TransFilter-004":
+                                startDays = DateFormat.FormattingDateSplit(date.Year, date.Month - 1, 1);
+                                endDays = DateFormat.FormattingDateSplit(date.Year, date.Month - 1, date.Day);
+                                start = DateFormat.FormattingDate(startDays, ParameterModel.DateTimeFormat.Date);
+                                end = DateFormat.FormattingDate(endDays, ParameterModel.DateTimeFormat.Date);
+                                DateRange = $"&StartDate={start}&EndDate={end}";
+                                break;
+                        }
+                    }
+                    else if (startDate != null && endDate != null)
                     {
                         DateRange = $"&StartDate={startDate.Date}&EndDate={endDate.Date}";
                     }
@@ -142,6 +178,15 @@ namespace UangKu.ViewModel.Menu
                         ListOrderBy.Add(orderby[i]);
                     }
                 }
+                var transfilter = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriTwoRoot>("TransFilter", true, true);
+                if (transfilter.Count > 0)
+                {
+                    ListTrans.Clear();
+                    for (int i = 0; i < transfilter.Count; i++)
+                    {
+                        ListTrans.Add(transfilter[i]);
+                    }
+                }
                 if (ParameterModel.Transaction.Income != 0 && ParameterModel.Transaction.Expenditure != 0 && ListSumTrans.Count > 0)
                 {
                     decimal? amount = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
@@ -168,7 +213,8 @@ namespace UangKu.ViewModel.Menu
             }
         }
         public async void NextPreviousPage_Clicked(int pageSize, DatePicker startDate, DatePicker endDate, Picker orderByPicker, 
-            InputKit.Shared.Controls.CheckBox isAscendingCheckBox, bool isNext, InputKit.Shared.Controls.CheckBox isFilterTransaction)
+            InputKit.Shared.Controls.CheckBox isAscendingCheckBox, bool isNext, InputKit.Shared.Controls.CheckBox isFilterTransaction,
+            InputKit.Shared.Controls.SelectionView transFilter)
         {
             bool isConnect = network.IsConnected;
             IsBusy = true;
@@ -194,7 +240,44 @@ namespace UangKu.ViewModel.Menu
                     int pages = isNext ? Page + 1 : Page - 1;
                     if (IsAllowCustomDate && isFilterTransaction.IsChecked)
                     {
-                        if (startDate != null && endDate != null)
+                        if (transFilter.SelectedItem != null)
+                        {
+                            var date = ParameterModel.DateFormat.DateTime;
+                            DateTime startDays;
+                            DateTime endDays;
+                            string start;
+                            string end;
+
+                            switch (SelectedFilter.itemID)
+                            {
+                                case "TransFilter-001":
+                                    DateRange = $"&StartDate={date}&EndDate={date}";
+                                    break;
+
+                                case "TransFilter-002":
+                                    startDays = DateFormat.AddDays(-7, date);
+                                    start = DateFormat.FormattingDate(startDays, ParameterModel.DateTimeFormat.Date);
+                                    end = DateFormat.FormattingDate(date, ParameterModel.DateTimeFormat.Date);
+                                    DateRange = $"&StartDate={start}&EndDate={end}";
+                                    break;
+
+                                case "TransFilter-003":
+                                    startDays = DateFormat.FormattingDateSplit(date.Year, date.Month, 1);
+                                    start = DateFormat.FormattingDate(startDays, ParameterModel.DateTimeFormat.Date);
+                                    end = DateFormat.FormattingDate(date, ParameterModel.DateTimeFormat.Date);
+                                    DateRange = $"&StartDate={start}&EndDate={end}";
+                                    break;
+
+                                case "TransFilter-004":
+                                    startDays = DateFormat.FormattingDateSplit(date.Year, date.Month - 1, 1);
+                                    endDays = DateFormat.FormattingDateSplit(date.Year, date.Month - 1, date.Day);
+                                    start = DateFormat.FormattingDate(startDays, ParameterModel.DateTimeFormat.Date);
+                                    end = DateFormat.FormattingDate(endDays, ParameterModel.DateTimeFormat.Date);
+                                    DateRange = $"&StartDate={start}&EndDate={end}";
+                                    break;
+                            }
+                        }
+                        else if (startDate != null && endDate != null)
                         {
                             DateRange = $"&StartDate={startDate.Date}&EndDate={endDate.Date}";
                         }

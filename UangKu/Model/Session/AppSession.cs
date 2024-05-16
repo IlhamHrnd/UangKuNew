@@ -39,8 +39,8 @@
         public static bool IsAllowCustomDate { get => isallowcustomdate; set => isallowcustomdate = value; }
         private static string url = string.Empty;
         public static string URL { get => url; set => url = value; }
-        private static string numbericformat = string.Empty;
-        public static string NumbericFormat { get => numbericformat; set => numbericformat = value; }
+        private static string numericformat = string.Empty;
+        public static string NumericFormat { get => numericformat; set => numericformat = value; }
         private static string currencyformat = string.Empty;
         public static string CurrencyFormat { get => currencyformat; set => currencyformat = value; }
         private static string downloadFolder = string.Empty;
