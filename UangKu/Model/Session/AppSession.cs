@@ -53,5 +53,7 @@
         public static bool IsAddHeader { get => isaddheader; set => isaddheader = value; }
         private static bool isaddfooter = false;
         public static bool IsAddFooter { get => isaddfooter; set => isaddfooter = value; }
+        private static string pdfpagesize = string.Empty;
+        public static string PDFPageSize { get => pdfpagesize; set => pdfpagesize = value; }
     }
 }

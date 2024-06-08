@@ -236,6 +236,10 @@ namespace UangKu.Model.Base
                                 case "BlankPDF":
                                     AppParameter.BlankPDF = data.parameterValue;
                                     break;
+
+                                case "PDFPageSize":
+                                    AppParameter.PDFPageSize = data.parameterValue;
+                                    break;
                             }
                         }
                     }
@@ -680,6 +684,42 @@ namespace UangKu.Model.Base
             }
 
             return cell;
+        }
+
+        public static iText.Kernel.Geom.PageSize SetPageSize(string size)
+        {
+            var pageSize = new Dictionary<string, iText.Kernel.Geom.PageSize>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "A0", iText.Kernel.Geom.PageSize.A0 },
+                { "A1", iText.Kernel.Geom.PageSize.A1 },
+                { "A2", iText.Kernel.Geom.PageSize.A2 },
+                { "A3", iText.Kernel.Geom.PageSize.A3 },
+                { "A4", iText.Kernel.Geom.PageSize.A4 },
+                { "A5", iText.Kernel.Geom.PageSize.A5 },
+                { "A6", iText.Kernel.Geom.PageSize.A6 },
+                { "A7", iText.Kernel.Geom.PageSize.A7 },
+                { "A8", iText.Kernel.Geom.PageSize.A8 },
+                { "A9", iText.Kernel.Geom.PageSize.A9 },
+                { "A10", iText.Kernel.Geom.PageSize.A10 },
+                { "B0", iText.Kernel.Geom.PageSize.B0 },
+                { "B1", iText.Kernel.Geom.PageSize.B1 },
+                { "B2", iText.Kernel.Geom.PageSize.B2 },
+                { "B3", iText.Kernel.Geom.PageSize.B3 },
+                { "B4", iText.Kernel.Geom.PageSize.B4 },
+                { "B5", iText.Kernel.Geom.PageSize.B5 },
+                { "B6", iText.Kernel.Geom.PageSize.B6 },
+                { "B7", iText.Kernel.Geom.PageSize.B7 },
+                { "B8", iText.Kernel.Geom.PageSize.B8 },
+                { "B9", iText.Kernel.Geom.PageSize.B9 },
+                { "B10", iText.Kernel.Geom.PageSize.B10 },
+                { "executive", iText.Kernel.Geom.PageSize.EXECUTIVE },
+                { "ledger", iText.Kernel.Geom.PageSize.LEDGER },
+                { "legal", iText.Kernel.Geom.PageSize.LEGAL },
+                { "letter", iText.Kernel.Geom.PageSize.LETTER },
+                { "tabloid", iText.Kernel.Geom.PageSize.TABLOID }
+            };
+            var pages = pageSize.TryGetValue(size, out var page) ? page : iText.Kernel.Geom.PageSize.A4;
+            return pages;
         }
 
         public static void SetPagesNumber(PdfDocument pdfDoc, Document doc)
