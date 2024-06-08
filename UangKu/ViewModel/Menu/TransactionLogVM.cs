@@ -378,17 +378,14 @@ namespace UangKu.ViewModel.Menu
                     }
                 }
 
-                //FilePath
-                var fileName = AppParameter.BlankPDF;
-                var filePath = FileHelper.GetFilePath(fileName);
-
                 //Save Directory Location File
-                SaveDir = filePath;
+                SaveDir = FileHelper.GetFilePath(AppParameter.BlankPDF);
+                var size = GeneratePDFFile.SetPageSize(AppParameter.PDFPageSize);
 
                 //Process Generate PDF
-                PdfWriter writer = new PdfWriter(filePath);
+                PdfWriter writer = new PdfWriter(SaveDir);
                 PdfDocument pdfdoc = new PdfDocument(writer);
-                Document doc = new Document(pdfdoc, iText.Kernel.Geom.PageSize.A4, false);
+                Document doc = new Document(pdfdoc, size, false);
 
                 #region Process PDF Data
                 var sessionID = App.Session;
@@ -516,11 +513,11 @@ namespace UangKu.ViewModel.Menu
                 //Close Doc
                 doc.Close();
 
-                if (!string.IsNullOrEmpty(filePath))
+                if (!string.IsNullOrEmpty(SaveDir))
                 {
                     var token = new CancellationToken();
-                    var pdfBytes = Converter.PDFToByte(filePath);
-                    await FileHelper.SaveFile(fileName, pdfBytes, token);
+                    var pdfBytes = Converter.PDFToByte(SaveDir);
+                    await FileHelper.SaveFile(AppParameter.BlankPDF, pdfBytes, token);
                 }
                 return true;
                 #endregion
