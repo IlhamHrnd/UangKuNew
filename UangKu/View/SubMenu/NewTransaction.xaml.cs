@@ -9,7 +9,7 @@ public partial class NewTransaction : ContentPage
 	public NewTransaction(string mode, string transNo)
 	{
 		InitializeComponent();
-		_vm = new NewTransactionVM(mode, transNo);
+		_vm = new NewTransactionVM(mode, transNo, Navigation);
 		BindingContext = _vm;
 	}
     protected async override void OnAppearing()
@@ -32,5 +32,10 @@ public partial class NewTransaction : ContentPage
     private async void Btn_SaveTransaction_Clicked(object sender, EventArgs e)
     {
         await _vm.SaveTransaction_Click(Ent_TransNo, Ent_Amount, Ent_Description, Pic_TransType, Pic_TransItem, Date_TransDate);
+    }
+
+    private async void Bar_AddItem_Clicked(object sender, EventArgs e)
+    {
+        await _vm.Calculator();
     }
 }

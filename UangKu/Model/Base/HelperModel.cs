@@ -929,6 +929,25 @@ namespace UangKu.Model.Base
             int selectedIndex = itemList.FindIndex(item => nameSelector(item) == targetName);
             return selectedIndex;
         }
+
+        public async static void OnPopNavigationAsync(INavigation navigation)
+        {
+            try
+            {
+                if (navigation.NavigationStack.Count > 1)
+                {
+                    await navigation.PopAsync();
+                }
+                else
+                {
+                    await MsgModel.MsgNotification("No previous page in the stack");
+                }
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+        }
     }
 
     public static class PermissionRequest
@@ -1034,6 +1053,46 @@ namespace UangKu.Model.Base
             }
 
             return true;
+        }
+    }
+
+    public static class Calculator
+    {
+        public static double Calculate(double value1, double value2, string mathOperator)
+        {
+            double result = 0;
+
+            switch (mathOperator)
+            {
+                case "÷":
+                    result = value1 / value2;
+                    break;
+                case "×":
+                    result = value1 * value2;
+                    break;
+                case "+":
+                    result = value1 + value2;
+                    break;
+                case "-":
+                    result = value1 - value2;
+                    break;
+            }
+            return result;
+        }
+
+        public static string TrimmedString(double value, string decimalFormat)
+        {
+            string strValue = value.ToString(decimalFormat);
+
+            if (strValue.Contains("."))
+            {
+                strValue = strValue.TrimEnd('0');
+
+                if (strValue.EndsWith("."))
+                    strValue = strValue.TrimEnd('.');
+            }
+
+            return strValue;
         }
     }
 }

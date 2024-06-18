@@ -3,11 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:Model="clr-namespace:UangKu.Model.SubMenu"
+             xmlns:Font="clr-namespace:UangKu.Model.Base"
              x:Class="UangKu.View.SubMenu.NewTransaction"
              Title="{Binding Title}">
     <ContentPage.BindingContext>
         <Model:NewTransaction/>
     </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="Bar_AddItem"
+                     Clicked="Bar_AddItem_Clicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FARegular"
+                             Glyph="{x:Static Font:FARegular.YenSign}"
+                             ToolTipProperties.Text="Click To Add New Transaction"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ScrollView Style="{StaticResource ScrollView}">
         <StackLayout Style="{StaticResource StackLayout}">
             <ActivityIndicator Style="{StaticResource ActivityIndicator}"
