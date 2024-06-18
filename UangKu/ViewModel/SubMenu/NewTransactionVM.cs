@@ -12,10 +12,12 @@ namespace UangKu.ViewModel.SubMenu
     public class NewTransactionVM : NewTransaction
     {
         private NetworkModel network = NetworkModel.Instance;
-        public NewTransactionVM(string mode, string transNo)
+        private readonly INavigation _navigation;
+        public NewTransactionVM(string mode, string transNo, INavigation navigation)
         {
             Mode = mode;
             TransNo = transNo;
+            _navigation = navigation;
 
             LoadTitle();
         }
@@ -77,7 +79,7 @@ namespace UangKu.ViewModel.SubMenu
                             PicTrans.SelectedIndex = selectedIndex;
                             await PickerTransType_Changed(PicTrans, EntTransNo);
 
-                            var newPicTransItemList= Converter.ConvertIListToList(ListTransItem);
+                            var newPicTransItemList = Converter.ConvertIListToList(ListTransItem);
                             selectedIndex = new int();
                             selectedIndex = ControlHelper.GetIndexByName(newPicTransItemList, item => item.itemName, transno.srTransItem);
                             PicTransItem.SelectedIndex = selectedIndex;
@@ -271,6 +273,10 @@ namespace UangKu.ViewModel.SubMenu
                 IsBusy = false;
                 ParameterModel.ImageManager.ImageString = string.Empty;
             }
+        }
+        public async Task Calculator()
+        {
+            await _navigation.PushAsync(new View.SubMenu.Calculator());
         }
     }
 }
