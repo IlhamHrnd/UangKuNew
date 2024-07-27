@@ -3,6 +3,7 @@ using Microcharts.Maui;
 using SkiaSharp;
 using UangKu.Model.Base;
 using UangKu.Model.Menu;
+using UangKu.Model.Response.Picture;
 using UangKu.Model.Session;
 using UangKu.View.SubMenu;
 using UangKu.ViewModel.RestAPI.Picture;
@@ -78,110 +79,116 @@ namespace UangKu.ViewModel.Menu
                         await _navigation.PushAsync(new EditProfile(ParameterModel.ItemDefaultValue.NewFile));
                     }
 
-                    var sumtrans = await GetSumTransaction.GetSumTransactionID(userID, string.Empty);
-                    if (sumtrans.Count > 0)
+                    var alltrans = await AllTransaction.GetAllTransaction(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.HomeMaxResult,
+                        userID, string.Empty);
+                    if (alltrans.metaData.isSucces && alltrans.metaData.code == 200)
                     {
-                        ListSumTrans.Clear();
-                        for (int i = 0; i < sumtrans.Count; i++)
+                        ListAllTrans.Clear();
+                        foreach (var item in alltrans.data)
                         {
-                            var item = sumtrans[i];
                             if (item.amount != null)
                             {
                                 item.amountFormat = FormatCurrency.Currency((decimal)item.amount, AppParameter.CurrencyFormat);
                             }
+
+                            if (!string.IsNullOrEmpty(item.photo))
+                            {
+                                string decode = Converter.DecodeBase64ToString(item.photo);
+                                byte[] byteImg = Converter.StringToByteImg(decode);
+                                item.source = ImageConvert.ImgByte(byteImg);
+                            }
+                        }
+                        ListAllTrans.Add(alltrans);
+
+                        var sumtrans = await GetSumTransaction.GetSumTransactionID(userID, string.Empty);
+                        if (sumtrans.metaData.isSucces && sumtrans.metaData.code == 200 && sumtrans.data.Count > 0)
+                        {
+                            ListSumTrans.Clear();
+                            foreach (var item in sumtrans.data)
+                            {
+                                if (item.amount != null)
+                                {
+                                    item.amountFormat = FormatCurrency.Currency((decimal)item.amount, AppParameter.CurrencyFormat);
+                                }
+                                ListSumTrans.Add(item);
+
+                                entries.Add(new ChartEntry((float?)item.amount)
+                                {
+                                    Label = item.srTransaction,
+                                    ValueLabel = item.amountFormat,
+                                    Color = RandomColorGenerator.SKGenerateRandomColor()
+                                });
+
+                                switch (item.srTransaction)
+                                {
+                                    case "Income":
+                                        ParameterModel.Transaction.Income = (decimal)item.amount;
+                                        break;
+
+                                    case "Expenditure":
+                                        ParameterModel.Transaction.Expenditure = (decimal)item.amount;
+                                        break;
+                                }
+                            }
+                        }
+
+                        if (ParameterModel.Transaction.Income != 0 && ParameterModel.Transaction.Expenditure != 0 && ListSumTrans.Count > 0)
+                        {
+                            decimal? amount = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
+                            string srTransaction = "Summary";
+                            string amountFormat = FormatCurrency.Currency((decimal)amount, AppParameter.CurrencyFormat);
+
+                            var item = new Datum
+                            {
+                                amount = amount,
+                                srTransaction = srTransaction,
+                                amountFormat = amountFormat
+                            };
+
                             ListSumTrans.Add(item);
+                        }
 
-                            entries.Add(new ChartEntry((float?)item.amount)
+                        if (entries.Count > 0)
+                        {
+                            charts.Chart = new PieChart
                             {
-                                Label = item.srTransaction,
-                                ValueLabel = item.amountFormat,
-                                Color = RandomColorGenerator.SKGenerateRandomColor()
-                            });
-
-                            switch (item.srTransaction)
-                            {
-                                case "Income":
-                                    ParameterModel.Transaction.Income = (decimal)item.amount;
-                                    break;
-
-                                case "Expenditure":
-                                    ParameterModel.Transaction.Expenditure = (decimal)item.amount;
-                                    break;
-                            }
+                                Entries = entries,
+                                BackgroundColor = SKColors.Transparent,
+                                LabelTextSize = 25,
+                                LabelMode = LabelMode.RightOnly
+                            };
                         }
                     }
-
-                    if (ParameterModel.Transaction.Income != 0 && ParameterModel.Transaction.Expenditure != 0 && ListSumTrans.Count > 0)
+                    else
                     {
-                        decimal? amount = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
-                        string srTransaction = "Summary";
-                        string amountFormat = FormatCurrency.Currency((decimal)amount, AppParameter.CurrencyFormat);
-
-                        var item = new SumTransactionRoot
-                        {
-                            amount = amount,
-                            srTransaction = srTransaction,
-                            amountFormat = amountFormat
-                        };
-
-                        ListSumTrans.Add(item);
-                    }
-
-                    if (entries.Count > 0)
-                    {
-                        charts.Chart = new PieChart
-                        {
-                            Entries = entries,
-                            BackgroundColor = SKColors.Transparent,
-                            LabelTextSize = 25,
-                            LabelMode = LabelMode.RightOnly
-                        };
-                    }
-
-                    var alltrans = await AllTransaction.GetAllTransaction(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.HomeMaxResult,
-                        userID, string.Empty);
-                    if (alltrans != null)
-                    {
-                        ListAllTrans.Clear();
-                        var item = alltrans;
-                        for (int i = 0; i < item.data.Count; i++)
-                        {
-                            if (item.data[i].amount != null)
-                            {
-                                item.data[i].amountFormat = FormatCurrency.Currency((decimal)item.data[i].amount, AppParameter.CurrencyFormat);
-                            }
-
-                            if (!string.IsNullOrEmpty(item.data[i].photo))
-                            {
-                                string decodeImg = Converter.DecodeBase64ToString(item.data[i].photo);
-                                byte[] byteImg = Converter.StringToByteImg(decodeImg);
-                                item.data[i].source = ImageConvert.ImgByte(byteImg);
-                            }
-                        }
-                        ListAllTrans.Add(item);
+                        await MsgModel.MsgNotification(alltrans.metaData.message);
                     }
 
                     var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.HomeMaxResult, 
                         userID, ParameterModel.ItemDefaultValue.IsDeleted);
-                    if ((bool)picture.succeeded && picture.data.Count > 0)
+                    if (picture.metaData.isSucces && picture.metaData.code == 200)
                     {
                         ListUserPicture.Clear();
-                        for (int i = 0; i < picture.data.Count; i++)
+                        foreach (UserPicture.Datum item in picture.data)
                         {
-                            if (!string.IsNullOrEmpty(picture.data[i].picture))
+                            if (!string.IsNullOrEmpty(item.picture))
                             {
-                                string decodeImg = Converter.DecodeBase64ToString(picture.data[i].picture);
+                                string decodeImg = Converter.DecodeBase64ToString(item.picture);
                                 byte[] byteImg = Converter.StringToByteImg(decodeImg);
-                                picture.data[i].source = ImageConvert.ImgByte(byteImg);
+                                item.source = ImageConvert.ImgByte(byteImg);
                             }
 
-                            if (!string.IsNullOrEmpty(picture.data[i].pictureFormat))
+                            if (!string.IsNullOrEmpty(item.pictureFormat))
                             {
                                 string result = ImageConvert.SubstringContentType(picture.data[0].pictureFormat, '/');
-                                picture.data[i].contenttype = result;
+                                item.contenttype = result;
                             }
                         }
                         ListUserPicture.Add(picture);
+                    }
+                    else
+                    {
+                        await MsgModel.MsgNotification(picture.metaData.message);
                     }
                 }
             }

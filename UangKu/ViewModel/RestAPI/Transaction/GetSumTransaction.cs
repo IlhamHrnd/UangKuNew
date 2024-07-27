@@ -10,9 +10,9 @@ namespace UangKu.ViewModel.RestAPI.Transaction
     {
         private const string SumTransactionEndPoint = "{1}Transaction/GetSumTransaction?personID={0}{2}";
 
-        public static async Task<List<SumTransactionRoot>> GetSumTransactionID(string personID, string dateRange)
+        public static async Task<SumTransactionRoot> GetSumTransactionID(string personID, string dateRange)
         {
-            List<SumTransactionRoot> root = new List<SumTransactionRoot>();
+            SumTransactionRoot root = new SumTransactionRoot();
             string url = string.Format(SumTransactionEndPoint, personID, URL, dateRange);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -26,18 +26,42 @@ namespace UangKu.ViewModel.RestAPI.Transaction
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<List<SumTransactionRoot>>(content);
-                    root = get;
+                    var content = JsonConvert.DeserializeObject<List<Datum>>(response.Content);
+                    root = new SumTransactionRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"Transaction {response.StatusDescription}"
+                        },
+                        data = content
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new SumTransactionRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"Transaction {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new SumTransactionRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
             return root;
         }

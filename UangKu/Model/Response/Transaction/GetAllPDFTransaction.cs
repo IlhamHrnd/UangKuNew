@@ -1,10 +1,17 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.Transaction
 {
     public class GetAllPDFTransaction
     {
-        public class PDFTransactionRoot
+        public class PDFTransactionRoot : IResponse
+        {
+            public List<Datum> data { get; set; }
+            public MetaData metaData { get; set; }
+        }
+
+        public class Datum
         {
             [JsonProperty("transNo")]
             public string transNo { get; set; }

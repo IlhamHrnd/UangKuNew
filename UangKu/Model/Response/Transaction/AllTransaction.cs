@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.Transaction
 {
@@ -37,7 +38,7 @@ namespace UangKu.Model.Response.Transaction
             public ImageSource source { get; set; }
         }
 
-        public class AllTransactionRoot
+        public class AllTransactionRoot : IResponse
         {
             [JsonPropertyName("pageNumber")]
             public int? pageNumber { get; set; }
@@ -68,6 +69,7 @@ namespace UangKu.Model.Response.Transaction
 
             [JsonPropertyName("message")]
             public object message { get; set; }
+            public MetaData metaData { get; set; }
         }
     }
 }
