@@ -58,58 +58,65 @@ namespace UangKu.ViewModel.Index
                 if (isValidEntry)
                 {
                     var user = await UserLogin.GetUsernameLogin(username.Text, password.Text);
-                    App.Session = new AppSession
+                    if (user.metaData.isSucces && user.metaData.code == 200)
                     {
-                        username = user.username,
-                        sexName = user.sexName,
-                        accessName = user.accessName,
-                        statusName = user.statusName,
-                        activeDate = user.activeDate,
-                        lastLogin = user.lastLogin,
-                        lastUpdateDateTime = user.lastUpdateDateTime,
-                        lastUpdateByUser = user.lastUpdateByUser,
-                        personID = user.personID
-                    };
-                    if (!string.IsNullOrEmpty(App.Session.username) && App.Session.statusName == ParameterModel.Login.Status)
-                    {
-                        var updatelogin = await UserLastLogin.PatchUserLastLogin(username.Text);
-                        if (!string.IsNullOrEmpty(updatelogin))
+                        App.Session = new AppSession
                         {
-                            await MsgModel.MsgNotification(updatelogin);
+                            username = user.username,
+                            sexName = user.sexName,
+                            accessName = user.accessName,
+                            statusName = user.statusName,
+                            activeDate = user.activeDate,
+                            lastLogin = user.lastLogin,
+                            lastUpdateDateTime = user.lastUpdateDateTime,
+                            lastUpdateByUser = user.lastUpdateByUser,
+                            personID = user.personID
+                        };
+                        if (!string.IsNullOrEmpty(App.Session.username) && App.Session.statusName == ParameterModel.Login.Status)
+                        {
+                            var updatelogin = await UserLastLogin.PatchUserLastLogin(username.Text);
+                            if (!string.IsNullOrEmpty(updatelogin))
+                            {
+                                await MsgModel.MsgNotification(updatelogin);
+                            }
                         }
-                    }
-                    if (string.IsNullOrEmpty(App.Session.username))
-                    {
-                        await MsgModel.MsgNotification($"Username {username.Text} Not Found");
-                    }
-                    else if (App.Session.statusName != ParameterModel.Login.Status)
-                    {
-                        await MsgModel.MsgNotification($"Username {App.Session.username} Not Active, Please Contact Administrator");
+                        if (string.IsNullOrEmpty(App.Session.username))
+                        {
+                            await MsgModel.MsgNotification($"Username {username.Text} Not Found");
+                        }
+                        else if (App.Session.statusName != ParameterModel.Login.Status)
+                        {
+                            await MsgModel.MsgNotification($"Username {App.Session.username} Not Active, Please Contact Administrator");
+                        }
+                        else
+                        {
+                            switch (App.Session.accessName)
+                            {
+                                case "Admin":
+                                    SessionModel.LoadAppParameter();
+                                    SessionModel.LoadProfile();
+                                    var masterAdmin = new View.MasterPage.MasterAdmin();
+                                    App.Current.MainPage = masterAdmin;
+                                    break;
+
+                                case "User":
+                                    SessionModel.LoadAppParameter();
+                                    SessionModel.LoadProfile();
+                                    var masterUser = new View.MasterPage.MasterUser();
+                                    App.Current.MainPage = masterUser;
+                                    break;
+
+                                default:
+                                    await MsgModel.MsgNotification($"User Access For {App.Session.username} Is {App.Session.accessName} Unknown");
+                                    break;
+                            }
+                            username.Text = string.Empty;
+                            password.Text = string.Empty;
+                        }
                     }
                     else
                     {
-                        switch (App.Session.accessName)
-                        {
-                            case "Admin":
-                                SessionModel.LoadAppParameter();
-                                SessionModel.LoadProfile();
-                                var masterAdmin = new View.MasterPage.MasterAdmin();
-                                App.Current.MainPage = masterAdmin;
-                                break;
-
-                            case "User":
-                                SessionModel.LoadAppParameter();
-                                SessionModel.LoadProfile();
-                                var masterUser = new View.MasterPage.MasterUser();
-                                App.Current.MainPage = masterUser;
-                                break;
-
-                            default:
-                                await MsgModel.MsgNotification($"User Access For {App.Session.username} Is {App.Session.accessName} Unknown");
-                                break;
-                        }
-                        username.Text = string.Empty;
-                        password.Text = string.Empty;
+                        await MsgModel.MsgNotification(user.metaData.message);
                     }
                 }
             }

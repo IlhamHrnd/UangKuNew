@@ -25,19 +25,51 @@ namespace UangKu.ViewModel.RestAPI.User
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var format = content.Substring(1, content.Length - 2);
-                    var get = JsonConvert.DeserializeObject<UserRoot>(format);
-                    root = get;
+                    var format = response.Content.Substring(1, response.Content.Length - 2);
+                    var content = JsonConvert.DeserializeObject<UserRoot>(format);
+                    root = new UserRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"Username {response.StatusDescription}"
+                        },
+                        username = content.username,
+                        sexName = content.sexName,
+                        accessName = content.accessName,
+                        statusName = content.statusName,
+                        activeDate = content.activeDate,
+                        lastLogin = content.lastLogin,
+                        lastUpdateDateTime = content.lastUpdateDateTime,
+                        lastUpdateByUser = content.lastUpdateByUser,
+                        personID = content.personID
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new UserRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"Username {response.StatusDescription}"
+                        }
+                    };
                 }
             }
             catch (Exception e)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new UserRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = $"Username {response.StatusDescription}"
+                    }
+                };
             }
             return root;
         }

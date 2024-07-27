@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
 using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.User
@@ -10,6 +9,7 @@ namespace UangKu.ViewModel.RestAPI.User
 
         public static async Task<string> PatchUsername(Model.Index.Body.PatchUsername user, string username)
         {
+            string result;
             string url = string.Format(UserUpdateEndPoint, username, URL);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -32,17 +32,19 @@ namespace UangKu.ViewModel.RestAPI.User
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var patch = JsonConvert.DeserializeObject<string>(content);
+                    result = response.Content.Substring(1, response.Content.Length - 2);
+                }
+                else
+                {
+                    result = response.ErrorMessage;
                 }
             }
             catch (Exception e)
             {
-                await MsgModel.MsgNotification(e.Message);
+                result = e.Message;
             }
-            var format = response.Content.Substring(1, response.Content.Length - 2);
 
-            return format;
+            return result;
         }
     }
 }

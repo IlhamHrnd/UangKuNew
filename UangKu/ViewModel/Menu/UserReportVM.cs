@@ -44,12 +44,11 @@ namespace UangKu.ViewModel.Menu
                 if (App.Access.IsAdmin)
                 {
                     var alluser = await UserAll.GetAllUser(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.MaxResult);
-                    if ((bool)alluser.succeeded)
+                    if (alluser.metaData.isSucces && alluser.metaData.code == 200)
                     {
                         ListAllUser.Clear();
-                        for (int i = 0; i < alluser.data.Count; i++)
+                        foreach (var data in alluser.data)
                         {
-                            var data = alluser.data[i];
                             if (!string.IsNullOrEmpty(data.statusName))
                             {
                                 data.isActive = data.statusName == ParameterModel.Login.Status;
