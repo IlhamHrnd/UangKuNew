@@ -10,6 +10,7 @@ namespace UangKu.ViewModel.RestAPI.User
 
         public static async Task<string> PatchUserForgotPassword(string username, string email, string password)
         {
+            string result;
             string url = string.Format(UserForgotPasswordEndPoint, username, password, email, URL);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -23,21 +24,19 @@ namespace UangKu.ViewModel.RestAPI.User
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var patch = JsonConvert.DeserializeObject<string>(content);
+                    result = response.Content.Substring(1, response.Content.Length - 2);
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    result = response.ErrorMessage;
                 }
             }
             catch (Exception e)
             {
-                await MsgModel.MsgNotification(e.Message);
+                result = e.Message;
             }
-            var format = response.Content.Substring(1, response.Content.Length - 2);
 
-            return format;
+            return result;
         }
     }
 }

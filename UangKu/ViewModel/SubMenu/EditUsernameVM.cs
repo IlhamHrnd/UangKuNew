@@ -44,7 +44,7 @@ namespace UangKu.ViewModel.SubMenu
                     }
                 }
                 var user = await UserName.GetUserName(Name);
-                if (!string.IsNullOrEmpty(user.username))
+                if (user.metaData.isSucces && user.metaData.code == 200 && !string.IsNullOrEmpty(user.username))
                 {
                     switch (user.sexName)
                     {

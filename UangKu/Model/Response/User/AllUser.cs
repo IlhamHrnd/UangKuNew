@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.User
 {
@@ -37,7 +38,7 @@ namespace UangKu.Model.Response.User
             public string dateLogin { get; set; } 
         }
 
-        public class AllUserRoot
+        public class AllUserRoot : IResponse
         {
             [JsonProperty("pageNumber")]
             public int? pageNumber { get; set; }
@@ -68,6 +69,7 @@ namespace UangKu.Model.Response.User
 
             [JsonProperty("message")]
             public object message { get; set; }
+            public MetaData metaData { get; set; }
         }
     }
 }

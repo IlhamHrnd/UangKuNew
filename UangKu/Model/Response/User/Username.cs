@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.User
 {
-    public class UsernameRoot
+    public class UsernameRoot : IResponse
     {
         [JsonProperty("username")]
         public string username { get; set; }
@@ -31,5 +32,6 @@ namespace UangKu.Model.Response.User
         [JsonProperty("personID")]
         public string personID { get; set; }
         public string imgavatar { get; set; }
+        public MetaData metaData { get; set; }
     }
 }
