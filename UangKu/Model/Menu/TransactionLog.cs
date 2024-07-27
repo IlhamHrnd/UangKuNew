@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using UangKu.Model.Base;
+using UangKu.Model.Response.Transaction;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 using static UangKu.Model.Response.Transaction.AllTransaction;
 using static UangKu.Model.Response.Transaction.SumTransaction;
@@ -33,15 +34,15 @@ namespace UangKu.Model.Menu
                 }
             }
         }
-        private IList<SumTransactionRoot> listsumtrans { get; set; }
+        private IList<SumTransaction.Datum> listsumtrans { get; set; }
 
-        public IList<SumTransactionRoot> ListSumTrans
+        public IList<SumTransaction.Datum> ListSumTrans
         {
             get
             {
                 if (listsumtrans == null)
                 {
-                    listsumtrans = new ObservableCollection<SumTransactionRoot>();
+                    listsumtrans = new ObservableCollection<SumTransaction.Datum>();
                 }
                 return listsumtrans;
             }

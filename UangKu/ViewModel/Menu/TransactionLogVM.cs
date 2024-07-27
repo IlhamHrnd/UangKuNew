@@ -2,12 +2,10 @@
 using iText.Layout;
 using UangKu.Model.Base;
 using UangKu.Model.Menu;
+using UangKu.Model.Response.Transaction;
 using UangKu.Model.Session;
 using static UangKu.Model.Base.ParameterModel.PermissionManager;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
-using static UangKu.Model.Response.Transaction.AllTransaction;
-using static UangKu.Model.Response.Transaction.GetAllPDFTransaction;
-using static UangKu.Model.Response.Transaction.SumTransaction;
 
 namespace UangKu.ViewModel.Menu
 {
@@ -111,64 +109,7 @@ namespace UangKu.ViewModel.Menu
                     Builder = string.Empty;
                     BuilderSum = string.Empty;
                 }
-                var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID, BuilderSum);
-                if (sumtrans.Count > 0)
-                {
-                    ListSumTrans.Clear();
-                    for (int i = 0; i < sumtrans.Count; i++)
-                    {
-                        var item = sumtrans[i];
-                        if (item.amount != null)
-                        {
-                            item.amountFormat = FormatCurrency.Currency((decimal)item.amount, AppParameter.CurrencyFormat);
-                        }
 
-                        ListSumTrans.Add(item);
-
-                        switch (item.srTransaction)
-                        {
-                            case "Income":
-                                ParameterModel.Transaction.Income = (decimal)item.amount;
-                                break;
-
-                            case "Expenditure":
-                                ParameterModel.Transaction.Expenditure = (decimal)item.amount;
-                                break;
-                        }
-                    }
-                }
-                var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(pageNumber, pageSize, userID, Builder);
-                if (alltrans.data.Count > 0)
-                {
-                    ListAllTrans.Clear();
-                    var item = alltrans;
-                    var datas = item.data;
-                    for (int i = 0; i < datas.Count; i++)
-                    {
-                        if (datas[i].amount != null)
-                        {
-                            datas[i].amountFormat = FormatCurrency.Currency((decimal)datas[i].amount, AppParameter.CurrencyFormat);
-                        }
-
-                        if (!string.IsNullOrEmpty(datas[i].photo))
-                        {
-                            string decodeImg = Converter.DecodeBase64ToString(datas[i].photo);
-                            byte[] byteImg = Converter.StringToByteImg(decodeImg);
-                            datas[i].source = ImageConvert.ImgByte(byteImg);
-                        }
-                        
-                        if (datas[i].transDate != null)
-                        {
-                            datas[i].transDateFormat = DateFormat.FormattingDate((DateTime)datas[i].transDate, ParameterModel.DateTimeFormat.Date);
-                        }
-                    }
-                    Page = (int)alltrans.pageNumber;
-                    TotalPages = (int)alltrans.totalPages;
-                    TotalRecords = (int)alltrans.totalRecords;
-                    Number = pageNumber;
-                    Size = pageSize;
-                    ListAllTrans.Add(item);
-                }
                 var orderby = await RestAPI.AppStandardReferenceItem.AppStandardReferenceItem.GetAsriAsync<AsriRoot>("OrderByTransaction", true, true);
                 if (orderby.Count > 0)
                 {
@@ -187,20 +128,82 @@ namespace UangKu.ViewModel.Menu
                         ListTrans.Add(transfilter[i]);
                     }
                 }
-                if (ParameterModel.Transaction.Income != 0 && ParameterModel.Transaction.Expenditure != 0 && ListSumTrans.Count > 0)
+
+                var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(pageNumber, pageSize, userID, Builder);
+                if (alltrans.metaData.isSucces && alltrans.metaData.code == 200)
                 {
-                    decimal? amount = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
-                    string srTransaction = "Summary";
-                    string amountFormat = FormatCurrency.Currency((decimal)amount, AppParameter.CurrencyFormat);
-
-                    var item = new SumTransactionRoot
+                    ListAllTrans.Clear();
+                    foreach (Model.Response.Transaction.AllTransaction.Datum datas in alltrans.data)
                     {
-                        amount = amount,
-                        srTransaction = srTransaction,
-                        amountFormat = amountFormat
-                    };
+                        if (datas.amount != null)
+                        {
+                            datas.amountFormat = FormatCurrency.Currency((decimal)datas.amount, AppParameter.CurrencyFormat);
+                        }
 
-                    ListSumTrans.Add(item);
+                        if (!string.IsNullOrEmpty(datas.photo))
+                        {
+                            string decodeImg = Converter.DecodeBase64ToString(datas.photo);
+                            byte[] byteImg = Converter.StringToByteImg(decodeImg);
+                            datas.source = ImageConvert.ImgByte(byteImg);
+                        }
+
+                        if (datas.transDate != null)
+                        {
+                            datas.transDateFormat = DateFormat.FormattingDate((DateTime)datas.transDate, ParameterModel.DateTimeFormat.Date);
+                        }
+                    }
+                    Page = (int)alltrans.pageNumber;
+                    TotalPages = (int)alltrans.totalPages;
+                    TotalRecords = (int)alltrans.totalRecords;
+                    Number = pageNumber;
+                    Size = pageSize;
+                    ListAllTrans.Add(alltrans);
+
+                    var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID, BuilderSum);
+                    if (sumtrans.metaData.isSucces && sumtrans.metaData.code == 200 && sumtrans.data.Count > 0)
+                    {
+                        ListSumTrans.Clear();
+                        foreach (var item in sumtrans.data)
+                        {
+                            if (item.amount != null)
+                            {
+                                item.amountFormat = FormatCurrency.Currency((decimal)item.amount, AppParameter.CurrencyFormat);
+                            }
+
+                            ListSumTrans.Add(item);
+
+                            switch (item.srTransaction)
+                            {
+                                case "Income":
+                                    ParameterModel.Transaction.Income = (decimal)item.amount;
+                                    break;
+
+                                case "Expenditure":
+                                    ParameterModel.Transaction.Expenditure = (decimal)item.amount;
+                                    break;
+                            }
+                        }
+                    }
+
+                    if (ParameterModel.Transaction.Income != 0 && ParameterModel.Transaction.Expenditure != 0 && ListSumTrans.Count > 0)
+                    {
+                        decimal? amount = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
+                        string srTransaction = "Summary";
+                        string amountFormat = FormatCurrency.Currency((decimal)amount, AppParameter.CurrencyFormat);
+
+                        var item = new Model.Response.Transaction.SumTransaction.Datum
+                        {
+                            amount = amount,
+                            srTransaction = srTransaction,
+                            amountFormat = amountFormat
+                        };
+
+                        ListSumTrans.Add(item);
+                    }
+                }
+                else
+                {
+                    await MsgModel.MsgNotification(alltrans.metaData.message);
                 }
             }
             catch (Exception e)
@@ -308,28 +311,26 @@ namespace UangKu.ViewModel.Menu
                         Builder = Converter.BuilderString(DateRange, OrderBy, Ascending);
                     }
                     var alltrans = await RestAPI.Transaction.AllTransaction.GetAllTransaction(pages, pageSize, userID, Builder);
-                    if (alltrans.data.Count > 0)
+                    if (alltrans.metaData.isSucces && alltrans.metaData.code == 200)
                     {
                         ListAllTrans.Clear();
-                        var item = alltrans;
-                        var datas = item.data;
-                        for (int i = 0; i < datas.Count; i++)
+                        foreach (Model.Response.Transaction.AllTransaction.Datum datas in alltrans.data)
                         {
-                            if (datas[i].amount != null)
+                            if (datas.amount != null)
                             {
-                                datas[i].amountFormat = FormatCurrency.Currency((decimal)datas[i].amount, AppParameter.CurrencyFormat);
+                                datas.amountFormat = FormatCurrency.Currency((decimal)datas.amount, AppParameter.CurrencyFormat);
                             }
 
-                            if (!string.IsNullOrEmpty(datas[i].photo))
+                            if (!string.IsNullOrEmpty(datas.photo))
                             {
-                                string decodeImg = Converter.DecodeBase64ToString(datas[i].photo);
+                                string decodeImg = Converter.DecodeBase64ToString(datas.photo);
                                 byte[] byteImg = Converter.StringToByteImg(decodeImg);
-                                datas[i].source = ImageConvert.ImgByte(byteImg);
+                                datas.source = ImageConvert.ImgByte(byteImg);
                             }
 
-                            if (datas[i].transDate != null)
+                            if (datas.transDate != null)
                             {
-                                datas[i].transDateFormat = DateFormat.FormattingDate((DateTime)datas[i].transDate, ParameterModel.DateTimeFormat.Date);
+                                datas.transDateFormat = DateFormat.FormattingDate((DateTime)datas.transDate, ParameterModel.DateTimeFormat.Date);
                             }
                         }
                         Page = (int)alltrans.pageNumber;
@@ -337,7 +338,7 @@ namespace UangKu.ViewModel.Menu
                         TotalRecords = (int)alltrans.totalRecords;
                         Number = pages;
                         Size = pageSize;
-                        ListAllTrans.Add(item);
+                        ListAllTrans.Add(alltrans);
                     }
                 }
             }
@@ -391,135 +392,143 @@ namespace UangKu.ViewModel.Menu
                 var sessionID = App.Session;
                 string userID = SessionModel.GetUserID(sessionID);
                 var alltrans = await RestAPI.Transaction.GetAllPDFTransaction.AllPDFTransaction(userID, Builder);
-                var list = new List<PDFTransactionRoot>();
-                foreach (var transaction in alltrans)
+                if (alltrans.metaData.isSucces && alltrans.metaData.code == 200)
                 {
-                    list.Add(transaction);
-                }
-                var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID, BuilderSum);
-
-                //Header
-                string title = $"{userID} Transaction Report";
-                var header = GeneratePDFFile.SetParagraph(title, 20, iText.Layout.Properties.TextAlignment.CENTER);
-                doc.Add(header);
-
-                //Subheader
-                var firstItem = list.FirstOrDefault();
-                var lastItem = list.LastOrDefault();
-
-                var firstDate = DateFormat.FormattingDate((DateTime)firstItem.transDate, ParameterModel.DateTimeFormat.Date);
-                var lastDate = DateFormat.FormattingDate((DateTime)lastItem.transDate, ParameterModel.DateTimeFormat.Date);
-
-                var subtitle = $"Periode {firstDate} - {lastDate}";
-                var subheader = GeneratePDFFile.SetParagraph(subtitle, 15, iText.Layout.Properties.TextAlignment.CENTER);
-                doc.Add(subheader);
-
-                //Line Separator
-                var ls = GeneratePDFFile.SetLine();
-                doc.Add(ls);
-
-                //New Line
-                var nl = GeneratePDFFile.SetNewLine();
-                doc.Add(nl);
-
-                // Table
-                if (alltrans.Count > 0)
-                {
-                    var culture = AppParameter.CurrencyFormat;
-                    var tbl = GeneratePDFFile.SetTable(5, true);
-
-                    // Table Header
-                    tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "Description", iText.Layout.Properties.TextAlignment.CENTER));
-                    tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "TransNo", iText.Layout.Properties.TextAlignment.CENTER));
-                    tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "Income", iText.Layout.Properties.TextAlignment.CENTER));
-                    tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "Expenditure", iText.Layout.Properties.TextAlignment.CENTER));
-                    tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "Trans Date", iText.Layout.Properties.TextAlignment.CENTER));
-
-                    //Table Data
-                    foreach (var item in alltrans)
+                    var list = new List<GetAllPDFTransaction.Datum>();
+                    foreach (var transaction in alltrans.data)
                     {
-                        var amountFormat = item.amount != null ? FormatCurrency.Currency((decimal)item.amount, culture) : string.Empty;
-                        var description = string.IsNullOrEmpty(item.description) ? item.srTransItem : item.description;
-                        var transDate = DateFormat.FormattingDate((DateTime)item.transDate, ParameterModel.DateTimeFormat.Date);
-                        var textAlignment = item.transType == ParameterModel.ItemDefaultValue.IncomeTrans ? iText.Layout.Properties.TextAlignment.RIGHT : iText.Layout.Properties.TextAlignment.LEFT;
-
-                        // Add Item To Cell
-                        tbl.AddCell(GeneratePDFFile.SetCell(1, false, description, iText.Layout.Properties.TextAlignment.LEFT));
-                        tbl.AddCell(GeneratePDFFile.SetCell(1, false, item.transNo, iText.Layout.Properties.TextAlignment.LEFT));
-                        tbl.AddCell(GeneratePDFFile.SetCell(1, false, item.transType == ParameterModel.ItemDefaultValue.IncomeTrans ? amountFormat : string.Empty, iText.Layout.Properties.TextAlignment.RIGHT));
-                        tbl.AddCell(GeneratePDFFile.SetCell(1, false, item.transType == ParameterModel.ItemDefaultValue.OutcomeTrans ? amountFormat : string.Empty, iText.Layout.Properties.TextAlignment.RIGHT));
-                        tbl.AddCell(GeneratePDFFile.SetCell(1, false, transDate, iText.Layout.Properties.TextAlignment.RIGHT));
+                        list.Add(transaction);
                     }
+                    var sumtrans = await RestAPI.Transaction.GetSumTransaction.GetSumTransactionID(userID, BuilderSum);
 
-                    //Table Footer
-                    if (sumtrans.Count > 0)
+                    //Header
+                    string title = $"{userID} Transaction Report";
+                    var header = GeneratePDFFile.SetParagraph(title, 20, iText.Layout.Properties.TextAlignment.CENTER);
+                    doc.Add(header);
+
+                    //Subheader
+                    var firstItem = list.FirstOrDefault();
+                    var lastItem = list.LastOrDefault();
+
+                    var firstDate = DateFormat.FormattingDate((DateTime)firstItem.transDate, ParameterModel.DateTimeFormat.Date);
+                    var lastDate = DateFormat.FormattingDate((DateTime)lastItem.transDate, ParameterModel.DateTimeFormat.Date);
+
+                    var subtitle = $"Periode {firstDate} - {lastDate}";
+                    var subheader = GeneratePDFFile.SetParagraph(subtitle, 15, iText.Layout.Properties.TextAlignment.CENTER);
+                    doc.Add(subheader);
+
+                    //Line Separator
+                    var ls = GeneratePDFFile.SetLine();
+                    doc.Add(ls);
+
+                    //New Line
+                    var nl = GeneratePDFFile.SetNewLine();
+                    doc.Add(nl);
+
+                    // Table
+                    if (alltrans.data.Count > 0)
                     {
-                        decimal summary = 0;
-                        foreach (var item in sumtrans)
+                        var culture = AppParameter.CurrencyFormat;
+                        var tbl = GeneratePDFFile.SetTable(5, true);
+
+                        // Table Header
+                        tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "Description", iText.Layout.Properties.TextAlignment.CENTER));
+                        tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "TransNo", iText.Layout.Properties.TextAlignment.CENTER));
+                        tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "Income", iText.Layout.Properties.TextAlignment.CENTER));
+                        tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "Expenditure", iText.Layout.Properties.TextAlignment.CENTER));
+                        tbl.AddHeaderCell(GeneratePDFFile.SetCell(1, true, "Trans Date", iText.Layout.Properties.TextAlignment.CENTER));
+
+                        //Table Data
+                        foreach (var item in alltrans.data)
                         {
-                            switch (item.srTransaction)
+                            var amountFormat = item.amount != null ? FormatCurrency.Currency((decimal)item.amount, culture) : string.Empty;
+                            var description = string.IsNullOrEmpty(item.description) ? item.srTransItem : item.description;
+                            var transDate = DateFormat.FormattingDate((DateTime)item.transDate, ParameterModel.DateTimeFormat.Date);
+                            var textAlignment = item.transType == ParameterModel.ItemDefaultValue.IncomeTrans ? iText.Layout.Properties.TextAlignment.RIGHT : iText.Layout.Properties.TextAlignment.LEFT;
+
+                            // Add Item To Cell
+                            tbl.AddCell(GeneratePDFFile.SetCell(1, false, description, iText.Layout.Properties.TextAlignment.LEFT));
+                            tbl.AddCell(GeneratePDFFile.SetCell(1, false, item.transNo, iText.Layout.Properties.TextAlignment.LEFT));
+                            tbl.AddCell(GeneratePDFFile.SetCell(1, false, item.transType == ParameterModel.ItemDefaultValue.IncomeTrans ? amountFormat : string.Empty, iText.Layout.Properties.TextAlignment.RIGHT));
+                            tbl.AddCell(GeneratePDFFile.SetCell(1, false, item.transType == ParameterModel.ItemDefaultValue.OutcomeTrans ? amountFormat : string.Empty, iText.Layout.Properties.TextAlignment.RIGHT));
+                            tbl.AddCell(GeneratePDFFile.SetCell(1, false, transDate, iText.Layout.Properties.TextAlignment.RIGHT));
+                        }
+
+                        //Table Footer
+                        if (sumtrans.data.Count > 0)
+                        {
+                            decimal summary = 0;
+                            foreach (var item in sumtrans.data)
                             {
-                                case "Income":
-                                    ParameterModel.Transaction.Income = (decimal)item.amount;
-                                    break;
+                                switch (item.srTransaction)
+                                {
+                                    case "Income":
+                                        ParameterModel.Transaction.Income = (decimal)item.amount;
+                                        break;
 
-                                case "Expenditure":
-                                    ParameterModel.Transaction.Expenditure = (decimal)item.amount;
-                                    break;
+                                    case "Expenditure":
+                                        ParameterModel.Transaction.Expenditure = (decimal)item.amount;
+                                        break;
+                                }
                             }
+
+                            if (ParameterModel.Transaction.Income != 0 && ParameterModel.Transaction.Expenditure != 0 && sumtrans.data.Count > 0)
+                            {
+                                summary = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
+                            }
+
+                            //Format
+                            var income = FormatCurrency.Currency(ParameterModel.Transaction.Income, culture);
+                            var expenditure = FormatCurrency.Currency(ParameterModel.Transaction.Expenditure, culture);
+                            var sum = FormatCurrency.Currency(summary, culture);
+
+                            tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, "Summary", iText.Layout.Properties.TextAlignment.CENTER));
+                            tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, string.Empty, iText.Layout.Properties.TextAlignment.LEFT));
+                            tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, income, iText.Layout.Properties.TextAlignment.RIGHT));
+                            tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, expenditure, iText.Layout.Properties.TextAlignment.RIGHT));
+                            tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, sum, iText.Layout.Properties.TextAlignment.RIGHT));
                         }
 
-                        if (ParameterModel.Transaction.Income != 0 && ParameterModel.Transaction.Expenditure != 0 && sumtrans.Count > 0)
-                        {
-                            summary = ParameterModel.Transaction.Income - ParameterModel.Transaction.Expenditure;
-                        }
-
-                        //Format
-                        var income = FormatCurrency.Currency(ParameterModel.Transaction.Income, culture);
-                        var expenditure = FormatCurrency.Currency(ParameterModel.Transaction.Expenditure, culture);
-                        var sum = FormatCurrency.Currency(summary, culture);
-
-                        tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, "Summary", iText.Layout.Properties.TextAlignment.CENTER));
-                        tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, string.Empty, iText.Layout.Properties.TextAlignment.LEFT));
-                        tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, income, iText.Layout.Properties.TextAlignment.RIGHT));
-                        tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, expenditure, iText.Layout.Properties.TextAlignment.RIGHT));
-                        tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, sum, iText.Layout.Properties.TextAlignment.RIGHT));
+                        doc.Add(tbl);
                     }
 
-                    doc.Add(tbl);
-                }
+                    //Add Header Pages
+                    if (AppParameter.IsAddHeader)
+                    {
 
-                //Add Header Pages
-                if (AppParameter.IsAddHeader)
+                    }
+
+                    //Add Footer Pages
+                    if (AppParameter.IsAddFooter)
+                    {
+                        var date = DateFormat.FormattingDate(ParameterModel.DateFormat.DateTime, ParameterModel.DateTimeFormat.Dateshortmonthhourminute);
+                        string footer = $"Generated On {date}";
+                        var parFooter = GeneratePDFFile.SetParagraph(footer, 10, iText.Layout.Properties.TextAlignment.CENTER);
+                        GeneratePDFFile.SetFooterPages(parFooter, pdfdoc, doc);
+                    }
+
+                    //Add Pages Number
+                    if (AppParameter.IsAddPageNumber)
+                    {
+                        GeneratePDFFile.SetPagesNumber(pdfdoc, doc);
+                    }
+
+                    //Close Doc
+                    doc.Close();
+
+                    if (!string.IsNullOrEmpty(SaveDir))
+                    {
+                        var token = new CancellationToken();
+                        var pdfBytes = Converter.PDFToByte(SaveDir);
+                        await FileHelper.SaveFile(AppParameter.BlankPDF, pdfBytes, token);
+                    }
+                    return true;
+                }
+                else
                 {
-
+                    await MsgModel.MsgNotification(alltrans.metaData.message);
+                    return false;
                 }
-
-                //Add Footer Pages
-                if (AppParameter.IsAddFooter)
-                {
-                    var date = DateFormat.FormattingDate(ParameterModel.DateFormat.DateTime, ParameterModel.DateTimeFormat.Dateshortmonthhourminute);
-                    string footer = $"Generated On {date}";
-                    var parFooter = GeneratePDFFile.SetParagraph(footer, 10, iText.Layout.Properties.TextAlignment.CENTER);
-                    GeneratePDFFile.SetFooterPages(parFooter, pdfdoc, doc);
-                }
-
-                //Add Pages Number
-                if (AppParameter.IsAddPageNumber)
-                {
-                    GeneratePDFFile.SetPagesNumber(pdfdoc, doc);
-                }
-
-                //Close Doc
-                doc.Close();
-
-                if (!string.IsNullOrEmpty(SaveDir))
-                {
-                    var token = new CancellationToken();
-                    var pdfBytes = Converter.PDFToByte(SaveDir);
-                    await FileHelper.SaveFile(AppParameter.BlankPDF, pdfBytes, token);
-                }
-                return true;
                 #endregion
             }
             catch (Exception e)
@@ -540,7 +549,7 @@ namespace UangKu.ViewModel.Menu
                 return;
             }
 
-            var transNo = item.BindingContext as Datum;
+            var transNo = item.BindingContext as Model.Response.Transaction.AllTransaction.Datum;
             if (transNo == null)
             {
                 return;

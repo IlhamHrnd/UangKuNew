@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.Picture
 {
@@ -39,7 +40,7 @@ namespace UangKu.Model.Response.Picture
             public string contenttype { get; set; }
         }
 
-        public class UserPictureRoot
+        public class UserPictureRoot : IResponse
         {
             [JsonProperty("pageNumber")]
             public int? pageNumber { get; set; }
@@ -70,6 +71,7 @@ namespace UangKu.Model.Response.Picture
 
             [JsonProperty("message")]
             public object message { get; set; }
+            public MetaData metaData { get; set; }
         }
     }
 

@@ -9,9 +9,9 @@ namespace UangKu.ViewModel.RestAPI.Transaction
     {
         private const string GetAllPDFTransactionEndPoint = "{0}Transaction/GetAllPDFTransaction?PersonID={1}{2}";
 
-        public static async Task<List<PDFTransactionRoot>> AllPDFTransaction(string personID, string dateRange)
+        public static async Task<PDFTransactionRoot> AllPDFTransaction(string personID, string dateRange)
         {
-            List<PDFTransactionRoot> root = new List<PDFTransactionRoot>();
+            PDFTransactionRoot root = new PDFTransactionRoot();
             string url = string.Format(GetAllPDFTransactionEndPoint, URL, personID, dateRange);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -25,18 +25,42 @@ namespace UangKu.ViewModel.RestAPI.Transaction
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<List<PDFTransactionRoot>>(content);
-                    root = get;
+                    var content = JsonConvert.DeserializeObject<List<Datum>>(response.Content);
+                    root = new PDFTransactionRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"Transaction {response.StatusDescription}"
+                        },
+                        data = content
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new PDFTransactionRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"Transaction {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new PDFTransactionRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
             return root;
         }
