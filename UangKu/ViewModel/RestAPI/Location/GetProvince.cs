@@ -9,9 +9,9 @@ namespace UangKu.ViewModel.RestAPI.Location
     {
         private const string GetProvinceEndPoint = "{0}Location/GetAllProvince";
 
-        public static async Task<List<ProvincesRoot>> GetProvinces()
+        public static async Task<ProvincesRoot> GetProvinces()
         {
-            List<ProvincesRoot> root = new List<ProvincesRoot>();
+            ProvincesRoot root = new ProvincesRoot();
             string url = string.Format(GetProvinceEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -25,18 +25,42 @@ namespace UangKu.ViewModel.RestAPI.Location
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<List<ProvincesRoot>>(content);
-                    root = get;
+                    var content = JsonConvert.DeserializeObject<List<Datum>>(response.Content);
+                    root = new ProvincesRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"Province {response.StatusDescription}"
+                        },
+                        data = content
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new ProvincesRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"Province {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new ProvincesRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
             return root;
         }

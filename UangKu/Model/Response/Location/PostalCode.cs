@@ -1,10 +1,17 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.Location
 {
     public class PostalCode
     {
-        public class PostalCodeRoot
+        public class PostalCodeRoot : IResponse
+        {
+            public Datum data { get; set; }
+            public MetaData metaData { get; set; }
+        }
+
+        public class Datum
         {
             [JsonProperty("postalID")]
             public int? postalID { get; set; }
