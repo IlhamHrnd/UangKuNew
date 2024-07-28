@@ -9,9 +9,9 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
     {
         private const string GetUserWishlistPerCategoryEndPoint = "{0}UserWishlist/GetUserWishlistPerCategory?PersonID={1}&IsComplete={2}";
 
-        public static async Task<List<GetUserWishlistPerCategoryRoot>> UserWishlistPerCategory(string personID, bool isComplete)
+        public static async Task<GetUserWishlistPerCategoryRoot> UserWishlistPerCategory(string personID, bool isComplete)
         {
-            List<GetUserWishlistPerCategoryRoot> root = new List<GetUserWishlistPerCategoryRoot>();
+            GetUserWishlistPerCategoryRoot root = new GetUserWishlistPerCategoryRoot();
             string url = string.Format(GetUserWishlistPerCategoryEndPoint, URL, personID, isComplete);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -25,18 +25,42 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<List<GetUserWishlistPerCategoryRoot>>(content);
-                    root = get;
+                    var content = JsonConvert.DeserializeObject<List<Datum>>(response.Content);
+                    root = new GetUserWishlistPerCategoryRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"Wishlist {response.StatusDescription}"
+                        },
+                        data = content
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new GetUserWishlistPerCategoryRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"Wishlist {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new GetUserWishlistPerCategoryRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
             return root;
         }

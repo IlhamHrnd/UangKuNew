@@ -29,51 +29,57 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                var wishlistcategory = await RestAPI.Wishlist.GetUserWishlistPerCategory.UserWishlistPerCategory(userID, false);
-                if (wishlistcategory.Count > 0)
+                var allwish = await RestAPI.Wishlist.GetAllUserWishlist.GetAllWishlist(userID, pageNumber, pageSize);
+                if (allwish.metaData.isSucces && allwish.metaData.code == 200)
                 {
-                    ListWishlistCategory.Clear();
-                    for (int i = 0; i < wishlistcategory.Count; i++)
+                    ListWishlist.Clear();
+                    foreach (GetAllUserWishlist.Datum item in allwish.data)
                     {
-                        var item = wishlistcategory[i];
-                        if (!string.IsNullOrEmpty(item.itemIcon))
+                        if (item.productPrice != null)
                         {
-                            string decodeImg = Converter.DecodeBase64ToString(item.itemIcon);
+                            item.priceFormat = FormatCurrency.Currency((decimal)item.productPrice, AppParameter.CurrencyFormat);
+                        }
+
+                        if (!string.IsNullOrEmpty(item.productPicture))
+                        {
+                            string decodeImg = Converter.DecodeBase64ToString(item.productPicture);
                             byte[] byteImg = Converter.StringToByteImg(decodeImg);
                             item.source = ImageConvert.ImgByte(byteImg);
                         }
-                        ListWishlistCategory.Add(item);
-                    }
-                }
-                var allwish = await RestAPI.Wishlist.GetAllUserWishlist.GetAllWishlist(userID, pageNumber, pageSize);
-                if ((bool)allwish.succeeded && allwish.data.Count > 0)
-                {
-                    ListWishlist.Clear();
-                    var item = allwish;
-                    var datas = item.data;
-                    for (int i = 0; i < datas.Count; i++)
-                    {
-                        if (datas[i].productPrice != null)
-                        {
-                            datas[i].priceFormat = FormatCurrency.Currency((decimal)datas[i].productPrice, AppParameter.CurrencyFormat);
-                        }
 
-                        if (!string.IsNullOrEmpty(datas[i].productPicture))
+                        if (item.wishlistDate != null)
                         {
-                            string decodeImg = Converter.DecodeBase64ToString(datas[i].productPicture);
-                            byte[] byteImg = Converter.StringToByteImg(decodeImg);
-                            datas[i].source = ImageConvert.ImgByte(byteImg);
-                        }
-
-                        if (datas[i].wishlistDate != null)
-                        {
-                            datas[i].wishlistDateFormat = DateFormat.FormattingDate((DateTime)datas[i].wishlistDate, ParameterModel.DateTimeFormat.Date);
+                            item.wishlistDateFormat = DateFormat.FormattingDate((DateTime)item.wishlistDate, ParameterModel.DateTimeFormat.Date);
                         }
                     }
                     Page = (int)allwish.pageNumber;
                     TotalRecords = (int)allwish.totalRecords;
                     TotalPages = (int)allwish.totalPages;
-                    ListWishlist.Add(item);
+                    ListWishlist.Add(allwish);
+
+                    var wishlistcategory = await RestAPI.Wishlist.GetUserWishlistPerCategory.UserWishlistPerCategory(userID, false);
+                    if (wishlistcategory.metaData.isSucces && wishlistcategory.metaData.code == 200)
+                    {
+                        ListWishlistCategory.Clear();
+                        foreach (var item in wishlistcategory.data)
+                        {
+                            if (!string.IsNullOrEmpty(item.itemIcon))
+                            {
+                                string decodeImg = Converter.DecodeBase64ToString(item.itemIcon);
+                                byte[] byteImg = Converter.StringToByteImg(decodeImg);
+                                item.source = ImageConvert.ImgByte(byteImg);
+                            }
+                            ListWishlistCategory.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        await MsgModel.MsgNotification(wishlistcategory.metaData.message);
+                    }
+                }
+                else
+                {
+                    await MsgModel.MsgNotification(allwish.metaData.message);
                 }
             }
             catch (Exception e)

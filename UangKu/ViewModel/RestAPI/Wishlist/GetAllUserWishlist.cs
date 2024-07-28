@@ -25,18 +25,51 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<GetAllUserWishlistRoot>(content);
-                    root = get;
+                    var content = JsonConvert.DeserializeObject<GetAllUserWishlistRoot>(response.Content);
+                    root = new GetAllUserWishlistRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"Wishlist {response.StatusDescription}"
+                        },
+                        pageNumber = content.pageNumber,
+                        pageSize = content.pageSize,
+                        totalPages = content.totalPages,
+                        totalRecords = content.totalRecords,
+                        prevPageLink = content.prevPageLink,
+                        nextPageLink = content.nextPageLink,
+                        data = content.data,
+                        succeeded = content.succeeded,
+                        errors = content.errors,
+                        message = content.message
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new GetAllUserWishlistRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"Wishlist {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new GetAllUserWishlistRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
             return root;
         }

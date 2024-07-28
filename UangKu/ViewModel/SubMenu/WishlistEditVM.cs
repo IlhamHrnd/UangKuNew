@@ -102,8 +102,8 @@ namespace UangKu.ViewModel.SubMenu
         private async void LoadWishList(Label Lbl_ProductName, AvatarView Avt_ProductPicture, Picker Pic_ProductCategory, Entry Ent_Quantity,
             Entry Ent_Price, CheckBox CB_IsComplete, DatePicker Date_WishlistDate, bool isEdit, Entry Ent_Link, Entry Ent_Name, IList<AsriRoot> list)
         {
-            var wishlist = await RestAPI.Wishlist.GetWishlistID.GetWishlistIDUser(WishlistID);
-            if (!string.IsNullOrEmpty(wishlist.wishlistID))
+            var wishlist = await GetWishlistID.GetWishlistIDUser(WishlistID);
+            if (wishlist.metaData.isSucces && wishlist.metaData.code == 200)
             {
                 //Root Model Formatting
                 wishlist.priceFormat = FormatCurrency.Currency((decimal)wishlist.productPrice, AppParameter.CurrencyFormat);
@@ -142,6 +142,10 @@ namespace UangKu.ViewModel.SubMenu
                 var newASRIList = Converter.ConvertIListToList(list);
                 int selectedIndex = ControlHelper.GetIndexByName(newASRIList, item => item.itemID, wishlist.srProductCategory);
                 Pic_ProductCategory.SelectedIndex = selectedIndex;
+            }
+            else
+            {
+                await MsgModel.MsgNotification(wishlist.metaData.message);
             }
         }
         #endregion

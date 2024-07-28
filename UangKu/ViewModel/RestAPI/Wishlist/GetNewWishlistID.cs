@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
 using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.Wishlist
@@ -10,6 +9,7 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
 
         public static async Task<string> GetNewWishlistIDNo(string transType)
         {
+            string result;
             string wishlistID = string.Empty;
             string url = string.Format(GetNewWishlistIDEndPoint, URL, transType);
             var client = new RestClient(url);
@@ -24,21 +24,19 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<string>(content);
-                    wishlistID = get;
+                    result = response.Content.Substring(1, response.Content.Length - 2);
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    result = response.ErrorMessage;
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                result = ex.Message;
             }
 
-            return wishlistID;
+            return result;
         }
     }
 }
