@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
 using UangKu.Model.Base;
 using UangKu.Model.Index.Body;
 
@@ -11,6 +10,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
 
         public static async Task<string> PostASR(string referenceID, string referenceName, int itemLength, string note)
         {
+            string result;
             string url = string.Format(PostASREndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -37,21 +37,19 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var post = JsonConvert.DeserializeObject<string>(content);
+                    result = response.Content.Substring(1, response.Content.Length - 2);
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    result = response.Content;
                 }
             }
             catch (Exception e)
             {
-                await MsgModel.MsgNotification(e.Message);
+                result = e.Message;
             }
-            var format = response.Content.Substring(1, response.Content.Length - 2);
 
-            return format;
+            return result;
         }
     }
 }

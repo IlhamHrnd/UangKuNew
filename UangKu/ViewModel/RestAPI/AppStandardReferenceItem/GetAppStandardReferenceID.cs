@@ -25,19 +25,43 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var format = content.Substring(1, content.Length - 2);
-                    var get = JsonConvert.DeserializeObject<AppStandardReferenceIDRoot>(format);
-                    root = get;
+                    var format = response.Content.Substring(1, response.Content.Length - 2);
+                    var content = JsonConvert.DeserializeObject<Datum>(format);
+                    root = new AppStandardReferenceIDRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"App Standard Reference {response.StatusDescription}"
+                        },
+                        data = content
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new AppStandardReferenceIDRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"App Standard Reference {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new AppStandardReferenceIDRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
             return root;
         }

@@ -26,10 +26,14 @@ namespace UangKu.ViewModel.Menu
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
                 var asrid = await GetAppStandardReferenceID.GetASRAsync(Id);
-                if (asrid != null)
+                if (asrid.metaData.isSucces && asrid.metaData.code == 200)
                 {
                     ListASR.Clear();
-                    ListASR.Add(asrid);
+                    ListASR.Add(asrid.data);
+                }
+                else
+                {
+                    await MsgModel.MsgNotification(asrid.metaData.message);
                 }
                 var asri = await AppStandardReferenceItem.GetAsriAsync<AsriRoot>(Id, false, false);
                 if (asri.Count > 0)
@@ -81,9 +85,8 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
-                for (int i = 0; i < ListASR.Count; i++)
+                foreach (var item in ListASR)
                 {
-                    var item = ListASR[i];
                     var reference = item.standardReferenceID;
                     var length = item.itemLength.HasValue ? (int)item.itemLength : 0;
                     var active = item.isActive ?? false;
