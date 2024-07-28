@@ -9,9 +9,9 @@ namespace UangKu.ViewModel.RestAPI.Location
     {
         private const string GetCitiesEndPoint = "{1}Location/GetAllCities?ProvID={0}";
 
-        public static async Task<List<CitiesRoot>> GetCities(string provID)
+        public static async Task<CitiesRoot> GetCities(string provID)
         {
-            List<CitiesRoot> root = new List<CitiesRoot>();
+            CitiesRoot root = new CitiesRoot();
             string url = string.Format(GetCitiesEndPoint, provID, URL);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -25,18 +25,42 @@ namespace UangKu.ViewModel.RestAPI.Location
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<List<CitiesRoot>>(content);
-                    root = get;
+                    var content = JsonConvert.DeserializeObject<List<Datum>>(response.Content);
+                    root = new CitiesRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"Cities {response.StatusDescription}"
+                        },
+                        data = content
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new CitiesRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"Cities {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new CitiesRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
             return root;
         }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using UangKu.Model.Base;
+using UangKu.Model.Response.Location;
 using static UangKu.Model.Response.Location.Cities;
 using static UangKu.Model.Response.Location.District;
 using static UangKu.Model.Response.Location.PostalCode;
@@ -10,54 +11,54 @@ namespace UangKu.Model.SubMenu
 {
     public class EditProfile : BaseModel
     {
-        private IList<ProvincesRoot> listprovinces { get; set; }
+        private IList<Provinces.Datum> listprovinces { get; set; }
 
-        public IList<ProvincesRoot> ListProvinces
+        public IList<Provinces.Datum> ListProvinces
         {
             get
             {
                 if (listprovinces == null)
                 {
-                    listprovinces = new ObservableCollection<ProvincesRoot>();
+                    listprovinces = new ObservableCollection<Provinces.Datum>();
                 }
                 return listprovinces;
             }
             set { listprovinces = value; }
         }
-        private IList<CitiesRoot> listcities { get; set; }
-        public IList<CitiesRoot> ListCities
+        private IList<Cities.Datum> listcities { get; set; }
+        public IList<Cities.Datum> ListCities
         {
             get
             {
                 if (listcities == null)
                 {
-                    listcities = new ObservableCollection<CitiesRoot>();
+                    listcities = new ObservableCollection<Cities.Datum>();
                 }
                 return listcities;
             }
             set { listcities = value; }
         }
-        private IList<DistrictRoot> listdistricts { get; set; }
-        public IList<DistrictRoot> ListDistricts
+        private IList<District.Datum> listdistricts { get; set; }
+        public IList<District.Datum> ListDistricts
         {
             get
             {
                 if (listdistricts == null)
                 {
-                    listdistricts = new ObservableCollection<DistrictRoot>();
+                    listdistricts = new ObservableCollection<District.Datum>();
                 }
                 return listdistricts;
             }
             set { listdistricts = value; }
         }
-        private IList<SubdistrictRoot> listsubdistricts { get; set; }
-        public IList<SubdistrictRoot> ListSubdistricts
+        private IList<Subdistrict.Datum> listsubdistricts { get; set; }
+        public IList<Subdistrict.Datum> ListSubdistricts
         {
             get
             {
                 if (listsubdistricts == null)
                 {
-                    listsubdistricts = new ObservableCollection<SubdistrictRoot>();
+                    listsubdistricts = new ObservableCollection<Subdistrict.Datum>();
                 }
                 return listsubdistricts;
             }
@@ -76,8 +77,8 @@ namespace UangKu.Model.SubMenu
             }
             set { postalcode = value; }
         }
-        private ProvincesRoot selectedplacebirth { get; set; }
-        public ProvincesRoot SelectedPlaceBirth
+        private Provinces.Datum selectedplacebirth { get; set; }
+        public Provinces.Datum SelectedPlaceBirth
         {
             get { return selectedplacebirth; }
             set
@@ -89,8 +90,8 @@ namespace UangKu.Model.SubMenu
                 }
             }
         }
-        private ProvincesRoot selectedprovinces { get; set; }
-        public ProvincesRoot SelectedProvinces
+        private Provinces.Datum selectedprovinces { get; set; }
+        public Provinces.Datum SelectedProvinces
         {
             get { return selectedprovinces; }
             set
@@ -102,8 +103,8 @@ namespace UangKu.Model.SubMenu
                 }
             }
         }
-        private CitiesRoot selectedcity { get; set; }
-        public CitiesRoot SelectedCity
+        private Cities.Datum selectedcity { get; set; }
+        public Cities.Datum SelectedCity
         {
             get { return selectedcity; }
             set
@@ -115,8 +116,8 @@ namespace UangKu.Model.SubMenu
                 }
             }
         }
-        private DistrictRoot selecteddistrict { get; set; }
-        public DistrictRoot SelectedDistrict
+        private District.Datum selecteddistrict { get; set; }
+        public District.Datum SelectedDistrict
         {
             get { return selecteddistrict; }
             set
@@ -128,8 +129,8 @@ namespace UangKu.Model.SubMenu
                 }
             }
         }
-        private SubdistrictRoot selectedsubdistrict { get; set; }
-        public SubdistrictRoot SelectedSubdistrict
+        private Subdistrict.Datum selectedsubdistrict { get; set; }
+        public Subdistrict.Datum SelectedSubdistrict
         {
             get { return selectedsubdistrict; }
             set

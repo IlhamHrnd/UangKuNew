@@ -1,10 +1,17 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.Location
 {
     public class Provinces
     {
-        public class ProvincesRoot
+        public class ProvincesRoot : IResponse
+        {
+            public List<Datum> data { get; set; }
+            public MetaData metaData { get; set; }
+        }
+
+        public class Datum
         {
             [JsonProperty("provID")]
             public int? provID { get; set; }

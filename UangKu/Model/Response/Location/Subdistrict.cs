@@ -1,10 +1,17 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.Location
 {
     public class Subdistrict
     {
-        public class SubdistrictRoot
+        public class SubdistrictRoot : IResponse
+        {
+            public List<Datum> data { get; set; }
+            public MetaData metaData { get; set; }
+        }
+
+        public class Datum
         {
             [JsonProperty("subdisID")]
             public int? subdisID { get; set; }

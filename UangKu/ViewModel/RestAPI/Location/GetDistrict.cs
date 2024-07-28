@@ -9,9 +9,9 @@ namespace UangKu.ViewModel.RestAPI.Location
     {
         private const string GetDistrictEndPoint = "{1}Location/GetAllDistrict?CityID={0}";
 
-        public static async Task<List<DistrictRoot>> GetDistricts(string cityID)
+        public static async Task<DistrictRoot> GetDistricts(string cityID)
         {
-            List<DistrictRoot> root = new List<DistrictRoot>();
+            DistrictRoot root = new DistrictRoot();
             string url = string.Format(GetDistrictEndPoint, cityID, URL);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -25,18 +25,42 @@ namespace UangKu.ViewModel.RestAPI.Location
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<List<DistrictRoot>>(content);
-                    root = get;
+                    var content = JsonConvert.DeserializeObject<List<Datum>>(response.Content);
+                    root = new DistrictRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"District {response.StatusDescription}"
+                        },
+                        data = content
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new DistrictRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"District {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new DistrictRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
             return root;
         }

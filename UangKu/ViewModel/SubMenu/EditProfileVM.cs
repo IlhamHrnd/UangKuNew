@@ -34,13 +34,17 @@ namespace UangKu.ViewModel.SubMenu
                     }
 
                     var provinces = await GetProvince.GetProvinces();
-                    if (provinces.Count > 0)
+                    if (provinces.metaData.isSucces && provinces.metaData.code == 200)
                     {
                         ListProvinces.Clear();
-                        for (int i = 0; i < provinces.Count; i++)
+                        foreach (var item in provinces.data)
                         {
-                            ListProvinces.Add(provinces[i]);
+                            ListProvinces.Add(item);
                         }
+                    }
+                    else
+                    {
+                        await MsgModel.MsgNotification(provinces.metaData.message);
                     }
 
                     if (!string.IsNullOrEmpty(userID))
@@ -111,13 +115,17 @@ namespace UangKu.ViewModel.SubMenu
                 else
                 {
                     var provinces = await GetProvince.GetProvinces();
-                    if (provinces.Count > 0)
+                    if (provinces.metaData.isSucces && provinces.metaData.code == 200)
                     {
                         ListProvinces.Clear();
-                        for (int i = 0; i < provinces.Count; i++)
+                        foreach (var item in provinces.data)
                         {
-                            ListProvinces.Add(provinces[i]);
+                            ListProvinces.Add(item);
                         }
+                    }
+                    else
+                    {
+                        await MsgModel.MsgNotification(provinces.metaData.message);
                     }
                 }
             }
@@ -251,13 +259,17 @@ namespace UangKu.ViewModel.SubMenu
                     if (SelectedProvinces.provID != 0)
                     {
                         var cities = await GetCity.GetCities(SelectedProvinces.provID.ToString());
-                        if (cities.Count > 0)
+                        if (cities.metaData.isSucces && cities.metaData.code == 200)
                         {
                             ListCities.Clear();
-                            for (int i = 0; i < cities.Count; i++)
+                            foreach (var item in cities.data)
                             {
-                                ListCities.Add(cities[i]);
+                                ListCities.Add(item);
                             }
+                        }
+                        else
+                        {
+                            await MsgModel.MsgNotification(cities.metaData.message);
                         }
                     }
                 }
@@ -287,13 +299,17 @@ namespace UangKu.ViewModel.SubMenu
                     if (SelectedCity.cityID != 0)
                     {
                         var districts = await GetDistrict.GetDistricts(SelectedCity.cityID.ToString());
-                        if (districts.Count > 0)
+                        if (districts.metaData.isSucces && districts.metaData.code == 200)
                         {
                             ListDistricts.Clear();
-                            for (int i = 0; i < districts.Count; i++)
+                            foreach (var item in districts.data)
                             {
-                                ListDistricts.Add(districts[i]);
+                                ListDistricts.Add(item);
                             }
+                        }
+                        else
+                        {
+                            await MsgModel.MsgNotification(districts.metaData.message);
                         }
                     }
                 }
@@ -323,13 +339,17 @@ namespace UangKu.ViewModel.SubMenu
                     if (SelectedDistrict.disID != 0)
                     {
                         var subdis = await GetSubdistrict.GetSubdistricts(SelectedDistrict.disID.ToString());
-                        if (subdis.Count > 0)
+                        if (subdis.metaData.isSucces && subdis.metaData.code == 200)
                         {
                             ListSubdistricts.Clear();
-                            for (int i = 0; i < subdis.Count;i++)
+                            foreach (var item in subdis.data)
                             {
-                                ListSubdistricts.Add(subdis[i]);
+                                ListSubdistricts.Add(item);
                             }
+                        }
+                        else
+                        {
+                            await MsgModel.MsgNotification(subdis.metaData.message);
                         }
                     }
                 }
@@ -360,9 +380,13 @@ namespace UangKu.ViewModel.SubMenu
                         SelectedCity.cityID != 0 && SelectedProvinces.provID != 0)
                     {
                         var postal = await GetPostalCode.GetPostalCodes(SelectedProvinces.provID.ToString(), SelectedCity.cityID.ToString(), SelectedDistrict.disID.ToString(), SelectedSubdistrict.subdisID.ToString());
-                        if (postal.postalCode != 0)
+                        if (postal.metaData.isSucces && postal.metaData.code == 200)
                         {
-                            PostalCode.Text = postal.postalCode.ToString();
+                            PostalCode.Text = postal.data.postalCode.ToString();
+                        }
+                        else
+                        {
+                            await MsgModel.MsgNotification(postal.metaData.message);
                         }
                     }
                 }
