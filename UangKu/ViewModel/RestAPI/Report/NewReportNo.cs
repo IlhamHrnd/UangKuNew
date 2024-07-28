@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using UangKu.Model.Base;
+using static UangKu.Model.Response.GenerateAutoNumber.AutoNumber;
 
 namespace UangKu.ViewModel.RestAPI.Report
 {
@@ -8,9 +9,9 @@ namespace UangKu.ViewModel.RestAPI.Report
     {
         private const string GetNewReportNoEndPoint = "{1}UserReport/GetNewReportNo?TransType={0}";
 
-        public static async Task<string> GetNewReportNo(string reportType)
+        public static async Task<AutoNumberRoot> GetNewReportNo(string reportType)
         {
-            string reportNo = string.Empty;
+            AutoNumberRoot root = new AutoNumberRoot();
             string url = string.Format(GetNewReportNoEndPoint, reportType, URL);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -24,21 +25,45 @@ namespace UangKu.ViewModel.RestAPI.Report
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<string>(content);
-                    reportNo = get;
+                    var content = JsonConvert.DeserializeObject<string>(response.Content);
+                    root = new AutoNumberRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"Report {response.StatusDescription}"
+                        },
+                        AutoNumber = content
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new AutoNumberRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"Report {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new AutoNumberRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
 
-            return reportNo;
+            return root;
         }
     }
 }

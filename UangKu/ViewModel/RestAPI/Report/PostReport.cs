@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
 using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.Report
@@ -10,6 +9,7 @@ namespace UangKu.ViewModel.RestAPI.Report
 
         public static async Task<string> PostNewReport(Model.Index.Body.PostReport report)
         {
+            string result;
             string url = string.Format(ReportEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -39,21 +39,19 @@ namespace UangKu.ViewModel.RestAPI.Report
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var post = JsonConvert.DeserializeObject<string>(content);
+                    result = response.Content.Substring(1, response.Content.Length - 2);
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    result = response.ErrorMessage;
                 }
             }
             catch (Exception e)
             {
-                await MsgModel.MsgNotification(e.Message);
+                result = e.Message;
             }
-            var format = response.Content.Substring(1, response.Content.Length - 2);
 
-            return format;
+            return result;
         }
     }
 }

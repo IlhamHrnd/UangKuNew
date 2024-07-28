@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.Report
 {
-    public class GetReportNoRoot
+    public class GetReportNoRoot : IResponse
     {
         [JsonProperty("reportNo")]
         public string reportNo { get; set; }
@@ -54,5 +55,6 @@ namespace UangKu.Model.Response.Report
 
         [JsonProperty("personID")]
         public string personID { get; set; }
+        public MetaData metaData { get; set; }
     }
 }
