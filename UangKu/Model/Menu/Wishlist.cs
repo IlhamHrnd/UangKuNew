@@ -25,14 +25,14 @@ namespace UangKu.Model.Menu
             }
             set { listwishlist = value; }
         }
-        private IList<GetUserWishlistPerCategoryRoot> listwishlistcategory { get; set; }
-        public IList<GetUserWishlistPerCategoryRoot> ListWishlistCategory
+        private IList<Model.Response.Wishlist.GetUserWishlistPerCategory.Datum> listwishlistcategory { get; set; }
+        public IList<Model.Response.Wishlist.GetUserWishlistPerCategory.Datum> ListWishlistCategory
         {
             get
             {
                 if (listwishlistcategory == null)
                 {
-                    listwishlistcategory = new ObservableCollection<GetUserWishlistPerCategoryRoot>();
+                    listwishlistcategory = new ObservableCollection<Model.Response.Wishlist.GetUserWishlistPerCategory.Datum>();
                 }
                 return listwishlistcategory;
             }

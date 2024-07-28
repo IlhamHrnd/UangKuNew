@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.Wishlist
 {
-    public class GetWishlistIDRoot
+    public class GetWishlistIDRoot : IResponse
     {
         [JsonProperty("wishlistID")]
         public string wishlistID { get; set; }
@@ -39,5 +40,6 @@ namespace UangKu.Model.Response.Wishlist
         public string priceFormat { get; set; }
         public string wishlistDateFormat { get; set; }
         public ImageSource source { get; set; }
+        public MetaData metaData { get; set; }
     }
 }

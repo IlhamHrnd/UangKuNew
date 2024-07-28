@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.Wishlist
 {
@@ -43,7 +44,7 @@ namespace UangKu.Model.Response.Wishlist
             public ImageSource source { get; set; }
         }
 
-        public class GetAllUserWishlistRoot
+        public class GetAllUserWishlistRoot : IResponse
         {
             [JsonProperty("pageNumber")]
             public int? pageNumber { get; set; }
@@ -74,6 +75,7 @@ namespace UangKu.Model.Response.Wishlist
 
             [JsonProperty("message")]
             public object message { get; set; }
+            public MetaData metaData { get; set; }
         }
 
     }
