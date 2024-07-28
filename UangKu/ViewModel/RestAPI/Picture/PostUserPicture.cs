@@ -44,7 +44,7 @@ namespace UangKu.ViewModel.RestAPI.Picture
                 }
                 else
                 {
-                    result = response.ErrorMessage;
+                    result = response.Content;
                 }
             }
             catch (Exception e)

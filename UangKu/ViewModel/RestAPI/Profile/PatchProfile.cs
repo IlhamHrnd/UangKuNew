@@ -47,7 +47,7 @@ namespace UangKu.ViewModel.RestAPI.Profile
                 }
                 else
                 {
-                    result = response.ErrorMessage;
+                    result = response.Content;
                 }
             }
             catch (Exception e)

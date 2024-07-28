@@ -45,7 +45,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
                 }
                 else
                 {
-                    result = response.ErrorMessage;
+                    result = response.Content;
                 }
             }
             catch (Exception e)
