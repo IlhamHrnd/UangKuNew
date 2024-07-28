@@ -10,6 +10,7 @@ namespace UangKu.ViewModel.RestAPI.Transaction
 
         public static async Task<string> PatchTransactionTransNo(Model.Index.Body.PatchTransaction transaction)
         {
+            string result;
             string url = string.Format(PatchTransactionEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -38,17 +39,19 @@ namespace UangKu.ViewModel.RestAPI.Transaction
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var patch = JsonConvert.DeserializeObject<string>(content);
+                    result = response.Content.Substring(1, response.Content.Length - 2);
+                }
+                else
+                {
+                    result = response.ErrorMessage;
                 }
             }
             catch (Exception e)
             {
-                await MsgModel.MsgNotification(e.Message);
+                result = e.Message;
             }
-            var format = response.Content.Substring(1, response.Content.Length - 2);
 
-            return format;
+            return result;
         }
     }
 }

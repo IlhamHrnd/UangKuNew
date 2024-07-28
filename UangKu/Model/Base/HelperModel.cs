@@ -840,7 +840,7 @@ namespace UangKu.Model.Base
             {
                 string transNo = string.Empty;
                 var generateID = await NewTransNo.GetNewTransNo(transType);
-                transNo = !string.IsNullOrEmpty(generateID) ? generateID : string.Empty;
+                transNo = generateID.metaData.isSucces && generateID.metaData.code == 200 ? generateID.AutoNumber : string.Empty;
                 return transNo;
             }
             catch (Exception e)

@@ -455,7 +455,7 @@ namespace UangKu.ViewModel.Menu
                         }
 
                         //Table Footer
-                        if (sumtrans.data.Count > 0)
+                        if (sumtrans.metaData.isSucces && sumtrans.metaData.code == 200 && sumtrans.data.Count > 0)
                         {
                             decimal summary = 0;
                             foreach (var item in sumtrans.data)
@@ -487,6 +487,10 @@ namespace UangKu.ViewModel.Menu
                             tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, income, iText.Layout.Properties.TextAlignment.RIGHT));
                             tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, expenditure, iText.Layout.Properties.TextAlignment.RIGHT));
                             tbl.AddFooterCell(GeneratePDFFile.SetCell(1, true, sum, iText.Layout.Properties.TextAlignment.RIGHT));
+                        }
+                        else
+                        {
+                            await MsgModel.MsgNotification(sumtrans.metaData.message);
                         }
 
                         doc.Add(tbl);
