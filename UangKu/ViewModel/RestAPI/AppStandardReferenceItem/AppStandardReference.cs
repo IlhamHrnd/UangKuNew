@@ -25,18 +25,51 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<AppStandardReferenceRoot>(content);
-                    root = get;
+                    var content = JsonConvert.DeserializeObject<AppStandardReferenceRoot>(response.Content);
+                    root = new AppStandardReferenceRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"App Standard Reference {response.StatusDescription}"
+                        },
+                        pageNumber = content.pageNumber,
+                        pageSize = content.pageSize,
+                        totalPages = content.totalPages,
+                        totalRecords = content.totalRecords,
+                        prevPageLink = content.prevPageLink,
+                        nextPageLink = content.nextPageLink,
+                        data = content.data,
+                        succeeded = content.succeeded,
+                        errors = content.errors,
+                        message = content.message
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new AppStandardReferenceRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"App Standard Reference {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new AppStandardReferenceRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
             return root;
         }
