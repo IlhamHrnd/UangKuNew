@@ -1,10 +1,16 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.AppStandardReference
 {
     public class AppStandardReferenceID
     {
-        public class AppStandardReferenceIDRoot
+        public class AppStandardReferenceIDRoot : IResponse
+        {
+            public Datum data { get; set; }
+            public MetaData metaData { get; set; }
+        }
+        public class Datum
         {
             [JsonProperty("standardReferenceID")]
             public string standardReferenceID { get; set; }

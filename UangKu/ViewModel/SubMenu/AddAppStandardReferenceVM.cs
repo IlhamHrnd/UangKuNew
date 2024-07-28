@@ -28,9 +28,13 @@ namespace UangKu.ViewModel.SubMenu
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
                 var asr = await GetAppStandardReferenceID.GetASRAsync(referenceID.Text);
-                if (!string.IsNullOrEmpty(asr.standardReferenceID))
+                if (asr.metaData.isSucces && asr.metaData.code == 200)
                 {
-                    ListASR.Add(asr);
+                    ListASR.Add(asr.data);
+                }
+                else
+                {
+                    await MsgModel.MsgNotification(asr.metaData.message);
                 }
                 switch (ListASR.Count)
                 {
