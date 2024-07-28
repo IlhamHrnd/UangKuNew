@@ -26,12 +26,11 @@ namespace UangKu.ViewModel.Menu
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
                 var param = await RestAPI.AppParameter.AllAppParameter.GetAllAppParameter(pageNumber, pageSize);
-                if ((bool)param.succeeded)
+                if (param.metaData.isSucces && param.metaData.code == 200)
                 {
                     ListParameter.Clear();
-                    for (int i = 0; i < param.data.Count; i++)
+                    foreach (var data in param.data)
                     {
-                        var data = param.data[i];
                         if (data.lastUpdateDateTime != null)
                         {
                             data.lastUpdateDateTimeString = DateFormat.FormattingDate((DateTime)data.lastUpdateDateTime, ParameterModel.DateTimeFormat.Daydatemonthyear);
@@ -41,6 +40,10 @@ namespace UangKu.ViewModel.Menu
                     TotalRecords = (int)param.totalRecords;
                     TotalPages = (int)param.totalPages;
                     ListParameter.Add(param);
+                }
+                else
+                {
+                    await MsgModel.MsgNotification(param.metaData.message);
                 }
             }
             catch (Exception e)
@@ -75,12 +78,11 @@ namespace UangKu.ViewModel.Menu
                 {
                     int pages = isNext ? Page + 1 : Page - 1;
                     var param = await RestAPI.AppParameter.AllAppParameter.GetAllAppParameter(pages, pageSize);
-                    if ((bool)param.succeeded)
+                    if (param.metaData.isSucces && param.metaData.code == 200)
                     {
                         ListParameter.Clear();
-                        for (int i = 0; i < param.data.Count; i++)
+                        foreach (var data in param.data)
                         {
-                            var data = param.data[i];
                             if (data.lastUpdateDateTime != null)
                             {
                                 data.lastUpdateDateTimeString = DateFormat.FormattingDate((DateTime)data.lastUpdateDateTime, ParameterModel.DateTimeFormat.Daydatemonthyear);
@@ -90,6 +92,10 @@ namespace UangKu.ViewModel.Menu
                         TotalRecords = (int)param.totalRecords;
                         TotalPages = (int)param.totalPages;
                         ListParameter.Add(param);
+                    }
+                    else
+                    {
+                        await MsgModel.MsgNotification(param.metaData.message);
                     }
                 }
             }

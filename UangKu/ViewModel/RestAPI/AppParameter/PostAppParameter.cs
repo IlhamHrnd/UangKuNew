@@ -10,6 +10,7 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
 
         public static async Task<string> PostAppParameterID(Model.Index.Body.PostAppParameter parameter)
         {
+            string result;
             string url = string.Format(PostAppParameterEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -35,21 +36,19 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var post = JsonConvert.DeserializeObject<string>(content);
+                    result = response.Content.Substring(1, response.Content.Length - 2);
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    result = response.Content;
                 }
             }
             catch (Exception e)
             {
-                await MsgModel.MsgNotification(e.Message);
+                result = e.Message;
             }
-            var format = response.Content.Substring(1, response.Content.Length - 2);
 
-            return format;
+            return result;
         }
     }
 }

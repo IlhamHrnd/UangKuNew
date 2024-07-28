@@ -9,9 +9,9 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
     {
         private const string AllAppParameterEndPoint = "{0}AppParameter/GetAllParameterWithNoPageFilter";
 
-        public static async Task<List<ParameterWithNoPageFilterRoot>> GetAllAppParameter()
+        public static async Task<ParameterWithNoPageFilterRoot> GetAllAppParameter()
         {
-            List<ParameterWithNoPageFilterRoot> root = new List<ParameterWithNoPageFilterRoot>();
+            ParameterWithNoPageFilterRoot root = new ParameterWithNoPageFilterRoot();
             string url = string.Format(AllAppParameterEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -25,18 +25,42 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<List<ParameterWithNoPageFilterRoot>>(content);
-                    root = get;
+                    var content = JsonConvert.DeserializeObject<List<Datum>>(response.Content);
+                    root = new ParameterWithNoPageFilterRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"App Parameter {response.StatusDescription}"
+                        },
+                        data = content
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new ParameterWithNoPageFilterRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"App Parameter {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new ParameterWithNoPageFilterRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
             return root;
         }

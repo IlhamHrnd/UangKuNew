@@ -166,9 +166,9 @@ namespace UangKu.Model.Base
         public static async void LoadAppParameter()
         {
             var allParameter = await AllParameterWithNoPageFilter.GetAllAppParameter();
-            if (allParameter.Count > 0)
+            if (allParameter.metaData.isSucces && allParameter.metaData.code == 200 && allParameter.data.Count > 0)
             {
-                foreach (var data in allParameter)
+                foreach (var data in allParameter.data)
                 {
                     try
                     {
@@ -261,6 +261,10 @@ namespace UangKu.Model.Base
                         await MsgModel.MsgNotification($"{e.Message}");
                     }
                 }
+            }
+            else
+            {
+                await MsgModel.MsgNotification(allParameter.metaData.message);
             }
         }
     }

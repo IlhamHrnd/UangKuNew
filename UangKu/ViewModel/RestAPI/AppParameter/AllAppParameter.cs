@@ -25,18 +25,51 @@ namespace UangKu.ViewModel.RestAPI.AppParameter
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<GetAllAppParameterRoot>(content);
-                    root = get;
+                    var content = JsonConvert.DeserializeObject<GetAllAppParameterRoot>(response.Content);
+                    root = new GetAllAppParameterRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"Parameter {response.StatusDescription}"
+                        },
+                        pageNumber = content.pageNumber,
+                        pageSize = content.pageSize,
+                        totalPages = content.totalPages,
+                        totalRecords = content.totalRecords,
+                        prevPageLink = content.prevPageLink,
+                        nextPageLink = content.nextPageLink,
+                        data = content.data,
+                        succeeded = content.succeeded,
+                        errors = content.errors,
+                        message = content.message
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new GetAllAppParameterRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"Parameter {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new GetAllAppParameterRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
             return root;
         }
