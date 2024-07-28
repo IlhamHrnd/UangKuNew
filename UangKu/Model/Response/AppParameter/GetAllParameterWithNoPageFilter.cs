@@ -1,10 +1,17 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.AppParameter
 {
     public class GetAllParameterWithNoPageFilter
     {
-        public class ParameterWithNoPageFilterRoot
+        public class ParameterWithNoPageFilterRoot : IResponse
+        {
+            public List<Datum> data { get; set; }
+            public MetaData metaData { get; set; }
+        }
+
+        public class Datum
         {
             [JsonProperty("parameterID")]
             public string parameterID { get; set; }

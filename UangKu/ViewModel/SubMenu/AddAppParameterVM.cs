@@ -64,30 +64,34 @@ namespace UangKu.ViewModel.SubMenu
                     if (!string.IsNullOrEmpty(ParameterID))
                     {
                         var parameterID = await GetParameterID.GetParameter(ParameterID);
-                        if (!string.IsNullOrEmpty(parameterID.parameterID))
+                        if (parameterID.metaData.isSucces && parameterID.metaData.code == 200)
                         {
-                            Ent_ParameterID.Text = parameterID.parameterID;
-                            Ent_ParameterNote.Text = parameterID.parameterName;
-                            Ent_ParameterValue.Text = parameterID.parameterValue;
-                            CB_ParameterIsActive.IsChecked = (bool)parameterID.isUsedBySystem;
-                            switch (parameterID.srControl)
+                            Ent_ParameterID.Text = parameterID.data.parameterID;
+                            Ent_ParameterNote.Text = parameterID.data.parameterName;
+                            Ent_ParameterValue.Text = parameterID.data.parameterValue;
+                            CB_ParameterIsActive.IsChecked = (bool)parameterID.data.isUsedBySystem;
+                            switch (parameterID.data.srControl)
                             {
                                 case "Control-001":
                                     IsCheckedBoxVisible = true;
                                     IsEntryVisible = false;
-                                    CB_ParameterValue.IsChecked = Converter.StringToBool(parameterID.parameterValue, false);
+                                    CB_ParameterValue.IsChecked = Converter.StringToBool(parameterID.data.parameterValue, false);
                                     break;
 
                                 case "Control-002":
                                     IsEntryVisible = true;
                                     IsCheckedBoxVisible = false;
-                                    Ent_ParameterValue.Text = parameterID.parameterValue;
+                                    Ent_ParameterValue.Text = parameterID.data.parameterValue;
                                     break;
                             }
                             var newParamList = Converter.ConvertIListToList(ListParameterType);
-                            int selectedIndex = ControlHelper.GetIndexByName(newParamList, item => item.itemID, parameterID.srControl);
+                            int selectedIndex = ControlHelper.GetIndexByName(newParamList, item => item.itemID, parameterID.data.srControl);
                             Pic_ParameterType.SelectedIndex = selectedIndex;
-                            Pic_ParameterType.IsEnabled = string.IsNullOrEmpty(parameterID.srControl);
+                            Pic_ParameterType.IsEnabled = string.IsNullOrEmpty(parameterID.data.srControl);
+                        }
+                        else
+                        {
+                            await MsgModel.MsgNotification(parameterID.metaData.message);
                         }
                     }
                 }

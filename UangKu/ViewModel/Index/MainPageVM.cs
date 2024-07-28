@@ -32,11 +32,19 @@ namespace UangKu.ViewModel.Index
                 btnLogin.IsEnabled = true;
 
                 var parameterID = await GetParameterID.GetParameter("ShowLastBuild");
-                if (!string.IsNullOrEmpty(parameterID.parameterValue))
+                if (parameterID.metaData.isSucces && parameterID.metaData.code == 200)
                 {
-                    IsVisible = AppParameter.ShowLastBuild;
-                    var lastbuild = SessionModel.GetBuildDate();
-                    LastBuild = lastbuild.ToString(ParameterModel.DateTimeFormat.Date);
+                    var isVisible = Converter.StringToBool(parameterID.data.parameterValue, false);
+                    if (isVisible)
+                    {
+                        IsVisible = isVisible;
+                        var lastbuild = SessionModel.GetBuildDate();
+                        LastBuild = lastbuild.ToString(ParameterModel.DateTimeFormat.Date);
+                    }
+                }
+                else
+                {
+                    await MsgModel.MsgNotification(parameterID.metaData.message);
                 }
             }
         }

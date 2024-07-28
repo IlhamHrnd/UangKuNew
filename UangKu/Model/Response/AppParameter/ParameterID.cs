@@ -1,10 +1,17 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.AppParameter
 {
     public class ParameterID
     {
-        public class ParameterIDRoot
+        public class ParameterIDRoot : IResponse
+        {
+            public Datum data { get; set; }
+            public MetaData metaData { get; set; }
+        }
+
+        public class Datum
         {
             [JsonProperty("parameterID")]
             public string parameterID { get; set; }
