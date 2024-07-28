@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.Profile
 {
     public class Profile
     {
-        public class ProfileRoot
+        public class ProfileRoot : IResponse
         {
             [JsonProperty("personID")]
             public string personID { get; set; }
@@ -52,6 +53,7 @@ namespace UangKu.Model.Response.Profile
             public string lastUpdateByUser { get; set; }
             public string fullName { get; set; }
             public string birthDateFormat { get; set; }
+            public MetaData metaData { get; set; }
         }
     }
 }

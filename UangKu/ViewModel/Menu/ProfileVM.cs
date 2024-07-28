@@ -33,29 +33,31 @@ namespace UangKu.ViewModel.Menu
                 if (!string.IsNullOrEmpty(userID))
                 {
                     var profile = await GetProfile.GetProfileID(userID);
-                    if (!string.IsNullOrEmpty(profile.personID))
+                    if (profile.metaData.isSucces && profile.metaData.code == 200)
                     {
                         Profiles.Clear();
                         Profiles.Add(profile);
+
+                        var profiles = Profiles[0];
+                        if (!string.IsNullOrEmpty(profiles.photo))
+                        {
+                            string decodeImg = Converter.DecodeBase64ToString(profiles.photo);
+                            byte[] byteImg = Converter.StringToByteImg(decodeImg);
+                            ParameterModel.ImageManager.ImageByte = byteImg;
+                            ParameterModel.ImageManager.ImageString = decodeImg;
+                            avatar.ImageSource = ImageConvert.ImgByte(byteImg);
+                        }
+                        if (profiles.birthDate.HasValue)
+                        {
+                            profiles.birthDateFormat = profiles.birthDate.HasValue ? DateFormat.FormattingDate((DateTime)profiles.birthDate, ParameterModel.DateTimeFormat.Date) : string.Empty;
+                        }
+                        profiles.fullName = $"{profiles.firstName} {profiles.middleName} {profiles.lastName}";
+                        avatar.Text = profiles.personID;
                     }
-                }
-                if (Profiles.Count > 0)
-                {
-                    var profile = Profiles[0];
-                    if (!string.IsNullOrEmpty(profile.photo))
+                    else
                     {
-                        string decodeImg = Converter.DecodeBase64ToString(profile.photo);
-                        byte[] byteImg = Converter.StringToByteImg(decodeImg);
-                        ParameterModel.ImageManager.ImageByte = byteImg;
-                        ParameterModel.ImageManager.ImageString = decodeImg;
-                        avatar.ImageSource = ImageConvert.ImgByte(byteImg);
+                        await MsgModel.MsgNotification(profile.metaData.message);
                     }
-                    if (profile.birthDate.HasValue)
-                    {
-                        profile.birthDateFormat = profile.birthDate.HasValue ? DateFormat.FormattingDate((DateTime)profile.birthDate, ParameterModel.DateTimeFormat.Date) : string.Empty;
-                    }
-                    profile.fullName = $"{profile.firstName} {profile.middleName} {profile.lastName}";
-                    avatar.Text = profile.personID;
                 }
             }
             catch (Exception e)

@@ -25,19 +25,59 @@ namespace UangKu.ViewModel.RestAPI.Profile
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var format = content.Substring(1, content.Length - 2);
-                    var get = JsonConvert.DeserializeObject<ProfileRoot>(format);
-                    root = get;
+                    var format = response.Content.Substring(1, response.Content.Length - 2);
+                    var content = JsonConvert.DeserializeObject<ProfileRoot>(format);
+                    root = new ProfileRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"Transaction {response.StatusDescription}"
+                        },
+                        personID = content.personID,
+                        firstName = content.firstName,
+                        middleName = content.middleName,
+                        lastName = content.lastName,
+                        birthDate = content.birthDate,
+                        placeOfBirth = content.placeOfBirth,
+                        photo = content.photo,
+                        address = content.address,
+                        province = content.province,
+                        city = content.city,
+                        subdistrict = content.subdistrict,
+                        district = content.district,
+                        postalCode = content.postalCode,
+                        lastUpdateDateTime = content.lastUpdateDateTime,
+                        lastUpdateByUser = content.lastUpdateByUser,
+                        fullName = content.fullName,
+                        birthDateFormat = content.birthDateFormat
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new ProfileRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"Profile {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new ProfileRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
             return root;
         }

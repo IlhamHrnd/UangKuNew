@@ -147,13 +147,20 @@ namespace UangKu.Model.Base
         public static async void LoadProfile()
         {
             var profile = await GetProfile.GetProfileID(App.Session.personID);
-            DateTime dateTime = profile.birthDate != null ? (DateTime)profile.birthDate : DateTime.Now;
-            int AgeUser = GetUserAge(dateTime);
-            App.Access = new AppAccess
+            if (profile.metaData.isSucces && profile.metaData.code == 200)
             {
-                IsAdmin = IsAdmin(App.Session.accessName),
-                IsAdult = IsAdult(AgeUser)
-            };
+                DateTime dateTime = profile.birthDate != null ? (DateTime)profile.birthDate : DateTime.Now;
+                int AgeUser = GetUserAge(dateTime);
+                App.Access = new AppAccess
+                {
+                    IsAdmin = IsAdmin(App.Session.accessName),
+                    IsAdult = IsAdult(AgeUser)
+                };
+            }
+            else
+            {
+                await MsgModel.MsgNotification(profile.metaData.message);
+            }
         }
 
         public static async void LoadAppParameter()
