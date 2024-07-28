@@ -24,13 +24,17 @@ namespace UangKu.ViewModel.Menu
                     await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
                 }
                 var asr = await RestAPI.AppStandardReferenceItem.AppStandardReference.GetAllASR(pageNumber, pageSize);
-                if (asr.data.Count > 0)
+                if (asr.metaData.isSucces && asr.metaData.code == 200 && asr.data.Count > 0)
                 {
                     ListASR.Clear();
                     ListASR.Add(asr);
                     Page = (int)asr.pageNumber;
                     TotalPages = (int)asr.totalPages;
                     TotalRecords = (int)asr.totalRecords;
+                }
+                else
+                {
+                    await MsgModel.MsgNotification(asr.metaData.message);
                 }
             }
             catch (Exception e)
@@ -64,13 +68,17 @@ namespace UangKu.ViewModel.Menu
                 {
                     int pages = isNext ? Page + 1 : Page - 1;
                     var asr = await RestAPI.AppStandardReferenceItem.AppStandardReference.GetAllASR(pages, pageSize);
-                    if ((bool)asr.succeeded)
+                    if (asr.metaData.isSucces && asr.metaData.code == 200 && asr.data.Count > 0)
                     {
                         ListASR.Clear();
                         ListASR.Add(asr);
                         Page = (int)asr.pageNumber;
                         TotalPages = (int)asr.totalPages;
                         TotalRecords = (int)asr.totalRecords;
+                    }
+                    else
+                    {
+                        await MsgModel.MsgNotification(asr.metaData.message);
                     }
                 }
             }
