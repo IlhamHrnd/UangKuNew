@@ -65,40 +65,47 @@ namespace UangKu.ViewModel.SubMenu
                     if (!string.IsNullOrEmpty(TransNo))
                     {
                         var transno = await GetTransNo.GetTransactionNo(TransNo);
-                        if (transno.transDate.HasValue)
+                        if (transno.metaData.isSucces && transno.metaData.code == 200)
                         {
-                            TransDate.Date = (DateTime)transno.transDate;
-                        }
-                        if (!string.IsNullOrEmpty(transno.transNo))
-                        {
-                            EntTransNo.Text = transno.transNo;
+                            if (transno.transDate.HasValue)
+                            {
+                                TransDate.Date = (DateTime)transno.transDate;
+                            }
+                            if (!string.IsNullOrEmpty(transno.transNo))
+                            {
+                                EntTransNo.Text = transno.transNo;
 
-                            //Process Get Item Index To Picker
-                            var newPicTransList = Converter.ConvertIListToList(ListTransaction);
-                            int selectedIndex = ControlHelper.GetIndexByName(newPicTransList, item => item.itemName, transno.srTransaction);
-                            PicTrans.SelectedIndex = selectedIndex;
-                            await PickerTransType_Changed(PicTrans, EntTransNo);
+                                //Process Get Item Index To Picker
+                                var newPicTransList = Converter.ConvertIListToList(ListTransaction);
+                                int selectedIndex = ControlHelper.GetIndexByName(newPicTransList, item => item.itemName, transno.srTransaction);
+                                PicTrans.SelectedIndex = selectedIndex;
+                                await PickerTransType_Changed(PicTrans, EntTransNo);
 
-                            var newPicTransItemList = Converter.ConvertIListToList(ListTransItem);
-                            selectedIndex = new int();
-                            selectedIndex = ControlHelper.GetIndexByName(newPicTransItemList, item => item.itemName, transno.srTransItem);
-                            PicTransItem.SelectedIndex = selectedIndex;
+                                var newPicTransItemList = Converter.ConvertIListToList(ListTransItem);
+                                selectedIndex = new int();
+                                selectedIndex = ControlHelper.GetIndexByName(newPicTransItemList, item => item.itemName, transno.srTransItem);
+                                PicTransItem.SelectedIndex = selectedIndex;
 
-                            EntDescription.Text = transno.description;
-                            Avatar.Text = transno.srTransItem;
+                                EntDescription.Text = transno.description;
+                                Avatar.Text = transno.srTransItem;
+                            }
+                            if (transno.amount != 0)
+                            {
+                                var value = Converter.DecimalToInt((decimal)transno.amount);
+                                EntAmount.Text = value.ToString();
+                            }
+                            if (transno.photo != null)
+                            {
+                                string decodeImg = Converter.DecodeBase64ToString(transno.photo);
+                                byte[] byteImg = Converter.StringToByteImg(decodeImg);
+                                ParameterModel.ImageManager.ImageByte = byteImg;
+                                ParameterModel.ImageManager.ImageString = decodeImg;
+                                Avatar.ImageSource = ImageConvert.ImgByte(byteImg);
+                            }
                         }
-                        if (transno.amount != 0)
+                        else
                         {
-                            var value = Converter.DecimalToInt((decimal)transno.amount);
-                            EntAmount.Text = value.ToString();
-                        }
-                        if (transno.photo != null)
-                        {
-                            string decodeImg = Converter.DecodeBase64ToString(transno.photo);
-                            byte[] byteImg = Converter.StringToByteImg(decodeImg);
-                            ParameterModel.ImageManager.ImageByte = byteImg;
-                            ParameterModel.ImageManager.ImageString = decodeImg;
-                            Avatar.ImageSource = ImageConvert.ImgByte(byteImg);
+                            await MsgModel.MsgNotification(transno.metaData.message);
                         }
                     }
                 }

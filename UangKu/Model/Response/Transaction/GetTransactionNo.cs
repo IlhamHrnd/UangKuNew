@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.Transaction
 {
-    public class GetTransactionNoRoot
+    public class GetTransactionNoRoot : IResponse
     {
         [JsonProperty("transNo")]
         public string transNo { get; set; }
@@ -30,5 +31,6 @@ namespace UangKu.Model.Response.Transaction
 
         [JsonProperty("transDate")]
         public DateTime? transDate { get; set; }
+        public MetaData metaData { get; set; }
     }
 }

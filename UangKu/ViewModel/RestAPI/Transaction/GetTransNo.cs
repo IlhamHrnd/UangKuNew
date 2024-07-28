@@ -25,19 +25,51 @@ namespace UangKu.ViewModel.RestAPI.Transaction
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var format = content.Substring(1, content.Length - 2);
-                    var get = JsonConvert.DeserializeObject<GetTransactionNoRoot>(format);
-                    root = get;
+                    var format = response.Content.Substring(1, response.Content.Length - 2);
+                    var content = JsonConvert.DeserializeObject<GetTransactionNoRoot>(format);
+                    root = new GetTransactionNoRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"Transaction {response.StatusDescription}"
+                        },
+                        transNo = content.transNo,
+                        srTransaction = content.srTransaction,
+                        srTransItem = content.srTransItem,
+                        amount = content.amount,
+                        description = content.description,
+                        photo = content.photo,
+                        transType = content.transType,
+                        personID = content.personID,
+                        transDate = content.transDate
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new GetTransactionNoRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"Transaction {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new GetTransactionNoRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
 
             return root;
