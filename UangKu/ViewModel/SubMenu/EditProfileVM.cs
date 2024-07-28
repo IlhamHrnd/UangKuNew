@@ -46,7 +46,7 @@ namespace UangKu.ViewModel.SubMenu
                     if (!string.IsNullOrEmpty(userID))
                     {
                         var person = await GetProfile.GetProfileID(userID);
-                        if (!string.IsNullOrEmpty(person.personID))
+                        if (person.metaData.isSucces && person.metaData.code == 200)
                         {
                             EntFirstName.Text = person.firstName;
                             EntMiddleName.Text = person.middleName;
@@ -87,19 +87,24 @@ namespace UangKu.ViewModel.SubMenu
                             SubDistrict.SelectedIndex = selectedIndex;
 
                             PostalCode.Text = person.postalCode.ToString();
-                        }
-                        if (person.photo != null)
-                        {
-                            string decodeImg = Converter.DecodeBase64ToString(person.photo);
-                            byte[] byteImg = Converter.StringToByteImg(decodeImg);
-                            ParameterModel.ImageManager.ImageByte = byteImg;
-                            ParameterModel.ImageManager.ImageString = decodeImg;
-                            avatar.ImageSource = ImageConvert.ImgByte(byteImg);
-                            avatar.Text = person.personID;
+
+                            if (person.photo != null)
+                            {
+                                string decodeImg = Converter.DecodeBase64ToString(person.photo);
+                                byte[] byteImg = Converter.StringToByteImg(decodeImg);
+                                ParameterModel.ImageManager.ImageByte = byteImg;
+                                ParameterModel.ImageManager.ImageString = decodeImg;
+                                avatar.ImageSource = ImageConvert.ImgByte(byteImg);
+                                avatar.Text = person.personID;
+                            }
+                            else
+                            {
+                                avatar.Text = userID;
+                            }
                         }
                         else
                         {
-                            avatar.Text = userID;
+                            await MsgModel.MsgNotification(person.metaData.message);
                         }
                     }
                 }

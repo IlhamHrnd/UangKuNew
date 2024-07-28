@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
 using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.Profile
@@ -10,6 +9,7 @@ namespace UangKu.ViewModel.RestAPI.Profile
 
         public static async Task<string> PatchProfileID(Model.Index.Body.PatchProfile profile)
         {
+            string result;
             string url = string.Format(ProfileEndPoint, URL);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -43,17 +43,19 @@ namespace UangKu.ViewModel.RestAPI.Profile
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var patch = JsonConvert.DeserializeObject<string>(content);
+                    result = response.Content.Substring(1, response.Content.Length - 2);
+                }
+                else
+                {
+                    result = response.ErrorMessage;
                 }
             }
             catch (Exception e)
             {
-                await MsgModel.MsgNotification(e.Message);
+                result = e.Message;
             }
-            var format = response.Content.Substring(1, response.Content.Length - 2);
 
-            return format;
+            return result;
         }
     }
 }

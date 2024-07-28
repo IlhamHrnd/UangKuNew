@@ -73,9 +73,9 @@ namespace UangKu.ViewModel.Menu
                 if (!string.IsNullOrEmpty(userID))
                 {
                     var person = await GetProfile.GetProfileID(userID);
-                    if (string.IsNullOrEmpty(person.personID))
+                    if (!person.metaData.isSucces && person.metaData.code != 200)
                     {
-                        await MsgModel.MsgNotification($"Please, Fill Profile For {userID} First");
+                        await MsgModel.MsgNotification($"Please, Fill Profile For {userID} First, Message : {person.metaData.message}");
                         await _navigation.PushAsync(new EditProfile(ParameterModel.ItemDefaultValue.NewFile));
                     }
 
