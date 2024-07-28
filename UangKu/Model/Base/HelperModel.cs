@@ -837,7 +837,7 @@ namespace UangKu.Model.Base
             {
                 string pictureID = string.Empty;
                 var generateID = await NewPictureID.GetNewPictureID(ItemDefaultValue.Upload);
-                pictureID = !string.IsNullOrEmpty(generateID) ? generateID : string.Empty;
+                pictureID = generateID.metaData.isSucces && generateID.metaData.code == 200 ? generateID.AutoNumber : string.Empty;
                 return pictureID;
             }
             catch (Exception e)

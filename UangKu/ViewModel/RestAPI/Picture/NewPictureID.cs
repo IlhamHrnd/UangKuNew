@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using UangKu.Model.Base;
+using static UangKu.Model.Response.GenerateAutoNumber.AutoNumber;
 
 namespace UangKu.ViewModel.RestAPI.Picture
 {
@@ -8,9 +9,9 @@ namespace UangKu.ViewModel.RestAPI.Picture
     {
         private const string GetNewPictureIDEndPoint = "{1}UserPicture/GetNewPictureID?TransType={0}";
 
-        public static async Task<string> GetNewPictureID(string transType)
+        public static async Task<AutoNumberRoot> GetNewPictureID(string transType)
         {
-            string pictureID = string.Empty;
+            AutoNumberRoot root = new AutoNumberRoot();
             string url = string.Format(GetNewPictureIDEndPoint, transType, URL);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -24,21 +25,45 @@ namespace UangKu.ViewModel.RestAPI.Picture
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var get = JsonConvert.DeserializeObject<string>(content);
-                    pictureID = get;
+                    var content = JsonConvert.DeserializeObject<string>(response.Content);
+                    root = new AutoNumberRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"Transaction {response.StatusDescription}"
+                        },
+                        AutoNumber = content
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new AutoNumberRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"Transaction {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new AutoNumberRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
 
-            return pictureID;
+            return root;
         }
     }
 }
