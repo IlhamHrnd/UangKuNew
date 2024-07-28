@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using UangKu.Model.Base;
 
 namespace UangKu.Model.Response.Report
 {
@@ -44,7 +45,7 @@ namespace UangKu.Model.Response.Report
             public ImageSource source { get; set; }
         }
 
-        public class ReportRoot
+        public class ReportRoot : IResponse
         {
             [JsonProperty("pageNumber")]
             public int? pageNumber { get; set; }
@@ -75,6 +76,7 @@ namespace UangKu.Model.Response.Report
 
             [JsonProperty("message")]
             public object message { get; set; }
+            public MetaData metaData { get; set; }
         }
     }
 }

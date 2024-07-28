@@ -72,12 +72,11 @@ namespace UangKu.ViewModel.Menu
                     personID = $"&PersonID={App.Session.personID}";
                 }
                 var report = await GetUserReport.GetAllUserReport(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.MaxResult, personID);
-                if ((bool)report.succeeded)
+                if (report.metaData.isSucces && report.metaData.code == 200)
                 {
                     ListReport.Clear();
-                    for (int i = 0; i < report.data.Count; i++)
+                    foreach (var data in report.data)
                     {
-                        var data = report.data[i];
                         data.isvisible = App.Access.IsAdmin;
                         if (data.dateErrorOccured != null)
                         {
@@ -92,10 +91,14 @@ namespace UangKu.ViewModel.Menu
                             string decodeImg = Converter.DecodeBase64ToString(data.picture);
                             byte[] byteImg = Converter.StringToByteImg(decodeImg);
                             data.source = ImageConvert.ImgByte(byteImg);
-                        } 
+                        }
                     }
                     Page = (int)report.pageNumber;
                     ListReport.Add(report);
+                }
+                else
+                {
+                    await MsgModel.MsgNotification(report.metaData.message);
                 }
             }
             catch (Exception e)

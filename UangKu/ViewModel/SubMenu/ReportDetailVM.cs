@@ -59,45 +59,52 @@ namespace UangKu.ViewModel.SubMenu
                     if (!string.IsNullOrEmpty(reportNo))
                     {
                         var report = await RestAPI.Report.GetReportNo.GetUserReportNo(reportNo, isAdmin);
-                        if (report.dateErrorOccured.HasValue)
+                        if (report.metaData.isSucces && report.metaData.code == 200)
                         {
-                            errorDate.Date = (DateTime)report.dateErrorOccured;
+                            if (report.dateErrorOccured.HasValue)
+                            {
+                                errorDate.Date = (DateTime)report.dateErrorOccured;
+                            }
+                            if (!string.IsNullOrEmpty(report.errorCronologic))
+                            {
+                                cronologicEditor.Text = report.errorCronologic;
+                            }
+                            if (!string.IsNullOrEmpty(report.personID))
+                            {
+                                personidLabel.Text = report.personID;
+                                IsEditAble = Compare.StringCompare(report.personID, userID);
+                            }
+                            if (isAdmin)
+                            {
+                                if ((bool)report.isApprove)
+                                {
+                                    isapproveCheckBox.IsChecked = (bool)report.isApprove;
+                                }
+                                if (isapproveCheckBox.IsChecked)
+                                {
+                                    lastupdateLabel.Text = report.approvedDateTime.HasValue
+                                        ? DateFormat.FormattingDate((DateTime)report.approvedDateTime, ParameterModel.DateTimeFormat.Datetime)
+                                        : DateFormat.FormattingDate((DateTime)report.lastUpdateDateTime, ParameterModel.DateTimeFormat.Datetime);
+                                }
+                                else
+                                {
+                                    lastupdateLabel.Text = report.voidDateTime.HasValue
+                                        ? DateFormat.FormattingDate((DateTime)report.voidDateTime, ParameterModel.DateTimeFormat.Datetime)
+                                        : DateFormat.FormattingDate((DateTime)report.lastUpdateDateTime, ParameterModel.DateTimeFormat.Datetime);
+                                }
+                                if (!string.IsNullOrEmpty(report.srReportStatus))
+                                {
+                                    reportstatusLabel.Text = report.srReportStatus;
+                                }
+                                if (report.createdDateTime.HasValue)
+                                {
+                                    createdateLabel.Text = DateFormat.FormattingDate((DateTime)report.createdDateTime, ParameterModel.DateTimeFormat.Datetime);
+                                }
+                            }
                         }
-                        if (!string.IsNullOrEmpty(report.errorCronologic))
+                        else
                         {
-                            cronologicEditor.Text = report.errorCronologic;
-                        }
-                        if (!string.IsNullOrEmpty(report.personID))
-                        {
-                            personidLabel.Text = report.personID;
-                            IsEditAble = Compare.StringCompare(report.personID, userID);
-                        }
-                        if (isAdmin)
-                        {
-                            if ((bool)report.isApprove)
-                            {
-                                isapproveCheckBox.IsChecked = (bool)report.isApprove;
-                            }
-                            if (isapproveCheckBox.IsChecked)
-                            {
-                                lastupdateLabel.Text = report.approvedDateTime.HasValue
-                                    ? DateFormat.FormattingDate((DateTime)report.approvedDateTime, ParameterModel.DateTimeFormat.Datetime)
-                                    : DateFormat.FormattingDate((DateTime)report.lastUpdateDateTime, ParameterModel.DateTimeFormat.Datetime);
-                            }
-                            else
-                            {
-                                lastupdateLabel.Text = report.voidDateTime.HasValue
-                                    ? DateFormat.FormattingDate((DateTime)report.voidDateTime, ParameterModel.DateTimeFormat.Datetime)
-                                    : DateFormat.FormattingDate((DateTime)report.lastUpdateDateTime, ParameterModel.DateTimeFormat.Datetime);
-                            }
-                            if (!string.IsNullOrEmpty(report.srReportStatus))
-                            {
-                                reportstatusLabel.Text = report.srReportStatus;
-                            }
-                            if (report.createdDateTime.HasValue)
-                            {
-                                createdateLabel.Text = DateFormat.FormattingDate((DateTime)report.createdDateTime, ParameterModel.DateTimeFormat.Datetime);
-                            }
+                            await MsgModel.MsgNotification(report.metaData.message);
                         }
                     }
                 }
@@ -181,35 +188,25 @@ namespace UangKu.ViewModel.SubMenu
                     if (Mode == ParameterModel.ItemDefaultValue.NewFile)
                     {
                         var userID = SessionModel.GetUserID(App.Session);
-                        var generateReportNo = GetNewAutoNumber.GenerateUserReportNo(userID, App.Session.accessName);
-                        var reportNo = await RestAPI.Report.NewReportNo.GetNewReportNo(generateReportNo);
-
-                        if (string.IsNullOrEmpty(reportNo))
+                        var bodyPost = new Model.Index.Body.PostReport
                         {
-                            await MsgModel.MsgNotification($"Failed Generate New Report No");
-                        }
-                        else
-                        {
-                            var bodyPost = new Model.Index.Body.PostReport
-                            {
-                                reportNo = reportNo,
-                                dateErrorOccured = DatePic.Date,
-                                srErrorLocation = SelectedErrorLocation.itemID,
-                                srErrorPossibility = SelectedErrorPosibility.itemID,
-                                errorCronologic = editor.Text,
-                                picture = ParameterModel.ImageManager.ImageString,
-                                createdDateTime = ParameterModel.DateFormat.DateTime,
-                                createdByUserID = userID,
-                                lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
-                                lastUpdateByUserID = userID,
-                                personID = userID
-                            };
+                            reportNo = await GetNewAutoNumber.GetReportNo(),
+                            dateErrorOccured = DatePic.Date,
+                            srErrorLocation = SelectedErrorLocation.itemID,
+                            srErrorPossibility = SelectedErrorPosibility.itemID,
+                            errorCronologic = editor.Text,
+                            picture = ParameterModel.ImageManager.ImageString,
+                            createdDateTime = ParameterModel.DateFormat.DateTime,
+                            createdByUserID = userID,
+                            lastUpdateDateTime = ParameterModel.DateFormat.DateTime,
+                            lastUpdateByUserID = userID,
+                            personID = userID
+                        };
 
-                            var report = await RestAPI.Report.PostReport.PostNewReport(bodyPost);
-                            if (!string.IsNullOrEmpty(report))
-                            {
-                                await MsgModel.MsgNotification($"{report}");
-                            }
+                        var report = await RestAPI.Report.PostReport.PostNewReport(bodyPost);
+                        if (!string.IsNullOrEmpty(report))
+                        {
+                            await MsgModel.MsgNotification($"{report}");
                         }
                     }
                 }

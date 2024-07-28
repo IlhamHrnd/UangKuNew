@@ -126,6 +126,12 @@ namespace UangKu.Model.Base
             return age;
         }
 
+        public static string GetUserAccess(AppSession session)
+        {
+            var access = !string.IsNullOrEmpty(session.accessName) ? session.accessName : string.Empty;
+            return access;
+        }
+
         public static bool IsAdmin(string access)
         {
             bool admin = !string.IsNullOrEmpty(access) && access == "Admin";
@@ -850,13 +856,38 @@ namespace UangKu.Model.Base
             }
         }
 
-        public static async Task<string> GetReportNo(string reportType)
+        public static async Task<string> GetReportNo()
         {
             try
             {
                 string reportNo = string.Empty;
-                var generateID = await NewReportNo.GetNewReportNo(reportType);
-                reportNo = !string.IsNullOrEmpty(generateID) ? generateID : string.Empty;
+                string reportID;
+                var userID = SessionModel.GetUserID(App.Session);
+                var accessName = SessionModel.GetUserAccess(App.Session);
+
+                switch (accessName)
+                {
+                    case "Admin":
+                        reportID = string.Concat(userID, accessName.Substring(0, 3));
+                        break;
+
+                    case "User":
+                        {
+                            var accessStartSplit = accessName.Substring(0, 2);
+                            var accessEndSplit = accessName.Substring(accessName.Length - 1);
+                            var access = string.Concat(accessStartSplit, accessEndSplit);
+                            reportID = string.Concat(userID, access);
+                            break;
+                        }
+
+                    default:
+                        //Temporary Jika Akses User Bukan Admin Atau User
+                        reportID = string.Concat(userID, "TEM");
+                        break;
+                }
+
+                var generateID = await NewReportNo.GetNewReportNo(reportID);
+                reportNo = generateID.metaData.isSucces && generateID.metaData.code == 200 ? generateID.AutoNumber : string.Empty;
                 return reportNo;
             }
             catch (Exception e)
@@ -880,44 +911,6 @@ namespace UangKu.Model.Base
                 await MsgModel.MsgNotification($"Error: {e.Message}");
                 return null;
             }
-        }
-
-        public static string GenerateUserReportNo(string userID, string accessName)
-        {
-            string value = string.Empty;
-            if (!string.IsNullOrEmpty(userID) && !string.IsNullOrEmpty(accessName))
-            {
-                value = string.Concat(userID, GenerateAccesNameForReportNo(accessName));
-            }
-
-            return value;
-        }
-
-        public static string GenerateAccesNameForReportNo(string accessName)
-        {
-            string value = string.Empty;
-            if (!string.IsNullOrEmpty(accessName))
-            {
-                switch (accessName)
-                {
-                    case "Admin":
-                        value = accessName.Substring(0, 3);
-                        break;
-                    case "User":
-                        {
-                            var accessStartSplit = accessName.Substring(0, 2);
-                            var accessEndSplit = accessName.Substring(accessName.Length - 1);
-                            value = string.Concat(accessStartSplit, accessEndSplit);
-                            break;
-                        }
-
-                    default:
-                        //Temporary Jika Akses User Bukan Admin Atau User
-                        value = "TEM";
-                        break;
-                }
-            }
-            return value;
         }
     }
 

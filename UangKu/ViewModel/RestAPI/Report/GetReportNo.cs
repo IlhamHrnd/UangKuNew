@@ -25,19 +25,59 @@ namespace UangKu.ViewModel.RestAPI.Report
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var format = content.Substring(1, content.Length - 2);
-                    var get = JsonConvert.DeserializeObject<GetReportNoRoot>(format);
-                    root = get;
+                    var format = response.Content.Substring(1, response.Content.Length - 2);
+                    var content = JsonConvert.DeserializeObject<GetReportNoRoot>(format);
+                    root = new GetReportNoRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 200,
+                            isSucces = true,
+                            message = $"Report {response.StatusDescription}"
+                        },
+                        reportNo = content.reportNo,
+                        dateErrorOccured = content.dateErrorOccured,
+                        srErrorLocation = content.srErrorLocation,
+                        srErrorPossibility = content.srErrorPossibility,
+                        errorCronologic = content.errorCronologic,
+                        picture = content.picture,
+                        isApprove = content.isApprove,
+                        srReportStatus = content.srReportStatus,
+                        approvedDateTime = content.approvedDateTime,
+                        approvedByUserID = content.approvedByUserID,
+                        voidDateTime = content.voidDateTime,
+                        voidByUserID = content.voidByUserID,
+                        createdDateTime = content.createdDateTime,
+                        createdByUserID = content.createdByUserID,
+                        lastUpdateDateTime = content.lastUpdateDateTime,
+                        lastUpdateByUserID = content.lastUpdateByUserID,
+                        personID = content.personID
+                    };
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    root = new GetReportNoRoot
+                    {
+                        metaData = new MetaData
+                        {
+                            code = 201,
+                            isSucces = false,
+                            message = $"Report {response.StatusDescription}"
+                        }
+                    };
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                await MsgModel.MsgNotification(e.Message);
+                root = new GetReportNoRoot
+                {
+                    metaData = new MetaData
+                    {
+                        code = 201,
+                        isSucces = false,
+                        message = ex.Message
+                    }
+                };
             }
             return root;
         }
