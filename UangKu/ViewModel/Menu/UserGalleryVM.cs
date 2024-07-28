@@ -32,7 +32,7 @@ namespace UangKu.ViewModel.Menu
                 {
                     var picture = await GetUserPicture.GetAllUserPicture(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.MaxPicture,
                         userID, ParameterModel.ItemDefaultValue.IsDeleted);
-                    if ((bool)picture.succeeded && picture.data.Count > 0)
+                    if (picture.metaData.isSucces && picture.metaData.code == 200)
                     {
                         ListUserPicture.Clear();
                         for (int i = 0; i < picture.data.Count; i++)
@@ -104,7 +104,7 @@ namespace UangKu.ViewModel.Menu
                     int pages = isNext ? Page + 1 : Page - 1;
                     var picture = await GetUserPicture.GetAllUserPicture(pages, pageSize,
                         userID, ParameterModel.ItemDefaultValue.IsDeleted);
-                    if ((bool)picture.succeeded && picture.data.Count > 0)
+                    if (picture.metaData.isSucces && picture.metaData.code == 200)
                     {
                         ListUserPicture.Clear();
                         for (int i = 0; i < picture.data.Count; i++)

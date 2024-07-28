@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
 using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.Picture
@@ -10,6 +9,7 @@ namespace UangKu.ViewModel.RestAPI.Picture
 
         public static async Task<string> DeleteUserPictureID(string pictureID, Model.Index.Body.DeleteUserPicture picture)
         {
+            string result;
             string pictureMsg = string.Empty;
             string url = string.Format(DeleteUserPictureEndPoint, pictureID, URL);
             var client = new RestClient(url);
@@ -31,17 +31,19 @@ namespace UangKu.ViewModel.RestAPI.Picture
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var delete = JsonConvert.DeserializeObject<string>(content);
+                    result = response.Content.Substring(1, response.Content.Length - 2);
+                }
+                else
+                {
+                    result = response.ErrorMessage;
                 }
             }
             catch (Exception e)
             {
-                await MsgModel.MsgNotification(e.Message);
+                result = e.Message;
             }
-            var format = response.Content.Substring(1, response.Content.Length - 2);
 
-            return format;
+            return result;
         }
     }
 }

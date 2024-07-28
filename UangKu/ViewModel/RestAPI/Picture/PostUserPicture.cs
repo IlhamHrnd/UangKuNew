@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using RestSharp;
+﻿using RestSharp;
 using UangKu.Model.Base;
 
 namespace UangKu.ViewModel.RestAPI.Picture
@@ -10,6 +9,7 @@ namespace UangKu.ViewModel.RestAPI.Picture
 
         public static async Task<string> PostNewUserPicture(Model.Index.Body.PostPicture picture)
         {
+            string result;
             string UserPicture = string.Empty;
             string url = string.Format(PostUserPictureEndPoint, URL);
             var client = new RestClient(url);
@@ -40,21 +40,19 @@ namespace UangKu.ViewModel.RestAPI.Picture
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var content = response.Content;
-                    var post = JsonConvert.DeserializeObject<string>(content);
+                    result = response.Content.Substring(1, response.Content.Length - 2);
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(response.ErrorMessage);
+                    result = response.ErrorMessage;
                 }
             }
             catch (Exception e)
             {
-                await MsgModel.MsgNotification(e.Message);
+                result = e.Message;
             }
-            var format = response.Content.Substring(1, response.Content.Length - 2);
 
-            return format;
+            return result;
         }
     }
 }
