@@ -41,7 +41,7 @@ namespace UangKu.ViewModel.RestAPI.User
                 }
                 else
                 {
-                    result = response.ErrorMessage;
+                    result = response.Content;
                 }
             }
             catch (Exception e)

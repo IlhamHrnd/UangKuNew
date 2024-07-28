@@ -27,7 +27,7 @@ namespace UangKu.ViewModel.RestAPI.AppStandardReferenceItem
                 }
                 else
                 {
-                    result = response.ErrorMessage;
+                    result = response.Content;
                 }
             }
             catch (Exception e)

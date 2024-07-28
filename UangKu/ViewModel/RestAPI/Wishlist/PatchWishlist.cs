@@ -44,7 +44,7 @@ namespace UangKu.ViewModel.RestAPI.Wishlist
                 }
                 else
                 {
-                    result = response.ErrorMessage;
+                    result = response.Content;
                 }
             }
             catch (Exception ex)
