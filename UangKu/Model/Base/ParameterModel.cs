@@ -61,7 +61,7 @@
         //Data Default Saat Gagal Ambil Data Dari AppParameter
         public class AppParameterDefault
         {
-            private static string url = "https://uangkuapi.azurewebsites.net/";
+            private static string url = "https://uangku.runasp.net/";
             public static string URL { get => url; set => url = value; }
             private static int timeout = 10000; //Waktu Timeout Proses Ambil Data(Dalam Mili Detik)
             public static int TimeOut { get => timeout; set => timeout = value; }

@@ -16,7 +16,7 @@ namespace UangKu.ViewModel.RestAPI.Picture
             var request = new RestRequest
             {
                 Method = Method.Delete,
-                Timeout = TimeOut
+                Timeout = TimeSpan.FromSeconds(TimeOut)
             };
             var body = new Model.Index.Body.DeleteUserPicture
             {

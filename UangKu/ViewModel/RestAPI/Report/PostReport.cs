@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.Report
             var request = new RestRequest
             {
                 Method = Method.Post,
-                Timeout = TimeOut
+                Timeout = TimeSpan.FromSeconds(TimeOut)
             };
             var body = new Model.Index.Body.PostReport
             {

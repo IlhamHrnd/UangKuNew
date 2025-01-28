@@ -15,7 +15,7 @@ namespace UangKu.ViewModel.RestAPI.Profile
             var request = new RestRequest
             {
                 Method = Method.Patch,
-                Timeout = TimeOut
+                Timeout = TimeSpan.FromSeconds(TimeOut)
             };
             var body = new Model.Index.Body.PatchProfile
             {

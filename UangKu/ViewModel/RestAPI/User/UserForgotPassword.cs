@@ -16,7 +16,7 @@ namespace UangKu.ViewModel.RestAPI.User
             var request = new RestRequest
             {
                 Method = Method.Patch,
-                Timeout = TimeOut
+                Timeout = TimeSpan.FromSeconds(TimeOut)
             };
             var response = await client.ExecuteAsync(request);
 

@@ -3,7 +3,9 @@ using UangKu.Model.Base;
 using UangKu.Model.SubMenu;
 using UangKu.ViewModel.RestAPI.AppStandardReferenceItem;
 using UangKu.ViewModel.RestAPI.User;
+using UangKu.WebService.Service;
 using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
+using AppStandardReferenceItem = UangKu.ViewModel.RestAPI.AppStandardReferenceItem.AppStandardReferenceItem;
 
 namespace UangKu.ViewModel.SubMenu
 {
@@ -43,38 +45,46 @@ namespace UangKu.ViewModel.SubMenu
                         ListAccess.Add(item);
                     }
                 }
-                var user = await UserName.GetUserName(Name);
-                if (user.metaData.isSucces && user.metaData.code == 200 && !string.IsNullOrEmpty(user.username))
+
+                var filter = new WebService.Filter.Root<WebService.Filter.User>
                 {
-                    switch (user.sexName)
+                    Data = new WebService.Filter.User
+                    {
+                        Username = Name
+                    }
+                };
+                var user = await User.GetUsername(filter);
+                if (user.Succeeded == true && !string.IsNullOrEmpty(user.Data.Username))
+                {
+                    switch (user.Data.Srsex)
                     {
                         case "Laki - Laki":
-                            user.imgavatar = "man.svg";
+                            user.Data.imgavatar = "man.svg";
                             break;
                         case "Perempuan":
-                            user.imgavatar = "woman.svg";
+                            user.Data.imgavatar = "woman.svg";
                             break;
                         default:
-                            await MsgModel.MsgNotification($"Sexname For {user.sexName} Is Invalid");
+                            await MsgModel.MsgNotification($"Sexname For {user.Data.Srsex} Is Invalid");
                             break;
                     }
 
                     var newSexList = Converter.ConvertIListToList(ListSex);
-                    int selectedIndex = ControlHelper.GetIndexByName(newSexList, item => item.itemName, user.sexName);
+                    int selectedIndex = ControlHelper.GetIndexByName(newSexList, item => item.itemName, user.Data.Srsex);
                     selection.SelectedIndex = selectedIndex;
 
                     var newAccessList = Converter.ConvertIListToList(ListAccess);
                     selectedIndex = new int();
-                    selectedIndex = ControlHelper.GetIndexByName(newAccessList, item => item.itemName, user.accessName);
+                    selectedIndex = ControlHelper.GetIndexByName(newAccessList, item => item.itemName, user.Data.Sraccess);
                     picker.SelectedIndex = selectedIndex;
 
-                    if (!string.IsNullOrEmpty(user.imgavatar))
+                    if (!string.IsNullOrEmpty(user.Data.imgavatar))
                     {
-                        avatar.ImageSource = user.imgavatar;
+                        avatar.ImageSource = user.Data.imgavatar;
                     }
-                    if (!string.IsNullOrEmpty(user.statusName))
+                    if (!string.IsNullOrEmpty(user.Data.Srstatus))
                     {
-                        bool isActive = user.statusName == ParameterModel.Login.Status;
+                        bool isActive = user.Data.Srstatus == ParameterModel.Login.Status;
                         checkbox.IsChecked = isActive;
                     }
                 }

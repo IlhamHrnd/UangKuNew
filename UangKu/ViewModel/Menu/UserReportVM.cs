@@ -43,29 +43,29 @@ namespace UangKu.ViewModel.Menu
                 }
                 if (App.Access.IsAdmin)
                 {
-                    var alluser = await UserAll.GetAllUser(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.MaxResult);
-                    if (alluser.metaData.isSucces && alluser.metaData.code == 200)
-                    {
-                        ListAllUser.Clear();
-                        foreach (var data in alluser.data)
-                        {
-                            if (!string.IsNullOrEmpty(data.statusName))
-                            {
-                                data.isActive = data.statusName == ParameterModel.Login.Status;
-                            }
+                    //var alluser = await UserAll.GetAllUser(ParameterModel.ItemDefaultValue.FirstPage, AppParameter.MaxResult);
+                    //if (alluser.metaData.isSucces && alluser.metaData.code == 200)
+                    //{
+                    //    ListAllUser.Clear();
+                    //    foreach (var data in alluser.data)
+                    //    {
+                    //        if (!string.IsNullOrEmpty(data.statusName))
+                    //        {
+                    //            data.isActive = data.statusName == ParameterModel.Login.Status;
+                    //        }
 
-                            if (data.activeDate != null)
-                            {
-                                data.dateActive = DateFormat.FormattingDate((DateTime)data.activeDate, ParameterModel.DateTimeFormat.Date);
-                            }
+                    //        if (data.activeDate != null)
+                    //        {
+                    //            data.dateActive = DateFormat.FormattingDate((DateTime)data.activeDate, ParameterModel.DateTimeFormat.Date);
+                    //        }
 
-                            if (data.lastLogin != null)
-                            {
-                                data.dateLogin = DateFormat.FormattingDate((DateTime)data.lastLogin, ParameterModel.DateTimeFormat.Date);
-                            }
-                        }
-                        ListAllUser.Add(alluser);
-                    }
+                    //        if (data.lastLogin != null)
+                    //        {
+                    //            data.dateLogin = DateFormat.FormattingDate((DateTime)data.lastLogin, ParameterModel.DateTimeFormat.Date);
+                    //        }
+                    //    }
+                    //    ListAllUser.Add(alluser);
+                    //}
                 }
                 else
                 {

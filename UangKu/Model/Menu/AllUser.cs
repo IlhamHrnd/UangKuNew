@@ -10,15 +10,16 @@ namespace UangKu.Model.Menu
         {
             
         }
-        private IList<AllUserRoot> listalluser { get; set; }
 
-        public IList<AllUserRoot> ListAllUser
+        private IList<WebService.Data.User.Data> listalluser { get; set; }
+
+        public IList<WebService.Data.User.Data> ListAllUser
         {
             get
             {
                 if (listalluser == null)
                 {
-                    listalluser = new ObservableCollection<AllUserRoot>();
+                    listalluser = new ObservableCollection<WebService.Data.User.Data>();
                 }
                 return listalluser;
             }

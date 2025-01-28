@@ -3,7 +3,7 @@ using UangKu.Model.Base;
 using UangKu.Model.Index;
 using UangKu.Model.Session;
 using UangKu.ViewModel.RestAPI.AppParameter;
-using UangKu.ViewModel.RestAPI.User;
+using UangKu.WebService.Service;
 
 namespace UangKu.ViewModel.Index
 {
@@ -65,66 +65,64 @@ namespace UangKu.ViewModel.Index
                 }
                 if (isValidEntry)
                 {
-                    var user = await UserLogin.GetUsernameLogin(username.Text, password.Text);
-                    if (user.metaData.isSucces && user.metaData.code == 200)
+                    var filter = new WebService.Filter.Root<WebService.Filter.User>
                     {
-                        App.Session = new AppSession
+                        Data = new WebService.Filter.User
                         {
-                            username = user.username,
-                            sexName = user.sexName,
-                            accessName = user.accessName,
-                            statusName = user.statusName,
-                            activeDate = user.activeDate,
-                            lastLogin = user.lastLogin,
-                            lastUpdateDateTime = user.lastUpdateDateTime,
-                            lastUpdateByUser = user.lastUpdateByUser,
-                            personID = user.personID
-                        };
-                        if (!string.IsNullOrEmpty(App.Session.username) && App.Session.statusName == ParameterModel.Login.Status)
-                        {
-                            var updatelogin = await UserLastLogin.PatchUserLastLogin(username.Text);
-                            if (!string.IsNullOrEmpty(updatelogin))
-                            {
-                                await MsgModel.MsgNotification(updatelogin);
-                            }
+                            Username = username.Text,
+                            Password = password.Text
                         }
-                        if (string.IsNullOrEmpty(App.Session.username))
-                        {
-                            await MsgModel.MsgNotification($"Username {username.Text} Not Found");
-                        }
-                        else if (App.Session.statusName != ParameterModel.Login.Status)
-                        {
-                            await MsgModel.MsgNotification($"Username {App.Session.username} Not Active, Please Contact Administrator");
-                        }
-                        else
-                        {
-                            switch (App.Session.accessName)
-                            {
-                                case "Admin":
-                                    SessionModel.LoadAppParameter();
-                                    SessionModel.LoadProfile();
-                                    var masterAdmin = new View.MasterPage.MasterAdmin();
-                                    App.Current.MainPage = masterAdmin;
-                                    break;
+                    };
 
-                                case "User":
-                                    SessionModel.LoadAppParameter();
-                                    SessionModel.LoadProfile();
-                                    var masterUser = new View.MasterPage.MasterUser();
-                                    App.Current.MainPage = masterUser;
-                                    break;
-
-                                default:
-                                    await MsgModel.MsgNotification($"User Access For {App.Session.username} Is {App.Session.accessName} Unknown");
-                                    break;
-                            }
-                            username.Text = string.Empty;
-                            password.Text = string.Empty;
-                        }
+                    var user = await User.GetLoginUserName(filter);
+                    if (user.Succeeded != true)
+                    {
+                        await MsgModel.MsgNotification(user.Message);
+                        return;
                     }
-                    else
+
+                    App.Session = new AppSession
                     {
-                        await MsgModel.MsgNotification(user.metaData.message);
+                        username = user.Data.Username,
+                        sexName = user.Data.Srsex,
+                        accessName = user.Data.Sraccess,
+                        statusName = user.Data.Srstatus,
+                        activeDate = user.Data.ActiveDate,
+                        lastLogin = user.Data.LastLogin,
+                        lastUpdateDateTime = user.Data.LastUpdateDateTime,
+                        lastUpdateByUser = user.Data.LastUpdateByUser,
+                        personID = user.Data.PersonId
+                    };
+
+                    if (!string.IsNullOrEmpty(user.Data.Username))
+                    {
+                        filter = new WebService.Filter.Root<WebService.Filter.User>
+                        {
+                            Data = new WebService.Filter.User
+                            {
+                                Username = username.Text
+                            }
+                        };
+                        var update = await User.UpdateLastLogin(filter);
+                        if (update.Succeeded != true)
+                            await MsgModel.MsgNotification(update.Message);
+                    }
+
+                    switch (user.Data.Sraccess)
+                    {
+                        case "Admin":
+                            var masterAdmin = new View.MasterPage.MasterAdmin();
+                            App.Current.MainPage = masterAdmin;
+                            break;
+
+                        case "User":
+                            var masterUser = new View.MasterPage.MasterUser();
+                            App.Current.MainPage = masterUser;
+                            break;
+
+                        default:
+                            await MsgModel.MsgNotification($"User Access For {App.Session.username} Is {App.Session.accessName} Unknown");
+                            break;
                     }
                 }
             }
