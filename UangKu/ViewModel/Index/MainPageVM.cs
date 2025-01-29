@@ -31,10 +31,18 @@ namespace UangKu.ViewModel.Index
                 entPass.IsEnabled = true;
                 btnLogin.IsEnabled = true;
 
-                var parameterID = await GetParameterID.GetParameter("ShowLastBuild");
-                if (parameterID.metaData.isSucces && parameterID.metaData.code == 200)
+                var filter = new WebService.Filter.Root<WebService.Filter.AppParameter>
                 {
-                    var isVisible = Converter.StringToBool(parameterID.data.parameterValue, false);
+                    Data = new WebService.Filter.AppParameter
+                    {
+                        ParameterID = "ShowLastBuild"
+                    }
+                };
+
+                var parameter = await WebService.Service.AppParameter.GetParameterID(filter);
+                if (parameter.Succeeded == true)
+                {
+                    var isVisible = Converter.StringToBool(parameter.Data.parameterValue, false);
                     if (isVisible)
                     {
                         IsVisible = isVisible;
@@ -44,7 +52,7 @@ namespace UangKu.ViewModel.Index
                 }
                 else
                 {
-                    await MsgModel.MsgNotification(parameterID.metaData.message);
+                    await MsgModel.MsgNotification(parameter.Message);
                 }
             }
         }

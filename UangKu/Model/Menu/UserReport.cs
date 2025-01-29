@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using UangKu.Model.Base;
 using static UangKu.Model.Response.Report.Report;
-using static UangKu.Model.Response.User.AllUser;
 
 namespace UangKu.Model.Menu
 {
@@ -19,15 +18,15 @@ namespace UangKu.Model.Menu
         public bool IsVisible { get => isvisible; set => SetProperty(ref isvisible, value); }
         private int page = 0;
         public int Page { get => page; set => page = value; }
-        private IList<AllUserRoot> listalluser { get; set; }
+        private IList<WebService.Data.User.Data> listalluser { get; set; }
 
-        public IList<AllUserRoot> ListAllUser
+        public IList<WebService.Data.User.Data> ListAllUser
         {
             get
             {
                 if (listalluser == null)
                 {
-                    listalluser = new ObservableCollection<AllUserRoot>();
+                    listalluser = new ObservableCollection<WebService.Data.User.Data>();
                 }
                 return listalluser;
             }

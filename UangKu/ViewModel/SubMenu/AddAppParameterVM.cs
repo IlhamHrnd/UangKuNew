@@ -63,35 +63,43 @@ namespace UangKu.ViewModel.SubMenu
                 {
                     if (!string.IsNullOrEmpty(ParameterID))
                     {
-                        var parameterID = await GetParameterID.GetParameter(ParameterID);
-                        if (parameterID.metaData.isSucces && parameterID.metaData.code == 200)
+                        var filter = new WebService.Filter.Root<WebService.Filter.AppParameter>
                         {
-                            Ent_ParameterID.Text = parameterID.data.parameterID;
-                            Ent_ParameterNote.Text = parameterID.data.parameterName;
-                            Ent_ParameterValue.Text = parameterID.data.parameterValue;
-                            CB_ParameterIsActive.IsChecked = (bool)parameterID.data.isUsedBySystem;
-                            switch (parameterID.data.srControl)
+                            Data = new WebService.Filter.AppParameter
+                            {
+                                ParameterID = ParameterID
+                            }
+                        };
+
+                        var parameter = await WebService.Service.AppParameter.GetParameterID(filter);
+                        if (parameter.Succeeded == true)
+                        {
+                            Ent_ParameterID.Text = parameter.Data.parameterId;
+                            Ent_ParameterNote.Text = parameter.Data.parameterName;
+                            Ent_ParameterValue.Text = parameter.Data.parameterValue;
+                            CB_ParameterIsActive.IsChecked = (bool)parameter.Data.isUsedBySystem;
+                            switch (parameter.Data.srcontrol)
                             {
                                 case "Control-001":
                                     IsCheckedBoxVisible = true;
                                     IsEntryVisible = false;
-                                    CB_ParameterValue.IsChecked = Converter.StringToBool(parameterID.data.parameterValue, false);
+                                    CB_ParameterValue.IsChecked = Converter.StringToBool(parameter.Data.parameterValue, false);
                                     break;
 
                                 case "Control-002":
                                     IsEntryVisible = true;
                                     IsCheckedBoxVisible = false;
-                                    Ent_ParameterValue.Text = parameterID.data.parameterValue;
+                                    Ent_ParameterValue.Text = parameter.Data.parameterValue;
                                     break;
                             }
                             var newParamList = Converter.ConvertIListToList(ListParameterType);
-                            int selectedIndex = ControlHelper.GetIndexByName(newParamList, item => item.itemID, parameterID.data.srControl);
+                            int selectedIndex = ControlHelper.GetIndexByName(newParamList, item => item.itemID, parameter.Data.srcontrol);
                             Pic_ParameterType.SelectedIndex = selectedIndex;
-                            Pic_ParameterType.IsEnabled = string.IsNullOrEmpty(parameterID.data.srControl);
+                            Pic_ParameterType.IsEnabled = string.IsNullOrEmpty(parameter.Data.srcontrol);
                         }
                         else
                         {
-                            await MsgModel.MsgNotification(parameterID.metaData.message);
+                            await MsgModel.MsgNotification(parameter.Message);
                         }
                     }
                 }

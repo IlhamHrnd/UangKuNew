@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using UangKu.Model.Base;
-using static UangKu.Model.Response.User.AllUser;
 
 namespace UangKu.Model.Menu
 {

@@ -15,7 +15,9 @@
                                IsRunning="{Binding IsBusy}"
                                IsVisible="{Binding IsBusy}"/>
             <CollectionView ItemsSource="{Binding ListAllUser}"
-                            Margin="0, 10, 0, 0">
+                            Margin="0, 10, 0, 0"
+                            SelectionMode="Single"
+                            SelectionChanged="Coll_User_SelectionChanged">
                 <CollectionView.Header>
                     <Frame Style="{StaticResource Frame}">
                         <Label Style="{StaticResource Label}"
@@ -32,79 +34,67 @@
                 </CollectionView.Header>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <CollectionView ItemsSource="{Binding data}"
-                                        SelectionMode="Single"
-                                        SelectionChanged="Coll_User_SelectionChanged"
-                                        x:Name="Coll_User">
-                            <CollectionView.ItemsLayout>
-                                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
-                            </CollectionView.ItemsLayout>
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Style="{StaticResource Border}">
-                                        <Grid Margin="5">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="50*" />
-                                                <ColumnDefinition Width="50*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label Grid.Column="0"
-                                                   Grid.Row="0"
-                                                   Grid.ColumnSpan="2"
-                                                   Style="{StaticResource Label}"
-                                                   HorizontalTextAlignment="Center"
-                                                   Text="{Binding username}"/>
-                                            <Label Grid.Column="0"
-                                                   Grid.Row="1"
-                                                   Style="{StaticResource Label}"
-                                                   HorizontalTextAlignment="Center">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <Span Text="Access : "/>
-                                                        <Span Text="{Binding accessName}"/>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                            <HorizontalStackLayout Grid.Column="1"
-                                                           Grid.Row="1">
-                                                <CheckBox Style="{StaticResource CheckBox}"
-                                                          IsChecked="{Binding isActive}"
-                                                          IsEnabled="False"/>
-                                                <Label Style="{StaticResource Label}"
-                                                       Text="Is Active"
-                                                       VerticalTextAlignment="Center"/>
-                                            </HorizontalStackLayout>
-                                            <Label Grid.Column="0"
-                                                   Grid.Row="2"
-                                                   Style="{StaticResource Label}"
-                                                   HorizontalTextAlignment="Center">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <Span Text="Active Date : "/>
-                                                        <Span Text="{Binding dateActive}"/>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                            <Label Grid.Column="1"
-                                                   Grid.Row="2"
-                                                   Style="{StaticResource Label}"
-                                                   HorizontalTextAlignment="Center">
-                                                <Label.FormattedText>
-                                                    <FormattedString>
-                                                        <Span Text="Last Login : "/>
-                                                        <Span Text="{Binding dateLogin}"/>
-                                                    </FormattedString>
-                                                </Label.FormattedText>
-                                            </Label>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                        <Border Style="{StaticResource Border}">
+                            <Grid Margin="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50*" />
+                                    <ColumnDefinition Width="50*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0"
+                                       Grid.Row="0"
+                                       Grid.ColumnSpan="2"
+                                       Style="{StaticResource Label}"
+                                       HorizontalTextAlignment="Center"
+                                       Text="{Binding Username}"/>
+                                <Label Grid.Column="0"
+                                       Grid.Row="1"
+                                       Style="{StaticResource Label}"
+                                       HorizontalTextAlignment="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Access : "/>
+                                            <Span Text="{Binding Sraccess}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <HorizontalStackLayout Grid.Column="1"
+                                                       Grid.Row="1">
+                                    <CheckBox Style="{StaticResource CheckBox}"
+                                              IsChecked="{Binding isActive}"
+                                              IsEnabled="False"/>
+                                    <Label Style="{StaticResource Label}"
+                                           Text="Is Active"
+                                           VerticalTextAlignment="Center"/>
+                                </HorizontalStackLayout>
+                                <Label Grid.Column="0"
+                                       Grid.Row="2"
+                                       Style="{StaticResource Label}"
+                                       HorizontalTextAlignment="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Active Date : "/>
+                                            <Span Text="{Binding dateActive}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <Label Grid.Column="1"
+                                       Grid.Row="2"
+                                       Style="{StaticResource Label}"
+                                       HorizontalTextAlignment="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Last Login : "/>
+                                            <Span Text="{Binding dateLogin}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 <CollectionView.Footer>
