@@ -28,12 +28,16 @@
             x:Name="Btn_LogOut"
             Clicked="Btn_LogOut_Clicked"/>
     </Shell.FlyoutFooter>
-    <FlyoutItem Title="Home Page"
-            Icon="dotnet_bot.svg">
-        <ShellContent ContentTemplate="{DataTemplate Menu:HomePage}"
-                  Route="HomePage"/>
+    <FlyoutItem Title="Home Page" Icon="dotnet_bot.svg">
+        <ShellContent ContentTemplate="{DataTemplate Menu:HomePage}" Route="HomePage"/>
     </FlyoutItem>
-    <FlyoutItem Title="Profile"
+    <FlyoutItem Title="Profile" Icon="dotnet_bot.svg">
+        <ShellContent ContentTemplate="{DataTemplate Menu:Profile}" Route="Profile"/>
+    </FlyoutItem>
+    <FlyoutItem Title="Transaction" Icon="dotnet_bot.svg">
+        <ShellContent ContentTemplate="{DataTemplate Menu:Transaction}" Route="Transaction"/>
+    </FlyoutItem>
+    <!--<FlyoutItem Title="Profile"
         Icon="dotnet_bot.svg">
         <ShellContent ContentTemplate="{DataTemplate Menu:Profile}"
               Route="Profile"/>
@@ -57,5 +61,5 @@
         Icon="dotnet_bot.svg">
         <ShellContent ContentTemplate="{DataTemplate Menu:UserReport}"
               Route="UserReport"/>
-    </FlyoutItem>
+    </FlyoutItem>-->
 </Shell>

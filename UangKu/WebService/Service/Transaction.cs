@@ -6,7 +6,7 @@ namespace UangKu.WebService.Service
 {
     public class Transaction : BaseModel
     {
-        public async Task<Data.Root<Data.Transaction.Data>> PostTransaction(Data.Transaction.Data trans)
+        public static async Task<Data.Root<Data.Transaction.Data>> PostTransaction(Data.Transaction.Data trans)
         {
             var data = new Data.Root<Data.Transaction.Data>();
             string url = string.Format("{0}Transaction/PostTransaction", URL);
@@ -38,7 +38,7 @@ namespace UangKu.WebService.Service
             return data;
         }
 
-        public async Task<Data.Root<Data.Transaction.Data>> PatchTransaction(Data.Transaction.Data trans)
+        public static async Task<Data.Root<Data.Transaction.Data>> PatchTransaction(Data.Transaction.Data trans)
         {
             var data = new Data.Root<Data.Transaction.Data>();
             string url = string.Format("{0}Transaction/PatchTransaction", URL);
@@ -70,7 +70,7 @@ namespace UangKu.WebService.Service
             return data;
         }
 
-        public async Task<Data.Root<List<Data.Transaction.Data>>> GetAllTransaction(Filter.Root<Filter.Transaction> filter)
+        public static async Task<Data.Root<List<Data.Transaction.Data>>> GetAllTransaction(Filter.Root<Filter.Transaction> filter)
         {
             var data = new Data.Root<List<Data.Transaction.Data>>();
             string url = string.Format("{0}Transaction/GetAllTransaction?PersonID={1}&StartDate={2}&EndDate={3}&OrderBy={4}&IsAscending={5}&PageNumber={6}&PageSize={7}", 
@@ -105,7 +105,7 @@ namespace UangKu.WebService.Service
             return data;
         }
 
-        public async Task<Data.Root<List<Data.Transaction.Data>>> GetAllPDFTransaction(Filter.Root<Filter.Transaction> filter)
+        public static async Task<Data.Root<List<Data.Transaction.Data>>> GetAllPDFTransaction(Filter.Root<Filter.Transaction> filter)
         {
             var data = new Data.Root<List<Data.Transaction.Data>>();
             string url = string.Format("{0}Transaction/GetAllPDFTransaction?PersonID={1}&StartDate={2}&EndDate={3}&OrderBy={4}&IsAscending={5}",
@@ -140,7 +140,7 @@ namespace UangKu.WebService.Service
             return data;
         }
 
-        public async Task<Data.Root<Data.Transaction.Data>> GetTransactionNo(Filter.Root<Filter.Transaction> filter)
+        public static async Task<Data.Root<Data.Transaction.Data>> GetTransactionNo(Filter.Root<Filter.Transaction> filter)
         {
             var data = new Data.Root<Data.Transaction.Data>();
             string url = string.Format("{0}Transaction/GetTransactionNo?TransNo={1}", URL, filter.Data.TransNo);
@@ -174,9 +174,9 @@ namespace UangKu.WebService.Service
             return data;
         }
 
-        public async Task<Data.Root<Data.Transaction.Data>> GetSumTransaction(Filter.Root<Filter.Transaction> filter)
+        public static async Task<Data.Root<List<Data.Transaction.Data>>> GetSumTransaction(Filter.Root<Filter.Transaction> filter)
         {
-            var data = new Data.Root<Data.Transaction.Data>();
+            var data = new Data.Root<List<Data.Transaction.Data>>();
             string url = string.Format("{0}Transaction/GetSumTransaction?PersonID={1}&StartDate={2}&EndDate={3}", URL, filter.Data.PersonID, filter.Data.StartDate, filter.Data.EndDate);
             var client = new RestClient(url);
             var request = new RestRequest
@@ -189,9 +189,9 @@ namespace UangKu.WebService.Service
             try
             {
                 if (response.IsSuccessStatusCode)
-                    data = JsonConvert.DeserializeObject<Data.Root<Data.Transaction.Data>>(response.Content);
+                    data = JsonConvert.DeserializeObject<Data.Root<List<Data.Transaction.Data>>>(response.Content);
                 else
-                    data = new Data.Root<Data.Transaction.Data>
+                    data = new Data.Root<List<Data.Transaction.Data>>
                     {
                         Succeeded = false,
                         Message = !string.IsNullOrEmpty(response.ErrorException.Message) ? response.ErrorException.Message : response.StatusDescription
@@ -199,7 +199,7 @@ namespace UangKu.WebService.Service
             }
             catch (Exception e)
             {
-                data = new Data.Root<Data.Transaction.Data>
+                data = new Data.Root<List<Data.Transaction.Data>>
                 {
                     Succeeded = false,
                     Message = e.Message
@@ -208,7 +208,7 @@ namespace UangKu.WebService.Service
             return data;
         }
 
-        public async Task<Data.Root<string>> GenerateReportTransaction(Filter.Root<Filter.Transaction> filter)
+        public static async Task<Data.Root<string>> GenerateReportTransaction(Filter.Root<Filter.Transaction> filter)
         {
             var data = new Data.Root<string>();
             string url = string.Format("{0}Transaction/GenerateReportTransaction?PersonID={1}&StartDate={2}&EndDate={3}&OrderBy={4}&IsAscending={5}", URL, filter.Data.PersonID,

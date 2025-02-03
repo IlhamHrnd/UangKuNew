@@ -1,23 +1,32 @@
-﻿using System.Collections.ObjectModel;
-using UangKu.Model.Base;
-using static UangKu.Model.Response.Profile.Profile;
+﻿using UangKu.Model.Base;
+using UangKu.WebService.Data;
 
 namespace UangKu.Model.Menu
 {
     public class Profile : BaseModel
     {
-        private IList<ProfileRoot> profiles { get; set; }
-        public IList<ProfileRoot> Profiles
+        private Root<WebService.Data.Profile.Data> person;
+        public Root<WebService.Data.Profile.Data> Person
         {
             get
             {
-                if (profiles == null)
+                if (person == null)
                 {
-                    profiles = new ObservableCollection<ProfileRoot>();
+                    person = new Root<WebService.Data.Profile.Data>
+                    {
+                        Data = new WebService.Data.Profile.Data(),
+                        Succeeded = true,
+                        Errors = null,
+                        Message = "Initialized"
+                    };
                 }
-                return profiles;
+                return person;
             }
-            set { profiles = value; }
+            set
+            {
+                person = value;
+                OnPropertyChanged(nameof(Person));
+            }
         }
     }
 }

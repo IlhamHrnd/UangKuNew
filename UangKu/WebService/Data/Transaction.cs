@@ -19,7 +19,7 @@ namespace UangKu.WebService.Data
             public string srtransItem { get; set; }
 
             [JsonPropertyName("amount")]
-            public int? amount { get; set; }
+            public double? amount { get; set; }
 
             [JsonPropertyName("description")]
             public string description { get; set; }
@@ -31,7 +31,7 @@ namespace UangKu.WebService.Data
             public string transType { get; set; }
 
             [JsonPropertyName("transDate")]
-            public string transDate { get; set; }
+            public DateTime? transDate { get; set; }
 
             [JsonPropertyName("createdDateTime")]
             public DateTime? createdDateTime { get; set; }
@@ -44,6 +44,12 @@ namespace UangKu.WebService.Data
 
             [JsonPropertyName("lastUpdateByUserId")]
             public string lastUpdateByUserId { get; set; }
+
+            #region Custom Variabel
+            public string amountFormat { get; set; }
+            public string dateFormat { get; set; }
+            public ImageSource source { get; set; }
+            #endregion
         }
     }
 }

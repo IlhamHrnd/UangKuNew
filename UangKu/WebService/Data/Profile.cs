@@ -50,6 +50,12 @@ namespace UangKu.WebService.Data
 
             [JsonPropertyName("lastUpdateByUser")]
             public string lastUpdateByUser { get; set; }
+
+            #region Custom Variabel
+            public ImageSource source { get; set; }
+            public string dateFormat { get; set; }
+            public string ageFormat { get; set; }
+            #endregion
         }
     }
 }

@@ -1,26 +1,11 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Storage;
-using iText.IO.Image;
-using iText.Kernel.Pdf;
-using iText.Kernel.Pdf.Action;
-using iText.Kernel.Pdf.Canvas.Draw;
-using iText.Layout;
-using iText.Layout.Element;
-using SkiaSharp;
-using System.Diagnostics.CodeAnalysis;
+using Syncfusion.Maui.Toolkit.Themes;
 using System.Globalization;
-using System.Reflection;
 using System.Text;
 using UangKu.Model.Session;
-using UangKu.ViewModel.RestAPI.AppParameter;
-using UangKu.ViewModel.RestAPI.Picture;
-using UangKu.ViewModel.RestAPI.Profile;
-using UangKu.ViewModel.RestAPI.Report;
-using UangKu.ViewModel.RestAPI.Transaction;
-using UangKu.ViewModel.RestAPI.Wishlist;
-using static UangKu.Model.Base.ParameterModel;
-using static UangKu.Model.Base.ParameterModel.PermissionManager;
+using static UangKu.Model.Base.PermissionManager;
 
 namespace UangKu.Model.Base
 {
@@ -53,11 +38,11 @@ namespace UangKu.Model.Base
         {
             if (!IsConnected)
             {
-                await MsgModel.MsgNotification(ItemDefaultValue.Offline);
+                await MsgModel.MsgNotification(ItemManager.Offline);
             }
             else
             {
-                await MsgModel.MsgNotification(ItemDefaultValue.Online);
+                await MsgModel.MsgNotification(ItemManager.Online);
             }
         }
     }
@@ -86,95 +71,55 @@ namespace UangKu.Model.Base
             return true;
         }
 
-        [RequiresAssemblyFiles()]
-        public static DateTime GetBuildDate()
+        public static string GetUserAge(DateTime dateTime)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var fileInfo = new FileInfo(assembly.Location);
-            var lastWriteTime = fileInfo.LastWriteTime;
-            return lastWriteTime;
+            DateTime today = DateTime.Today;
+
+            // Calculate years, months, and days
+            int years = today.Year - dateTime.Year;
+            int months = today.Month - dateTime.Month;
+            int days = today.Day - dateTime.Day;
+
+            // Adjust for negative values
+            if (days < 0)
+            {
+                months--;
+                days += DateTime.DaysInMonth(today.Year, (today.Month == 1) ? 12 : today.Month - 1);
+            }
+
+            if (months < 0)
+            {
+                years--;
+                months += 12;
+            }
+
+            // Return formatted age
+            return $"{years} year{(years != 1 ? "s" : "")} {months} month{(months != 1 ? "s" : "")} {days} day{(days != 1 ? "s" : "")}";
         }
 
-        public static string GetAppName()
+        public static string GetUserID()
         {
-            var appName = AppInfo.Current.Name;
-            return appName;
-        }
-
-        public static string GetUserID(AppSession session)
-        {
+            var session = App.Session;
             if (!string.IsNullOrEmpty(session.personID))
-            {
                 return session.personID;
-            }
             else if (string.IsNullOrEmpty(session.personID) && !string.IsNullOrEmpty(session.username))
-            {
                 return session.username;
-            }
             else
-            {
                 return string.Empty;
-            }
         }
 
-        public static int GetUserAge(DateTime birthDate)
+        public static async Task<bool> LoadAppParameterAsync()
         {
-            var now = DateTime.Now.Year;
-            var date = birthDate.Year;
-            var age = now - date;
-
-            return age;
-        }
-
-        public static string GetUserAccess(AppSession session)
-        {
-            var access = !string.IsNullOrEmpty(session.accessName) ? session.accessName : string.Empty;
-            return access;
-        }
-
-        public static bool IsAdmin(string access)
-        {
-            bool admin = !string.IsNullOrEmpty(access) && access == "Admin";
-            return admin;
-        }
-
-        public static bool IsAdult(int age)
-        {
-            bool adult = age >= AppParameter.AgeMinimum;
-            return adult;
-        }
-
-        public static async void LoadProfile()
-        {
-            var profile = await GetProfile.GetProfileID(App.Session.personID);
-            if (profile.metaData.isSucces && profile.metaData.code == 200)
+            var allParameter = await WebService.Service.AppParameter.GetAllParameterWithNoPageFilter();
+            if (allParameter.Succeeded == true)
             {
-                DateTime dateTime = profile.birthDate != null ? (DateTime)profile.birthDate : DateTime.Now;
-                int AgeUser = GetUserAge(dateTime);
-                App.Access = new AppAccess
-                {
-                    IsAdmin = IsAdmin(App.Session.accessName),
-                    IsAdult = IsAdult(AgeUser)
-                };
-            }
-            else
-            {
-                await MsgModel.MsgNotification(profile.metaData.message);
-            }
-        }
-
-        public static async void LoadAppParameter()
-        {
-            var allParameter = await AllParameterWithNoPageFilter.GetAllAppParameter();
-            if (allParameter.metaData.isSucces && allParameter.metaData.code == 200 && allParameter.data.Count > 0)
-            {
-                foreach (var data in allParameter.data)
+                foreach (var data in allParameter.Data)
                 {
                     try
                     {
                         if (bool.TryParse(data.parameterValue, out var valueBool))
                         {
-                            switch (data.parameterID)
+                            switch (data.parameterId)
                             {
                                 case "ShowLastBuild":
                                     AppParameter.ShowLastBuild = valueBool;
@@ -199,7 +144,7 @@ namespace UangKu.Model.Base
                         }
                         else if (int.TryParse(data.parameterValue, out var valueInt))
                         {
-                            switch (data.parameterID)
+                            switch (data.parameterId)
                             {
                                 case "AgeMinimum":
                                     AppParameter.AgeMinimum = valueInt;
@@ -228,7 +173,7 @@ namespace UangKu.Model.Base
                         }
                         else
                         {
-                            switch (data.parameterID)
+                            switch (data.parameterId)
                             {
                                 case "URL":
                                     AppParameter.URL = data.parameterValue;
@@ -258,14 +203,27 @@ namespace UangKu.Model.Base
                     }
                     catch (Exception e)
                     {
-                        await MsgModel.MsgNotification($"{e.Message}");
+                        await MsgModel.MsgNotification(e.Message);
                     }
                 }
+                return true;
             }
             else
+                await MsgModel.MsgNotification(allParameter.Message);
+
+            return false;
+        }
+
+        public static void LogError(Exception ex)
+        {
+            // Log to a file, database, or remote API
+            Console.WriteLine($"[Error]: {ex.Message}");
+
+            // Optionally show the error to the user
+            MainThread.BeginInvokeOnMainThread(async () =>
             {
-                await MsgModel.MsgNotification(allParameter.metaData.message);
-            }
+                await MsgModel.MsgNotification(ex.Message);
+            });
         }
     }
 
@@ -297,6 +255,9 @@ namespace UangKu.Model.Base
 
             return day;
         }
+
+        private static DateTime datetime = DateTime.Now;
+        public static DateTime DateTime { get => datetime; set => datetime = value; }
     }
 
     public static class NumericFormat
@@ -479,20 +440,22 @@ namespace UangKu.Model.Base
             }
         }
 
-        public static bool StringToBool(string value, bool defaultValue)
+        public static bool StringToBool(string value)
         {
-            bool result;
-
             try
             {
-                result = Convert.ToBoolean(value);
-            }
-            catch (Exception)
-            {
-                result = defaultValue;
-            }
+                if (string.IsNullOrEmpty(value)) 
+                    return false;
 
-            return result;
+                if (value == "1" || value.Equals("yes", StringComparison.CurrentCultureIgnoreCase) || value.Equals("true", StringComparison.CurrentCultureIgnoreCase))
+                    return true;
+                else
+                    return false;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public static DateTime StringToDateTime(string value, DateTime defaultValue)
@@ -644,159 +607,6 @@ namespace UangKu.Model.Base
         }
     }
 
-    public static class GeneratePDFFile
-    {
-        public static Paragraph SetParagraph(string title, int size, iText.Layout.Properties.TextAlignment alignment)
-        {
-            Paragraph paragraph = new Paragraph(title)
-                .SetTextAlignment(alignment)
-                .SetFontSize(size);
-            return paragraph;
-        }
-
-        public static LineSeparator SetLine()
-        {
-            LineSeparator ls = new LineSeparator(new SolidLine());
-            return ls;
-        }
-
-        public static Paragraph SetNewLine()
-        {
-            Paragraph paragraph = new Paragraph(new Text("\n"));
-            return paragraph;
-        }
-
-        public static iText.Layout.Element.Image SetImage(string imgPath, iText.Layout.Properties.TextAlignment alignment)
-        {
-            var img = new iText.Layout.Element.Image(ImageDataFactory
-               .Create(imgPath))
-               .SetTextAlignment(alignment);
-            return img;
-        }
-
-        public static Link SetLink(string title, string url)
-        {
-            var link = new Link(title,
-                PdfAction.CreateURI(url));
-            return link;
-        }
-
-        public static Table SetTable(int column, bool isLarge)
-        {
-            var tbl = new Table(column, isLarge)
-                .SetKeepTogether(false);
-            return tbl;
-        }
-
-        public static iText.Layout.Element.Cell SetCell(int rowsSpan, bool isAddBGColor, string title,
-            iText.Layout.Properties.TextAlignment alignment)
-        {
-            var cell = new iText.Layout.Element.Cell(rowsSpan, rowsSpan)
-                .SetTextAlignment(alignment)
-                .Add(new Paragraph(title));
-
-            if (isAddBGColor)
-            {
-                cell.SetBackgroundColor(iText.Kernel.Colors.ColorConstants.GRAY);
-            }
-
-            return cell;
-        }
-
-        public static iText.Kernel.Geom.PageSize SetPageSize(string size)
-        {
-            var pageSize = new Dictionary<string, iText.Kernel.Geom.PageSize>(StringComparer.OrdinalIgnoreCase)
-            {
-                { "A0", iText.Kernel.Geom.PageSize.A0 },
-                { "A1", iText.Kernel.Geom.PageSize.A1 },
-                { "A2", iText.Kernel.Geom.PageSize.A2 },
-                { "A3", iText.Kernel.Geom.PageSize.A3 },
-                { "A4", iText.Kernel.Geom.PageSize.A4 },
-                { "A5", iText.Kernel.Geom.PageSize.A5 },
-                { "A6", iText.Kernel.Geom.PageSize.A6 },
-                { "A7", iText.Kernel.Geom.PageSize.A7 },
-                { "A8", iText.Kernel.Geom.PageSize.A8 },
-                { "A9", iText.Kernel.Geom.PageSize.A9 },
-                { "A10", iText.Kernel.Geom.PageSize.A10 },
-                { "B0", iText.Kernel.Geom.PageSize.B0 },
-                { "B1", iText.Kernel.Geom.PageSize.B1 },
-                { "B2", iText.Kernel.Geom.PageSize.B2 },
-                { "B3", iText.Kernel.Geom.PageSize.B3 },
-                { "B4", iText.Kernel.Geom.PageSize.B4 },
-                { "B5", iText.Kernel.Geom.PageSize.B5 },
-                { "B6", iText.Kernel.Geom.PageSize.B6 },
-                { "B7", iText.Kernel.Geom.PageSize.B7 },
-                { "B8", iText.Kernel.Geom.PageSize.B8 },
-                { "B9", iText.Kernel.Geom.PageSize.B9 },
-                { "B10", iText.Kernel.Geom.PageSize.B10 },
-                { "executive", iText.Kernel.Geom.PageSize.EXECUTIVE },
-                { "ledger", iText.Kernel.Geom.PageSize.LEDGER },
-                { "legal", iText.Kernel.Geom.PageSize.LEGAL },
-                { "letter", iText.Kernel.Geom.PageSize.LETTER },
-                { "tabloid", iText.Kernel.Geom.PageSize.TABLOID }
-            };
-            var pages = pageSize.TryGetValue(size, out var page) ? page : iText.Kernel.Geom.PageSize.A4;
-            return pages;
-        }
-
-        public static void SetPagesNumber(PdfDocument pdfDoc, Document doc)
-        {
-            int n = pdfDoc.GetNumberOfPages();
-            for (int i = 1; i <= n; i++)
-            {
-                doc.ShowTextAligned(new Paragraph($"Page " + i + " of " + n),
-                   559, 806, i, iText.Layout.Properties.TextAlignment.RIGHT,
-                   iText.Layout.Properties.VerticalAlignment.TOP, 0);
-            }
-        }
-
-        public static void SetFooterPages(Paragraph par, PdfDocument pdfdoc, Document doc)
-        {
-            for (int i = 1; i <= pdfdoc.GetNumberOfPages(); i++)
-            {
-                PdfPage pdfPage = pdfdoc.GetPage(i);
-                pdfPage.SetIgnorePageRotationForContent(true);
-
-                var pageSize = pdfPage.GetPageSize();
-                float x;
-                float y;
-                if (pdfPage.GetRotation() % 180 == 0)
-                {
-                    x = pageSize.GetWidth() / 2;
-                    y = pageSize.GetBottom() + 20;
-                }
-                else
-                {
-                    x = pageSize.GetHeight() / 2;
-                    y = pageSize.GetRight() - 20;
-                }
-
-                doc.ShowTextAligned(par, x, y, i, iText.Layout.Properties.TextAlignment.CENTER, iText.Layout.Properties.VerticalAlignment.BOTTOM, 0);
-            }
-        }
-    }
-
-    public static class Compare
-    {
-        public static bool StringCompare(string firstString, string secondString)
-        {
-            bool result = firstString == secondString;
-            return result;
-        }
-
-        public static string StringReplace(string valueString, string defaultString)
-        {
-            string result = string.IsNullOrEmpty(valueString) ? defaultString : valueString;
-            return result;
-        }
-
-        public static int IntReplace(int valueInt, int defaultInt)
-        {
-            int result = valueInt > 0 ? valueInt : defaultInt;
-            return result;
-        }
-    }
-
     public static class RandomColorGenerator
     {
         private static readonly Random random = new Random();
@@ -820,108 +630,6 @@ namespace UangKu.Model.Base
             string hexColor = $"#{colorBytes[0]:X2}{colorBytes[1]:X2}{colorBytes[2]:X2}";
 
             return hexColor;
-        }
-
-        public static SKColor SKGenerateRandomColor()
-        {
-            byte[] colorBytes = new byte[3];
-            random.NextBytes(colorBytes);
-
-            var skcolor = new SKColor(colorBytes[0], colorBytes[1], colorBytes[2]);
-
-            return skcolor;
-        }
-    }
-
-    public static class GetNewAutoNumber
-    {
-        public static async Task<string> GetPictureID()
-        {
-            try
-            {
-                string pictureID = string.Empty;
-                var generateID = await NewPictureID.GetNewPictureID(ItemDefaultValue.Upload);
-                pictureID = generateID.metaData.isSucces && generateID.metaData.code == 200 ? generateID.AutoNumber : string.Empty;
-                return pictureID;
-            }
-            catch (Exception e)
-            {
-                await MsgModel.MsgNotification($"Error: {e.Message}");
-                return null;
-            }
-        }
-
-        public static async Task<string> GetTransactionNo(string transType)
-        {
-            try
-            {
-                string transNo = string.Empty;
-                var generateID = await NewTransNo.GetNewTransNo(transType);
-                transNo = generateID.metaData.isSucces && generateID.metaData.code == 200 ? generateID.AutoNumber : string.Empty;
-                return transNo;
-            }
-            catch (Exception e)
-            {
-                await MsgModel.MsgNotification($"Error: {e.Message}");
-                return null;
-            }
-        }
-
-        public static async Task<string> GetReportNo()
-        {
-            try
-            {
-                string reportNo = string.Empty;
-                string reportID;
-                var userID = SessionModel.GetUserID(App.Session);
-                var accessName = SessionModel.GetUserAccess(App.Session);
-
-                switch (accessName)
-                {
-                    case "Admin":
-                        reportID = string.Concat(userID, accessName.Substring(0, 3));
-                        break;
-
-                    case "User":
-                        {
-                            var accessStartSplit = accessName.Substring(0, 2);
-                            var accessEndSplit = accessName.Substring(accessName.Length - 1);
-                            var access = string.Concat(accessStartSplit, accessEndSplit);
-                            reportID = string.Concat(userID, access);
-                            break;
-                        }
-
-                    default:
-                        //Temporary Jika Akses User Bukan Admin Atau User
-                        reportID = string.Concat(userID, "TEM");
-                        break;
-                }
-
-                var generateID = await NewReportNo.GetNewReportNo(reportID);
-                reportNo = generateID.metaData.isSucces && generateID.metaData.code == 200 ? generateID.AutoNumber : string.Empty;
-                return reportNo;
-            }
-            catch (Exception e)
-            {
-                await MsgModel.MsgNotification($"Error: {e.Message}");
-                return null;
-            }
-        }
-
-        public static async Task<string> GetWishlistID(string wishlistType)
-        {
-            try
-            {
-                string wishlistID = string.Empty;
-                var generateID = await GetNewWishlistID.GetNewWishlistIDNo(wishlistType);
-                wishlistID = !string.IsNullOrEmpty(generateID) ? generateID : string.Empty;
-                return wishlistID;
-            }
-            catch (Exception e)
-            {
-                await MsgModel.MsgNotification($"Error: {e.Message}");
-                return null;
-            }
         }
     }
 
@@ -952,6 +660,48 @@ namespace UangKu.Model.Base
                 await MsgModel.MsgNotification(e.Message);
             }
         }
+
+        public static void OnChangeTheme()
+        {
+            ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
+
+            if (mergedDictionaries != null)
+            {
+                var theme = mergedDictionaries.OfType<SyncfusionThemeResourceDictionary>().FirstOrDefault();
+
+                if (theme != null)
+                {
+                    // Detect system theme
+                    AppTheme systemTheme = Application.Current.RequestedTheme;
+
+                    if (systemTheme == AppTheme.Dark)
+                    {
+                        theme.VisualTheme = SfVisuals.MaterialDark;
+                        Application.Current.UserAppTheme = AppTheme.Dark;
+                    }
+                    else if (systemTheme == AppTheme.Light)
+                    {
+                        theme.VisualTheme = SfVisuals.MaterialLight;
+                        Application.Current.UserAppTheme = AppTheme.Light;
+                    }
+                    else
+                    {
+                        // Default behavior (toggle if unspecified)
+                        if (theme.VisualTheme is SfVisuals.MaterialDark)
+                        {
+                            theme.VisualTheme = SfVisuals.MaterialLight;
+                            Application.Current.UserAppTheme = AppTheme.Light;
+                        }
+                        else
+                        {
+                            theme.VisualTheme = SfVisuals.MaterialDark;
+                            Application.Current.UserAppTheme = AppTheme.Dark;
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     public static class PermissionRequest
@@ -1057,46 +807,6 @@ namespace UangKu.Model.Base
             }
 
             return true;
-        }
-    }
-
-    public static class Calculator
-    {
-        public static double Calculate(double value1, double value2, string mathOperator)
-        {
-            double result = 0;
-
-            switch (mathOperator)
-            {
-                case "÷":
-                    result = value1 / value2;
-                    break;
-                case "×":
-                    result = value1 * value2;
-                    break;
-                case "+":
-                    result = value1 + value2;
-                    break;
-                case "-":
-                    result = value1 - value2;
-                    break;
-            }
-            return result;
-        }
-
-        public static string TrimmedString(double value, string decimalFormat)
-        {
-            string strValue = value.ToString(decimalFormat);
-
-            if (strValue.Contains("."))
-            {
-                strValue = strValue.TrimEnd('0');
-
-                if (strValue.EndsWith("."))
-                    strValue = strValue.TrimEnd('.');
-            }
-
-            return strValue;
         }
     }
 }

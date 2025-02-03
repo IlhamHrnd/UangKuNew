@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using UangKu.Model.Base;
-using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 
 namespace UangKu.Model.Index
 {
@@ -11,8 +10,8 @@ namespace UangKu.Model.Index
             
         }
 
-        private AsriRoot selectedsex { get; set; }
-        public AsriRoot SelectedSex
+        private WebService.Data.AppStandardReferenceItem.Data selectedsex { get; set; }
+        public WebService.Data.AppStandardReferenceItem.Data SelectedSex
         {
             get { return selectedsex; }
             set
@@ -24,15 +23,15 @@ namespace UangKu.Model.Index
                 }
             }
         }
-        private IList<AsriRoot> listsex { get; set; }
+        private IList<WebService.Data.AppStandardReferenceItem.Data> listsex { get; set; }
 
-        public IList<AsriRoot> ListSex
+        public IList<WebService.Data.AppStandardReferenceItem.Data> ListSex
         {
             get
             {
                 if (listsex == null)
                 {
-                    listsex = new ObservableCollection<AsriRoot>();
+                    listsex = new ObservableCollection<WebService.Data.AppStandardReferenceItem.Data>();
                 }
                 return listsex;
             }

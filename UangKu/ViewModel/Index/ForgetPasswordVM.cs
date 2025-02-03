@@ -1,12 +1,10 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Index;
-using UangKu.ViewModel.RestAPI.User;
 
 namespace UangKu.ViewModel.Index
 {
     public class ForgetPasswordVM : ForgetPassword
     {
-        private NetworkModel network = NetworkModel.Instance;
         public ForgetPasswordVM()
         {
             Title = "Forget Password";
@@ -14,7 +12,6 @@ namespace UangKu.ViewModel.Index
 
         public async void BtnUpdate_User(Entry username, Entry email, Entry password, Entry confirmpass)
         {
-            bool isConnect = network.IsConnected;
             IsBusy = true;
             try
             {
@@ -25,21 +22,29 @@ namespace UangKu.ViewModel.Index
                     (email.Text, "Email")
                 );
 
-                if (!isConnect)
+                if (!Network.IsConnected)
                 {
-                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                    await MsgModel.MsgNotification(ItemManager.Offline);
+                    return;
                 }
                 if (!Equals(password.Text, confirmpass.Text))
                 {
                     await MsgModel.MsgNotification($"Password And Confirm Password Are Not The Same");
+                    return;
                 }
                 if (isValidEntry)
                 {
-                    var updatepassword = await UserForgotPassword.PatchUserForgotPassword(username.Text, email.Text, password.Text);
-                    if (updatepassword != null)
+                    var filter = new WebService.Filter.Root<WebService.Filter.User>
                     {
-                        await MsgModel.MsgNotification(updatepassword);
-                    }
+                        Data = new WebService.Filter.User
+                        {
+                            Username = username.Text,
+                            Email = email.Text,
+                            Password = password.Text
+                        }
+                    };
+                    var update = await WebService.Service.User.UpdatePasswordUser(filter);
+                    await MsgModel.MsgNotification(update.Message);
                 }
             }
             catch (Exception e)

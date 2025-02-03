@@ -1,0 +1,86 @@
+﻿using System.Collections.ObjectModel;
+using UangKu.Model.Base;
+using UangKu.WebService.Data;
+
+namespace UangKu.Model.Menu
+{
+    public class Transaction : BaseModel
+    {
+        private bool isallowcustomdate = false;
+        private bool iscustomdaterange = false;
+        public bool IsAllowCustomDate { get => isallowcustomdate; set => SetProperty(ref isallowcustomdate, value); }
+        public bool IsCustomDateRange { get => iscustomdaterange; set => SetProperty(ref iscustomdaterange, value); }
+
+        private Root<ObservableCollection<WebService.Data.Transaction.Data>> summary;
+        public Root<ObservableCollection<WebService.Data.Transaction.Data>> Summary
+        {
+            get
+            {
+                if (summary == null)
+                {
+                    summary = new Root<ObservableCollection<WebService.Data.Transaction.Data>>
+                    {
+                        Data = new ObservableCollection<WebService.Data.Transaction.Data>(),
+                        Succeeded = true,
+                        Errors = null,
+                        Message = "Initialized"
+                    };
+                }
+                return summary;
+            }
+            set
+            {
+                summary = value;
+                OnPropertyChanged(nameof(Summary));
+            }
+        }
+
+        private Root<ObservableCollection<WebService.Data.Transaction.Data>> trans;
+        public Root<ObservableCollection<WebService.Data.Transaction.Data>> Trans
+        {
+            get
+            {
+                if (trans == null)
+                {
+                    trans = new Root<ObservableCollection<WebService.Data.Transaction.Data>>
+                    {
+                        Data = new ObservableCollection<WebService.Data.Transaction.Data>(),
+                        Succeeded = true,
+                        Errors = null,
+                        Message = "Initialized"
+                    };
+                }
+                return trans;
+            }
+            set
+            {
+                trans = value;
+                OnPropertyChanged(nameof(Trans));
+            }
+        }
+
+        private Root<ObservableCollection<WebService.Data.AppStandardReferenceItem.Data>> orderby;
+        public Root<ObservableCollection<WebService.Data.AppStandardReferenceItem.Data>> OrderBy
+        {
+            get
+            {
+                if (orderby == null)
+                {
+                    orderby = new Root<ObservableCollection<AppStandardReferenceItem.Data>>
+                    {
+                        Data = new ObservableCollection<AppStandardReferenceItem.Data>(),
+                        Succeeded = true,
+                        Errors = null,
+                        Message = "Initialized"
+                    };
+                }
+                return orderby;
+            }
+            set
+            {
+                orderby = value;
+                OnPropertyChanged(nameof(OrderBy));
+            }
+        }
+    }
+}

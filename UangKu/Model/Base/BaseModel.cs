@@ -22,16 +22,45 @@ namespace UangKu.Model.Base
         public int TotalRecords { get => totalrecords; set => totalrecords = value; }
         private int totalpages = 0;
         public int TotalPages { get => totalpages; set => totalpages = value; }
+        private NetworkModel network = NetworkModel.Instance;
+        public NetworkModel Network { get => network; set => network = value; }
         private string mode = string.Empty;
         public string Mode { get => mode; set => SetProperty(ref mode, value); }
-        private string savedir = string.Empty;
-        public string SaveDir { get => savedir; set => savedir = value; }
-        private string copydir = string.Empty;
-        public string CopyDir { get => copydir; set => copydir = value; }
-        private static int timeout = Compare.IntReplace(AppParameter.Timeout, ParameterModel.AppParameterDefault.TimeOut);
-        public static int TimeOut { get => timeout; set => timeout = value; }
-        private static string url = Compare.StringReplace(AppParameter.URL, ParameterModel.AppParameterDefault.URL);
-        public static string URL { get => url; set => url = value; }
+        private bool isProgram = false;
+        public bool IsProgram { get => isProgram; set => SetProperty(ref isProgram, value); }
+        private bool isProgramAddAble = false;
+        public bool IsProgramAddAble { get => isProgramAddAble; set => SetProperty(ref isProgramAddAble, value); }
+        private bool isProgramEditAble = false;
+        public bool IsProgramEditAble { get => isProgramEditAble; set => SetProperty(ref isProgramEditAble, value); }
+        private bool isProgramDeleteAble = false;
+        public bool IsProgramDeleteAble { get => isProgramDeleteAble; set => SetProperty(ref isProgramDeleteAble, value); }
+        private bool isProgramViewAble = false;
+        public bool IsProgramViewAble { get => isProgramViewAble; set => SetProperty(ref isProgramViewAble, value); }
+        private bool isProgramApprovalAble = false;
+        public bool IsProgramApprovalAble { get => isProgramApprovalAble; set => SetProperty(ref isProgramApprovalAble, value); }
+        private bool isProgramUnApprovalAble = false;
+        public bool IsProgramUnApprovalAble { get => isProgramUnApprovalAble; set => SetProperty(ref isProgramUnApprovalAble, value); }
+        private bool isProgramVoidAble = false;
+        public bool IsProgramVoidAble { get => isProgramVoidAble; set => SetProperty(ref isProgramVoidAble, value); }
+        private bool isProgramUnVoidAble = false;
+        public bool IsProgramUnVoidAble { get => isProgramUnVoidAble; set => SetProperty(ref isProgramUnVoidAble, value); }
+        private bool isVisible = false;
+        public bool IsVisible { get => isVisible; set => SetProperty(ref isVisible, value); }
+        private bool isUsedBySystem = false;
+        public bool IsUsedBySystem { get => isUsedBySystem; set => SetProperty(ref isUsedBySystem, value); }
+        private static int timeout;
+        public static int TimeOut
+        {
+            get => timeout = AppParameter.Timeout > 0 ? AppParameter.Timeout : ItemManager.Timeout;
+            set => timeout = value > 0 ? value : ItemManager.Timeout;
+        }
+        private static string url;
+        public static string URL
+        {
+            get => url = !string.IsNullOrEmpty(AppParameter.URL) ? AppParameter.URL : ItemManager.Url;
+            set => url = !string.IsNullOrEmpty(value) ? value : ItemManager.Url;
+        }
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

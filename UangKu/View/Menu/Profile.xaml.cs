@@ -9,18 +9,13 @@ public partial class Profile : ContentPage
 	public Profile()
 	{
 		InitializeComponent();
-		_vm = new ProfileVM(Navigation);
+		_vm = new ProfileVM();
 		BindingContext = _vm;
 	}
 
     protected async override void OnAppearing()
     {
         await SessionModel.SessionCheck();
-		await _vm.LoadData(Avt_Profile);
-    }
-
-    private async void Btn_Edit_Clicked(object sender, EventArgs e)
-    {
-		await _vm.EditProfile_Click();
+		_vm.LoadData();
     }
 }

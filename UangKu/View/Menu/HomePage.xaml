@@ -2,234 +2,79 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:chart="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+             x:Class="UangKu.View.Menu.HomePage"
              xmlns:Model="clr-namespace:UangKu.Model.Menu"
              xmlns:Font="clr-namespace:UangKu.Model.Base"
-             x:Class="UangKu.View.Menu.HomePage"
              Title="{Binding Title}">
     <ContentPage.BindingContext>
-        <Model:Home/>
+        <Model:HomePage/>
     </ContentPage.BindingContext>
     <ScrollView Style="{StaticResource ScrollView}">
         <StackLayout Style="{StaticResource StackLayout}">
-            <ActivityIndicator Style="{StaticResource ActivityIndicator}"
-                               IsRunning="{Binding IsBusy}"
-                               IsVisible="{Binding IsBusy}"/>
-            <Frame Style="{StaticResource Frame}"
-                   Margin="10">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30*" />
-                        <ColumnDefinition Width="70*" />
-                    </Grid.ColumnDefinitions>
-                    <Image Source="{Binding Image}"
-                           Grid.Row="0"
-                           Grid.Column="0"/>
-                    <Label Style="{StaticResource Label}"
-                           Grid.Row="0"
-                           Grid.Column="1"
-                           Text="{Binding Name}"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           FontSize="Large"/>
-                </Grid>
-            </Frame>
-            <Label Style="{StaticResource Label}"
-                   HorizontalTextAlignment="Center"
-                   FontSize="Large">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Transaction For " />
-                        <Span Text="{Binding Month}" />
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-            <CarouselView Style="{StaticResource CarouselView}"
-                          ItemsSource="{Binding ListSumTrans}"
-                          IndicatorView="{x:Reference Indicator_SumTrans}">
+            <ActivityIndicator Style="{StaticResource ActivityIndicator}" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+            <CarouselView Style="{StaticResource CarouselView}" ItemsSource="{Binding Summary.Data}" Margin="0, 10, 0, 0">
                 <CarouselView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Horizontal"
-                                       ItemSpacing="5"
-                                       SnapPointsType="MandatorySingle"
-                                       SnapPointsAlignment="Center" />
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="5" SnapPointsType="MandatorySingle" SnapPointsAlignment="Center" />
                 </CarouselView.ItemsLayout>
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
                         <Frame Style="{StaticResource Frame}">
-                            <Label Style="{StaticResource Label}">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{Binding srTransaction}"/>
-                                        <Span Text=" : "/>
-                                        <Span Text="{Binding amountFormat}"/>
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40*" />
+                                    <RowDefinition Height="60*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding srtransaction}" Style="{StaticResource Label}" Grid.Row="0" Grid.Column="0"/>
+                                <Label Text="{Binding amountFormat}" Style="{StaticResource Label}" Grid.Row="1" Grid.Column="0" FontSize="Large"/>
+                            </Grid>
                         </Frame>
                     </DataTemplate>
                 </CarouselView.ItemTemplate>
             </CarouselView>
-            <IndicatorView Style="{StaticResource IndicatorView}"
-                           x:Name="Indicator_SumTrans"
-                           HorizontalOptions="CenterAndExpand"/>
-            <StackLayout>
-                <chart:ChartView HeightRequest="300" WidthRequest="300"
-                                 x:Name="Chart_Transaction"/>
-            </StackLayout>
-            <CollectionView ItemsSource="{Binding ListAllTrans}"
-                            Margin="0, 10"
-                            EmptyView="No Data Transaction To Display">
-                <CollectionView.Header>
-                    <Label Style="{StaticResource Label}"
-                           HorizontalTextAlignment="Center"
-                           FontSize="Large">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="History" />
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                </CollectionView.Header>
-                <CollectionView.ItemTemplate>
+            <Label Style="{StaticResource Label}" Text="Recent Transaction" HorizontalTextAlignment="Center" FontSize="Large"/>
+            <CarouselView Style="{StaticResource CarouselView}" ItemsSource="{Binding Transaction.Data}">
+                <CarouselView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="5" SnapPointsType="MandatorySingle" SnapPointsAlignment="Center" />
+                </CarouselView.ItemsLayout>
+                <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout>
-                            <CarouselView Style="{StaticResource CarouselView}"
-                                          ItemsSource="{Binding data}"
-                                          IndicatorView="{x:Reference Indicator_AllTrans}">
-                                <CarouselView.ItemsLayout>
-                                    <LinearItemsLayout Orientation="Horizontal"
-                                                       ItemSpacing="5"
-                                                       SnapPointsType="MandatorySingle"
-                                                       SnapPointsAlignment="Center" />
-                                </CarouselView.ItemsLayout>
-                                <CarouselView.ItemTemplate>
-                                    <DataTemplate>
-                                        <Frame Style="{StaticResource Frame}">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto" />
-                                                    <RowDefinition Height="Auto" />
-                                                    <RowDefinition Height="Auto" />
-                                                    <RowDefinition Height="150" />
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="50*" />
-                                                    <ColumnDefinition Width="50*" />
-                                                </Grid.ColumnDefinitions>
-                                                <Label Grid.Row="0"
-                                                       Grid.Column="0"
-                                                       Grid.ColumnSpan="2"
-                                                       HorizontalTextAlignment="Center"
-                                                       Style="{StaticResource Label}"
-                                                       Text="{Binding transNo}"/>
-                                                <Label Grid.Row="1"
-                                                       Grid.Column="0"
-                                                       HorizontalTextAlignment="Center"
-                                                       Style="{StaticResource Label}"
-                                                       Text="{Binding srTransaction}"/>
-                                                <Label Grid.Row="1"
-                                                       Grid.Column="1"
-                                                       HorizontalTextAlignment="Center"
-                                                       Style="{StaticResource Label}"
-                                                       Text="{Binding srTransItem}"/>
-                                                <Label Grid.Row="2"
-                                                       Grid.Column="0"
-                                                       HorizontalTextAlignment="Center"
-                                                       Style="{StaticResource Label}"
-                                                       Text="{Binding amountFormat}"/>
-                                                <Label Grid.Row="2"
-                                                       Grid.Column="1"
-                                                       HorizontalTextAlignment="Center"
-                                                       Style="{StaticResource Label}"
-                                                       Text="{Binding description}"/>
-                                                <toolkit:AvatarView Grid.Row="3"
-                                                                    Grid.Column="0"
-                                                                    Grid.ColumnSpan="2"
-                                                                    HeightRequest="150"
-                                                                    WidthRequest="200"
-                                                                    Text="{Binding srTransItem}"
-                                                                    Style="{StaticResource Avatar}"
-                                                                    ImageSource="{Binding source}"/>
-                                            </Grid>
-                                        </Frame>
-                                    </DataTemplate>
-                                </CarouselView.ItemTemplate>
-                            </CarouselView>
-                            <IndicatorView Style="{StaticResource IndicatorView}"
-                                           x:Name="Indicator_AllTrans"
-                                           HorizontalOptions="CenterAndExpand"/>
-                        </StackLayout>
+                        <Frame Style="{StaticResource Frame}">
+                            <Grid ColumnSpacing="5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40*" />
+                                    <ColumnDefinition Width="60*" />
+                                </Grid.ColumnDefinitions>
+                                <toolkit:AvatarView Style="{StaticResource Avatar}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" HeightRequest="150" WidthRequest="100"
+                                                    Text="{Binding srtransaction}" ImageSource="{Binding source}"/>
+                                <Label Style="{StaticResource Label}" Grid.Column="1" Grid.Row="0" HorizontalTextAlignment="Center" FontSize="Large" Text="{Binding srtransItem}"/>
+                                <Label Style="{StaticResource Label}" Grid.Column="1" Grid.Row="1" HorizontalTextAlignment="Center" FontSize="Medium" Text="{Binding description}"/>
+                                <Label Style="{StaticResource Label}" Grid.Column="1" Grid.Row="2" HorizontalTextAlignment="Center" FontSize="Medium" Text="{Binding amountFormat}"/>
+                                <Label Style="{StaticResource Label}" Grid.Column="1" Grid.Row="3" HorizontalTextAlignment="Center" FontSize="Medium" Text="{Binding dateFormat}"/>
+                            </Grid>
+                        </Frame>
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-            <CollectionView ItemsSource="{Binding ListUserPicture}">
-                <CollectionView.Header>
-                    <Label Style="{StaticResource Label}"
-                           HorizontalTextAlignment="Center"
-                           FontSize="Large">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding Person}" />
-                                <Span Text=" Gallery " />
-                                <Span FontFamily="FARegular" Text="{x:Static Font:FARegular.Image}"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                </CollectionView.Header>
-                <CollectionView.ItemTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+            <Label Style="{StaticResource Label}" Text="Gallery" HorizontalTextAlignment="Center" FontSize="Large"/>
+            <CarouselView Style="{StaticResource CarouselView}" ItemsSource="{Binding Gallery.Data}">
+                <CarouselView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="5" SnapPointsType="MandatorySingle" SnapPointsAlignment="Center" />
+                </CarouselView.ItemsLayout>
+                <CarouselView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout>
-                            <CarouselView Style="{StaticResource CarouselView}"
-                                          ItemsSource="{Binding data}"
-                                          IndicatorView="{x:Reference Indicator_Gallery}">
-                                <CarouselView.ItemsLayout>
-                                    <LinearItemsLayout Orientation="Horizontal"
-                                                       ItemSpacing="5"
-                                                       SnapPointsType="MandatorySingle"
-                                                       SnapPointsAlignment="Center" />
-                                </CarouselView.ItemsLayout>
-                                <CarouselView.ItemTemplate>
-                                    <DataTemplate>
-                                        <Frame Style="{StaticResource Frame}">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto" />
-                                                    <RowDefinition Height="Auto" />
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
-                                                <toolkit:AvatarView Grid.Column="0"
-                                                                    Grid.Row="0"
-                                                                    HeightRequest="250"
-                                                                    WidthRequest="250"
-                                                                    Style="{StaticResource Avatar}"
-                                                                    ImageSource="{Binding source}"/>
-                                                <Label Grid.Column="0"
-                                                       Grid.Row="1"
-                                                       HorizontalTextAlignment="Center"
-                                                       Style="{StaticResource Label}">
-                                                    <Label.FormattedText>
-                                                        <FormattedString>
-                                                            <Span Text="{Binding pictureName}" />
-                                                        </FormattedString>
-                                                    </Label.FormattedText>
-                                                </Label>
-                                            </Grid>
-                                        </Frame>
-                                    </DataTemplate>
-                                </CarouselView.ItemTemplate>
-                            </CarouselView>
-                            <IndicatorView Style="{StaticResource IndicatorView}"
-                                           x:Name="Indicator_Gallery"
-                                           HorizontalOptions="CenterAndExpand"/>
-                        </StackLayout>
+                        <toolkit:AvatarView Style="{StaticResource Avatar}" HeightRequest="300" WidthRequest="200" Text="{Binding pictureName}" ImageSource="{Binding source}"/>
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
         </StackLayout>
     </ScrollView>
 </ContentPage>

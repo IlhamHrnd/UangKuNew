@@ -2,14 +2,12 @@
 using UangKu.Model.Base;
 using UangKu.Model.Index;
 using UangKu.Model.Session;
-using UangKu.ViewModel.RestAPI.AppParameter;
 using UangKu.WebService.Service;
 
 namespace UangKu.ViewModel.Index
 {
     public class MainPageVM : MainPage
     {
-        private NetworkModel network = NetworkModel.Instance;
         public MainPageVM()
         {
             Title = "Main Page";
@@ -18,8 +16,7 @@ namespace UangKu.ViewModel.Index
         [RequiresAssemblyFiles()]
         public async void LoadData(Entry entUser, Entry entPass, Button btnLogin)
         {
-            bool isConnect = network.IsConnected;
-            if (!isConnect)
+            if (!Network.IsConnected)
             {
                 entUser.IsEnabled = false;
                 entPass.IsEnabled = false;
@@ -42,12 +39,10 @@ namespace UangKu.ViewModel.Index
                 var parameter = await WebService.Service.AppParameter.GetParameterID(filter);
                 if (parameter.Succeeded == true)
                 {
-                    var isVisible = Converter.StringToBool(parameter.Data.parameterValue, false);
+                    var isVisible = Converter.StringToBool(parameter.Data.parameterValue);
                     if (isVisible)
                     {
-                        IsVisible = isVisible;
-                        var lastbuild = SessionModel.GetBuildDate();
-                        LastBuild = lastbuild.ToString(ParameterModel.DateTimeFormat.Date);
+
                     }
                 }
                 else
@@ -59,7 +54,6 @@ namespace UangKu.ViewModel.Index
 
         public async void BtnLogin_User(Entry username, Entry password)
         {
-            bool isConnect = network.IsConnected;
             IsBusy = true;
             try
             {
@@ -67,9 +61,10 @@ namespace UangKu.ViewModel.Index
                     (username.Text, "Username"),
                     (password.Text, "Password")
                 );
-                if (!isConnect)
+                if (!Network.IsConnected)
                 {
-                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                    await MsgModel.MsgNotification(ItemManager.Offline);
+                    return;
                 }
                 if (isValidEntry)
                 {
@@ -114,6 +109,13 @@ namespace UangKu.ViewModel.Index
                         var update = await User.UpdateLastLogin(filter);
                         if (update.Succeeded != true)
                             await MsgModel.MsgNotification(update.Message);
+                    }
+
+                    var isFinish = await SessionModel.LoadAppParameterAsync();
+                    if (!isFinish)
+                    {
+                        await MsgModel.MsgNotification("Failed Retrieve Parameter");
+                        return;
                     }
 
                     switch (user.Data.Sraccess)

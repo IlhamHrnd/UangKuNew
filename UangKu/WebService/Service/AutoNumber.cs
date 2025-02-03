@@ -13,6 +13,10 @@ namespace UangKu.WebService.Service
 
             if (!string.IsNullOrEmpty(filter.Data.ProgramID))
                 url = string.Format("{0}AppProgram/GetNewProgramID?ProgramID={1}", URL, filter.Data.ProgramID);
+            else if (!string.IsNullOrEmpty(filter.Data.ReferenceID))
+                url = string.Format("{0}AppStandardReference/GetNewStandardReferenceID?ReferenceID={1}", URL, filter.Data.ReferenceID);
+            else if (!string.IsNullOrEmpty(filter.Data.StandardReferenceID))
+                url = string.Format("{0}AppStandardReferenceItem/GetNewItemID?StandardReferenceID={1}", URL, filter.Data.StandardReferenceID);
             else if (!string.IsNullOrEmpty(filter.Data.TransType))
             {
                 switch (filter.Data.TransType)

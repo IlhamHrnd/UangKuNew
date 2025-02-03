@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+             x:Class="UangKu.View.Menu.Transaction"
+             xmlns:Model="clr-namespace:UangKu.Model.Menu"
+             xmlns:Font="clr-namespace:UangKu.Model.Base"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <Model:Transaction/>
+    </ContentPage.BindingContext>
+    <Grid Style="{StaticResource Grid}">
+        <ScrollView Style="{StaticResource ScrollView}">
+            <StackLayout>
+                <ActivityIndicator Style="{StaticResource ActivityIndicator}" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+                <CarouselView Style="{StaticResource CarouselView}" ItemsSource="{Binding Summary.Data}" Margin="0, 10, 0, 0">
+                    <CarouselView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal" ItemSpacing="5" SnapPointsType="MandatorySingle" SnapPointsAlignment="Center" />
+                    </CarouselView.ItemsLayout>
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Style="{StaticResource Frame}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="40*" />
+                                        <RowDefinition Height="60*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="{Binding srtransaction}" Style="{StaticResource Label}" Grid.Row="0" Grid.Column="0"/>
+                                    <Label Text="{Binding amountFormat}" Style="{StaticResource Label}" Grid.Row="1" Grid.Column="0" FontSize="Large"/>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
+                <StackLayout Spacing="10" IsVisible="{Binding IsAllowCustomDate}" IsEnabled="{Binding IsAllowCustomDate}">
+                    <Frame Style="{StaticResource Frame}" Margin="0, 10, 0, 0">
+                        <Grid RowSpacing="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50*" />
+                                <ColumnDefinition Width="50*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Style="{StaticResource Label}" Grid.Column="0" Grid.Row="0" Text="Filter Transaction" HorizontalTextAlignment="Center" FontSize="Medium"/>
+                            <input:RadioButtonGroupView Grid.Column="0" Grid.Row="1" x:Name="RadioFilter" SelectedItemChanged="RadioFilter_SelectedItemChanged">
+                                <input:RadioButton Text="This Day" Style="{StaticResource RadioButton2}" />
+                                <input:RadioButton Text="This Week" Style="{StaticResource RadioButton2}" />
+                                <input:RadioButton Text="This Month" Style="{StaticResource RadioButton2}" />
+                                <input:RadioButton Text="Custom" Style="{StaticResource RadioButton2}" />
+                            </input:RadioButtonGroupView>
+                        </Grid>
+                    </Frame>
+                    <Frame Style="{StaticResource Frame}" IsVisible="{Binding IsCustomDateRange}" IsEnabled="{Binding IsCustomDateRange}">
+                        <Grid RowSpacing="5" ColumnSpacing="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50*" />
+                                <ColumnDefinition Width="50*" />
+                            </Grid.ColumnDefinitions>
+                            <DatePicker Style="{StaticResource DatePicker}" Grid.Column="0" Grid.Row="0"/>
+                            <DatePicker Style="{StaticResource DatePicker}" Grid.Column="1" Grid.Row="0"/>
+                            <Picker Style="{StaticResource Picker}" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding OrderBy.Data}" ItemDisplayBinding="{Binding itemName}"/>
+                            <input:CheckBox Style="{StaticResource CheckBox2}" Grid.Column="1" Grid.Row="1" Text="Older First"/>
+                        </Grid>
+                    </Frame>
+                    <Button Style="{StaticResource Button}" Text="Filter Transaction"/>
+                </StackLayout>
+                <CollectionView Style="{StaticResource CollectionView}" ItemsSource="{Binding Trans.Data}" Margin="0, 5, 0, 0">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.Header>
+                        <Frame Style="{StaticResource Frame}">
+                            <Label Style="{StaticResource Label}" Text="Transaction History" HorizontalTextAlignment="Center"/>
+                        </Frame>
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView Style="{StaticResource SwipeView}">
+                                <SwipeView.LeftItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Edit"/>
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Delete"/>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <Frame Style="{StaticResource Frame}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50*" />
+                                            <ColumnDefinition Width="50*" />
+                                        </Grid.ColumnDefinitions>
+                                        <toolkit:AvatarView Style="{StaticResource Avatar}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" HeightRequest="100" WidthRequest="100"
+                                                            Text="{Binding srtransaction}" ImageSource="{Binding source}"/>
+                                        <Label Style="{StaticResource Label}" Grid.Column="1" Grid.Row="0" Text="{Binding srtransaction}" LineBreakMode="WordWrap" MaxLines="3"/>
+                                        <Label Style="{StaticResource Label}" Grid.Column="1" Grid.Row="1" Text="{Binding srtransItem}" LineBreakMode="WordWrap" MaxLines="3"/>
+                                        <Label Style="{StaticResource Label}" Grid.Column="1" Grid.Row="2" Text="{Binding amountFormat}" LineBreakMode="WordWrap" MaxLines="3"/>
+                                        <Label Style="{StaticResource Label}" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding description}" LineBreakMode="WordWrap" MaxLines="3"/>
+                                    </Grid>
+                                </Frame>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.Footer>
+                        <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="20">
+                            <Button Style="{StaticResource Button}" Text="Previous Page"/>
+                            <Button Style="{StaticResource Button}" Text="Next Page"/>
+                        </HorizontalStackLayout>
+                    </CollectionView.Footer>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

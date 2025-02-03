@@ -1,14 +1,10 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Index;
-using UangKu.ViewModel.RestAPI.AppStandardReferenceItem;
-using UangKu.ViewModel.RestAPI.User;
-using static UangKu.Model.Response.AppStandardReferenceItem.AppStandardReferenceItem;
 
 namespace UangKu.ViewModel.Index
 {
     public class SignUpVM : SignUp
     {
-        private NetworkModel network = NetworkModel.Instance;
         public SignUpVM()
         {
             Title = "Sign Up";
@@ -16,23 +12,35 @@ namespace UangKu.ViewModel.Index
 
         public async void LoadData()
         {
-            bool isConnect = network.IsConnected;
             IsBusy = true;
             try
             {
-                if (!isConnect)
+                if (!Network.IsConnected)
                 {
-                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                    await MsgModel.MsgNotification(ItemManager.Offline);
+                    return;
                 }
-                var sex = await AppStandardReferenceItem.GetAsriAsync<AsriRoot>("Sex", true, true);
-                if (sex.Count > 0)
+                var filter = new WebService.Filter.Root<WebService.Filter.AppStandardReferenceItem>
+                {
+                    Data = new WebService.Filter.AppStandardReferenceItem
+                    {
+                        StandardReferenceID = "Sex",
+                        IsUsedBySystem = true,
+                        IsActive = true
+                    }
+                };
+                var sex = await WebService.Service.AppStandardReferenceItem.GetAllReferenceItemID(filter);
+                if (sex.Succeeded == true && sex.Data.Count > 0)
                 {
                     ListSex.Clear();
-                    for (int i = 0; i < sex.Count; i++)
+                    for (int i = 0; i < sex.Data.Count; i++)
                     {
-                        ListSex.Add(sex[i]);
+                        WebService.Data.AppStandardReferenceItem.Data item = sex.Data[i];
+                        ListSex.Add(item);
                     }
                 }
+                else
+                    await MsgModel.MsgNotification(sex.Message);
             }
             catch (Exception e)
             {
@@ -46,7 +54,6 @@ namespace UangKu.ViewModel.Index
 
         public async void SignUp_User(Entry username, Entry password, Entry confirmpass, Entry email, Picker sex)
         {
-            bool isConnect = network.IsConnected;
             IsBusy = true;
             try
             {
@@ -61,21 +68,34 @@ namespace UangKu.ViewModel.Index
                     (sex, "Gender")
                 );
 
-                if (!isConnect)
+                if (!Network.IsConnected)
                 {
-                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
+                    await MsgModel.MsgNotification(ItemManager.Offline);
+                    return;
                 }
                 if (!Equals(password.Text, confirmpass.Text))
                 {
                     await MsgModel.MsgNotification($"{password.Text} And {confirmpass.Text} Are Not The Same");
+                    return;
                 }
                 if (isValidEntry && isValidPicker)
                 {
-                    var signup = await UserSignUp.PostUserSignUp(username.Text, password.Text, SelectedSex.itemID, email.Text);
-                    if (signup != null)
+                    var data = new WebService.Data.User.Data
                     {
-                        await MsgModel.MsgNotification(signup);
-                    }
+                        Username = username.Text,
+                        Password = password.Text,
+                        Srsex = SelectedSex.itemId,
+                        Email = email.Text,
+                        Sraccess = "Access-02",
+                        ActiveDate = DateFormat.DateTime,
+                        LastLogin = DateFormat.DateTime,
+                        LastUpdateDateTime = DateFormat.DateTime,
+                        Srstatus = ItemManager.Status,
+                        PersonId = username.Text,
+                        LastUpdateByUser = username.Text
+                    };
+                    var signup = await WebService.Service.User.CreateUsername(data);
+                    await MsgModel.MsgNotification(signup.Message);
                 }
             }
             catch (Exception e)

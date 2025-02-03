@@ -1,78 +1,92 @@
-﻿using CommunityToolkit.Maui.Views;
-using UangKu.Model.Base;
+﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
-using UangKu.View.SubMenu;
-using UangKu.ViewModel.RestAPI.Profile;
 
 namespace UangKu.ViewModel.Menu
 {
     public class ProfileVM : Profile
     {
-        private NetworkModel network = NetworkModel.Instance;
-        private readonly INavigation _navigation;
-
-        public ProfileVM(INavigation navigation)
+        public ProfileVM()
         {
-            Title = $"Profile {App.Session.username}";
-            _navigation = navigation;
+
         }
 
-        public async Task LoadData(AvatarView avatar)
+        public async void LoadData()
         {
-            bool isConnect = network.IsConnected;
             IsBusy = true;
-            try
+
+            #region Variabel
+            var userID = SessionModel.GetUserID();
+            #endregion
+
+            if (Network.IsConnected)
             {
-                var sessionID = App.Session;
-                string userID = SessionModel.GetUserID(sessionID);
-
-                if (!isConnect)
+                try
                 {
-                    await MsgModel.MsgNotification(ParameterModel.ItemDefaultValue.Offline);
-                }
-                if (!string.IsNullOrEmpty(userID))
-                {
-                    var profile = await GetProfile.GetProfileID(userID);
-                    if (profile.metaData.isSucces && profile.metaData.code == 200)
+                    var program = await WebService.Service.AppProgram.GetAppProgramID(new WebService.Filter.Root<WebService.Filter.AppProgram>
                     {
-                        Profiles.Clear();
-                        Profiles.Add(profile);
-
-                        var profiles = Profiles[0];
-                        if (!string.IsNullOrEmpty(profiles.photo))
+                        Data = new WebService.Filter.AppProgram
                         {
-                            string decodeImg = Converter.DecodeBase64ToString(profiles.photo);
-                            byte[] byteImg = Converter.StringToByteImg(decodeImg);
-                            ParameterModel.ImageManager.ImageByte = byteImg;
-                            ParameterModel.ImageManager.ImageString = decodeImg;
-                            avatar.ImageSource = ImageConvert.ImgByte(byteImg);
+                            ProgramID = AppProgram.Profile
                         }
-                        if (profiles.birthDate.HasValue)
-                        {
-                            profiles.birthDateFormat = profiles.birthDate.HasValue ? DateFormat.FormattingDate((DateTime)profiles.birthDate, ParameterModel.DateTimeFormat.Date) : string.Empty;
-                        }
-                        profiles.fullName = $"{profiles.firstName} {profiles.middleName} {profiles.lastName}";
-                        avatar.Text = profiles.personID;
+                    });
+                    if (program.Succeeded == true)
+                    {
+                        Title = program.Data.programName;
+                        IsProgram = program.Data.isProgram;
+                        IsProgramAddAble = program.Data.isProgramAddAble ?? false;
+                        IsProgramEditAble = program.Data.isProgramEditAble ?? false;
+                        IsProgramDeleteAble = program.Data.isProgramDeleteAble ?? false;
+                        IsProgramViewAble = program.Data.isProgramViewAble ?? false;
+                        IsProgramApprovalAble = program.Data.isProgramApprovalAble ?? false;
+                        IsProgramUnApprovalAble = program.Data.isProgramUnApprovalAble ?? false;
+                        IsProgramVoidAble = program.Data.isProgramVoidAble ?? false;
+                        IsProgramUnVoidAble = program.Data.isProgramUnVoidAble ?? false;
+                        IsVisible = program.Data.isVisible ?? false;
+                        IsUsedBySystem = program.Data.isUsedBySystem ?? false;
                     }
                     else
+                        await MsgModel.MsgNotification(program.Message);
+                }
+                catch (Exception e)
+                {
+                    await MsgModel.MsgNotification(e.Message);
+                }
+
+                try
+                {
+                    var profile = await WebService.Service.Profile.GetPersonID(new WebService.Filter.Root<WebService.Filter.Profile>
                     {
-                        await MsgModel.MsgNotification(profile.metaData.message);
+                        Data = new WebService.Filter.Profile
+                        {
+                            PersonID = userID
+                        }
+                    });
+                    if (profile.Succeeded == true)
+                    {
+                        Person = profile;
+
+                        if (!string.IsNullOrEmpty(Person.Data.photo))
+                        {
+                            string decode = Converter.DecodeBase64ToString(Person.Data.photo);
+                            byte[] img = Converter.StringToByteImg(decode);
+                            Person.Data.source = ImageConvert.ImgByte(img);
+                        }
+
+                        if (Person.Data.birthDate != null)
+                        {
+                            Person.Data.dateFormat = DateFormat.FormattingDate((DateTime)Person.Data.birthDate, DateTimeFormat.Daydatemonthyear);
+                            Person.Data.ageFormat = SessionModel.GetUserAge((DateTime)Person.Data.birthDate); 
+                        }
                     }
+                    else
+                        await MsgModel.MsgNotification(profile.Message);
+                }
+                catch (Exception e)
+                {
+                    await MsgModel.MsgNotification(e.Message);
                 }
             }
-            catch (Exception e)
-            {
-                await MsgModel.MsgNotification(e.Message);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        public async Task EditProfile_Click()
-        {
-            await _navigation.PushAsync(new EditProfile(ParameterModel.ItemDefaultValue.EditFile));
+            IsBusy = false;
         }
     }
 }
