@@ -20,7 +20,7 @@ namespace UangKu.ViewModel.Index
                     await MsgModel.MsgNotification(ItemManager.Offline);
                     return;
                 }
-                var filter = new WebService.Filter.Root<WebService.Filter.AppStandardReferenceItem>
+                var sex = await WebService.Service.AppStandardReferenceItem.GetAllReferenceItemID(new WebService.Filter.Root<WebService.Filter.AppStandardReferenceItem>
                 {
                     Data = new WebService.Filter.AppStandardReferenceItem
                     {
@@ -28,8 +28,7 @@ namespace UangKu.ViewModel.Index
                         IsUsedBySystem = true,
                         IsActive = true
                     }
-                };
-                var sex = await WebService.Service.AppStandardReferenceItem.GetAllReferenceItemID(filter);
+                });
                 if (sex.Succeeded == true && sex.Data.Count > 0)
                 {
                     ListSex.Clear();
@@ -80,7 +79,7 @@ namespace UangKu.ViewModel.Index
                 }
                 if (isValidEntry && isValidPicker)
                 {
-                    var data = new WebService.Data.User.Data
+                    var signup = await WebService.Service.User.CreateUsername(new WebService.Data.User.Data
                     {
                         Username = username.Text,
                         Password = password.Text,
@@ -93,8 +92,7 @@ namespace UangKu.ViewModel.Index
                         Srstatus = ItemManager.Status,
                         PersonId = username.Text,
                         LastUpdateByUser = username.Text
-                    };
-                    var signup = await WebService.Service.User.CreateUsername(data);
+                    });
                     await MsgModel.MsgNotification(signup.Message);
                 }
             }

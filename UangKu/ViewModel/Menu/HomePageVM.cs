@@ -14,13 +14,6 @@ namespace UangKu.ViewModel.Menu
         public async void LoadData()
         {
             IsBusy = true;
-
-            #region Variabel
-            var userID = SessionModel.GetUserID();
-            var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            #endregion
-
             if (Network.IsConnected)
             {
                 try
@@ -48,9 +41,9 @@ namespace UangKu.ViewModel.Menu
                     {
                         Data = new WebService.Filter.Transaction
                         {
-                            PersonID = userID,
-                            StartDate = startDate,
-                            EndDate = endDate
+                            PersonID = UserID,
+                            StartDate = StartDate,
+                            EndDate = EndDate
                         }
                     });
                     if (summary.Succeeded == true)
@@ -85,9 +78,9 @@ namespace UangKu.ViewModel.Menu
                     {
                         Data = new WebService.Filter.Transaction
                         {
-                            PersonID = userID,
-                            StartDate = startDate,
-                            EndDate = endDate,
+                            PersonID = UserID,
+                            StartDate = StartDate,
+                            EndDate = EndDate,
                             OrderBy = ItemManager.OrderBy,
                             IsAscending = false
                         },
@@ -137,7 +130,7 @@ namespace UangKu.ViewModel.Menu
                     {
                         Data = new WebService.Filter.UserPicture
                         {
-                            PersonID = userID,
+                            PersonID = UserID,
                             IsDelete = ItemManager.IsDeleted
                         },
                         PageNumber = ItemManager.FirstPage,

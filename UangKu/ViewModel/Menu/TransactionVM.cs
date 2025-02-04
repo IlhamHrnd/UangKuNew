@@ -1,5 +1,4 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using UangKu.Model.Base;
 using UangKu.Model.Menu;
 using UangKu.Model.Session;
@@ -16,13 +15,6 @@ namespace UangKu.ViewModel.Menu
         public async void LoadData()
         {
             IsBusy = true;
-
-            #region Variabel
-            var userID = SessionModel.GetUserID();
-            var startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            var endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            #endregion
-
             if (Network.IsConnected)
             {
                 try
@@ -63,9 +55,9 @@ namespace UangKu.ViewModel.Menu
                     {
                         Data = new WebService.Filter.Transaction
                         {
-                            PersonID = userID,
-                            StartDate = startDate,
-                            EndDate = endDate
+                            PersonID = UserID,
+                            StartDate = StartDate,
+                            EndDate = EndDate
                         }
                     });
                     if (summary.Succeeded == true)
@@ -144,11 +136,11 @@ namespace UangKu.ViewModel.Menu
                     {
                         Data = new WebService.Filter.Transaction
                         {
-                            PersonID = userID,
-                            StartDate = startDate,
-                            EndDate = endDate,
+                            PersonID = UserID,
+                            StartDate = StartDate,
+                            EndDate = EndDate,
                             OrderBy = ItemManager.OrderBy,
-                            IsAscending = false
+                            IsAscending = IsAscending
                         },
                         PageNumber = ItemManager.FirstPage,
                         PageSize = AppParameter.HomeMaxResult
@@ -195,7 +187,7 @@ namespace UangKu.ViewModel.Menu
 
         public void RadioSelection(int index)
         {
-            IsCustomDateRange = index == 3;
+            IsCustomDateRange = index == 4;
         }
     }
 }

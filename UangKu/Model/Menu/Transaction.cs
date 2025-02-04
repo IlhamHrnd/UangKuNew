@@ -8,8 +8,10 @@ namespace UangKu.Model.Menu
     {
         private bool isallowcustomdate = false;
         private bool iscustomdaterange = false;
+        private bool isascending = true;
         public bool IsAllowCustomDate { get => isallowcustomdate; set => SetProperty(ref isallowcustomdate, value); }
         public bool IsCustomDateRange { get => iscustomdaterange; set => SetProperty(ref iscustomdaterange, value); }
+        public bool IsAscending { get => isascending; set => SetProperty(ref isascending, value); }
 
         private Root<ObservableCollection<WebService.Data.Transaction.Data>> summary;
         public Root<ObservableCollection<WebService.Data.Transaction.Data>> Summary

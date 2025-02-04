@@ -52,6 +52,7 @@
                                 <input:RadioButton Text="This Day" Style="{StaticResource RadioButton2}" />
                                 <input:RadioButton Text="This Week" Style="{StaticResource RadioButton2}" />
                                 <input:RadioButton Text="This Month" Style="{StaticResource RadioButton2}" />
+                                <input:RadioButton Text="Last Month" Style="{StaticResource RadioButton2}" />
                                 <input:RadioButton Text="Custom" Style="{StaticResource RadioButton2}" />
                             </input:RadioButtonGroupView>
                         </Grid>
@@ -69,7 +70,7 @@
                             <DatePicker Style="{StaticResource DatePicker}" Grid.Column="0" Grid.Row="0"/>
                             <DatePicker Style="{StaticResource DatePicker}" Grid.Column="1" Grid.Row="0"/>
                             <Picker Style="{StaticResource Picker}" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding OrderBy.Data}" ItemDisplayBinding="{Binding itemName}"/>
-                            <input:CheckBox Style="{StaticResource CheckBox2}" Grid.Column="1" Grid.Row="1" Text="Older First"/>
+                            <input:CheckBox Style="{StaticResource CheckBox2}" Grid.Column="1" Grid.Row="1" Text="Older First" IsChecked="{Binding IsAscending}"/>
                         </Grid>
                     </Frame>
                     <Button Style="{StaticResource Button}" Text="Filter Transaction"/>

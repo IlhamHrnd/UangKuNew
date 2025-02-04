@@ -458,20 +458,16 @@ namespace UangKu.Model.Base
             }
         }
 
-        public static DateTime StringToDateTime(string value, DateTime defaultValue)
+        public static DateTime StringToDateTime(string value)
         {
-            DateTime result;
-
             try
             {
-                result = DateTime.Parse(value);
+                return DateTime.Parse(value);
             }
             catch
             {
-                result = defaultValue;
+                return new DateTime();
             }
-
-            return result;
         }
 
         //Class Untuk Convert Byte[] Ke Base64String

@@ -34,7 +34,7 @@ namespace UangKu.ViewModel.Index
                 }
                 if (isValidEntry)
                 {
-                    var filter = new WebService.Filter.Root<WebService.Filter.User>
+                    var update = await WebService.Service.User.UpdatePasswordUser(new WebService.Filter.Root<WebService.Filter.User>
                     {
                         Data = new WebService.Filter.User
                         {
@@ -42,8 +42,7 @@ namespace UangKu.ViewModel.Index
                             Email = email.Text,
                             Password = password.Text
                         }
-                    };
-                    var update = await WebService.Service.User.UpdatePasswordUser(filter);
+                    });
                     await MsgModel.MsgNotification(update.Message);
                 }
             }

@@ -13,11 +13,6 @@ namespace UangKu.ViewModel.Menu
         public async void LoadData()
         {
             IsBusy = true;
-
-            #region Variabel
-            var userID = SessionModel.GetUserID();
-            #endregion
-
             if (Network.IsConnected)
             {
                 try
@@ -58,7 +53,7 @@ namespace UangKu.ViewModel.Menu
                     {
                         Data = new WebService.Filter.Profile
                         {
-                            PersonID = userID
+                            PersonID = UserID
                         }
                     });
                     if (profile.Succeeded == true)

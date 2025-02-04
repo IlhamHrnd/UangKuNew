@@ -28,15 +28,13 @@ namespace UangKu.ViewModel.Index
                 entPass.IsEnabled = true;
                 btnLogin.IsEnabled = true;
 
-                var filter = new WebService.Filter.Root<WebService.Filter.AppParameter>
+                var parameter = await WebService.Service.AppParameter.GetParameterID(new WebService.Filter.Root<WebService.Filter.AppParameter>
                 {
                     Data = new WebService.Filter.AppParameter
                     {
                         ParameterID = "ShowLastBuild"
                     }
-                };
-
-                var parameter = await WebService.Service.AppParameter.GetParameterID(filter);
+                });
                 if (parameter.Succeeded == true)
                 {
                     var isVisible = Converter.StringToBool(parameter.Data.parameterValue);
@@ -68,16 +66,14 @@ namespace UangKu.ViewModel.Index
                 }
                 if (isValidEntry)
                 {
-                    var filter = new WebService.Filter.Root<WebService.Filter.User>
+                    var user = await User.GetLoginUserName(new WebService.Filter.Root<WebService.Filter.User>
                     {
                         Data = new WebService.Filter.User
                         {
                             Username = username.Text,
                             Password = password.Text
                         }
-                    };
-
-                    var user = await User.GetLoginUserName(filter);
+                    });
                     if (user.Succeeded != true)
                     {
                         await MsgModel.MsgNotification(user.Message);
@@ -99,14 +95,13 @@ namespace UangKu.ViewModel.Index
 
                     if (!string.IsNullOrEmpty(user.Data.Username))
                     {
-                        filter = new WebService.Filter.Root<WebService.Filter.User>
+                        var update = await User.UpdateLastLogin(new WebService.Filter.Root<WebService.Filter.User>
                         {
                             Data = new WebService.Filter.User
                             {
                                 Username = username.Text
                             }
-                        };
-                        var update = await User.UpdateLastLogin(filter);
+                        });
                         if (update.Succeeded != true)
                             await MsgModel.MsgNotification(update.Message);
                     }
