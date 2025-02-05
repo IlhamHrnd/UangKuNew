@@ -67,13 +67,13 @@
                                 <ColumnDefinition Width="50*" />
                                 <ColumnDefinition Width="50*" />
                             </Grid.ColumnDefinitions>
-                            <DatePicker Style="{StaticResource DatePicker}" Grid.Column="0" Grid.Row="0"/>
-                            <DatePicker Style="{StaticResource DatePicker}" Grid.Column="1" Grid.Row="0"/>
+                            <DatePicker Style="{StaticResource DatePicker}" Grid.Column="0" Grid.Row="0" Date="{Binding FirstDate}"/>
+                            <DatePicker Style="{StaticResource DatePicker}" Grid.Column="1" Grid.Row="0" Date="{Binding LastDate}"/>
                             <Picker Style="{StaticResource Picker}" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding OrderBy.Data}" ItemDisplayBinding="{Binding itemName}"/>
                             <input:CheckBox Style="{StaticResource CheckBox2}" Grid.Column="1" Grid.Row="1" Text="Older First" IsChecked="{Binding IsAscending}"/>
                         </Grid>
                     </Frame>
-                    <Button Style="{StaticResource Button}" Text="Filter Transaction"/>
+                    <Button Style="{StaticResource Button}" Text="Filter Transaction" x:Name="ButtonFilter" Clicked="ButtonFilter_Clicked"/>
                 </StackLayout>
                 <CollectionView Style="{StaticResource CollectionView}" ItemsSource="{Binding Trans.Data}" Margin="0, 5, 0, 0">
                     <CollectionView.ItemsLayout>
@@ -122,8 +122,8 @@
                     </CollectionView.ItemTemplate>
                     <CollectionView.Footer>
                         <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="20">
-                            <Button Style="{StaticResource Button}" Text="Previous Page"/>
-                            <Button Style="{StaticResource Button}" Text="Next Page"/>
+                            <Button Style="{StaticResource Button}" Text="Previous Page" x:Name="ButtonPrevious" Clicked="ButtonPrevious_Clicked"/>
+                            <Button Style="{StaticResource Button}" Text="Next Page" x:Name="ButtonNext" Clicked="ButtonNext_Clicked"/>
                         </HorizontalStackLayout>
                     </CollectionView.Footer>
                 </CollectionView>

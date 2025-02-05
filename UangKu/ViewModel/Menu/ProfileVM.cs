@@ -7,46 +7,16 @@ namespace UangKu.ViewModel.Menu
     {
         public ProfileVM()
         {
-
+            Person = new WebService.Data.Root<WebService.Data.Profile.Data>();
         }
 
         public async void LoadData()
         {
-            IsBusy = true;
             if (Network.IsConnected)
             {
-                try
-                {
-                    var program = await WebService.Service.AppProgram.GetAppProgramID(new WebService.Filter.Root<WebService.Filter.AppProgram>
-                    {
-                        Data = new WebService.Filter.AppProgram
-                        {
-                            ProgramID = AppProgram.Profile
-                        }
-                    });
-                    if (program.Succeeded == true)
-                    {
-                        Title = program.Data.programName;
-                        IsProgram = program.Data.isProgram;
-                        IsProgramAddAble = program.Data.isProgramAddAble ?? false;
-                        IsProgramEditAble = program.Data.isProgramEditAble ?? false;
-                        IsProgramDeleteAble = program.Data.isProgramDeleteAble ?? false;
-                        IsProgramViewAble = program.Data.isProgramViewAble ?? false;
-                        IsProgramApprovalAble = program.Data.isProgramApprovalAble ?? false;
-                        IsProgramUnApprovalAble = program.Data.isProgramUnApprovalAble ?? false;
-                        IsProgramVoidAble = program.Data.isProgramVoidAble ?? false;
-                        IsProgramUnVoidAble = program.Data.isProgramUnVoidAble ?? false;
-                        IsVisible = program.Data.isVisible ?? false;
-                        IsUsedBySystem = program.Data.isUsedBySystem ?? false;
-                    }
-                    else
-                        await MsgModel.MsgNotification(program.Message);
-                }
-                catch (Exception e)
-                {
-                    await MsgModel.MsgNotification(e.Message);
-                }
+                AppProgram(Model.Base.AppProgram.Profile);
 
+                IsBusy = true;
                 try
                 {
                     var profile = await WebService.Service.Profile.GetPersonID(new WebService.Filter.Root<WebService.Filter.Profile>
@@ -80,8 +50,11 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(e.Message);
                 }
+                finally
+                { 
+                    IsBusy = false; 
+                }
             }
-            IsBusy = false;
         }
     }
 }

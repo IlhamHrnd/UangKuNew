@@ -4,16 +4,15 @@ using UangKu.Model.Session;
 
 namespace UangKu.Model.Base
 {
-    public class BaseModel : INotifyPropertyChanged
+    public class BaseModel : INotifyPropertyChanged, IBaseModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         // 🔒 Private Variables (Top)
         private string title = string.Empty;
         private bool isbusy = false;
-        private int page = 0;
-        private int number = 0;
-        private int size = 0;
+        private int pagenumber = 0;
+        private int pagesize = 0;
         private int totalrecords = 0;
         private int totalpages = 0;
         private NetworkModel network = NetworkModel.Instance;
@@ -34,15 +33,16 @@ namespace UangKu.Model.Base
         private string userid = string.Empty;
         private DateTime startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         private DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+        private string prevPageLink;
+        private string nextPageLink;
 
         // 🌐 Public Properties (Bottom)
         public string Title { get => title; set => SetProperty(ref title, value); }
         public bool IsBusy { get => isbusy; set => SetProperty(ref isbusy, value); }
-        public int Page { get => page; set => page = value; }
-        public int Number { get => number; set => number = value; }
-        public int Size { get => size; set => size = value; }
-        public int TotalRecords { get => totalrecords; set => totalrecords = value; }
-        public int TotalPages { get => totalpages; set => totalpages = value; }
+        public int PageNumber { get => pagenumber; set => SetProperty(ref pagenumber, value); }
+        public int PageSize { get => pagesize; set => SetProperty(ref pagesize, value); }
+        public int TotalRecords { get => totalrecords; set => SetProperty(ref totalrecords, value); }
+        public int TotalPages { get => totalpages; set => SetProperty(ref totalpages, value); }
         public NetworkModel Network { get => network; set => network = value; }
         public string Mode { get => mode; set => SetProperty(ref mode, value); }
         public bool IsProgram { get => isProgram; set => SetProperty(ref isProgram, value); }
@@ -82,6 +82,50 @@ namespace UangKu.Model.Base
         }
         public DateTime StartDate { get => startDate; set => startDate = value; }
         public DateTime EndDate { get => endDate; set => endDate = value; }
+        public string PrevPageLink { get => prevPageLink; set => SetProperty(ref prevPageLink, value); }
+        public string NextPageLink { get => nextPageLink; set => SetProperty(ref nextPageLink, value); }
+
+        #region Load Function
+        public async void AppProgram(string programID)
+        {
+            IsBusy = true;
+            try
+            {
+                var program = await WebService.Service.AppProgram.GetAppProgramID(new WebService.Filter.Root<WebService.Filter.AppProgram>
+                {
+                    Data = new WebService.Filter.AppProgram
+                    {
+                        ProgramID = programID
+                    }
+                });
+                if (program.Succeeded == true)
+                {
+                    Title = program.Data.programName;
+                    IsProgram = program.Data.isProgram;
+                    IsProgramAddAble = program.Data.isProgramAddAble ?? false;
+                    IsProgramEditAble = program.Data.isProgramEditAble ?? false;
+                    IsProgramDeleteAble = program.Data.isProgramDeleteAble ?? false;
+                    IsProgramViewAble = program.Data.isProgramViewAble ?? false;
+                    IsProgramApprovalAble = program.Data.isProgramApprovalAble ?? false;
+                    IsProgramUnApprovalAble = program.Data.isProgramUnApprovalAble ?? false;
+                    IsProgramVoidAble = program.Data.isProgramVoidAble ?? false;
+                    IsProgramUnVoidAble = program.Data.isProgramUnVoidAble ?? false;
+                    IsVisible = program.Data.isVisible ?? false;
+                    IsUsedBySystem = program.Data.isUsedBySystem ?? false;
+                }
+                else
+                    await MsgModel.MsgNotification(program.Message);
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+        #endregion
 
         protected virtual void OnPropertyChanged(string propertyName)
         {

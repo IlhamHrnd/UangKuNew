@@ -8,33 +8,18 @@ namespace UangKu.ViewModel.Menu
     {
         public HomePageVM()
         {
-
+            Summary = new WebService.Data.Root<System.Collections.ObjectModel.ObservableCollection<WebService.Data.Transaction.Data>>();
+            Transaction = new WebService.Data.Root<System.Collections.ObjectModel.ObservableCollection<WebService.Data.Transaction.Data>>();
+            Gallery = new WebService.Data.Root<System.Collections.ObjectModel.ObservableCollection<WebService.Data.UserPicture.Data>>();
         }
 
         public async void LoadData()
         {
-            IsBusy = true;
             if (Network.IsConnected)
             {
-                try
-                {
-                    var program = await WebService.Service.AppProgram.GetAppProgramID(new WebService.Filter.Root<WebService.Filter.AppProgram>
-                    {
-                        Data = new WebService.Filter.AppProgram
-                        {
-                            ProgramID = AppProgram.HomePage
-                        }
-                    });
-                    if (program.Succeeded == true)
-                        Title = program.Data.programName;
-                    else
-                        await MsgModel.MsgNotification(program.Message);
-                }
-                catch (Exception e)
-                {
-                    await MsgModel.MsgNotification(e.Message);
-                }
+                AppProgram(Model.Base.AppProgram.HomePage);
 
+                IsBusy = true;
                 try
                 {
                     var summary = await WebService.Service.Transaction.GetSumTransaction(new WebService.Filter.Root<WebService.Filter.Transaction>
@@ -71,7 +56,12 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(e.Message);
                 }
+                finally
+                {
+                    IsBusy = false;
+                }
 
+                IsBusy = true;
                 try
                 {
                     var transaction = await WebService.Service.Transaction.GetAllTransaction(new WebService.Filter.Root<WebService.Filter.Transaction>
@@ -123,7 +113,12 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(e.Message);
                 }
+                finally
+                {
+                    IsBusy = false;
+                }
 
+                IsBusy = true;
                 try
                 {
                     var gallery = await WebService.Service.UserPicture.GetUserPicture(new WebService.Filter.Root<WebService.Filter.UserPicture>
@@ -172,8 +167,11 @@ namespace UangKu.ViewModel.Menu
                 {
                     await MsgModel.MsgNotification(e.Message);
                 }
+                finally
+                {
+                    IsBusy = false;
+                }
             }
-            IsBusy = false;
         }
     }
 }

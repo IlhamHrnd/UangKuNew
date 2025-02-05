@@ -23,4 +23,19 @@ public partial class Transaction : ContentPage
     {
         _vm.RadioSelection(RadioFilter.SelectedIndex);
     }
+
+    private void ButtonFilter_Clicked(object sender, EventArgs e)
+    {
+        _vm.FilterTransaction(RadioFilter.SelectedIndex);
+    }
+
+    private void ButtonPrevious_Clicked(object sender, EventArgs e)
+    {
+        _vm.NextPreviousPage(false, RadioFilter.SelectedIndex);
+    }
+
+    private void ButtonNext_Clicked(object sender, EventArgs e)
+    {
+        _vm.NextPreviousPage(true, RadioFilter.SelectedIndex);
+    }
 }
