@@ -7,11 +7,13 @@ namespace UangKu.ViewModel.Menu
     {
         public ProfileVM()
         {
-            Person = new WebService.Data.Root<WebService.Data.Profile.Data>();
+            
         }
 
         public async void LoadData()
         {
+            Person = new WebService.Data.Root<WebService.Data.Profile.Data>();
+
             if (Network.IsConnected)
             {
                 AppProgram(Model.Base.AppProgram.Profile);

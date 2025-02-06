@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
+using UangKu.Model.Base;
 
-namespace UangKu.Model.Base
+namespace UangKu.Interface.Base
 {
     public interface IBaseModel
     {

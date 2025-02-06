@@ -12,7 +12,7 @@ namespace UangKu
         public App()
         {
             InitializeComponent();
-            ExceptionHandler();
+            SessionModel.Initialize();
             MainPage = new AppShell();
 
         }
@@ -21,28 +21,6 @@ namespace UangKu
         {
             PermissionType type = PermissionType.StorageRead;
             await PermissionRequest.RequestPermission(type);
-        }
-
-        private void ExceptionHandler()
-        {
-            // Catch UI thread exceptions
-            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
-            {
-                HandleException(e.ExceptionObject as Exception);
-            };
-
-            // Catch Task-based (async) exceptions
-            TaskScheduler.UnobservedTaskException += (sender, e) =>
-            {
-                HandleException(e.Exception);
-                e.SetObserved();
-            };
-        }
-
-        private void HandleException(Exception ex)
-        {
-            if (ex != null)
-                SessionModel.LogError(ex);
         }
     }
 }

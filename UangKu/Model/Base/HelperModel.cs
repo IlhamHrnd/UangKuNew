@@ -4,6 +4,7 @@ using CommunityToolkit.Maui.Storage;
 using Syncfusion.Maui.Toolkit.Themes;
 using System.Globalization;
 using System.Text;
+using UangKu.Interface.Base;
 using UangKu.Model.Session;
 using static UangKu.Model.Base.PermissionManager;
 
@@ -224,6 +225,37 @@ namespace UangKu.Model.Base
             {
                 await MsgModel.MsgNotification(ex.Message);
             });
+        }
+
+        public static void Initialize()
+        {
+            // Catch unhandled exceptions
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                HandleException(e.ExceptionObject as Exception);
+            };
+
+            // Catch exceptions on the main thread (UI)
+            TaskScheduler.UnobservedTaskException += (sender, e) =>
+            {
+                HandleException(e.Exception);
+                e.SetObserved();
+            };
+        }
+
+        private static void HandleException(Exception ex)
+        {
+            if (ex != null)
+            {
+                // Log the exception (to file, server, etc.)
+                Console.WriteLine($"[Global Exception]: {ex.Message}");
+
+                // Optionally, show an error message to the user
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    await MsgModel.MsgNotification(ex.Message);
+                });
+            }
         }
     }
 

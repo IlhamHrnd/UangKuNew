@@ -9,12 +9,14 @@ namespace UangKu.ViewModel.Menu
     {
         public TransactionVM()
         {
-            Summary = new WebService.Data.Root<ObservableCollection<WebService.Data.Transaction.Data>>();
-            Trans = new WebService.Data.Root<ObservableCollection<WebService.Data.Transaction.Data>>();
+            
         }
 
         public void LoadData()
         {
+            Summary = new WebService.Data.Root<ObservableCollection<WebService.Data.Transaction.Data>>();
+            Trans = new WebService.Data.Root<ObservableCollection<WebService.Data.Transaction.Data>>();
+
             if (Network.IsConnected)
             {
                 AppProgram(Model.Base.AppProgram.Transaction);

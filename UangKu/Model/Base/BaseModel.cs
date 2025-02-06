@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using UangKu.Interface.Base;
 using UangKu.Model.Session;
 
 namespace UangKu.Model.Base

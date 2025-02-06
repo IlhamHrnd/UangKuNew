@@ -8,13 +8,15 @@ namespace UangKu.ViewModel.Menu
     {
         public HomePageVM()
         {
-            Summary = new WebService.Data.Root<System.Collections.ObjectModel.ObservableCollection<WebService.Data.Transaction.Data>>();
-            Transaction = new WebService.Data.Root<System.Collections.ObjectModel.ObservableCollection<WebService.Data.Transaction.Data>>();
-            Gallery = new WebService.Data.Root<System.Collections.ObjectModel.ObservableCollection<WebService.Data.UserPicture.Data>>();
+            
         }
 
         public async void LoadData()
         {
+            Summary = new WebService.Data.Root<System.Collections.ObjectModel.ObservableCollection<WebService.Data.Transaction.Data>>();
+            Transaction = new WebService.Data.Root<System.Collections.ObjectModel.ObservableCollection<WebService.Data.Transaction.Data>>();
+            Gallery = new WebService.Data.Root<System.Collections.ObjectModel.ObservableCollection<WebService.Data.UserPicture.Data>>();
+
             if (Network.IsConnected)
             {
                 AppProgram(Model.Base.AppProgram.HomePage);
