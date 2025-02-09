@@ -1,13 +1,14 @@
 ﻿using UangKu.Model.Base;
 using UangKu.Model.Menu;
+using UangKu.View.Module.UserManagement;
 
 namespace UangKu.ViewModel.Menu
 {
     public class ProfileVM : Profile
     {
-        public ProfileVM()
+        public ProfileVM(INavigation navigation)
         {
-            
+            Navigation = navigation;
         }
 
         public async void LoadData()
@@ -47,6 +48,8 @@ namespace UangKu.ViewModel.Menu
                     }
                     else
                         await MsgModel.MsgNotification(profile.Message);
+
+                    Mode = profile.Succeeded ?? false ? ItemManager.EditFile : ItemManager.NewFile;
                 }
                 catch (Exception e)
                 {
@@ -57,6 +60,11 @@ namespace UangKu.ViewModel.Menu
                     IsBusy = false; 
                 }
             }
+        }
+
+        public async void NavigationPage()
+        {
+            await Navigation.PushAsync(new ProfileEdit(Mode));
         }
     }
 }

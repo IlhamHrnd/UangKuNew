@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using InputKit.Handlers;
 using Microsoft.Extensions.Logging;
-using Syncfusion.Maui.Toolkit.Hosting;
 
 namespace UangKu
 {
@@ -13,7 +12,6 @@ namespace UangKu
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
-                .ConfigureSyncfusionToolkit()
                 .ConfigureMauiHandlers(handlers =>
                 {
                     handlers.AddInputKitHandlers();

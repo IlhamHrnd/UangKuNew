@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+             x:Class="UangKu.View.Module.UserManagement.ProfileEdit"
+             xmlns:Model="clr-namespace:UangKu.Model.Module.UserManagement"
+             xmlns:Font="clr-namespace:UangKu.Model.Base"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <Model:ProfileEdit/>
+    </ContentPage.BindingContext>
+    <ScrollView Style="{StaticResource ScrollView}">
+        <StackLayout Style="{StaticResource StackLayout}" Spacing="10">
+            <ActivityIndicator Style="{StaticResource ActivityIndicator}" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+            <toolkit:AvatarView HeightRequest="150" WidthRequest="150" Style="{StaticResource Avatar}" Text="{Binding Person.Data.personId}"
+                                ImageSource="{Binding Person.Data.source}" Margin="0, 10, 0, 0" x:Name="AvatarProfile"/>
+            <Button Style="{StaticResource Button}" Text="Upload" WidthRequest="150" MaximumWidthRequest="200" x:Name="ButtonUpload" Clicked="ButtonUpload_Clicked"/>
+            <Label Style="{StaticResource Label}" FontSize="Large" HorizontalTextAlignment="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding Person.Data.firstName} "/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding Person.Data.middleName}"/>
+                        <Span Text=" "/>
+                        <Span Text="{Binding Person.Data.lastName}"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <input:FormView Spacing="10" WidthRequest="350" MaximumWidthRequest="450" IsEnabled="{Binding IsEnabled}">
+                <input:AdvancedEntry Style="{StaticResource AdvancedEntry}" Placeholder="First Name" />
+                <input:AdvancedEntry Style="{StaticResource AdvancedEntry}" Placeholder="Middle Name" />
+                <input:AdvancedEntry Style="{StaticResource AdvancedEntry}" Placeholder="Last Name" />
+                <DatePicker Style="{StaticResource DatePicker}" x:Name="DateBirth" />
+                <Picker Style="{StaticResource Picker}" Title="Place Of Birth" ItemsSource="{Binding ListBirth}" ItemDisplayBinding="{Binding provName}"/>
+                <input:AdvancedEntry Style="{StaticResource AdvancedEntry}" Placeholder="Address" />
+                <Picker Style="{StaticResource Picker}" Title="Province" ItemsSource="{Binding ListProvince}" ItemDisplayBinding="{Binding provName}"/>
+                <Picker Style="{StaticResource Picker}" Title="City" ItemsSource="{Binding ListCity}" ItemDisplayBinding="{Binding cityName}"/>
+                <Picker Style="{StaticResource Picker}" Title="District" ItemsSource="{Binding ListDistrict}" ItemDisplayBinding="{Binding disName}"/>
+                <Picker Style="{StaticResource Picker}" Title="Subdistrict" ItemsSource="{Binding ListSubdistrict}" ItemDisplayBinding="{Binding subdisName}"/>
+                <Button Style="{StaticResource Button}" Text="Save Profile" x:Name="ButtonSave" input:FormView.IsSubmitButton="True"/>
+            </input:FormView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

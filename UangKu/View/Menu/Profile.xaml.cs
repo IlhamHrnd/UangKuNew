@@ -9,7 +9,7 @@ public partial class Profile : ContentPage
 	public Profile()
 	{
 		InitializeComponent();
-		_vm = new ProfileVM();
+		_vm = new ProfileVM(Navigation);
 		BindingContext = _vm;
 	}
 
@@ -17,5 +17,10 @@ public partial class Profile : ContentPage
     {
         await SessionModel.SessionCheck();
 		_vm.LoadData();
+    }
+
+    private void ButtonMode_Clicked(object sender, EventArgs e)
+    {
+		_vm.NavigationPage();
     }
 }

@@ -92,30 +92,21 @@
         public const string HomePage = "PRG/PRG/250201-001";
         public const string Profile = "PRG/PRG/250202-001";
         public const string Transaction = "PRG/PRG/250202-002";
+        public const string EditProfile = "PRG/PRG/250209-001";
     }
 
-    //Untuk Gambar Yang Ter Pick Satu Item
+    //Untuk Gambar Yang Ter Pick
     public class ImageManager
     {
-        private static string imagestring = string.Empty;
-        public static string ImageString { get => imagestring; set => imagestring = value; }
-        private static byte[] imagebyte = null;
-        public static byte[] ImageByte { get => imagebyte; set => imagebyte = value; }
-        private static string imagename = string.Empty;
-        public static string ImageName { get => imagename; set => imagename = value; }
+        private string imagestring = string.Empty;
+        public string ImageString { get => imagestring; set => imagestring = value; }
+        private byte[] imagebyte = null;
+        public byte[] ImageByte { get => imagebyte; set => imagebyte = value; }
+        private string imagename = string.Empty;
+        public string ImageName { get => imagename; set => imagename = value; }
         private static string imageformat = string.Empty;
-        public static string ImageFormat { get => imageformat; set => imageformat = value; }
+        public string ImageFormat { get => imageformat; set => imageformat = value; }
         private static long imagesize = 0;
-        public static long ImageSize { get => imagesize; set => imagesize = value; }
-    }
-
-    //Untuk Gambar Yang Ter Pick Beberapa Item
-    public class ImageManagerList
-    {
-        public string ImageString { get; set; }
-        public byte[] ImageByte { get; set; }
-        public string ImageName { get; set; }
-        public string ImageFormat { get; set; }
-        public int ImageSize { get; set; }
+        public long ImageSize { get => imagesize; set => imagesize = value; }
     }
 }

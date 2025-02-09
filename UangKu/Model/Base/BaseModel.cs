@@ -36,6 +36,9 @@ namespace UangKu.Model.Base
         private DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
         private string prevPageLink;
         private string nextPageLink;
+        private INavigation navigation;
+        private bool isadded;
+        private bool isedited;
 
         // 🌐 Public Properties (Bottom)
         public string Title { get => title; set => SetProperty(ref title, value); }
@@ -85,6 +88,31 @@ namespace UangKu.Model.Base
         public DateTime EndDate { get => endDate; set => endDate = value; }
         public string PrevPageLink { get => prevPageLink; set => SetProperty(ref prevPageLink, value); }
         public string NextPageLink { get => nextPageLink; set => SetProperty(ref nextPageLink, value); }
+        public INavigation Navigation { get => navigation; set => navigation = value; }
+        public bool IsAdded
+        {
+            get
+            {
+                if (Mode == ItemManager.NewFile)
+                    return true;
+                if (IsProgramAddAble)
+                    return true;
+                return false;
+            }
+            set { SetProperty(ref isadded, value); }
+        }
+        public bool IsEdited
+        {
+            get
+            {
+                if (Mode == ItemManager.EditFile)
+                    return true;
+                if (IsProgramEditAble)
+                    return true;
+                return false;
+            }
+            set { SetProperty(ref isedited, value); }
+        }
 
         #region Load Function
         public async void AppProgram(string programID)
@@ -125,6 +153,16 @@ namespace UangKu.Model.Base
             {
                 IsBusy = false;
             }
+        }
+
+        public bool OnGetAddStatus()
+        {
+            return Mode == ItemManager.NewFile || isProgramAddAble;
+        }
+
+        public bool OnGetEditStatus()
+        {
+            return Mode == ItemManager.EditFile || isProgramEditAble;
         }
         #endregion
 

@@ -1,10 +1,8 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Storage;
-using Syncfusion.Maui.Toolkit.Themes;
 using System.Globalization;
 using System.Text;
-using UangKu.Interface.Base;
 using UangKu.Model.Session;
 using static UangKu.Model.Base.PermissionManager;
 
@@ -339,8 +337,8 @@ namespace UangKu.Model.Base
             }
         }
 
-        //Proses Upload Satu Gambar
-        public static async Task<ImageSource> PickImageAsync()
+        //Proses Upload Gambar Sebagai Source Image
+        public static async Task<ImageSource> PickImageSource()
         {
             var result = await FilePicker.PickAsync(new PickOptions
             {
@@ -369,17 +367,56 @@ namespace UangKu.Model.Base
             MemoryStream memorystream = new MemoryStream();
             await stream.CopyToAsync(memorystream);
             imgBytes = memorystream.ToArray();
-            ImageManager.ImageByte = memorystream.ToArray();
-            ImageManager.ImageString = Converter.ByteToStringImg(imgBytes);
-            ImageManager.ImageName = result.FileName;
-            ImageManager.ImageFormat = result.ContentType;
-            ImageManager.ImageSize = fileSize;
-
             return ImageSource.FromStream(() => new MemoryStream(imgBytes));
         }
 
+        //Proses Upload Satu Gambar
+        public static async Task<ImageManager> PickImageAsync()
+        {
+            var result = await FilePicker.PickAsync(new PickOptions
+            {
+                PickerTitle = "Pick Image Please",
+                FileTypes = FilePickerFileType.Images
+            });
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            var img = new ImageManager();
+            var stream = await result.OpenReadAsync();
+
+            long fileSize = stream.Length;
+            var intResult = AppParameter.MaxFileSize;
+            var longResult = Converter.IntToLong(intResult);
+
+            if (fileSize > longResult)
+            {
+                await MsgModel.MsgNotification($"{result.FileName} Is More Than Limit");
+                return img;
+            }
+            else
+            {
+                byte[] imgBytes;
+                MemoryStream memorystream = new MemoryStream();
+                await stream.CopyToAsync(memorystream);
+                imgBytes = memorystream.ToArray();
+
+                var images = new ImageManager
+                {
+                    ImageString = Converter.ByteToStringImg(imgBytes),
+                    ImageByte = memorystream.ToArray(),
+                    ImageName = result.FileName,
+                    ImageFormat = result.ContentType,
+                    ImageSize = (int)fileSize
+                };
+                return images;
+            }
+        }
+
         //Proses Upload Beberapa Gambar
-        public static async Task<List<ImageManagerList>> PickMultipleImageAsync()
+        public static async Task<List<ImageManager>> PickMultipleImageAsync()
         {
             var result = await FilePicker.PickMultipleAsync(new PickOptions
             {
@@ -392,7 +429,7 @@ namespace UangKu.Model.Base
                 return null;
             }
 
-            var ImageItems = new List<ImageManagerList>();
+            var img = new List<ImageManager>();
 
             foreach (var item in result)
             {
@@ -405,6 +442,7 @@ namespace UangKu.Model.Base
                 if (fileSize > longResult)
                 {
                     await MsgModel.MsgNotification($"{item.FileName} Is More Than Limit");
+                    return img;
                 }
                 else
                 {
@@ -413,7 +451,7 @@ namespace UangKu.Model.Base
                     await stream.CopyToAsync(memorystream);
                     imgBytes = memorystream.ToArray();
 
-                    var images = new ImageManagerList
+                    var images = new ImageManager
                     {
                         ImageString = Converter.ByteToStringImg(imgBytes),
                         ImageByte = memorystream.ToArray(),
@@ -422,11 +460,11 @@ namespace UangKu.Model.Base
                         ImageSize = (int)fileSize
                     };
 
-                    ImageItems.Add(images);
+                    img.Add(images);
                 }
             }
 
-            return ImageItems;
+            return img;
         }
     }
 
@@ -688,48 +726,6 @@ namespace UangKu.Model.Base
                 await MsgModel.MsgNotification(e.Message);
             }
         }
-
-        public static void OnChangeTheme()
-        {
-            ICollection<ResourceDictionary> mergedDictionaries = Application.Current.Resources.MergedDictionaries;
-
-            if (mergedDictionaries != null)
-            {
-                var theme = mergedDictionaries.OfType<SyncfusionThemeResourceDictionary>().FirstOrDefault();
-
-                if (theme != null)
-                {
-                    // Detect system theme
-                    AppTheme systemTheme = Application.Current.RequestedTheme;
-
-                    if (systemTheme == AppTheme.Dark)
-                    {
-                        theme.VisualTheme = SfVisuals.MaterialDark;
-                        Application.Current.UserAppTheme = AppTheme.Dark;
-                    }
-                    else if (systemTheme == AppTheme.Light)
-                    {
-                        theme.VisualTheme = SfVisuals.MaterialLight;
-                        Application.Current.UserAppTheme = AppTheme.Light;
-                    }
-                    else
-                    {
-                        // Default behavior (toggle if unspecified)
-                        if (theme.VisualTheme is SfVisuals.MaterialDark)
-                        {
-                            theme.VisualTheme = SfVisuals.MaterialLight;
-                            Application.Current.UserAppTheme = AppTheme.Light;
-                        }
-                        else
-                        {
-                            theme.VisualTheme = SfVisuals.MaterialDark;
-                            Application.Current.UserAppTheme = AppTheme.Dark;
-                        }
-                    }
-                }
-            }
-        }
-
     }
 
     public static class PermissionRequest
