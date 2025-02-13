@@ -40,7 +40,7 @@ namespace UangKu.WebService.Service
             return data;
         }
 
-        public async Task<Data.Root<Data.Profile.Data>> PostProfile(Data.Profile.Data profile)
+        public static async Task<Data.Root<Data.Profile.Data>> PostProfile(Data.Profile.Data profile)
         {
             var data = new Data.Root<Data.Profile.Data>();
             string url = string.Format("{0}Profile/PostProfile", URL);
@@ -72,7 +72,7 @@ namespace UangKu.WebService.Service
             return data;
         }
 
-        public async Task<Data.Root<Data.Profile.Data>> PatchProfile(Data.Profile.Data profile)
+        public static async Task<Data.Root<Data.Profile.Data>> PatchProfile(Data.Profile.Data profile)
         {
             var data = new Data.Root<Data.Profile.Data>();
             string url = string.Format("{0}Profile/PatchProfile", URL);

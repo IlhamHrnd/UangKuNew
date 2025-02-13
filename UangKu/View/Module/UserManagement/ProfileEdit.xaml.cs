@@ -21,6 +21,26 @@ public partial class ProfileEdit : ContentPage
 
     private void ButtonUpload_Clicked(object sender, EventArgs e)
     {
-        _vm.ImageUpload(AvatarProfile.ImageSource);
+        _vm.ImageUpload(AvatarProfile);
+    }
+
+    private void PickerProvince_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        _vm.LoadPicker("prov");
+    }
+
+    private void PickerCity_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        _vm.LoadPicker("city");
+    }
+
+    private void PickerDistrict_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        _vm.LoadPicker("dis");
+    }
+
+    private void PickerSubDistrict_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        _vm.LoadPicker("sub");
     }
 }

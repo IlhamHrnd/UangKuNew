@@ -57,6 +57,8 @@
         public static string Status { get => status; set => status = value; }
         private static string orderby = "OrderByTransaction-003";
         public static string OrderBy { get => orderby; set => orderby = value; }
+        private static string empty = "Select One Item";
+        public static string Empty { get => empty; set => empty = value; }
     }
 
     public class AutoNumberType

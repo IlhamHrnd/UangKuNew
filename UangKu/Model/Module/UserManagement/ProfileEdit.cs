@@ -34,6 +34,8 @@ namespace UangKu.Model.Module.UserManagement
                 OnPropertyChanged(nameof(Person));
             }
         }
+        private Task<Root<PostalCode>> postalcode;
+        public Task<Root<PostalCode>> PostalCode { get => postalcode; set => postalcode = value; }
 
         #region Profile Variabel
         private Province selectedbirth { get; set; }

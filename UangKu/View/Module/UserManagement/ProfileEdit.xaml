@@ -32,12 +32,12 @@
                 <input:AdvancedEntry Style="{StaticResource AdvancedEntry}" Placeholder="Middle Name" />
                 <input:AdvancedEntry Style="{StaticResource AdvancedEntry}" Placeholder="Last Name" />
                 <DatePicker Style="{StaticResource DatePicker}" x:Name="DateBirth" />
-                <Picker Style="{StaticResource Picker}" Title="Place Of Birth" ItemsSource="{Binding ListBirth}" ItemDisplayBinding="{Binding provName}"/>
+                <Picker Style="{StaticResource Picker}" Title="Place Of Birth" ItemsSource="{Binding ListBirth}" ItemDisplayBinding="{Binding provName}" SelectedItem="{Binding SelectedBirth}"/>
                 <input:AdvancedEntry Style="{StaticResource AdvancedEntry}" Placeholder="Address" />
-                <Picker Style="{StaticResource Picker}" Title="Province" ItemsSource="{Binding ListProvince}" ItemDisplayBinding="{Binding provName}"/>
-                <Picker Style="{StaticResource Picker}" Title="City" ItemsSource="{Binding ListCity}" ItemDisplayBinding="{Binding cityName}"/>
-                <Picker Style="{StaticResource Picker}" Title="District" ItemsSource="{Binding ListDistrict}" ItemDisplayBinding="{Binding disName}"/>
-                <Picker Style="{StaticResource Picker}" Title="Subdistrict" ItemsSource="{Binding ListSubdistrict}" ItemDisplayBinding="{Binding subdisName}"/>
+                <Picker Style="{StaticResource Picker}" Title="Province" ItemsSource="{Binding ListProvince}" ItemDisplayBinding="{Binding provName}" SelectedItem="{Binding SelectedProvince}" x:Name="PickerProvince" SelectedIndexChanged="PickerProvince_SelectedIndexChanged"/>
+                <Picker Style="{StaticResource Picker}" Title="City" ItemsSource="{Binding ListCity}" ItemDisplayBinding="{Binding cityName}" SelectedItem="{Binding SelectedCity}" x:Name="PickerCity" SelectedIndexChanged="PickerCity_SelectedIndexChanged"/>
+                <Picker Style="{StaticResource Picker}" Title="District" ItemsSource="{Binding ListDistrict}" ItemDisplayBinding="{Binding disName}" SelectedItem="{Binding SelectedDistrict}" x:Name="PickerDistrict" SelectedIndexChanged="PickerDistrict_SelectedIndexChanged"/>
+                <Picker Style="{StaticResource Picker}" Title="Subdistrict" ItemsSource="{Binding ListSubdistrict}" ItemDisplayBinding="{Binding subdisName}" SelectedItem="{Binding SelectedSubdistrict}" x:Name="PickerSubDistrict" SelectedIndexChanged="PickerSubDistrict_SelectedIndexChanged"/>
                 <Button Style="{StaticResource Button}" Text="Save Profile" x:Name="ButtonSave" input:FormView.IsSubmitButton="True"/>
             </input:FormView>
         </StackLayout>
