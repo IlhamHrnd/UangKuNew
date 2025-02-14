@@ -256,34 +256,6 @@ namespace UangKu.ViewModel.Module.UserManagement
             IsBusy = false;
             return data;
         }
-
-        public async void SaveProfile()
-        {
-            //SEGINI DULU
-            IsBusy = true;
-            if (Network.IsConnected)
-            {
-                try
-                {
-                    if (Mode == ItemManager.NewFile)
-                    {
-
-                    }
-                    else if (Mode == ItemManager.EditFile)
-                    {
-                        var patch = await WebService.Service.Profile.PatchProfile(new WebService.Data.Profile.Data
-                        {
-                            personId = UserID
-                        });
-                    }
-                }
-                catch (Exception e)
-                {
-                    await MsgModel.MsgNotification(e.Message);
-                }
-            }
-            IsBusy = false;
-        }
         #endregion
 
         public async void LoadPicker(string id)
@@ -328,6 +300,50 @@ namespace UangKu.ViewModel.Module.UserManagement
 
             if (Img != null && Img.ImageByte != null)
                 avatar.ImageSource = ImageConvert.ImgByte(Img.ImageByte);
+        }
+
+        public async void SaveProfile(string firstName, string middleName, string lastName, DateTime dateOfBirth, string address)
+        {
+            IsBusy = true;
+            if (Network.IsConnected)
+            {
+                try
+                {
+                    if (SelectedProvince == null || SelectedCity == null || SelectedDistrict == null || SelectedSubdistrict == null || PostalCode == null)
+                        await MsgModel.MsgNotification(ItemManager.Empty);
+                    else if (Mode == ItemManager.NewFile || Mode == ItemManager.EditFile)
+                    {
+                        var data = new WebService.Data.Profile.Data
+                        {
+                            personId = UserID,
+                            firstName = firstName,
+                            middleName = middleName,
+                            lastName = lastName,
+                            birthDate = dateOfBirth,
+                            placeOfBirth = SelectedBirth.provName,
+                            photo = Img != null && !string.IsNullOrEmpty(Img.ImageString) ? Img.ImageString : string.Empty,
+                            address = address,
+                            province = SelectedProvince.provName,
+                            city = SelectedCity.cityName,
+                            district = SelectedDistrict.disName,
+                            subdistrict = SelectedSubdistrict.subdisName,
+                            postalCode = PostalCode.Result.Data.postalCode1,
+                            lastUpdateDateTime = DateFormat.DateTime,
+                            lastUpdateByUser = UserID
+                        };
+
+                        var profile = Mode == ItemManager.NewFile ? await WebService.Service.Profile.PostProfile(data) : await WebService.Service.Profile.PatchProfile(data);
+                        await MsgModel.MsgNotification(profile.Message);
+                    }
+                    else
+                        await MsgModel.MsgNotification(ItemManager.Empty);
+                }
+                catch (Exception e)
+                {
+                    await MsgModel.MsgNotification(e.Message);
+                }
+            }
+            IsBusy = false;
         }
     }
 }

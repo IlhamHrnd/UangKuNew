@@ -12,7 +12,6 @@ namespace UangKu
         public App()
         {
             InitializeComponent();
-            SessionModel.Initialize();
             MainPage = new AppShell();
 
         }

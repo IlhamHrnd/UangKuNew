@@ -43,4 +43,9 @@ public partial class ProfileEdit : ContentPage
     {
         _vm.LoadPicker("sub");
     }
+
+    private void ButtonSave_Clicked(object sender, EventArgs e)
+    {
+        _vm.SaveProfile(EntryFirstName.Text, EntryMiddleName.Text, EntryLastName.Text, DateBirth.Date, EntryAddress.Text);
+    }
 }

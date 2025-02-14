@@ -32,8 +32,8 @@ namespace UangKu.Model.Base
         private static int timeout;
         private static string url;
         private string userid = string.Empty;
-        private DateTime startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-        private DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+        private DateTime startDate = new(DateTime.Now.Year, DateTime.Now.Month, 1);
+        private DateTime endDate = new(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
         private string prevPageLink;
         private string nextPageLink;
         private INavigation navigation;

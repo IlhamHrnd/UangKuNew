@@ -36,13 +36,9 @@ namespace UangKu.Model.Base
         private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             if (!IsConnected)
-            {
                 await MsgModel.MsgNotification(ItemManager.Offline);
-            }
             else
-            {
                 await MsgModel.MsgNotification(ItemManager.Online);
-            }
         }
     }
 
@@ -72,28 +68,89 @@ namespace UangKu.Model.Base
 
         public static string GetUserAge(DateTime dateTime)
         {
-            DateTime today = DateTime.Today;
+            var year = GetAgeInYear(dateTime);
+            var month = GetAgeInMonth(dateTime);
+            var day = GetAgeInDay(dateTime);
 
-            // Calculate years, months, and days
-            int years = today.Year - dateTime.Year;
-            int months = today.Month - dateTime.Month;
-            int days = today.Day - dateTime.Day;
+            //Return formatted age
+            return $"{year}Y {month}M {day}D";
+        }
 
-            // Adjust for negative values
-            if (days < 0)
+        public static int GetAgeInYear(DateTime fromDate)
+        {
+            return GetAge(fromDate, DateTime.Today, 0);
+        }
+
+        public static int GetAgeInMonth(DateTime fromDate)
+        {
+            return GetAge(fromDate, DateTime.Today, 1);
+        }
+
+        public static int GetAgeInDay(DateTime fromDate)
+        {
+            return GetAge(fromDate, DateTime.Today, 2);
+        }
+
+        private static int GetAge(DateTime fromDate, DateTime toDate, int ageType)
+        {
+            int months, days;
+            DateTime birthDayThisYear;
+            if (!DateTime.TryParse(fromDate.Month + "/" + fromDate.Day + "/" + toDate.Year, out birthDayThisYear))
             {
-                months--;
-                days += DateTime.DaysInMonth(today.Year, (today.Month == 1) ? 12 : today.Month - 1);
+                birthDayThisYear = new DateTime(toDate.Year, fromDate.AddMonths(1).Month, 1);
+                months = toDate.Month - fromDate.AddMonths(1).Month;
+                days = toDate.Day - 1;
+            }
+            else
+            {
+                months = toDate.Month - fromDate.Month;
+                days = toDate.Day - fromDate.Day;
             }
 
-            if (months < 0)
+            var years = toDate.Year - fromDate.Year;
+
+            if (birthDayThisYear > toDate)
             {
-                years--;
+                years -= 1;
                 months += 12;
             }
 
-            // Return formatted age
-            return $"{years} year{(years != 1 ? "s" : "")} {months} month{(months != 1 ? "s" : "")} {days} day{(days != 1 ? "s" : "")}";
+            if (birthDayThisYear.Day > toDate.Day)
+            {
+                months -= 1;
+                var day = birthDayThisYear.Day;
+                DateTime dt;
+
+                if (DateTime.IsLeapYear(birthDayThisYear.Year))
+                {
+                    if ((toDate.Month - 1) == 2 && birthDayThisYear.Day > 29)
+                        day = 29;
+                }
+                else
+                {
+                    if ((toDate.Month - 1) == 2 && birthDayThisYear.Day > 28)
+                        day = 28;
+                }
+
+                try
+                {
+                    dt = new DateTime((toDate.Month - 1 <= 0 ? birthDayThisYear.Year - 1 : birthDayThisYear.Year), (toDate.Month - 1 <= 0 ? 12 : toDate.Month - 1), day);
+                }
+                catch
+                {
+                    dt = new DateTime((toDate.Month - 1 <= 0 ? birthDayThisYear.Year - 1 : birthDayThisYear.Year), (toDate.Month - 1 <= 0 ? 1 : toDate.Month - 1), day - 1);
+                }
+
+                var ts = toDate - dt;
+                days = ts.Days;
+            }
+
+            return ageType switch
+            {
+                0 => years,
+                1 => months,
+                _ => days,
+            };
         }
 
         public static string GetUserID()
@@ -212,49 +269,6 @@ namespace UangKu.Model.Base
 
             return false;
         }
-
-        public static void LogError(Exception ex)
-        {
-            // Log to a file, database, or remote API
-            Console.WriteLine($"[Error]: {ex.Message}");
-
-            // Optionally show the error to the user
-            MainThread.BeginInvokeOnMainThread(async () =>
-            {
-                await MsgModel.MsgNotification(ex.Message);
-            });
-        }
-
-        public static void Initialize()
-        {
-            // Catch unhandled exceptions
-            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
-            {
-                HandleException(e.ExceptionObject as Exception);
-            };
-
-            // Catch exceptions on the main thread (UI)
-            TaskScheduler.UnobservedTaskException += (sender, e) =>
-            {
-                HandleException(e.Exception);
-                e.SetObserved();
-            };
-        }
-
-        private static void HandleException(Exception ex)
-        {
-            if (ex != null)
-            {
-                // Log the exception (to file, server, etc.)
-                Console.WriteLine($"[Global Exception]: {ex.Message}");
-
-                // Optionally, show an error message to the user
-                MainThread.BeginInvokeOnMainThread(async () =>
-                {
-                    await MsgModel.MsgNotification(ex.Message);
-                });
-            }
-        }
     }
 
     public static class DateFormat
@@ -347,9 +361,7 @@ namespace UangKu.Model.Base
             });
 
             if (result == null)
-            {
                 return null;
-            }
 
             var stream = await result.OpenReadAsync();
 
@@ -380,9 +392,7 @@ namespace UangKu.Model.Base
             });
 
             if (result == null)
-            {
                 return null;
-            }
 
             var img = new ImageManager();
             var stream = await result.OpenReadAsync();
@@ -425,9 +435,7 @@ namespace UangKu.Model.Base
             });
 
             if (result == null)
-            {
                 return null;
-            }
 
             var img = new List<ImageManager>();
 
@@ -663,13 +671,9 @@ namespace UangKu.Model.Base
             var fileSaverResult = await FileSaver.SaveAsync(fileName, stream, token);
 
             if (fileSaverResult.IsSuccessful)
-            {
                 await MsgModel.MsgNotification($"PDF file saved successfully at: {fileSaverResult.FilePath}", token);
-            }
             else
-            {
                 await MsgModel.MsgNotification($"Failed to save PDF file: {fileSaverResult.Exception.Message}", token);
-            }
         }
     }
 
@@ -713,13 +717,9 @@ namespace UangKu.Model.Base
             try
             {
                 if (navigation.NavigationStack.Count > 1)
-                {
                     await navigation.PopAsync();
-                }
                 else
-                {
                     await MsgModel.MsgNotification("No previous page in the stack");
-                }
             }
             catch (Exception e)
             {
@@ -793,9 +793,7 @@ namespace UangKu.Model.Base
             foreach (var (value, name) in fields)
             {
                 if (string.IsNullOrEmpty(value))
-                {
                     errorMessages.Add(name);
-                }
             }
 
             if (errorMessages.Count > 0)
@@ -817,9 +815,7 @@ namespace UangKu.Model.Base
             foreach (var (picker, fieldName) in pickers)
             {
                 if (picker.SelectedItem == null)
-                {
                     errorMessages.Add(fieldName);
-                }
             }
 
             if (errorMessages.Count > 0)
