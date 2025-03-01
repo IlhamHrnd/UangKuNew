@@ -434,26 +434,26 @@
 
     <Style TargetType="StackLayout" x:Key="StackLayout">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Key=Gray100},Dark={StaticResource Key=Black100},Default={StaticResource Key=Gray100}}"/>
-        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
-        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="VerticalOptions" Value="Fill"/>
     </Style>
 
     <Style TargetType="StackLayout" x:Key="StackLayout2">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Key=Gray300},Dark={StaticResource Key=Black300},Default={StaticResource Key=Gray300}}"/>
-        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
-        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="VerticalOptions" Value="Fill"/>
     </Style>
 
     <Style TargetType="Grid" x:Key="Grid">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Key=Gray100},Dark={StaticResource Key=Black100},Default={StaticResource Key=Gray100}}"/>
-        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
-        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="VerticalOptions" Value="Fill"/>
     </Style>
 
     <Style TargetType="Grid" x:Key="Grid2">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Key=Gray300},Dark={StaticResource Key=Black300},Default={StaticResource Key=Gray300}}"/>
-        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
-        <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+        <Setter Property="HorizontalOptions" Value="Fill"/>
+        <Setter Property="VerticalOptions" Value="Fill"/>
     </Style>
 
     <Style TargetType="ScrollView" x:Key="ScrollView">

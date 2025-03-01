@@ -136,7 +136,7 @@ namespace UangKu.ViewModel.Menu
                         PersonID = UserID,
                         StartDate = startDate,
                         EndDate = endDate,
-                        OrderBy = ItemManager.OrderBy,
+                        OrderBy = SelectedOrderBy != null && !string.IsNullOrEmpty(SelectedOrderBy.itemId) ? SelectedOrderBy.itemId : ItemManager.OrderBy,
                         IsAscending = IsAscending
                     },
                     PageNumber = pageNumber,
@@ -196,12 +196,6 @@ namespace UangKu.ViewModel.Menu
         public void RadioSelection(int index)
         {
             IsCustomDateRange = index == 4;
-
-            var now = DateTime.Now;
-            var firstDayOfCurrentMonth = new DateTime(now.Year, now.Month, 1);
-            var firstDayOfLastMonth = firstDayOfCurrentMonth.AddMonths(-1);
-            var lastDayOfLastMonth = firstDayOfCurrentMonth.AddDays(-1);
-
             switch (index)
             {
                 case 0:
@@ -286,5 +280,70 @@ namespace UangKu.ViewModel.Menu
             }
         }
         #endregion
+
+        public void ScrollTopBottom(bool isScrollTop, ScrollView scroll)
+        {
+            double y = scroll.ContentSize.Height;
+
+            if (isScrollTop)
+                scroll.ScrollToAsync(0, 0, true);
+            else
+                scroll.ScrollToAsync(0, y, true);
+        }
+
+        public async Task SwipeItem(object sender, string mode)
+        {
+            if (sender is not SwipeItem item || item.BindingContext is not WebService.Data.Transaction.Data data)
+            {
+                await MsgModel.MsgNotification(ItemManager.Empty);
+                return;
+            }
+
+            await MsgModel.MsgNotification($"{mode}-{data.transNo}");
+        }
+
+        public async Task<bool> GenerateReport()
+        {
+            IsBusy = true;
+
+            try
+            {
+                var report = await WebService.Service.Transaction.GenerateReportTransaction(new WebService.Filter.Root<WebService.Filter.Transaction>
+                {
+                    Data = new WebService.Filter.Transaction
+                    {
+                        PersonID = UserID,
+                        StartDate = StartDate,
+                        EndDate = EndDate,
+                        OrderBy = SelectedOrderBy != null && !string.IsNullOrEmpty(SelectedOrderBy.itemId) ? SelectedOrderBy.itemId : ItemManager.OrderBy,
+                        IsAscending = IsAscending
+                    }
+                });
+
+                if (report.Succeeded == false)
+                {
+                    await MsgModel.MsgNotification(report.Message);
+                    return false;
+                }
+
+                var token = new CancellationToken();
+                var saveDir = await FileHelper.GetFilePath(AppParameter.BlankPDF, report.Data, token);
+                if (!string.IsNullOrEmpty(saveDir))
+                    await FileHelper.SaveFile(report.Data, saveDir);
+                else
+                    await MsgModel.MsgNotification(ItemManager.Cancel);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                await MsgModel.MsgNotification(e.Message);
+                return false;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
     }
 }

@@ -11,9 +11,11 @@ namespace UangKu.Model.Menu
         private bool isascending = true;
         private DateTime firstdate = DateTime.Now;
         private DateTime lastdate = DateTime.Now;
+        private string order = string.Empty;
         public bool IsAllowCustomDate { get => isallowcustomdate; set => SetProperty(ref isallowcustomdate, value); }
         public bool IsCustomDateRange { get => iscustomdaterange; set => SetProperty(ref iscustomdaterange, value); }
         public bool IsAscending { get => isascending; set => SetProperty(ref isascending, value); }
+        public string Order { get => order; set => SetProperty(ref order, value); }
         public DateTime FirstDate 
         { 
             get => firstdate; 
@@ -108,6 +110,20 @@ namespace UangKu.Model.Menu
             {
                 orderby = value;
                 OnPropertyChanged(nameof(OrderBy));
+            }
+        }
+
+        private AppStandardReferenceItem.Data selectedorderby { get; set; }
+        public AppStandardReferenceItem.Data SelectedOrderBy
+        {
+            get { return selectedorderby; }
+            set
+            {
+                if (selectedorderby != value)
+                {
+                    selectedorderby = value;
+                    OnPropertyChanged(nameof(SelectedOrderBy));
+                }
             }
         }
     }

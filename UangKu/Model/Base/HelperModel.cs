@@ -3,6 +3,7 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Storage;
 using System.Globalization;
 using System.Text;
+using System.Threading.Tasks;
 using UangKu.Model.Session;
 using static UangKu.Model.Base.PermissionManager;
 
@@ -665,15 +666,20 @@ namespace UangKu.Model.Base
             }
         }
 
-        public static async Task SaveFile(string fileName, byte[] pdfBytes, CancellationToken token)
+        public static async Task<string> GetFilePath(string fileName, string data, CancellationToken token)
         {
-            var stream = new MemoryStream(pdfBytes);
-            var fileSaverResult = await FileSaver.SaveAsync(fileName, stream, token);
+            if (string.IsNullOrEmpty(fileName) || string.IsNullOrEmpty(data))
+                return string.Empty;
 
-            if (fileSaverResult.IsSuccessful)
-                await MsgModel.MsgNotification($"PDF file saved successfully at: {fileSaverResult.FilePath}", token);
-            else
-                await MsgModel.MsgNotification($"Failed to save PDF file: {fileSaverResult.Exception.Message}", token);
+            var stream = new MemoryStream(Converter.StringToByteImg(data));
+            var file = await FileSaver.SaveAsync(fileName, stream, token);
+            return file.IsSuccessful ? file.FilePath : string.Empty;
+        }
+
+        public static async Task SaveFile(string data, string filePath)
+        {
+            var bytes = Converter.StringToByteImg(data);
+            await File.WriteAllBytesAsync(filePath, bytes);
         }
     }
 

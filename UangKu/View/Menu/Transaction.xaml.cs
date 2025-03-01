@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UangKu.Model.Base;
 using UangKu.ViewModel.Menu;
 
@@ -37,5 +38,30 @@ public partial class Transaction : ContentPage
     private void ButtonNext_Clicked(object sender, EventArgs e)
     {
         _vm.NextPreviousPage(true, RadioFilter.SelectedIndex);
+    }
+
+    private void ImgBtn_ScrollTop_Clicked(object sender, EventArgs e)
+    {
+        _vm.ScrollTopBottom(true, ScrollView);
+    }
+
+    private void ImgBtn_ScrollBottom_Clicked(object sender, EventArgs e)
+    {
+        _vm.ScrollTopBottom(false, ScrollView);
+    }
+
+    private async void ImgBtn_ExportPDF_Clicked(object sender, EventArgs e)
+    {
+        await _vm.GenerateReport();
+    }
+    
+    private void SwipeItemLeft_Invoked(object sender, EventArgs e)
+    {
+        _ = _vm.SwipeItem(sender, ItemManager.EditFile);
+    }
+
+    private void SwipeItemRight_Invoked(object sender, EventArgs e)
+    {
+        _ = _vm.SwipeItem(sender, ItemManager.DeleteFile);
     }
 }

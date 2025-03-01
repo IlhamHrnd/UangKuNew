@@ -53,12 +53,16 @@
         public static string EditFile { get => editfile; set => editfile = value; }
         private static string viewfile = "View";
         public static string ViewFile { get => viewfile; set => viewfile = value; }
+        private static string deletefile = "Delete";
+        public static string DeleteFile { get => deletefile; set => deletefile = value; }
         private static string status = "Status-001";
         public static string Status { get => status; set => status = value; }
         private static string orderby = "OrderByTransaction-003";
         public static string OrderBy { get => orderby; set => orderby = value; }
         private static string empty = "Select One Item";
         public static string Empty { get => empty; set => empty = value; }
+        private static string cancel = "Cancel";
+        public static string Cancel { get => cancel; set => cancel = value; }
     }
 
     public class AutoNumberType
