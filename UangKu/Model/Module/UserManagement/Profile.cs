@@ -1,7 +1,7 @@
 ﻿using UangKu.Model.Base;
 using UangKu.WebService.Data;
 
-namespace UangKu.Model.Menu
+namespace UangKu.Model.Module.UserManagement
 {
     public class Profile : BaseModel
     {

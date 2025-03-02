@@ -99,6 +99,8 @@
         public const string Profile = "PRG/PRG/250202-001";
         public const string Transaction = "PRG/PRG/250202-002";
         public const string EditProfile = "PRG/PRG/250209-001";
+        public const string EditTransaction = "PRG/TransEdit/250301-001";
+        public const string NewTransaction = "PRG/TransNew/250301-001";
     }
 
     //Untuk Gambar Yang Ter Pick

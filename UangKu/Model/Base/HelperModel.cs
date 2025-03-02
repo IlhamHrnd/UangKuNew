@@ -3,7 +3,6 @@ using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Storage;
 using System.Globalization;
 using System.Text;
-using System.Threading.Tasks;
 using UangKu.Model.Session;
 using static UangKu.Model.Base.PermissionManager;
 
@@ -15,12 +14,6 @@ namespace UangKu.Model.Base
         {
             var toast = Toast.Make(message, ToastDuration.Long);
             await toast.Show();
-        }
-
-        public static async Task MsgNotification(string message, CancellationToken token)
-        {
-            var toast = Toast.Make(message, ToastDuration.Long);
-            await toast.Show(token);
         }
     }
 
@@ -276,9 +269,12 @@ namespace UangKu.Model.Base
     {
         public static string FormattingDate(DateTime date, string format)
         {
-            string formattedDate = date.ToString(format);
+            return date.ToString(format);
+        }
 
-            return formattedDate;
+        public static string FormattingDate(DateOnly date, string format)
+        {
+            return date.ToString(format);
         }
 
         public static DateTime FormattingDateSplit(int year, int month, int day)
@@ -289,16 +285,12 @@ namespace UangKu.Model.Base
                 month = 12;
             }
 
-            var date = new DateTime(year, month, day);
-
-            return date;
+            return new DateTime(year, month, day);
         }
 
         public static DateTime AddDays(int days, DateTime dateTime)
         {
-            var day = dateTime.AddDays(days);
-
-            return day;
+            return dateTime.AddDays(days);
         }
 
         private static DateTime datetime = DateTime.Now;
@@ -309,8 +301,7 @@ namespace UangKu.Model.Base
     {
         public static string NumberDigit(int number, string format)
         {
-            string formattedNumber = number.ToString(format);
-            return formattedNumber;
+            return number.ToString(format);
         }
     }
 
@@ -321,8 +312,7 @@ namespace UangKu.Model.Base
         {
             try
             {
-                ImageSource source = ImageSource.FromStream(() => new MemoryStream(imgPath));
-                return source;
+                return ImageSource.FromStream(() => new MemoryStream(imgPath));
             }
             catch (Exception e)
             {
@@ -340,9 +330,7 @@ namespace UangKu.Model.Base
                 int Index = content.LastIndexOf(type);
 
                 if (Index != -1 && Index < content.Length - 1)
-                {
                     result = content.Substring(Index + 1);
-                }
 
                 return result;
             }
@@ -479,30 +467,31 @@ namespace UangKu.Model.Base
 
     public static class Converter
     {
-        public static int StringToInt(string dataString, int dataInt)
+        public static int StringToInt(string dataString)
         {
-            int result = !string.IsNullOrEmpty(dataString) ? int.Parse(dataString) : dataInt;
-
-            return result;
+            try
+            {
+                return !string.IsNullOrEmpty(dataString) ? int.Parse(dataString) : 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
 
         public static string IntToString(int data)
         {
-            var result = data.ToString();
-            return result;
+            return data.ToString();
         }
 
         public static long IntToLong(int data)
         {
-            long result = data * 1024 * 1024;
-
-            return result;
+            return data * 1024 * 1024;
         }
 
         public static int DecimalToInt(decimal value)
         {
-            var values = (int)value;
-            return values;
+            return (int)value;
         }
 
         public static string DecimalToString(decimal value)
@@ -510,8 +499,7 @@ namespace UangKu.Model.Base
             try
             {
                 int result = (int)Math.Round(value);
-                var values = result.ToString();
-                return values;
+                return result.ToString();
             }
             catch (OverflowException)
             {
@@ -554,8 +542,7 @@ namespace UangKu.Model.Base
         {
             try
             {
-                string imgString = Convert.ToBase64String(imgPath);
-                return imgString;
+                return Convert.ToBase64String(imgPath);
             }
             catch (Exception e)
             {
@@ -569,8 +556,7 @@ namespace UangKu.Model.Base
         {
             try
             {
-                byte[] imgByte = Convert.FromBase64String(imgPath);
-                return imgByte;
+                return Convert.FromBase64String(imgPath);
             }
             catch (Exception e)
             {
@@ -582,8 +568,7 @@ namespace UangKu.Model.Base
         //Function Untuk Convert PDF Ke Byte[]
         public static byte[] PDFToByte(string filePath)
         {
-            byte[] pdfBytes = File.ReadAllBytes(filePath);
-            return pdfBytes;
+            return File.ReadAllBytes(filePath);
         }
 
         //Class Untuk Decode Base64 Ke Byte[]
@@ -591,8 +576,7 @@ namespace UangKu.Model.Base
         {
             try
             {
-                byte[] data = Convert.FromBase64String(base64String);
-                return data;
+                return Convert.FromBase64String(base64String);
             }
             catch (Exception e)
             {
@@ -607,8 +591,7 @@ namespace UangKu.Model.Base
             try
             {
                 byte[] data = Convert.FromBase64String(base64String);
-                string decodedString = Encoding.UTF8.GetString(data);
-                return decodedString;
+                return Encoding.UTF8.GetString(data);
             }
             catch (Exception e)
             {
@@ -626,15 +609,13 @@ namespace UangKu.Model.Base
             {
                 builder.Append(items[i]);
             }
-            var result = builder.ToString();
-            return result;
+            return builder.ToString();
         }
 
         //Function Untuk IList Jadi List
         public static List<T> ConvertIListToList<T>(IList<T> inputList)
         {
-            var list = new List<T>(inputList);
-            return list;
+            return [.. inputList];
         }
     }
 
@@ -693,9 +674,7 @@ namespace UangKu.Model.Base
             byte green = (byte)random.Next(256);
             byte blue = (byte)random.Next(256);
 
-            var color = Color.FromRgb(red, green, blue);
-
-            return color;
+            return Color.FromRgb(red, green, blue);
         }
 
         public static string HexGenerateRandomColor()
@@ -703,9 +682,7 @@ namespace UangKu.Model.Base
             byte[] colorBytes = new byte[3];
 
             random.NextBytes(colorBytes);
-            string hexColor = $"#{colorBytes[0]:X2}{colorBytes[1]:X2}{colorBytes[2]:X2}";
-
-            return hexColor;
+            return $"#{colorBytes[0]:X2}{colorBytes[1]:X2}{colorBytes[2]:X2}";
         }
     }
 
@@ -714,8 +691,7 @@ namespace UangKu.Model.Base
         public static int GetIndexByName<T>(List<T> itemList, Func<T, string> nameSelector, string targetName)
         {
             // Find the index using LINQ
-            int selectedIndex = itemList.FindIndex(item => nameSelector(item) == targetName);
-            return selectedIndex;
+            return itemList.FindIndex(item => nameSelector(item) == targetName);
         }
 
         public async static void OnPopNavigationAsync(INavigation navigation)
@@ -784,8 +760,7 @@ namespace UangKu.Model.Base
                     break;
             }
 
-            bool isGranted = status == PermissionStatus.Granted;
-            return isGranted;
+            return status == PermissionStatus.Granted;
         }
     }
 

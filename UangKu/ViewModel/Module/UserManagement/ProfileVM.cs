@@ -1,8 +1,7 @@
 ﻿using UangKu.Model.Base;
-using UangKu.Model.Menu;
-using UangKu.View.Module.UserManagement;
+using UangKu.Model.Module.UserManagement;
 
-namespace UangKu.ViewModel.Menu
+namespace UangKu.ViewModel.Module.UserManagement
 {
     public class ProfileVM : Profile
     {
@@ -64,7 +63,7 @@ namespace UangKu.ViewModel.Menu
 
         public async void NavigationPage()
         {
-            await Navigation.PushAsync(new ProfileEdit(Mode));
+            await Navigation.PushAsync(new View.Module.UserManagement.ProfileEdit(Mode));
         }
     }
 }

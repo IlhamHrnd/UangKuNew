@@ -136,10 +136,13 @@
 	  <MauiXaml Update="View\Menu\HomePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\Menu\Profile.xaml">
+	  <MauiXaml Update="View\Module\Transaction\TransactionEdit.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="View\Menu\Transaction.xaml">
+	  <MauiXaml Update="View\Module\UserManagement\Profile.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="View\Module\Transaction\Transaction.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="View\Module\UserManagement\ProfileEdit.xaml">

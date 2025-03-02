@@ -2,6 +2,7 @@
 using UangKu.Model.Base;
 using UangKu.WebService.Data;
 using static UangKu.WebService.Data.Location;
+using static UangKu.WebService.Data.Profile;
 
 namespace UangKu.Model.Module.UserManagement
 {
@@ -11,16 +12,16 @@ namespace UangKu.Model.Module.UserManagement
         public bool IsEnabled { get => isenabled; set => SetProperty(ref isenabled, value); }
         private ImageManager img;
         public ImageManager Img { get => img; set => img = value; }
-        private Root<Profile.Data> person;
-        public Root<Profile.Data> Person
+        private Root<Data> person;
+        public Root<Data> Person
         {
             get
             {
                 if (person == null)
                 {
-                    person = new Root<Profile.Data>
+                    person = new Root<Data>
                     {
-                        Data = new Profile.Data(),
+                        Data = new Data(),
                         Succeeded = true,
                         Errors = null,
                         Message = "Initialized"

@@ -49,7 +49,7 @@ namespace UangKu.WebService.Service
                 Timeout = TimeSpan.FromSeconds(TimeOut)
             };
             request.AddJsonBody(trans);
-            var response = await client.ExecutePostAsync(request);
+            var response = await client.ExecutePatchAsync(request);
 
             try
             {

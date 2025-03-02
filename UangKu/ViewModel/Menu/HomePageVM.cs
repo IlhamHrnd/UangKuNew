@@ -104,7 +104,7 @@ namespace UangKu.ViewModel.Menu
                                 }
 
                                 if (item.transDate != null)
-                                    item.dateFormat = DateFormat.FormattingDate((DateTime)item.transDate, DateTimeFormat.Date);
+                                    item.dateFormat = DateFormat.FormattingDate((DateOnly)item.transDate, DateTimeFormat.Date);
                             }
                         }
                     }

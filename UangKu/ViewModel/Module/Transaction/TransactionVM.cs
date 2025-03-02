@@ -1,15 +1,15 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using UangKu.Model.Base;
-using UangKu.Model.Menu;
 using UangKu.Model.Session;
 
-namespace UangKu.ViewModel.Menu
+namespace UangKu.ViewModel.Module.Transaction
 {
-    public class TransactionVM : Transaction
+    public class TransactionVM : Model.Module.Transaction.Transaction
     {
-        public TransactionVM()
+        public TransactionVM(INavigation navigation)
         {
-            
+            Navigation = navigation;
         }
 
         public void LoadData()
@@ -167,7 +167,7 @@ namespace UangKu.ViewModel.Menu
                             }
 
                             if (item.transDate != null)
-                                item.dateFormat = DateFormat.FormattingDate((DateTime)item.transDate, DateTimeFormat.Date);
+                                item.dateFormat = DateFormat.FormattingDate((DateOnly)item.transDate, DateTimeFormat.Date);
                         }
                     }
 
@@ -265,9 +265,9 @@ namespace UangKu.ViewModel.Menu
                     int page = isNext ? PageNumber + 1 : PageNumber - 1;
                     Trans = new WebService.Data.Root<ObservableCollection<WebService.Data.Transaction.Data>>();
                     if (index == 4)
-                        LoadAllTransaction(ItemManager.FirstPage, FirstDate, LastDate);
+                        LoadAllTransaction(page, FirstDate, LastDate);
                     else
-                        LoadAllTransaction(ItemManager.FirstPage, StartDate, EndDate);
+                        LoadAllTransaction(page, StartDate, EndDate);
                 }
             }
             catch (Exception e)
@@ -299,7 +299,15 @@ namespace UangKu.ViewModel.Menu
                 return;
             }
 
-            await MsgModel.MsgNotification($"{mode}-{data.transNo}");
+            if (mode == ItemManager.EditFile)
+                await Navigation.PushAsync(new View.Module.Transaction.TransactionEdit(mode, data.transNo));
+            else if (mode == ItemManager.DeleteFile)
+                await MsgModel.MsgNotification(ItemManager.DeleteFile);
+        }
+
+        public async Task ToolbarBottom()
+        {
+            await Navigation.PushAsync(new View.Module.Transaction.TransactionEdit(ItemManager.NewFile, string.Empty));
         }
 
         public async Task<bool> GenerateReport()

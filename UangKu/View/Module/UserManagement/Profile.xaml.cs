@@ -1,7 +1,7 @@
 using UangKu.Model.Base;
-using UangKu.ViewModel.Menu;
+using UangKu.ViewModel.Module.UserManagement;
 
-namespace UangKu.View.Menu;
+namespace UangKu.View.Module.UserManagement;
 
 public partial class Profile : ContentPage
 {

@@ -2,8 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="UangKu.View.Menu.Profile"
-             xmlns:Model="clr-namespace:UangKu.Model.Menu"
+             x:Class="UangKu.View.Module.UserManagement.Profile"
+             xmlns:Model="clr-namespace:UangKu.Model.Module.UserManagement"
              xmlns:Font="clr-namespace:UangKu.Model.Base"
              Title="{Binding Title}">
     <ContentPage.BindingContext>

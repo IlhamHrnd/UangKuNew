@@ -31,7 +31,7 @@ namespace UangKu.WebService.Data
             public string transType { get; set; }
 
             [JsonPropertyName("transDate")]
-            public DateTime? transDate { get; set; }
+            public DateOnly? transDate { get; set; }
 
             [JsonPropertyName("createdDateTime")]
             public DateTime? createdDateTime { get; set; }

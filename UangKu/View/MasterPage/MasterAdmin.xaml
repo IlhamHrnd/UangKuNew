@@ -2,6 +2,8 @@
 <Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:Menu="clr-namespace:UangKu.View.Menu"
+       xmlns:Transaction="clr-namespace:UangKu.View.Module.Transaction"
+       xmlns:UserManagement="clr-namespace:UangKu.View.Module.UserManagement"
        xmlns:Model="clr-namespace:UangKu.Model.Master"
        x:Class="UangKu.View.MasterPage.MasterAdmin"
        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -10,8 +12,8 @@
         <Model:Master/>
     </Shell.BindingContext>
     <Shell.FlyoutHeader>
-        <StackLayout HorizontalOptions="CenterAndExpand"
-                     VerticalOptions="CenterAndExpand"
+        <StackLayout HorizontalOptions="Center"
+                     VerticalOptions="Center"
                      HeightRequest="100">
             <Image Source="dotnet_bot.svg"
                    HeightRequest="50"
@@ -32,10 +34,10 @@
         <ShellContent ContentTemplate="{DataTemplate Menu:HomePage}" Route="HomePage"/>
     </FlyoutItem>
     <FlyoutItem Title="Profile" Icon="dotnet_bot.svg">
-        <ShellContent ContentTemplate="{DataTemplate Menu:Profile}" Route="Profile"/>
+        <ShellContent ContentTemplate="{DataTemplate UserManagement:Profile}" Route="Profile"/>
     </FlyoutItem>
     <FlyoutItem Title="Transaction" Icon="dotnet_bot.svg">
-        <ShellContent ContentTemplate="{DataTemplate Menu:Transaction}" Route="Transaction"/>
+        <ShellContent ContentTemplate="{DataTemplate Transaction:Transaction}" Route="Transaction"/>
     </FlyoutItem>
     <!--<FlyoutItem Title="Profile"
             Icon="dotnet_bot.svg">

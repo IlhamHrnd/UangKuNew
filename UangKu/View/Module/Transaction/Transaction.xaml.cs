@@ -1,8 +1,7 @@
-using System.Threading.Tasks;
 using UangKu.Model.Base;
-using UangKu.ViewModel.Menu;
+using UangKu.ViewModel.Module.Transaction;
 
-namespace UangKu.View.Menu;
+namespace UangKu.View.Module.Transaction;
 
 public partial class Transaction : ContentPage
 {
@@ -10,7 +9,7 @@ public partial class Transaction : ContentPage
 	public Transaction()
 	{
 		InitializeComponent();
-		_vm = new TransactionVM();
+		_vm = new TransactionVM(Navigation);
 		BindingContext = _vm;
 	}
 
@@ -54,7 +53,7 @@ public partial class Transaction : ContentPage
     {
         await _vm.GenerateReport();
     }
-    
+
     private void SwipeItemLeft_Invoked(object sender, EventArgs e)
     {
         _ = _vm.SwipeItem(sender, ItemManager.EditFile);
@@ -63,5 +62,10 @@ public partial class Transaction : ContentPage
     private void SwipeItemRight_Invoked(object sender, EventArgs e)
     {
         _ = _vm.SwipeItem(sender, ItemManager.DeleteFile);
+    }
+
+    private void Bar_AddItem_Clicked(object sender, EventArgs e)
+    {
+        _ = _vm.ToolbarBottom();
     }
 }

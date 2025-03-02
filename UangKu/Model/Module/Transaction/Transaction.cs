@@ -2,7 +2,7 @@
 using UangKu.Model.Base;
 using UangKu.WebService.Data;
 
-namespace UangKu.Model.Menu
+namespace UangKu.Model.Module.Transaction
 {
     public class Transaction : BaseModel
     {
@@ -89,8 +89,8 @@ namespace UangKu.Model.Menu
             }
         }
 
-        private Root<ObservableCollection<WebService.Data.AppStandardReferenceItem.Data>> orderby;
-        public Root<ObservableCollection<WebService.Data.AppStandardReferenceItem.Data>> OrderBy
+        private Root<ObservableCollection<AppStandardReferenceItem.Data>> orderby;
+        public Root<ObservableCollection<AppStandardReferenceItem.Data>> OrderBy
         {
             get
             {
