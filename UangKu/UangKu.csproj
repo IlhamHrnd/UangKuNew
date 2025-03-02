@@ -34,7 +34,7 @@
 	  <AndroidPackageFormat>apk</AndroidPackageFormat>
 	  <AndroidUseAapt2>True</AndroidUseAapt2>
 	  <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
-	  <ApplicationDisplayVersion>1.1.2</ApplicationDisplayVersion>
+	  <ApplicationDisplayVersion>1.1.3</ApplicationDisplayVersion>
 	  <ApplicationId>com.yolodev.uangku</ApplicationId>
 	</PropertyGroup>
 
@@ -74,6 +74,55 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-windows10.0.19041.0|AnyCPU'">
 	  <ApplicationDisplayVersion>1.1.2</ApplicationDisplayVersion>
 	  <ApplicationId>com.yolodev.uangku</ApplicationId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
+	  <ApplicationVersion>1</ApplicationVersion>
+	  <ApplicationId>com.yolodev.uangku</ApplicationId>
+	  <ApplicationDisplayVersion>1.1.3</ApplicationDisplayVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
+	  <ApplicationVersion>1</ApplicationVersion>
+	  <ApplicationId>com.yolodev.uangku</ApplicationId>
+	  <ApplicationDisplayVersion>1.1.3</ApplicationDisplayVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-maccatalyst|AnyCPU'">
+	  <ApplicationVersion>1</ApplicationVersion>
+	  <ApplicationId>com.yolodev.uangku</ApplicationId>
+	  <ApplicationDisplayVersion>1.1.3</ApplicationDisplayVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-windows10.0.19041.0|AnyCPU'">
+	  <ApplicationVersion>1</ApplicationVersion>
+	  <ApplicationId>com.yolodev.uangku</ApplicationId>
+	  <ApplicationDisplayVersion>1.1.3</ApplicationDisplayVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
+	  <ApplicationVersion>1</ApplicationVersion>
+	  <ApplicationId>com.yolodev.uangku</ApplicationId>
+	  <ApplicationDisplayVersion>1.1.3</ApplicationDisplayVersion>
+	  <AndroidPackageFormat>apk</AndroidPackageFormat>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
+	  <ApplicationVersion>1</ApplicationVersion>
+	  <ApplicationId>com.yolodev.uangku</ApplicationId>
+	  <ApplicationDisplayVersion>1.1.3</ApplicationDisplayVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-maccatalyst|AnyCPU'">
+	  <ApplicationVersion>1</ApplicationVersion>
+	  <ApplicationId>com.yolodev.uangku</ApplicationId>
+	  <ApplicationDisplayVersion>1.1.3</ApplicationDisplayVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-windows10.0.19041.0|AnyCPU'">
+	  <ApplicationVersion>1</ApplicationVersion>
+	  <ApplicationId>com.yolodev.uangku</ApplicationId>
+	  <ApplicationDisplayVersion>1.1.3</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
