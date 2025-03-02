@@ -22,7 +22,7 @@ namespace UangKu.WebService.Data
             public int? productQuantity { get; set; }
 
             [JsonPropertyName("productPrice")]
-            public int? productPrice { get; set; }
+            public double? productPrice { get; set; }
 
             [JsonPropertyName("productLink")]
             public string productLink { get; set; }
@@ -47,6 +47,11 @@ namespace UangKu.WebService.Data
 
             [JsonPropertyName("isComplete")]
             public int? isComplete { get; set; }
+
+            #region Custom Variabel
+            public ImageSource source { get; set; }
+            public string priceFormat { get; set; }
+            #endregion
         }
     }
 }

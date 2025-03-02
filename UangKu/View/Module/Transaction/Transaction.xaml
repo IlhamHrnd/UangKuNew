@@ -99,14 +99,12 @@
                             <SwipeView Style="{StaticResource SwipeView}">
                                 <SwipeView.LeftItems>
                                     <SwipeItems>
-                                        <SwipeItem Text="Edit"
-                                                   Invoked="SwipeItemLeft_Invoked"/>
+                                        <SwipeItem Text="Edit" Invoked="SwipeItemLeft_Invoked"/>
                                     </SwipeItems>
                                 </SwipeView.LeftItems>
                                 <SwipeView.RightItems>
                                     <SwipeItems>
-                                        <SwipeItem Text="Delete"
-                                                   Invoked="SwipeItemRight_Invoked"/>
+                                        <SwipeItem Text="Delete" Invoked="SwipeItemRight_Invoked"/>
                                     </SwipeItems>
                                 </SwipeView.RightItems>
                                 <Frame Style="{StaticResource Frame}">

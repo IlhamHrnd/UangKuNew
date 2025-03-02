@@ -4,6 +4,7 @@
        xmlns:Menu="clr-namespace:UangKu.View.Menu"
        xmlns:Transaction="clr-namespace:UangKu.View.Module.Transaction"
        xmlns:UserManagement="clr-namespace:UangKu.View.Module.UserManagement"
+       xmlns:Wishlist="clr-namespace:UangKu.View.Module.Wishlist"
        xmlns:Model="clr-namespace:UangKu.Model.Master"
        x:Class="UangKu.View.MasterPage.MasterUser"
        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -38,6 +39,9 @@
     </FlyoutItem>
     <FlyoutItem Title="Transaction" Icon="dotnet_bot.svg">
         <ShellContent ContentTemplate="{DataTemplate Transaction:Transaction}" Route="Transaction"/>
+    </FlyoutItem>
+    <FlyoutItem Title="Wishlist" Icon="dotnet_bot.png">
+        <ShellContent ContentTemplate="{DataTemplate Wishlist:Wishlist}" Route="Wishlist"/>
     </FlyoutItem>
     <!--<FlyoutItem Title="Profile"
         Icon="dotnet_bot.svg">

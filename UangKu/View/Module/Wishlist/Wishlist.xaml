@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+             x:Class="UangKu.View.Module.Wishlist.Wishlist"
+             xmlns:Model="clr-namespace:UangKu.Model.Module.Wishlist"
+             xmlns:Font="clr-namespace:UangKu.Model.Base"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <Model:Wishlist/>
+    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="Bar_AddItem">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="FARegular"
+                     Glyph="{x:Static Font:FARegular.Plus}"
+                     ToolTipProperties.Text="Click To Add New Wishlist"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <Grid Style="{StaticResource Grid}">
+        <ScrollView Style="{StaticResource ScrollView}" x:Name="ScrollView">
+            <StackLayout>
+                <ActivityIndicator Style="{StaticResource ActivityIndicator}" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+                <CarouselView Style="{StaticResource CarouselView}" ItemsSource="{Binding WishlistCategory.Data}" Margin="0, 10, 0, 0">
+                    <CarouselView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal" ItemSpacing="5" SnapPointsType="MandatorySingle" SnapPointsAlignment="Center" />
+                    </CarouselView.ItemsLayout>
+                    <CarouselView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Style="{StaticResource Frame}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40*" />
+                                        <ColumnDefinition Width="60*" />
+                                    </Grid.ColumnDefinitions>
+                                    <toolkit:AvatarView Grid.Column="0" Grid.Row="0" HeightRequest="100" WidthRequest="100" Style="{StaticResource Avatar}" Text="{Binding productName}" ImageSource="{Binding source}"/>
+                                    <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource Label}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding productName}"/>
+                                                <Span Text="(" FontSize="Small"/>
+                                                <Span Text="{Binding productQuantity}" FontSize="Small"/>
+                                                <Span Text=" Item" FontSize="Small"/>
+                                                <Span Text=")" FontSize="Small"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CarouselView.ItemTemplate>
+                </CarouselView>
+                <CollectionView Style="{StaticResource CollectionView}" ItemsSource="{Binding MyWishlist.Data}" Margin="0, 5, 0, 0">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.Header>
+                        <Frame Style="{StaticResource Frame}">
+                            <Label Style="{StaticResource Label}" Text="My Wishlist" HorizontalTextAlignment="Center"/>
+                        </Frame>
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView Style="{StaticResource SwipeView}">
+                                <SwipeView.LeftItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Edit" Invoked="SwipeItemLeft_Invoked"/>
+                                    </SwipeItems>
+                                </SwipeView.LeftItems>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Go To Link" Invoked="SwipeItemRight_Invoked"/>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <Frame Style="{StaticResource Frame}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="40*" />
+                                            <ColumnDefinition Width="60*" />
+                                        </Grid.ColumnDefinitions>
+                                        <toolkit:AvatarView Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" HeightRequest="100" WidthRequest="100" Style="{StaticResource Avatar}" Text="{Binding srproductCategory}" ImageSource="{Binding source}" />
+                                        <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource Label}" VerticalTextAlignment="Center">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="Price : "/>
+                                                    <Span Text="{Binding priceFormat}"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource Label}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="Date : "/>
+                                                    <Span Text="{Binding wishlistDate}"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource Label}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="Item : "/>
+                                                    <Span Text="{Binding productQuantity}"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Style="{StaticResource Label}" HorizontalTextAlignment="Center" Text="{Binding productName}">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding isComplete}" Value="1">
+                                                    <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                    </Grid>
+                                </Frame>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.Footer>
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                            <Button Style="{StaticResource Button}" Text="Previous Page" x:Name="ButtonPrevious"/>
+                            <Button Style="{StaticResource Button}" Text="Next Page" x:Name="ButtonNext"/>
+                        </HorizontalStackLayout>
+                    </CollectionView.Footer>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
+        <toolkit:Expander HorizontalOptions="End" VerticalOptions="End" Margin="30" Direction="Up">
+            <toolkit:Expander.Header>
+                <ImageButton BackgroundColor="Transparent" CornerRadius="20" HorizontalOptions="End" VerticalOptions="End">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="FABrands" Glyph="{x:Static Font:FABrands.Plus}" />
+                    </ImageButton.Source>
+                </ImageButton>
+            </toolkit:Expander.Header>
+            <toolkit:Expander.Content>
+                <VerticalStackLayout Spacing="20">
+                    <ImageButton x:Name="ImgBtn_ScrollTop" Clicked="ImgBtn_ScrollTop_Clicked">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="FARegular" Glyph="{x:Static Font:FARegular.ArrowUp}" Size="50"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <ImageButton x:Name="ImgBtn_ScrollBottom" Clicked="ImgBtn_ScrollBottom_Clicked">
+                        <ImageButton.Source>
+                            <FontImageSource FontFamily="FARegular" Glyph="{x:Static Font:FARegular.ArrowDown}" Size="50"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                </VerticalStackLayout>
+            </toolkit:Expander.Content>
+        </toolkit:Expander>
+    </Grid>
+</ContentPage>

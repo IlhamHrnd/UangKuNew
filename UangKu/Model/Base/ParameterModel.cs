@@ -101,6 +101,7 @@
         public const string EditProfile = "PRG/PRG/250209-001";
         public const string EditTransaction = "PRG/TransEdit/250301-001";
         public const string NewTransaction = "PRG/TransNew/250301-001";
+        public const string Wishlist = "PRG/Wish/250302-001";
     }
 
     //Untuk Gambar Yang Ter Pick

@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using UangKu.Model.Base;
 using UangKu.WebService.Data;
-using static UangKu.WebService.Data.Transaction;
 
 namespace UangKu.Model.Module.Transaction
 {
