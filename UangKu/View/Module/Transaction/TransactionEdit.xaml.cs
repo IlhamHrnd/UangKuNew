@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using UangKu.Model.Base;
 using UangKu.ViewModel.Module.Transaction;
 
@@ -10,7 +9,7 @@ public partial class TransactionEdit : ContentPage
 	public TransactionEdit(string mode, string transNo)
 	{
 		InitializeComponent();
-		_vm = new TransactionEditVM(mode, transNo);
+		_vm = new TransactionEditVM(mode, transNo, Navigation);
 		BindingContext = _vm;
 	}
 

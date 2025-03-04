@@ -8,8 +8,6 @@ namespace UangKu.Model.Module.UserManagement
 {
     public class ProfileEdit : BaseModel
     {
-        private bool isenabled = false;
-        public bool IsEnabled { get => isenabled; set => SetProperty(ref isenabled, value); }
         private ImageManager img;
         public ImageManager Img { get => img; set => img = value; }
         private Root<Data> person;

@@ -6,9 +6,9 @@ namespace UangKu.ViewModel.Module.Wishlist
 {
     public class WishlistVM : Model.Module.Wishlist.Wishlist
     {
-        public WishlistVM()
+        public WishlistVM(INavigation navigation)
         {
-            
+            Navigation = navigation;
         }
         public void LoadData()
         {
@@ -144,7 +144,7 @@ namespace UangKu.ViewModel.Module.Wishlist
                 scroll.ScrollToAsync(0, y, true);
         }
 
-        public async Task ButtonOpenLink(object sender)
+        public async Task SwipeItem(object sender, string mode)
         {
             if (sender is not SwipeItem item || item.BindingContext is not WebService.Data.UserWishlist.Data data)
             {
@@ -152,13 +152,22 @@ namespace UangKu.ViewModel.Module.Wishlist
                 return;
             }
 
-            if (string.IsNullOrEmpty(data.productLink))
+            switch (mode)
             {
-                await MsgModel.MsgNotification(ItemManager.Empty);
-                return;
-            }
+                case "right":
+                    if (string.IsNullOrEmpty(data.productLink))
+                    {
+                        await MsgModel.MsgNotification(ItemManager.Empty);
+                        return;
+                    }
 
-            await Launcher.OpenAsync(data.productLink);
+                    await Launcher.OpenAsync(data.productLink);
+                    break;
+
+                case "left":
+                    await Navigation.PushAsync(new View.Module.Wishlist.WishlistEdit(ItemManager.EditFile, data.wishlistId));
+                    break;
+            }
         }
     }
 }

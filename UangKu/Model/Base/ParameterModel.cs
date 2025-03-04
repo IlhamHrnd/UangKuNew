@@ -102,6 +102,9 @@
         public const string EditTransaction = "PRG/TransEdit/250301-001";
         public const string NewTransaction = "PRG/TransNew/250301-001";
         public const string Wishlist = "PRG/Wish/250302-001";
+        public const string WishlistEdit = "PRG/WishEdit/250304-001";
+        public const string WishlistNew = "PRG/WishNew/250304-001";
+        public const string ProfileNew = "PRG/ProfileNew/250304-001";
     }
 
     //Untuk Gambar Yang Ter Pick

@@ -9,7 +9,7 @@ public partial class ProfileEdit : ContentPage
 	public ProfileEdit(string mode)
 	{
 		InitializeComponent();
-		_vm = new ProfileEditVM(mode);
+		_vm = new ProfileEditVM(mode, Navigation);
 		BindingContext = _vm;
 	}
 

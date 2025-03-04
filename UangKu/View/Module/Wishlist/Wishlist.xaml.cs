@@ -9,7 +9,7 @@ public partial class Wishlist : ContentPage
 	public Wishlist()
 	{
 		InitializeComponent();
-		_vm = new WishlistVM();
+		_vm = new WishlistVM(Navigation);
 		BindingContext = _vm;
 	}
 
@@ -31,11 +31,11 @@ public partial class Wishlist : ContentPage
 
     private void SwipeItemRight_Invoked(object sender, EventArgs e)
     {
-        _ = _vm.ButtonOpenLink(sender);
+        _ = _vm.SwipeItem(sender, "right");
     }
 
     private void SwipeItemLeft_Invoked(object sender, EventArgs e)
     {
-
+        _ = _vm.SwipeItem(sender, "left");
     }
 }

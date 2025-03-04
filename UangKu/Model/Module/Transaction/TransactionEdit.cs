@@ -8,8 +8,6 @@ namespace UangKu.Model.Module.Transaction
     {
         private string transno = string.Empty;
         public string TransNo { get => transno; set => SetProperty(ref transno, value); }
-        private bool isenabled = false;
-        public bool IsEnabled { get => isenabled; set => SetProperty(ref isenabled, value); }
         private Root<ObservableCollection<AppStandardReferenceItem.Data>> transtype;
         public Root<ObservableCollection<AppStandardReferenceItem.Data>> TransType
         {

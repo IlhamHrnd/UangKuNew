@@ -8,10 +8,11 @@ namespace UangKu.ViewModel.Module.Transaction
 {
     public class TransactionEditVM : TransactionEdit
     {
-        public TransactionEditVM(string mode, string transNo)
+        public TransactionEditVM(string mode, string transNo, INavigation navigation)
         {
             Mode = mode;
             TransNo = transNo;
+            Navigation = navigation;
         }
 
         public async void LoadData()
@@ -27,10 +28,6 @@ namespace UangKu.ViewModel.Module.Transaction
 
             IsBusy = true;
             AppProgram(Mode == ItemManager.EditFile ? Model.Base.AppProgram.EditTransaction : Model.Base.AppProgram.NewTransaction);
-            if (Mode == ItemManager.EditFile)
-                IsEnabled = IsEdited;
-            else if (Mode == ItemManager.NewFile)
-                IsEnabled = IsAdded;
 
             try
             {
@@ -147,6 +144,7 @@ namespace UangKu.ViewModel.Module.Transaction
             IsBusy = true;
             try
             {
+                string transNo;
                 if (Mode == ItemManager.NewFile)
                 {
                     var autoNumber = await WebService.Service.AutoNumber.GenerateAutoNumber(new WebService.Filter.Root<WebService.Filter.AutoNumber>
@@ -161,68 +159,52 @@ namespace UangKu.ViewModel.Module.Transaction
                         await MsgModel.MsgNotification(autoNumber.Message);
                         return;
                     }
-
-                    var save = await WebService.Service.Transaction.PostTransaction(new WebService.Data.Transaction.Data
-                    {
-                        transNo = autoNumber.Data,
-                        personId = UserID,
-                        srtransaction = SelectedTransType.itemId,
-                        srtransItem = SelectedTransItem.itemId,
-                        amount = Converter.StringToInt(amount),
-                        description = description,
-                        photo = Img != null && !string.IsNullOrEmpty(Img.ImageString) ? Img.ImageString : string.Empty,
-                        transType = SelectedTransType.itemName == "Income" ? AutoNumberType.Income : AutoNumberType.Expenditure,
-                        transDate = DateOnly.FromDateTime(date),
-                        createdDateTime = DateFormat.DateTime,
-                        createdByUserId = UserID,
-                        lastUpdateDateTime = DateFormat.DateTime,
-                        lastUpdateByUserId = UserID
-                    });
-                    await MsgModel.MsgNotification(save.Message);
+                    transNo = autoNumber.Data;
                 }
                 else if (Mode == ItemManager.EditFile)
+                    transNo = TransNo;
+                else
+                    transNo = string.Empty;
+
+                if (string.IsNullOrEmpty(transNo))
                 {
-                    if (string.IsNullOrEmpty(TransNo))
-                    {
-                        await MsgModel.MsgNotification(ItemManager.Empty);
-                        return;
-                    }
+                    await MsgModel.MsgNotification(ItemManager.Cancel);
+                    return;
+                }
 
-                    var trans = await WebService.Service.Transaction.GetTransactionNo(new WebService.Filter.Root<WebService.Filter.Transaction>
-                    {
-                        Data = new WebService.Filter.Transaction
-                        {
-                            TransNo = TransNo
-                        }
-                    });
+                var body = new WebService.Data.Transaction.Data
+                {
+                    transNo = transNo,
+                    personId = UserID,
+                    srtransaction = SelectedTransType.itemId,
+                    srtransItem = SelectedTransItem.itemId,
+                    amount = Converter.StringToInt(amount),
+                    description = description,
+                    photo = Img != null && !string.IsNullOrEmpty(Img.ImageString) ? Img.ImageString : string.Empty,
+                    transType = SelectedTransType.itemName == "Income" ? AutoNumberType.Income : AutoNumberType.Expenditure,
+                    transDate = DateOnly.FromDateTime(date),
+                    createdDateTime = DateFormat.DateTime,
+                    createdByUserId = UserID,
+                    lastUpdateDateTime = DateFormat.DateTime,
+                    lastUpdateByUserId = UserID
+                };
 
-                    if (trans.Succeeded == false)
-                    {
-                        await MsgModel.MsgNotification(trans.Message);
-                        return;
-                    }
-
-                    var save = await WebService.Service.Transaction.PatchTransaction(new WebService.Data.Transaction.Data
-                    {
-                        transNo = TransNo,
-                        personId = UserID,
-                        srtransaction = SelectedTransType.itemId,
-                        srtransItem = SelectedTransItem.itemId,
-                        amount = Converter.StringToInt(amount),
-                        description = description,
-                        photo = Img != null && !string.IsNullOrEmpty(Img.ImageString) ? Img.ImageString : string.Empty,
-                        transType = SelectedTransType.itemName == "Income" ? AutoNumberType.Income : AutoNumberType.Expenditure,
-                        transDate = DateOnly.FromDateTime(date),
-                        createdDateTime = DateFormat.DateTime,
-                        createdByUserId = UserID,
-                        lastUpdateDateTime = DateFormat.DateTime,
-                        lastUpdateByUserId = UserID
-                    });
+                if (Mode == ItemManager.EditFile)
+                {
+                    var save = await WebService.Service.Transaction.PatchTransaction(body);
+                    await MsgModel.MsgNotification(save.Message);
+                    if (save.Succeeded ?? false)
+                        ControlHelper.OnPopNavigationAsync(Navigation);
+                }
+                else if (Mode == ItemManager.NewFile)
+                {
+                    var save = await WebService.Service.Transaction.PostTransaction(body);
                     await MsgModel.MsgNotification(save.Message);
                 }
                 else
                 {
                     await MsgModel.MsgNotification(ItemManager.Cancel);
+                    return;
                 }
             }
             catch (Exception e)

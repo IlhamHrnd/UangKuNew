@@ -39,6 +39,7 @@ namespace UangKu.Model.Base
         private INavigation navigation;
         private bool isadded;
         private bool isedited;
+        private bool isenabled;
 
         // 🌐 Public Properties (Bottom)
         public string Title { get => title; set => SetProperty(ref title, value); }
@@ -113,7 +114,19 @@ namespace UangKu.Model.Base
             }
             set { SetProperty(ref isedited, value); }
         }
-
+        public bool IsEnabled
+        {
+            get
+            {
+                if (Mode == ItemManager.NewFile)
+                    return IsAdded;
+                else if (Mode == ItemManager.EditFile)
+                    return IsEdited;
+                else
+                    return false;
+            }
+            set { SetProperty(ref isenabled, value); }
+        }
         #region Load Function
         public async void AppProgram(string programID)
         {

@@ -200,6 +200,9 @@
 	  <MauiXaml Update="View\Module\Wishlist\Wishlist.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="View\Module\Wishlist\WishlistEdit.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

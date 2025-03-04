@@ -7,9 +7,10 @@ namespace UangKu.ViewModel.Module.UserManagement
 {
     public class ProfileEditVM : ProfileEdit
     {
-        public ProfileEditVM(string mode)
+        public ProfileEditVM(string mode, INavigation navigation)
         {
             Mode = mode;
+            Navigation = navigation;
         }
 
         public async void LoadData()
@@ -18,14 +19,7 @@ namespace UangKu.ViewModel.Module.UserManagement
 
             if (Network.IsConnected)
             {
-                AppProgram(Model.Base.AppProgram.EditProfile);
-
-                if (Mode == ItemManager.NewFile)
-                    IsEnabled = IsAdded;
-                else if (Mode == ItemManager.EditFile)
-                    IsEnabled = IsEdited;
-                else
-                    IsEnabled = false;
+                AppProgram(Mode == ItemManager.EditFile ? Model.Base.AppProgram.EditProfile : Model.Base.AppProgram.ProfileNew);
 
                 IsBusy = true;
                 try
@@ -89,8 +83,6 @@ namespace UangKu.ViewModel.Module.UserManagement
                 }
                 IsBusy = false;
             }
-            else
-                IsEnabled = false;
         }
 
         #region Load Function
@@ -334,6 +326,9 @@ namespace UangKu.ViewModel.Module.UserManagement
 
                         var profile = Mode == ItemManager.NewFile ? await WebService.Service.Profile.PostProfile(data) : await WebService.Service.Profile.PatchProfile(data);
                         await MsgModel.MsgNotification(profile.Message);
+
+                        if (Mode == ItemManager.EditFile)
+                            ControlHelper.OnPopNavigationAsync(Navigation);
                     }
                     else
                         await MsgModel.MsgNotification(ItemManager.Empty);
